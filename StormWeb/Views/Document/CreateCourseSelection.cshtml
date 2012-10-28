@@ -1,0 +1,78 @@
+﻿@model StormWeb.Models.Faculty
+
+@{
+    ViewBag.Title = "CreateCourseSelection";
+}
+
+<h2>  </h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#Country_Select").change(function () {
+            var data = [];
+            var selectedCountryID = $(this).val();
+            $.post('@Url.Action("GetUniversities")', { countryID: selectedCountryID }, function (data) {
+                data = $.map(data, function (item, a) {
+                    return "<option value=" + item.Value + ">" + item.Text + "</option>";
+                }, 'json');
+                $("#University_Select").html(data.join(""));
+            });
+        });
+
+        $("#University_Select").change(function () {
+            var data = [];
+            var selectedUniID = $(this).val();
+            $.post('@Url.Action("GetCourses")', { universityID: selectedUniID }, function (data) {
+                data = $.map(data, function (item, a) {
+                    return "<option value=" + item.Value + ">" + item.Text + "</option>";
+                }, 'json');
+                $("#Course_Select").html(data.join(""));
+            });
+        });
+
+        $("#submitDocumentTemplate").click(function () {
+
+            window.location.href = "/Document/ShowAllDocumentTemplates/" + $('select[name*="Course_Select"]').val();
+            //alert($('select[name*="Course_Select"]').val());
+        });
+      });
+</script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Course Selection Criteria</legend>
+
+        <div class="editor-label">
+            @Html.Label("Select Country")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Country_Select", (IEnumerable<SelectListItem>)ViewBag.Countries, "-- Select One --")                          
+            @Html.ValidationMessage("CountryError")
+        </div>
+        <div class="editor-label">
+            @Html.Label("Select University")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("University_Select", Enumerable.Empty<SelectListItem>(), "-- Select One --")             
+            @Html.ValidationMessage("UnivesityError");
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Courses, "Course Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Course_Select", Enumerable.Empty<SelectListItem>(), "-- Select One --")
+            @Html.ValidationMessage("CourseError")
+        </div>
+        <p>
+            <a class="btn" href="#" id="submitDocumentTemplate">Show Document Template</a>            
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ShowAllStudents")
+</div>

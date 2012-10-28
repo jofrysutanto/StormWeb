@@ -1,0 +1,126 @@
+﻿@model IEnumerable<StormWeb.Models.Faculty>
+
+@{
+    ViewBag.Title = "Faculties";
+}
+<script type="text/javascript">
+$(function () {
+        $('.mydata-tbl-inbox').dataTable({
+					    "aaSorting": [[0, 'desc']],
+                        "aoColumnDefs": [
+						    { "bSortable": false, "aTargets": [ 3 ] }
+					    ],
+                        "aaColumns": [
+                            null,
+                            { "sType": "date-euro-pre" }, // Sorting based on specific date format
+                            null,
+                            null
+                        ],
+                        "sPaginationType": "full_numbers",
+                        "iDisplayLength": 10,
+                        "oLanguage": {
+                            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Message per page:</span>",
+                        },
+                        "sDom": '<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
+
+                    });
+
+                    $('button[id*="select"]').click( function() {        
+                        //alert($(this).parent().next().html());
+                        $(this).parent().fadeOut('slow', function() {
+                            $(this).next().fadeIn('fast');        
+                        });
+                    });
+
+                    $('button[id*="cancel"]').click( function() {        
+                        $(this).parent().fadeOut('slow', function() {
+                            $(this).prev().fadeIn('fast');        
+                        });        
+                    });
+
+                    $('#example').popover({
+                        placement:'left',
+                        trigger:'hover'
+                        });
+       });
+</script>
+<h2>Faculties</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateFaculty", new { id = ViewBag.UniversityId })
+</p>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    University List</h5>
+                <div class="widget-control pull-right">
+                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-cog"></i>
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><i class="icon-plus"></i>Add New</a></li>
+                        <li><a href="#"><i class="icon-ok"></i>Bulk Approved</a></li>
+                        <li><a href="#"><i class="icon-minus-sign"></i>Bulk Remove</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <table class="mydata-tbl-inbox table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            Faculty Name
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            University Name
+                            
+                        </th>
+                        <th>Action<a id="example" data-content="Delete - A Faculty can only be deleted if they have no courses listed under them " class="color-icons help_co pull-right" style="margin-right:5px;margin-top:5px" href="#" data-original-title="Appointment Status"></a></th>
+                    </tr>
+                    </thead>
+@foreach (var item in Model)
+{
+    <tbody>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Faculty_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Faculty_Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.University.University_Name)
+            <text><b><br />Campus:</b></text> @Html.DisplayFor(modelItem => item.University.Campus)
+        </td>
+        <td>           
+            <div class="selectArea">
+                <a href="@Url.Action("EditFaculty", new { id = item.Faculty_Id })" type="button" class="btn btn-mini btn-info" value="@item.Faculty_Id" name="EditFaculty">Edit</a>
+            @if (item.Courses.Count() == 0)
+            {            
+                <button type="button" id="select@(item.Faculty_Id)" class="btn btn-mini btn-danger" value="@item.Faculty_Id" name="selectStudent">Delete</button>              
+            }
+            </div>
+            @if(item.Courses.Count() == 0)
+            {
+            <div class="confirmArea" id="confirmArea@(item.Faculty_Id)" style="display:none">
+                <a href="@Url.Action("ConfirmDeleteFaculty", new { id = item.Faculty_Id })" type="button" id="confirmStudent@(item.Faculty_Id)" class="btn btn-mini btn-success" value="@item.Faculty_Id" name="deleteFaculty">Confirm</a>
+                <button type="button" id="cancel@(item.Faculty_Id)" class="btn btn-mini btn-warning" value="@item.Faculty_Id" name="cancel">Cancel</button>
+            </div>
+            }            
+        </td>
+    </tr>
+    </tbody>
+}
+
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+

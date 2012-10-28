@@ -1,0 +1,61 @@
+﻿@model StormWeb.Models.University
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>University</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Country_Id, "Country")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Country_Id", "-- Select One --")           
+            @Html.ValidationMessageFor(model => model.Country_Id)
+            @Html.ValidationMessage("CountryError")
+        </div>      
+        <div class="editor-label">
+            @Html.LabelFor(model => model.University_Name,"University Name")
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.University_Name)
+           @Html.ValidationMessageFor(model => model.University_Name) 
+              @Html.ValidationMessage("UniversityError")          
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Campus)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Campus)
+            @Html.ValidationMessageFor(model => model.Campus)
+           @Html.ValidationMessage("CampusError")   
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+           @Html.ValidationMessage("EmailError")   
+        </div>
+
+        <p>
+        @* <a class='btn btn-info'  title="Create">Create</a>*@
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

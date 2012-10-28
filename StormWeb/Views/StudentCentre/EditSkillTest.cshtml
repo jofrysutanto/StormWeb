@@ -1,0 +1,61 @@
+﻿@model StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>Edit Qualification</h2><br />
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("EditSkillTest", "StudentCentre", FormMethod.Post))
+{
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+foreach (var item in Model.clientSkillTestTable)
+{ 
+    <div id="divEditProfile">
+        <table style="text-align: left;">
+            @Html.HiddenFor(modelItem => item.Client_Id)
+             @Html.HiddenFor(modelItem => item.Client_SkillTestId)
+            <tr>
+                <th>
+                    Type Of Test
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.TypeOfTest, null, "typeOfTest") 
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Score
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Score, null, "score") 
+                </td>
+            </tr> 
+        </table>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
+        </div>
+    </div>
+}
+}
+<script type="text/javascript">
+
+    $(function(){
+    @{
+        if (ViewBag.successEdit != null)
+        {
+        @:parent.location='/StudentCentre/Profile/@(Model.caseTable.First().Student_Id)?message=edit';
+        @:parent.$.fn.colorbox.close();
+        };
+    }
+     });
+      
+    $(function () {
+        $(".cancelButton").click(function () {            
+            parent.$.fn.colorbox.close();
+        });
+    });
+     
+</script>

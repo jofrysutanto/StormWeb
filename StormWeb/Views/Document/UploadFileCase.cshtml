@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "UploadFileCase";
+}
+
+<h2>UploadFileCase</h2>
+@using (Html.BeginForm("UploadFileCase", "Document", 
+        FormMethod.Post, new { enctype = "multipart/form-data" })) {
+    <input id="comment"  name="comment" value=""/>
+    <input type="hidden" value="@ViewBag.CaseDoc_Id" name="CaseDoc_Id" />
+    <input id="file" type="file" name="file" />
+    <input type='submit' id='upload-files' value=' Upload Files ' />
+ }

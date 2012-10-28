@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "UploadOfferLetter";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+ <script type="text/javascript">
+     $(document).ready(function () {
+
+         $("#upload-files").click(function () {
+             var valid = true;
+             if ($("#file").val() == '') {
+                 valid = false;
+                 alert("File is not selected");
+             }
+             var ext = $('#file').val().split('.').pop().toLowerCase();
+             if ($.inArray(ext, ['pdf']) == -1) {
+                 valid = false;
+                 alert('invalid extension, only files with .pdf is allowed!');
+             }
+
+             if (valid) {
+                 $('#upload').submit();         
+             }
+
+         });
+     });
+</script>
+
+<h4>Upload Document</h4>
+@using (Html.BeginForm("UploadOfferLetter", "Document", 
+        FormMethod.Post, new { id= "upload", enctype = "multipart/form-data" }))
+{
+    <label for="comment">Comment</label>
+    <input id="comment"  name="comment" value=""/>
+    <input type="hidden" value="@ViewBag.Doc_Id" name="Doc_Id" />
+    <input type="hidden" value="@ViewBag.case_Id" name="case_Id" />
+    <input type="hidden" value="@ViewBag.doctype" name="doctype" />
+    <input type="hidden" value="@ViewBag.studentName" name="studentName" />
+   
+    <br/>
+    <label for="file">File  </label>
+    <input id="file" type="file" name="file" /><br /><br />
+    
+    <div style="text-align:center">
+    <input class="btn btn-primary" type='button' id='upload-files' value=' Upload Documents ' />
+    </div>
+}

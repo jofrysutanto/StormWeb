@@ -1,0 +1,115 @@
+﻿@model StormWeb.Models.CaseDoc_Template
+<h2>
+    Create New General Template</h2>
+@{
+    ViewBag.Title = "CreateCaseTemp";
+    //Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#Uploadfile").hide();
+
+        $("#downloadable").change(function () {
+            var selected = $(this).val();
+
+            if ($('#downloadable').is(':checked')) {
+                $('#downloadable').val(true);
+                $("#Uploadfile").show();
+            }
+            else {
+                $('#downloadable').val(false);
+                $("#Uploadfile").hide();
+            }
+        });
+    });
+            
+</script>
+
+
+
+@using (Html.BeginForm("CreateCaseTemp", "Document", FormMethod.Post,  new { id = "upload", enctype = "multipart/form-data" }) )
+{
+    
+    <label for="Name">
+        Name:
+    </label>
+    <div class="editor-field">
+        <input id="name" name="Name" value="" />
+    </div>
+
+    <label for="comment">
+        Comment:
+    </label>
+    <div class="editor-field">
+        <input id="comment" name="Comment" value="" />
+    </div>
+    
+    <label for="downloadable">
+        downloadable:
+    </label>
+    <div >
+        <input id="downloadable" name="Downloadable" type="checkbox" />
+    </div>
+
+    
+
+    <div id="Uploadfile">
+        <div>
+            <label for="file">
+                Please choose a file :
+            </label>
+            <input id="file" type="file" name="file" />
+            <input  id="returnId" type="hidden" value="@ViewBag.clientId" name="returnId" />
+            
+        </div>
+    </div>
+    
+   <label for="required">
+        Required:
+    </label>
+    <div >
+        <input id="required" name="Required" type="checkbox"  />
+    </div>
+    
+    <div id="savebtn">
+        <div>
+            <input type="button" id='upload-files' value=' Save'/>
+        </div>
+    </div>
+    
+}
+ <script type="text/javascript">
+     $("#upload-files").click(function () {
+         var valid = true;
+         if ($('#downloadable').is(':checked')) {
+             if ($("#file").val() == '') {
+                 valid = false;
+                 alert("File is not selected");
+             }
+         }
+         var ext = $('#file').val().split('.').pop().toLowerCase();
+
+         if ($('#downloadable').is(':checked')) {
+             if ($.inArray(ext, ['doc', 'gif', 'png', 'jpg', 'jpeg', 'pdf']) == -1) {
+                 valid = false;
+                 alert('invalid extension, only files with .doc .gif .png .jpg .jpeg .pdf is allowed!');
+             }
+         }
+         if ($('#required').is(':checked')) {
+             $('#required').val(true);
+         }
+         else {
+             $('#required').val(false);
+         }
+
+         //alert($('#required').val());
+
+         if (valid) {
+             $('#upload').submit();
+         }
+         return false;
+     });       
+</script>

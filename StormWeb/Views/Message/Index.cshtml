@@ -1,0 +1,90 @@
+﻿@model StormWeb.Models.Message
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">   
+
+ $(function () {
+
+    var validator = $("#composeForm").validate({
+        rules: {
+            "UserTo": {
+                required: true
+            },
+            "MessageContent": {
+                required: true
+            },
+            "Subject": {
+                required: true
+            }
+            }
+            });
+
+            // Example of using an event listener and public method to build a primitive slideshow:
+            $(document).bind('cbox_closed', function(){
+                //location.reload();
+            });
+    });
+
+</script>
+
+<div id="actionsBox" class="actionsBox">
+	<div id="actionsBoxMenu" class="menu">
+		<span id="cntBoxMenu">0</span>
+		<a class="button box_action">Archive</a>
+		<a class="button box_action">Delete</a>
+		<a id="toggleBoxMenu" class="open"></a>
+		<a id="closeBoxMenu" class="button t_close">X</a>
+	</div>
+	<div class="submenu">
+		<a class="first box_action">Move...</a>
+		<a class="box_action">Mark as read</a>
+		<a class="box_action">Mark as unread</a>
+		<a class="last box_action">Spam</a>
+	</div>
+</div>
+<div class="row-fluid">
+			<div class="span12">
+				<div class="box-tab">
+					<div class="tabbable">
+						<!-- Only required for left/right tabs -->
+						<ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1" data-toggle="tab"><i class="black-icons mail"></i> Inbox</a></li>
+							<li><a href="#tab2" data-toggle="tab"><i class="black-icons box_outgoing"></i> Outbox</a></li>
+							<li><a href="#tab3" data-toggle="tab"><i class="black-icons create_write"></i> Compose</a></li>							
+						</ul>
+						<div class="tab-content">
+							
+							<div class="tab-pane active" id="tab1">
+                                <div id="inboxMessage">
+                                @if (ViewBag.InboxMessages == null)
+                                {
+                                    ViewBag.InboxMessages = new List<StormWeb.Models.Message>();
+                                }
+                                @Html.Partial("~/Views/Message/Inbox.cshtml", (IEnumerable<StormWeb.Models.InboxViewModel>) ViewBag.InboxMessages)	
+                                </div>							
+							</div>
+                            <div class="tab-pane" id="tab2">
+                                <div id="outboxMessage">
+                                @if (ViewBag.OutboxMessages == null)
+                                {
+                                    ViewBag.OutboxMessages = new List<StormWeb.Models.Message>();
+                                }
+                                @Html.Partial("~/Views/Message/Sent.cshtml", (IEnumerable<StormWeb.Models.OutboxViewModel>) ViewBag.OutboxMessages)								
+                                </div>
+							</div>
+
+                            <div class="tab-pane" id="tab3">
+                                @Html.Partial("~/Views/Message/Compose.cshtml", Model)
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+            <div class="alert fade in" style="margin-left: 30%; margin-right: 30%">
+                  <button data-dismiss="alert" class="close" type="button">×</button>
+                  If this page does not reflect the latest update, please refresh your page by pressing F5
+            </div>

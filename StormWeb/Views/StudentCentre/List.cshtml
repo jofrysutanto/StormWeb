@@ -1,0 +1,46 @@
+﻿@model IEnumerable<StormWeb.Models.Student>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="box">
+    <h4 class="white">Student List</h4>
+    <div class="box-container">
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p> <br />
+<table class="table-long">
+ <thead>
+    <tr> 
+        <th>&nbsp; Login</th>
+        <th>&nbsp; Course_Choice
+        </th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client.Title) 
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Login.Username) 
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course_Choice)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Student_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Student_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Student_Id })
+        </td>
+    </tr>
+}
+</tbody>
+</table> 
+ <span class="clearFix">&nbsp;</span>
+    
+    </div>
+</div> 

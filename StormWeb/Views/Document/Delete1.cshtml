@@ -1,0 +1,48 @@
+﻿@model StormWeb.Models.CaseDocument
+
+@{
+    ViewBag.Title = "Delete1";
+}
+
+<h2>Delete1</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>CaseDocument</legend>
+
+    <div class="display-label">Path</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Path)
+    </div>
+
+    <div class="display-label">UploadedOn</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UploadedOn)
+    </div>
+
+    <div class="display-label">FileName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FileName)
+    </div>
+
+    <div class="display-label">CaseDocTemplate_Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CaseDocTemplate_Id)
+    </div>
+
+    <div class="display-label">Case_Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Case_Id)
+    </div>
+
+    <div class="display-label">Comment</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comment)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

@@ -1,0 +1,133 @@
+﻿@model StormWeb.Models.StudentStaffModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "aoColumnDefs": [
+						{ "bSortable": false, "aTargets": [ 1,2,3,4,5 ] }
+					],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+    });
+    $("div.tbl-searchbox select").addClass('tbl_length');
+/*$(".tbl_length").chosen({
+		disable_search_threshold: 4	
+	});
+		*/
+
+});
+</script>
+
+<div class="row-fluid">
+    <div class="span12">        
+        <div class="nonboxy-widget">
+          <div class="widget-head">
+            <h5><i class="black-icons  documents"></i> My Students </h5>
+          </div>
+          <div class="widget-content">
+            <div class="widget-box">
+               @* <table class="my-data-tbl-boxy table">*@
+               <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons user_co"></i>Student
+                                </th>
+                                <th>
+                                    <i class="color-icons application_list_co"></i>Profile Summary
+                                </th> 
+                                <th>
+                                    <i class="black-icons folder"></i>Applications
+                                </th>
+                                <th>
+                                    <i class="black-icons paperclip"></i>Documents
+                                </th>
+                                <th>
+                                    <i class="black-icons loading_bar"></i>Progress
+                                </th>
+                                <th>
+                                    
+                                </th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach(var item in Model.caseTable)
+                                {                                                           
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile","StudentCentre", new {id=@item.Student.Client_Id})">@item.Student.Client.GivenName @item.Student.Client.LastName</a></li>
+                                            <li class="post-date"><i class="color-icons alarm_co"></i>Registered on:
+                                                <a href="#"> @item.Student.Client.Registered_On </a></li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="post-date">
+                                            <li> Date of Birth: @item.Student.Client.Dob.ToString("dd/MM/yyyy") </li>
+                                            <li> Nationality: @item.Student.Client.Nationality </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (StormWeb.Models.Application app in item.Applications)
+                                            {
+                                                <li><a href="@Url.Action("Index", "Application", new { id = item.Student_Id })">@app.Course.Course_Name (@app.Course.Faculty.University.University_Name)</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                         <ul>
+                                            @foreach (StormWeb.Models.Application app in item.Applications)
+                                            {
+                                                int uploaded = StormWeb.Helper.Utilities.countUploadedApplicationDocument(item.Student_Id, app.Application_Id) + StormWeb.Helper.Utilities.countUploadedCaseDocument(item.Case_Id);
+                                                int toUpload = StormWeb.Helper.Utilities.countCourseDocument(app.Course_Id) + StormWeb.Helper.Utilities.countTotalCaseDocument(item.Case_Id); 
+                                                <li class="post-date"><a href="#">@uploaded / @toUpload</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (StormWeb.Models.Application app in item.Applications)
+                                            {
+                                                <li>
+                                                <div class="progress progress-striped active tip-top" title="@(StormWeb.Controllers.ApplicationController.getProgressDescription(app.Status))">
+								                <div class="bar" style="width: @(StormWeb.Controllers.ApplicationController.getProgressValue(app.Status))%"></div>
+							                    </div>
+                                                </li>
+                                            }                                            
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                        <button data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-cog"></i><span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href=@Url.Action("Index", "Application", new { id = item.Student_Id })><i class="color-icons application_detail_co"></i>Goto application</a></li>
+                                            <li><a href=@Url.Action("Index", "Course", new { id = item.Student_Id })><i class="color-icons application_add_co"></i>Start application</a></li>
+                                            <li><a href=@Url.Action("Student", "Log", new { id = item.Student_Id })><i class="color-icons clipboard_text_co"></i>View Logs</a></li>
+                                            <li><a class="iframe" href=@Url.Action("CheckAppointment", "Appointment", new { id = item.Student_Id })><i class="color-icons calendar_1_co"></i>Check/Book appointment</a></li>
+                                            <li><a href=@Url.Action("Compose", "Message", new { to = @StormWeb.Helper.StudentsHelper.getStudentUsername(item.Student_Id) })><i class="color-icons email_open_co"></i>Send a message</a></li>                                            
+                                            <li><a href=@Url.Action("SwitchStaff", "StudentStaff", new { id = item.Student_Id})><i class="color-icons group_co"></i>Assign to other Staff</a></li>
+                                            <li><a href=@Url.Action("Profile", "StudentCentre", new { id = item.Student_Id })><i class="color-icons pencil_co"></i>View / Edit Full Details</a></li>
+                                        </ul>
+                                        </div>
+                                    </td>                                    
+                                </tr>                                     
+                                }
+                        </tbody>
+                    </table>             
+            </div>
+          </div>
+        </div>
+    </div>
+    
+                
+</div>

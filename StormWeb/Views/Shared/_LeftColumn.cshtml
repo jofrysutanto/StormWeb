@@ -1,0 +1,169 @@
+﻿<div id="sidebar">
+    
+    <ul class="side-nav accordion_mnu collapsible">
+        @if (HttpContext.Current.User.IsInRole("Student"))
+        {
+            <li><a href="@Url.Action("Student", "StudentCentre")"><span class="white-icons computer_imac">
+            </span>Dashboard</a></li>
+            <li><a href="#"><span class="white-icons archive"></span>Application</a>
+                <ul class="acitem">
+                    <li><a href="@Url.Action("Index", "Application")"><span class="sidenav-icon"><span
+                        class="sidenav-link-color"></span></span>View all existing applications</a></li>
+                    <li><a href="@Url.Action("Index", "Course")"><span class="sidenav-icon"><span
+                        class="sidenav-link-color"></span></span>Start new application</a></li>
+                </ul>
+            </li>
+            <li><a href="@Url.Action("Index", "Course")"><span class="white-icons mouse_wires"></span>
+                Course Finder</a></li>  
+            <li><a href="@Url.Action("Index", "Document")"><span class="white-icons documents"></span>
+                Documents</a></li>     
+            <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span> Messages 
+            @{ 
+                    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+                    if (inboxCount > 0)
+                    {
+                                    <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
+                    }
+                                    }</a></li> 
+            <li><a href="@Url.Action("Index", "Appointment")"><span class="white-icons day_calendar">
+            </span>Appointment</a></li>
+            <li><a href="@Url.Action("Index", "Log")"><span class="white-icons clock"></span>Log</a></li>
+            <li><a href="@Url.Action("Index", "Help")"><span class="white-icons help"></span>Help / FAQ</a></li>
+        }
+        else if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
+        {
+            <li><a href="@Url.Action("Index", "StaffCentre")"><span class="white-icons computer_imac">
+            </span>Dashboard</a></li>
+            
+                    <li><a href="#"><span class="white-icons users"></span>
+                        Students</a>
+                        <ul class="acitem">
+                            <li><a href="@Url.Action("Index", "StudentStaff")">
+                        My Students 
+                        @if (StormWeb.Helper.StudentsHelper.getStudentsListFromCookie().Count > 0)
+                        {
+                            int count = StormWeb.Helper.StudentsHelper.getStudentsListFromCookie().Count;
+                            <span class='alert-noty'> &nbsp;@count&nbsp; </span>
+                        }                
+                                </a></li>
+                            <li><a href="@Url.Action("NewStudent", "StudentStaff")">
+                        New Students 
+                        @if (StormWeb.Helper.Utilities.getNumberOfNewStudents(Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId)) > 0)
+                        {
+                            int count = StormWeb.Helper.Utilities.getNumberOfNewStudents(Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId));
+                            <span class='alert-noty'> &nbsp;@count&nbsp; </span>
+                        }                
+                                </a></li>
+                        </ul>                    
+                    </li>
+            <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span>Messages
+            @{ 
+                    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+                    if (inboxCount > 0)
+                    {
+                                    <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
+                    }
+                                    }</a> </li> 
+            
+                    //------------Documents ----------//
+            <li><a href="#"><span class="white-icons documents"></span>Documents</a>
+                <ul class="acitem">
+                    <li><a href="@Url.Action("ShowAllStudents", "Document")">My Students </a></li>
+
+                    <li><a  href='@Url.Action("ShowGeneralTemplates", "Document")'>General Templates</a></li>
+
+                    <li><a  href='@Url.Action("ShowAllDocumentTemplates", "Document")'>Application Templates</a></li>
+                </ul>
+            </li>
+
+                   //------------Documents ----------//
+            <li><a href="#"><span class="white-icons book_large"></span>Universities</a>
+                <ul class="acitem">
+                    <li><a href="@Url.Action("Index", "University")"><span class="sidenav-icon"><span
+                        class="sidenav-link-color"></span></span>View all registered universities</a></li>
+                    <li><a href="@Url.Action("List", "Course")"><span class="sidenav-icon"><span class="sidenav-link-color">
+                    </span></span>Find and add courses</a></li>
+                </ul>
+            </li>
+            <li><a href="@Url.Action("Index", "Appointment")"><span class="white-icons day_calendar">
+            </span>Appointment</a></li>
+            <li><a href="@Url.Action("ShowLogs", "Log")"><span class="white-icons clock"></span>
+                Log</a></li>
+        }
+        
+            
+                @if (HttpContext.Current.User.IsInRole("Super"))
+                {
+                    
+            <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons graph"></span>
+                <span class="badge badge-important">X</span>Reports</a></li>
+            <li><a href="@Url.Action("Index", "Client")"><span class="white-icons users"></span>
+                Clients</a></li>
+            <li><a href="@Url.Action("Index", "Staff")"><span class="white-icons user_2"></span>
+                Staffs</a></li>
+            <li><a href="@Url.Action("Index", "Branch")"><span class="white-icons companies"></span>
+                Branch</a></li>
+            <li><a href="@Url.Action("Index", "Site")"><span class="white-icons joomla"></span><span class="badge badge-important">X</span>
+                Site</a></li>
+                }
+                
+            <li><a href="@Url.Action("Index","Event")"><span class="color-icons weather_clouds_co"></span>
+                Events</a></li>
+    </ul>    
+    @{
+        StormWeb.Models.Appointment app = StormWeb.Controllers.AppointmentController.FirstUpcomingAppointment();
+
+        if (app != null)
+        {
+        <div id="side-accordion">
+            <div class="accordion-group">
+              <div class="accordion-header"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#side-accordion" href="#collapseOne"><i class="white-icons month_calendar"></i> Upcoming Appointment </a> </div>
+              <div id="collapseOne" class="collapse in">
+                <div class="accordion-content">
+                  <ul class="event-list">
+                  
+                    <li>
+                      <div class="evnt-date"> @app.AppDateTime.Day <span style="text-align: center">@app.AppDateTime.ToString("MMM")</span> </div>
+                      <div class="event-info"> <span><i class="icon-time"></i><a href="@Url.Action("Index", "Appointment")"> @app.AppDateTime.ToString("hh:mm tt")</a></span>
+                        <p>@app.Comments </p>
+                        <p>Staff: @app.Staff.FirstName<br />Student:
+                        @if (app.General_Enquiry != null && app.General_Enquiry.Count > 0)
+                        {
+                            <text>@app.General_Enquiry.First().Client.GivenName</text>
+                        }
+                        else if (app.Case != null)
+                        {
+                            @:@app.Case.Student.Client.GivenName
+                        }
+                        </p>
+                      </div>
+                    </li>                    
+
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <script>
+            $(".event-list").click(function () {
+                window.location = $(this).find("a").attr("href");
+                return false;
+            });
+        </script>
+        }
+    }
+</div>
+
+<script>
+
+        $("#sidebar").niceScroll({
+            cursorcolor: "#2f2e2e",
+            cursoropacitymax: 0.7,
+            boxzoom: false,
+            touchbehavior: true
+        });
+
+
+</script>

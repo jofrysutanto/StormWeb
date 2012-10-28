@@ -1,0 +1,40 @@
+﻿@model StormWeb.Models.Event
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Event</legend>
+
+    <div class="display-label">Venue</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Venue)
+    </div>
+
+    <div class="display-label">DateTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateTime)
+    </div>
+
+    <div class="display-label">Comments</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comments)
+    </div>
+
+    <div class="display-label">EventAddedBy</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventAddedBy)
+    </div>
+
+    <div class="display-label">AudienceType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AudienceType)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.EventId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

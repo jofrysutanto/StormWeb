@@ -1,0 +1,105 @@
+﻿@model StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>
+    Edit Qualification</h2>
+<br />
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("EditChildrensDetails", "StudentCentre", FormMethod.Post))
+{
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+foreach (var item in Model.clientChildrenDetail)
+{ 
+    <div id="divEditProfile">
+        <table style="text-align: left;">
+            @Html.HiddenFor(modelItem => item.Client_Id)
+            @Html.HiddenFor(modelItem => item.Id)
+            <tr>
+                <th>
+                    Given Name
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Given_Name, null, "givenName")
+                    @Html.ValidationMessageFor(modelItem => item.Given_Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Surname
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Sur_Name, null, "surName")
+                    @Html.ValidationMessageFor(modelItem => item.Sur_Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    DOB
+                </th>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.DOB, new { @class = "chooseDate", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Gender
+                </th>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            @Html.DropDownListFor(modelItem => item.Gender, (SelectList)ViewData["Gender"], new { @class = "chzn-select" })
+                            <p class="help-block">
+                                @Html.ValidationMessageFor(modelItem => item.Gender)
+                            </p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Notes
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Notes, null, "Notes")
+                </td>
+            </tr>
+        </table>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
+        </div>
+    </div>
+}
+} 
+<script type="text/javascript">
+    $(function () {
+        $(".cancelButton").click(function () {
+            parent.$.fn.colorbox.close();
+        });
+    });  
+
+    
+    $(function(){
+    @{
+        if (ViewBag.successEdit != null)
+        {
+        @:parent.location='/StudentCentre/Profile/@(Model.caseTable.First().Student_Id)?message=edit';
+        @:parent.$.fn.colorbox.close();
+        };
+    }
+     });
+      
+       $(document).ready(function () { 
+        $(".chooseDate").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '0'
+        });
+    });
+     
+</script>

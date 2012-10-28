@@ -1,0 +1,30 @@
+﻿@model StormWeb.Models.Message
+
+@{
+    ViewBag.Title = "Read";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<div class="well white">
+<fieldset>
+    <legend>@Html.DisplayFor(model => model.Subject)</legend>
+
+    <blockquote>
+        <h4>
+        @if (ViewBag.ReadType == "inbox")
+        {
+            <text>From: @ViewBag.FromToName </text> ;
+        }
+        else
+        {
+            <text>To: @ViewBag.FromToName</text>;
+        }
+        
+        </h4> <small> on @Html.DisplayFor(model => model.TimeStamp)</small>
+    </blockquote>
+
+   <div class="well">
+        @Html.Raw(Model.MessageContent)
+        </div>
+</fieldset>
+</div>

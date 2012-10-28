@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>@ViewBag.Title</title>
+    @Html.Partial("_LoadHeaderWithScript")
+
+    @{ Html.EnableClientValidation(); }
+
+    @using StormWeb.Helper
+    @if (NotificationHandler.hasNotification())
+    {
+        string[] noty = NotificationHandler.getNotification();
+        
+        <script>
+         $(function () {
+                $.pnotify({
+                     title: '@(noty[2])',
+                     text: '@(noty[1])',
+                     type: '@(noty[0])',
+                     history: false
+                 });
+                 });
+        </script>
+    }
+
+</head>
+<body>
+    <div id="notificationCenterBox">
+    </div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner top-nav">
+            <div class="container-fluid">
+                <div class="branding">
+                    <div class="logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <h5>
+                                <img src="@Url.Content("~/Content/img/logo.png")" /></h5>
+                        </a>
+                    </div>
+                </div>
+                <ul class="nav pull-right">
+                    <li><a href="http://time.is/Melbourne" id="time_is_link"><i class="white-icons clock"></i>Melbourne: <span id="Melbourne_z609"></span>
+                        <script src="http://widget.time.is/t.js"></script>
+                        <script>
+                            //time_is_widget.init({ Melbourne_z609: {} });
+                        </script>
+                    </a></li>
+                    @Html.Partial("_LogOnPartial")                    
+                </ul>
+                <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar"
+                    type="button">
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar">
+                    </span>
+                </button>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                            class="nav-icon cog_3"></i>Themes Settings<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-header">Colors</li>
+                                  <li class=" clearfix color-block"><span class="theme-color theme-blue" title="theme-blue"></span><span class="theme-color theme-light-blue" title="theme-light-blue"></span><span class="theme-color theme-dark" title="theme-dark"></span><span class="theme-color theme-chrome" title="theme-chrome"></span><span class="theme-color theme-chayam" title="theme-chayam"></span><span class="theme-color theme-default" title="theme-default"></span></li>
+                                  <li class=" divider"></li>
+                                <li class="nav-header">Sidebar</li>
+                                <li class="theme-settings clearfix">
+                                    <div class="btn-group">
+                                        <button id="sidebar-on" disabled="disabled" class="btn btn-success">
+                                            On</button>
+                                        <button id="sidebar-off" class="btn btn-inverse">
+                                            Off</button>
+                                    </div>
+                                </li>
+                                <li class=" divider"></li>
+                                <li class="nav-header">Sidebar Placement</li>
+                                <li class="theme-settings clearfix">
+                                    <div class="btn-group">
+                                        <button disabled="disabled" id="left-sidebar" class="btn btn-inverse">
+                                            Left</button>
+                                        <button id="right-sidebar" class="btn btn-info">
+                                            Right</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="text-align:center">
+                            <a href="#" class="toggleNotificationCenter"><i class="white-icons alert_2"></i>Notifications</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Header -->
+    <!-- Sidebar start -->
+    @Html.Partial("_LeftColumn")
+    <!-- Sidebar ends -->
+    <!-- Main container -->
+    <div id="main-content">
+        <div class="container-fluid">
+        @RenderBody()
+        </div>
+    </div>
+    <!-- End of Main container -->
+</body>
+</html>

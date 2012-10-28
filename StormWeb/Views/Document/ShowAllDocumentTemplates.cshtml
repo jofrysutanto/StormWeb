@@ -1,0 +1,259 @@
+﻿@model IEnumerable<StormWeb.Models.Course>
+@{
+    ViewBag.Title = "ShowAllDocumentTemplates";
+}
+<h2>
+</h2>
+
+<script>
+
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "aoColumnDefs": [
+						{ "bSortable": false, "aTargets": [ 1,2,3,4 ] }
+					],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+    });
+    $("div.tbl-searchbox select").addClass('tbl_length');
+
+    
+
+    $("#errorMessages").dialog({
+            autoOpen: false,
+        });      
+
+    //alert($("#errorMessages").html());
+    if ($.trim($("#errorMessages").html()) != "")
+    {
+        $("#errorMessages").dialog('open');            
+    }
+
+
+});
+</script>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="nonboxy-widget">
+            <div class="widget-head">
+                <h5>
+                    <i class="black-icons  documents"></i>Application Forms</h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <table class="my-data-tbl-boxy table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons  book_open_co"></i>Course Name
+                                </th>
+                                <th>
+                                    <i class="color-icons application_detail_co"></i>Form Name
+                                </th>
+                                <th>
+                                    <i class="color-icons folder_co"></i>Path
+                                </th>
+                                <th>
+                                    <i class="color-icons page_white_text_co"></i>FileName
+                                </th>
+                                <th>
+                                    <i class="color-icons user_business_co"></i>UploadedBy
+                                </th>
+                                <th>
+                                    <i class="color-icons calendar_1_co"></i>UploadedOn
+                                </th>
+                                <th>
+                                    <i class="color-icons pencil_co"></i>Comment
+                                </th>
+                                <th>
+                                    <i class="color-icons hammer_screwdriver_co"></i>Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {                                                          
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li>@Html.DisplayFor(modelItem => item.Course_Name)
+                                                <a href="@Url.Action("UploadFileTemp", "Document", new { id = item.Course_Id , uni_Id = item.Faculty.University_Id})" class='myFrame color-icons drive_cd_empty_co tip-top' data-original-title="Upload New Form" title="Upload ">
+                                                </a></li>
+                                            <li><i class="icon-small-black "></i>
+                                                @Html.DisplayFor(modelItem => item.Faculty.University.University_Name)
+                                                <text> , </text>
+                                                @Html.DisplayFor(modelItem => item.Faculty.University.Country.Country_Name)
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                if (appDoc.FileName != null)
+                                                {
+                                                <li>@Html.DisplayFor(modelItem => appDoc.Form_Name)
+                                                <a href="@Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download Template">
+                                                                </a></li>
+                                                }
+                                                else
+                                                {
+                                                <li>&nbsp;</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                <li>@Html.DisplayFor(modelItem => appDoc.Path)</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                if (appDoc.FileName != null)
+                                                {
+                                                <li>@Html.DisplayFor(modelItem => appDoc.FileName)</li>
+                                                }
+                                                else
+                                                {
+                                                 <li>  &nbsp;</li> 
+                                                }
+                                            }
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                <li>@StormWeb.Helper.Utilities.getName(appDoc.UploadedBy)</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                <li>@Html.Encode(appDoc.UploadedOn.ToShortDateString())</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                if (appDoc.Comment == null || appDoc.Comment == String.Empty)
+                                                {
+                                                     <li>  ---------  </li>
+                                               
+                                                }
+                                                else
+                                                {
+                                                 <li>@Html.DisplayFor(modelItem => appDoc.Comment)</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (var appDoc in item.Template_Document)
+                                            {
+                                                <li>
+                                                    <div class="widget-content">
+                                                        <div class="widget-box">
+                                                            <a  href="@Url.Action("EditDocTemp", new { id = appDoc.TemplateDoc_Id })" class='iframe color-icons pencil_co tip-top' data-original-title="Edit Document Template">
+                                                            </a><a class=" color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
+                                                        href="#myModal@(appDoc.TemplateDoc_Id)"></a>
+                                                            <div class="modal hide fade" id="myModal@(appDoc.TemplateDoc_Id)" style="display: none;">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">
+                                                                        ×</button>
+                                                                    <h3>
+                                                                        Confirm</h3>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>
+                                                                        Confirm Delete?
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a href="@Url.Action("DeleteDocTemp", new { id = appDoc.TemplateDoc_Id })" class="btn btn-mini btn-warning">
+                                                                        Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                            Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>   
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>                                     
+                                                                 
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".myFrame").colorbox({ iframe: true, width: "500px", height: "800px" });
+
+
+
+    });
+
+</script>
+@*<script type="text/javascript">
+$(function(){
+ @{
+     if (ViewBag.SuccessEdit != null)
+     {
+        @:$(function () {
+                    
+            @:$.pnotify({
+                @: title: 'Success',
+                    @:text: 'File has been uploaded successfully',
+                    @:type: 'success',
+                    @:history: false
+                @:});
+        @:});
+    }
+        }
+        });
+</script>
+*@
+@*<script type="text/javascript">
+@{
+
+    if (ViewBag.message != null)
+    {
+    @:$(function () {
+    @:var noty_id = noty({
+			@:layout : 'top',
+			@:text: "@ViewBag.message",
+			@:type:'success',
+			
+			 @:});
+		  @:});
+
+    }
+}
+</script>
+*@

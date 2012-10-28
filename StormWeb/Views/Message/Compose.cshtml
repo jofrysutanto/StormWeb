@@ -1,0 +1,39 @@
+﻿@model StormWeb.Models.Message
+
+@using (Html.BeginForm("Compose", "Message", FormMethod.Post, new { id="composeForm" }))
+{
+	<fieldset>
+        @Html.Hidden("UserFrom", (string)ViewBag.FromUsername)
+		<div class="control-group">
+			<label class="control-label" for="typehead">To</label>
+			<div class="controls">
+                @if (ViewBag.UserTo != null)
+                {
+                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList, new { @class = "chzn-select", data_placeholder=@ViewBag.UserTo })
+                }
+                else
+                {
+                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList, new { @class = "chzn-select" })
+                }
+            </div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="input01">Subject</label>
+			<div class="controls">
+                @Html.TextBoxFor(model => model.Subject, new { @class = "span8" })												
+			</div>
+            <p class="help-block">
+                    @Html.ValidationMessageFor(model => model.Subject)
+                </p>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Message</label>
+			<div class="controls">
+                @Html.TextAreaFor(model => model.MessageContent, new { @class = "span11", rows = "10", cols = "10", id = "inbox-editor" })												
+			</div>                                            
+		</div>
+		<div>
+			<button type="submit" class="btn btn-info"><i class="icon-retweet icon-white"></i> Send</button>
+		</div>
+	</fieldset>
+}

@@ -1,0 +1,96 @@
+﻿@model IEnumerable<StormWeb.Models.Branch>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Branch</h2>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    Branch list</h5>
+                <div class="widget-control pull-right">
+                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-cog"></i>
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><i class="icon-plus"></i>Add New</a></li>
+                        <li><a href="#"><i class="icon-ok"></i>Bulk Approved</a></li>
+                        <li><a href="#"><i class="icon-minus-sign"></i>Bulk Remove</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <table class="data-tbl-boxy table">
+                       <thead>
+                        <tr>
+                            <th>
+                                Branch Name
+                            </th>
+                            <th>
+                                Address
+                            </th>
+                            <th>
+                                Primary Contact
+                            </th>
+                            <th>
+                                Secondary Contact
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th></th>
+                        </tr>
+                       </thead>
+			        <tbody>
+                        @foreach (var item in Model) 
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Branch_Name)
+                                </td>
+                                <td>   
+                                    <ul>                                                                     
+                                        
+                                            @Html.DisplayFor(modelItem => item.Address.Address_Name)
+                                            @Html.DisplayText(",")
+                                           <ul>
+                                            @Html.DisplayFor(modelItem => item.Address.City)                                            
+                                            @Html.DisplayText(",")
+                                           </ul>
+                                            @Html.DisplayFor(modelItem => item.Address.State)
+                                            @Html.DisplayText(",")
+                                            @Html.DisplayFor(modelItem => item.Address.Zipcode)
+                                            @Html.DisplayText(",")
+                                            @Html.DisplayFor(modelItem => item.Address.Country.Country_Name)
+                                        
+                                    </ul> 
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Primary_Contact)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Secondary_Contact)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id=item.Branch_Id }) |
+                                    @Html.ActionLink("Details", "Details", new { id=item.Branch_Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id=item.Branch_Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+			   </table>
+		</div>
+	</div>
+   </div> 
+   </div>
+   </div>        
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>

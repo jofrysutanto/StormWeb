@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "DownloadFile1";
+}
+
+<h2>Download File, the previously Uploaded File</h2>
+@using (Html.BeginForm("DownloadFile1", "Document",
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input id="DownloadFile1" type="file" name="DownloadFile1" />
+    <input type='submit' id='download-files' value=' Download File ' />
+}

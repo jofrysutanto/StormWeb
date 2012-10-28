@@ -1,0 +1,122 @@
+﻿@model StormWeb.Models.Branch
+@{
+    Layout = "";
+    ViewBag.Title = "Success";
+}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Appointment booked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- styles -->
+    <link href="@Url.Content("~/Content/css/bootstrap.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/bootstrap-responsive.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/jquery-ui-1.8.16.custom.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/jquery.jqplot.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/prettify.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/elfinder.min.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/elfinder.theme.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/fullcalendar.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Scripts/plupupload/jquery.plupload.queue/css/jquery.plupload.queue.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/styles.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/my_custom.css")" rel="stylesheet"/>
+    <link href="@Url.Content("~/Content/css/icons-sprite.css")" rel="stylesheet"/>
+    <link id="themes" href="@Url.Content("~/Content/css/themes.css")" rel="stylesheet"/>
+    <!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/ie/ie7.css")" />
+<![endif]-->
+    <!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/ie/ie8.css")" />
+<![endif]-->
+    <!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/ie/ie9.css")" />
+<![endif]-->
+    <!--fav and touch icons -->
+    <link rel="shortcut icon" href="@Url.Content("~/Content/ico/favicon.ico")" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="@Url.Content("~/Content/ico/apple-touch-icon-144-precomposed.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Url.Content("~/Content/ico/apple-touch-icon-114-precomposed.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Url.Content("~/Content/ico/apple-touch-icon-72-precomposed.png")" />
+    <link rel="apple-touch-icon-precomposed" href="@Url.Content("~/Content/ico/apple-touch-icon-57-precomposed.png")" />
+    @{ Html.EnableClientValidation(); }
+</head>
+
+
+<body id="error404" class="map_bg">
+    <div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+			<div class="branding">
+				<div class="logo">
+					<a href="@Url.Action("LogOn","Account")" class="btn btn-inverse">
+                            <h5>
+                                Storm Web</h5>
+                        </a>
+				</div>
+			</div>
+			<ul class="nav pull-right">
+				@Html.Partial("_LogOnPartial")
+			</ul>
+		</div>
+	</div>
+</div>
+    <!-- End of Header -->
+    <!-- Main container -->
+    <div class="container error-page-cntainer ">
+	<div class="row">
+		<!--404 with error message show area start here-->
+		<div class="span8">
+			<div class="leftSide">
+				<div class="well-login appointment">                        
+				<div >
+					<h3><span>Done!</span></h3>
+					<h4>We have received your appointment request</h4>
+					<p>
+						One of our staff will be in touch with you
+
+                        <br /><br />
+                        <h4>Your appointment details:</h4><br />
+                        <h3>Branch:</h3> <strong>@(Model.Branch_Name)</strong> <br />
+                        <strong>Location:</strong> @Model.Address.Address_Name, @Model.Address.City, @Model.Address.State <br />
+                        <strong>Country:</strong> @Model.Address.Country, @Model.Address.Zipcode <br />
+                        @{
+                            DateTime appDateTime = ViewBag.AppDateTime;
+                            @:<strong>Your preferred date:</strong> @appDateTime.DayOfWeek, @appDateTime.Day-@appDateTime.Month-@appDateTime.Year
+                        }
+					</p>
+				</div>
+				</div>
+			</div>
+		</div>
+		<!--404 with error message show area end here-->
+		<!--Right side sugestions area start here-->
+		<div class="span4">
+			<div class="rightSide">
+            <div class="well">
+				<h3><span>Reminder</span></h3>
+				<ol>
+					<li>This is not an appointment confirmation, our staff will confirm your appointment shortly</li>
+					<li>Bring all relevant document with you to the branch on appointment date</li>
+				</ol>
+			</div>
+            </div>
+		</div>
+		<!--Right side sugestions end start here-->
+	</div>
+</div>
+  
+    <!-- End of Main container -->
+    <!-- javascript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- html5.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <!-- css3-mediaqueries.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+    <script src="@Url.Content("~/Scripts/ios-orientationchange-fix.js")"></script>
+</body>
+</html>

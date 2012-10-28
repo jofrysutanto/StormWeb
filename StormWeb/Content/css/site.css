@@ -1,0 +1,275 @@
+﻿/**
+*   Site.css
+*   Used for styling the information website css
+*   Customised based on bootstrap.css
+*
+*   Author: Jofry HS
+*
+*
+*
+*/
+
+body 
+{
+    font-family: 'Open Sans', Arial, serif;
+    font-size: 16px;
+line-height: 24px;
+color: #333;
+}
+
+.main-body 
+{
+    padding-top: 20px;
+    background:#ffffff url('../img/bg_login_gradient.jpg') repeat-x left top;
+}
+
+strong 
+{
+    font-size: 20px;
+}
+
+.contact-info
+{
+    
+}
+
+.permalink:hover
+{
+    text-decoration: none
+}
+
+.brand-area
+{
+    padding-left: 300px;
+    padding-right: 300px;
+}
+
+.brand-area .brand
+{
+display: block;
+margin-left: 50px;
+font-size: 20px;
+font-weight: 200;
+color: #8D8D8D;
+padding: 14px 20px 16px;
+font-family: 'Telex',sans-serif;
+text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+float: left;
+}
+
+.brand-area .brand .logo
+{
+    height: 100px;
+    width: auto;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.navbar
+{
+    padding-top: 90px;
+    margin-bottom: 0px;
+}
+
+.navbar-inner
+{
+    background-image: -webkit-linear-gradient(top, #2774A0, #2FA4E7);
+}
+
+.hero-unit
+{
+    margin-bottom: 0px;
+}
+
+.content-banner
+{    
+    background: url(../img/mesh_bg.png);
+    -webkit-box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 3px rgba(0, 0, 0, 0.25) inset;
+    -moz-box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 3px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 3px rgba(0, 0, 0, 0.25) inset;
+    text-shadow: 1px 1px 1px white;    
+    margin-bottom: 40px;
+}
+
+.content-banner .hero-unit
+{
+    background: none;
+}
+
+/* Accordion */
+.accordion-heading a
+{
+    text-decoration: none;
+    color: White;
+}
+
+.accordion-heading.orange
+{
+    background-color:#F39937;
+}
+
+.accordion-heading.green
+{
+    background-color:#009418;
+}
+
+.accordion-heading.blue
+{
+    background-color:#007694;
+}
+
+.accordion-heading i
+{
+    padding-right: 5px;
+}
+
+/* Carousel */
+.carousel
+{
+    padding-left: 85px;
+    padding-right: 85px;
+    width: 1000px;
+}
+
+.carousel-control
+{
+    left: 20px;
+}
+
+.carousel-control.right
+{
+    right: 20px;
+}
+
+
+/* Footer area */
+
+.footer-container  {
+    clear: both;
+    padding: 10px 0px 10px;
+    background: #3D556C;
+    border-top: 1px solid white;
+    margin: 0px;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+.footer-container #footer {
+width: 940px;
+margin: 10px auto 10px;
+overflow: hidden;
+font-size: 13px;
+}
+
+#footer li {
+	background: none;
+	padding-left: 0px;
+}
+
+#footer li.column {
+width: 220px;
+margin-right: 20px;
+float: left;
+}
+#footer li.column li {
+margin-bottom: 8px;
+}
+
+#footer h5 {
+color: white;
+font-weight: bold;
+margin-bottom: 10px;
+font-size: 14px;
+text-transform: uppercase;
+}
+
+#footer li a {
+display: block;
+color: #E1E9EE;
+font-weight: 400;
+text-decoration: none;
+}
+
+.copyright
+{
+font-size: 16px;
+color: #E1E9EE;
+background-color: none;
+}
+
+img.icon {
+	width: 30px;
+	height: 30px;
+}
+
+
+/*Used for multiple level dropdown*/
+.nav li.dropdown ul.dropdown-menu li:HOVER ul {
+    display:block; 
+    position:absolute; 
+    left:100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.nav li.dropdown ul.dropdown-menu ul {
+    display: none;
+    float:right;
+    position: relative;
+    top: auto;
+    margin-top: -30px;
+}
+
+/* Service Page */
+.service-left
+{
+    padding-left: 100px;
+}
+
+.service-left h4
+{
+    width: 400px;
+    border-bottom: 1px dotted #AAA;
+}
+
+.service-left li i
+{
+    margin-right: 15px;
+}
+
+.thumbnail.pull-right
+{
+    margin-right: 200px;
+    width: 300px;
+    height: 300px;
+}
+
+.service-right
+{
+}
+
+.service-right h4
+{
+    width: 400px;
+    border-bottom: 1px dotted #AAA;
+}
+
+.service-right li i
+{
+    margin-right: 15px;
+}
+
+.thumbnail.pull-left
+{
+    margin-left: 100px;
+    width: 250px;
+    height: 250px;
+}
+
+/* Addition */
+.pull-center
+{
+    text-align: center;
+}

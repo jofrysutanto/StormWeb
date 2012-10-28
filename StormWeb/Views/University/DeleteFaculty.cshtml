@@ -1,0 +1,38 @@
+﻿@model StormWeb.Models.Faculty
+
+@{
+    ViewBag.Title = "DeleteFaculty";
+}
+
+<h2>DeleteFaculty</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Faculty</legend>
+        @Html.HiddenFor(model=>model.Faculty_Id)
+    <div class="display-label">Faculty_Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Faculty_Name)
+    </div>
+
+    <div class="display-label">Faculty_Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Faculty_Description)
+    </div>
+
+    <div class="display-label">University_Id</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.University_Id)
+    </div>
+</fieldset>
+    @if (ViewBag.CoursesCount <= 0)
+    {
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("ConfirmDeleteFaculty", new { id= Model.Faculty_Id})">Delete</a> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    }
+    else
+    {
+       <p> This Faculty has @ViewBag.CoursesCount Courses. So Faculty cannot be deleted</p> 
+    }

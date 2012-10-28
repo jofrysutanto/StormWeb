@@ -1,0 +1,147 @@
+﻿@model  StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "StudentHomePage";
+}
+<div class="row-fluid">
+    <div class="span9">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    Application Summary</h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <br />
+                    <table class="table">
+                        @if (Model == null)
+                        {
+                            <tr>
+                                <td colspan="5">
+                                    Currently You have no Applications <a href="@Url.Action("Index", "Course")">Start a
+                                        New Application</a>
+                                </td>
+                            </tr> 
+                        }
+
+
+                        else
+                        {
+                            if (Model.courseTable.Count == 0)
+                            {
+                            <tr>
+                                <td colspan="5">
+                                    Currently You have no Applications <a href="@Url.Action("Index", "Course")">Start a
+                                        New Application</a>
+                                </td>
+                            </tr> 
+                            }
+                            else
+                            {
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <i class="color-icons book_open_co"></i>University
+                                    </th>
+                                    <th>
+                                        <i class="color-icons book_co"></i>Course
+                                    </th>
+                                    <th>
+                                        <i class="color-icons calendar_1_co"></i>Commencement Date
+                                    </th>
+                                    <th>
+                                        <i class="black-icons loading_bar"></i>Documents Uploaded
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.courseTable)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.Encode(item.Faculty.University.University_Name)
+                                        </td>
+                                        <td>
+                                            @Html.Encode(item.Course_Name)
+                                        </td>
+                                        <td>
+                                            @Html.Encode(item.Commence_Date_Sem.Value.ToShortDateString())
+                                        </td>
+                                        <td>
+                                            @{ 
+                                       float uploaded = 0, toUpload = 0, preuploaded = 0, value = 0; int progress = 0; string a = "";
+                                       foreach (var item1 in Model.caseTable)
+                                       {
+                                           List<StormWeb.Models.Application> appList = item.Applications.ToList();
+
+                                           foreach (StormWeb.Models.Application app in appList)
+                                           {
+                                               uploaded = StormWeb.Helper.Utilities.countUploadedApplicationDocument(item1.Student_Id, app.Application_Id) + StormWeb.Helper.Utilities.countUploadedCaseDocument(item1.Case_Id);
+                                               toUpload = StormWeb.Helper.Utilities.countCourseDocument(app.Course_Id) + StormWeb.Helper.Utilities.countTotalCaseDocument(item1.Case_Id);
+                                               if (uploaded > preuploaded)
+                                               {
+                                                   value = uploaded;
+                                               }
+                                               preuploaded = uploaded;
+                                               if (toUpload != 0)
+                                               {
+                                                   progress = Convert.ToInt32((value / toUpload) * 100);
+                                               }
+                                               a = value + " /" + toUpload;
+                                           } 
+                                                @a  
+                                       }
+                                            }
+                                            &nbsp; <a class="active tip-top" href="@Url.Action("Index", "Document")" title="Upload Pending Documents">
+                                                Upload</a>
+                                            <div class="progress progress-striped active tip-top" title="@progress%">
+                                                <div class="bar" style="width: @progress%;">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>  
+                                }
+                                @if (ViewBag.applicationCount <  3)
+                                {
+                                    <tr>
+                                        <td colspan="5">
+                                            <a href="@Url.Action("Index", "Course")">Start a New Application</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("CounsellorDetails")
+</div>                  
+    <div class="widget-content" style="padding-left: 30%; padding-right: 30%; text-align: center">
+        <div class="widget-box">
+            <div class="alert alert-info fade in">
+                <button data-dismiss="alert" class="close" type="button">
+                    x</button>
+                <strong>Don't know where to start?</strong> Check out the <strong><a href="@Url.Action("Index", "Help")">
+                    Help/FAQ</a></strong>!
+            </div>
+        </div>
+        @if (ViewBag.applicationCount ==0)
+        {
+        <div class="alert alert-info fade in">
+            <button data-dismiss="alert" class="close" type="button">
+                x</button>
+            <strong>You have no application </strong>Start new application <strong><a href="@Url.Action("Index", "Course")">
+                Course Finder</a></strong>!
+        </div>
+         }
+        @if (ViewBag.name == "You do not have a counsellor assigned")
+        {
+        <div class="alert alert-info fade in">
+            <button data-dismiss="alert" class="close" type="button">
+                x</button>
+            <strong>You do not have a counsellor assigned?</strong> Please wait for 48 hours.
+        </div>
+        }
+    </div>

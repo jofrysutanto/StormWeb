@@ -1,0 +1,133 @@
+﻿@model StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "Student Profile";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml"; 
+}
+@* <h2>Personal Details</h2>*@
+<div class="span11">
+    <div class="nonboxy-widget">
+        <div class="widget-content">
+            <div class="widget-box">
+                <table style="margin-left: 25px" class="table">
+                    @foreach (var item in Model.studentTable)
+                    {
+                        <br />
+                        <span style="font-size: 24px; font-weight: bold; margin-right: 5px; margin-left: 25px;">
+                            Personal Details</span> 
+                        <a class='btn btn-info' href="@Url.Action("Profile", new { id = item.Student_Id })" style="margin-bottom:10px;" target="_parent">
+                            <i class="color-icons pencil_co"></i>View / Edit Full Details </a>
+                  
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <td>@Html.Label(item.UserName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Course Choice
+                            </th>
+                            <td>
+                                @Html.Encode(item.Course_Choice)
+                            </td>
+                        </tr>                    
+                    }
+                    @foreach (var item in Model.clientTable)
+                    { 
+                        <tr>
+                            <th>
+                                Title
+                            </th>
+                            <td>@Html.Encode(item.Title)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                DOB
+                            </th>
+                            <td>@Html.Label(item.Dob.ToShortDateString())
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <td>@Html.Encode(item.GivenName + " " + item.LastName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Email
+                            </th>
+                            <td>@Html.Label(item.Email)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Contact Number
+                            </th>
+                            <td>@Html.Label(item.ContactNumber)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Secondary Contact Number
+                            </th>
+                            <td>@Html.Label(item.SecondaryContactNumber)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address
+                            </th>
+                            <td>@Html.Encode(item.Address.Address_Name)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>@Html.Label(item.Address.City)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>@Html.Encode(item.Address.State + " " + item.Address.Zipcode)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>@Html.Label(item.Address.Country.Country_Name)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Service Choose
+                            </th>
+                            <td>@Html.Label(item.Services)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Preferred Country
+                            </th>
+                            <td>@Html.Label(item.PreferredCountry)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        $(".cancelButton").click(function () {
+            parent.$.fn.colorbox.close();
+        });
+    });
+     
+</script>

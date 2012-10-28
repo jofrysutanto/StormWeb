@@ -1,0 +1,113 @@
+﻿@model IEnumerable<StormWeb.Models.Case>
+@{
+    ViewBag.Title = "AssignStudent";
+}
+
+<script>
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+    });
+    $("div.tbl-searchbox select").addClass('tbl_length');		
+
+    $('button[id*="select"]').click( function() {        
+        //alert($(this).parent().next().html());
+        $(this).fadeOut('slow', function() {
+            $(this).parent().next().fadeIn('fast');        
+        });
+    });
+
+    $('button[id*="cancel"]').click( function() {        
+        $(this).parent().fadeOut('slow', function() {
+            $(this).prev().find('button').fadeIn('fast');        
+        });        
+    });
+
+});
+</script>
+<div class="row-fluid">
+    <div class="span12">
+        <!-- Start of widget block -->
+        <div class="nonboxy-widget">
+            <div class="widget-content">
+                <div class="widget-head">
+                    <h5>
+                        Newly Registered Student</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box">
+                        <table class="my-data-tbl-boxy table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="black-icons user"></i>Student
+                                </th>
+                                <th>
+                                    <i class="black-icons post_card"></i>Profile Summary
+                                </th>
+                                <th>
+                                    <i class="black-icons folder"></i>Branch
+                                </th>
+                                <th>
+                                    
+                                </th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach(var item in Model)
+                                {                                                           
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile","StudentCentre", new {id=@item.Student.Client_Id})">@item.Student.Client.GivenName @item.Student.Client.LastName</a></li>
+                                            <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Registered on:
+                                                <a href="#"> @item.Student.Client.Registered_On </a></li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="post-date">
+                                            <li> Date of Birth: @item.Student.Client.Dob.ToString("dd/MM/yyyy") </li>
+                                            <li> Nationality: @item.Student.Client.Nationality </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @item.Branch.Branch_Name
+                                    </td>                                   
+                                   <td>
+                                        <div class="selectArea">
+                                            <button type="button" id="select@(item.Case_Id)" class="btn btn-info" value="@item.Case_Id" name="selectStudent">Select</button>              
+                                        </div>
+                                        <div class="confirmArea" id="confirmArea@(item.Case_Id)" style="display:none">
+                                            <a href="@Url.Action("AssignStudent", new {id=item.Case_Id})" type="button" id="confirmStudent@(item.Case_Id)" class="btn btn-success" value="@item.Case_Id" name="confirmStudent">Confirm</a>
+                                            <button type="button" id="cancel@(item.Case_Id)" class="btn btn-warning" value="@item.Case_Id" name="cancel">Cancel</button>
+                                        </div>
+                                    </td>                                    
+                                </tr>                                     
+                                }
+                        </tbody>
+                    </table>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function() {
+@if (ViewBag.Message == "success")
+{
+            @:$.pnotify({
+                    @: title: 'Success',
+                     @:text: 'Action successful',
+                     @:type: 'success',
+                     @:history: false
+                 @:});
+}
+});
+</script>

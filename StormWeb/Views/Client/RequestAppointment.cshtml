@@ -1,0 +1,111 @@
+﻿@model StormWeb.Models.General_Enquiry
+@{
+    ViewBag.Title = "Request for Appointment";
+    Layout = "~/Views/Shared/_LayoutOneColumn.cshtml";
+}
+@using StormWeb.Helper
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.16.custom.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+    
+        // For DatePicker
+        $(".dp1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate:  '+1',
+            maxDate: '+3M',
+            beforeShowDay: $.datepicker.noWeekends
+        });
+});
+
+</script>
+<div class="page-header">
+    <h1>
+        RequestAppointment</h1>
+</div>
+<!-- Start of row-fluid -->
+<div class="row-fluid">
+    <div class="span12">
+        <!-- Start of widget block -->
+        <div class="nonboxy-widget">
+            <div class="widget-content">
+                <!-- Start of Box widget -->
+                <div class="widget-box">
+                    @using (Html.BeginForm("RequestAppointment", "Client", FormMethod.Post, new { @class = "form-horizontal well", id = "appointmentForm" }))
+                    {
+                        @Html.ValidationSummary(false)
+                        @Html.HiddenFor(x => x.Branch_Id);
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors calendar_sl"></span>Appointment form
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <div class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Your client Id", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <div class="editor-field">
+                                            @Html.TextBoxFor(model => model.Client_Id, new { @class = "input-medium text-tip", @readonly = "readonly" })
+                                            @Html.ValidationMessageFor(model => model.Client_Id)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <div class="editor-field">
+                                            @Html.TextBox("Name", (string)ViewBag.ClientName, new { @class = "input-medium text-tip", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Appointment date", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <div class="editor-field">
+                                            @Html.TextBoxFor(model => model.Appointment.AppDateTime, new { @readonly = "readonly", @class = "dp1", @Value = (Model.Appointment != null ? Model.Appointment.AppDateTime.ToString("dd/MM/yyyy") : DateTime.Today.AddDays(1).ToString("dd/MM/yyyy")) })
+                                        </div>
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.Appointment.AppDateTime)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Additional Comment", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <div class="editor-field">
+                                            @Html.TextAreaFor(model => model.Comment, new { @class = "text-tip span8" })
+                                            @Html.ValidationMessageFor(model => model.Comment)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <br />
+                                    <ul>
+                                        <li>Please choose most suitable date for you</li>
+                                        <li>Supply additional information that might important for counsellor to know first-hand
+                                            <br />
+                                            <small>e.g. Disability issue, Dropped out from previous campus, etc.</small></li>
+                                        <li>Our staff will be in contact with you within 2-3 business days to finalise the appointment
+                                            date and time</li>
+                                        <li>Remember that you will only be contacted by staff in the branch you selected previously</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="error">
+                            </div>
+                            <div class="form-actions span12" style="text-align: center">
+                                <button class="btn btn-primary" type="submit">
+                                    Submit</button>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

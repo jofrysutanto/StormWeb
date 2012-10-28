@@ -1,0 +1,796 @@
+﻿@model StormWeb.Models.StaffAppointmentListViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<h3>@ViewBag.Message</h3>
+<script type="text/javascript">
+    $(function () {
+        $("div[id*='confirmApp']").dialog({
+            modal: true,
+            autoOpen: false,
+            draggable: true,
+            resizable: false,
+            width: 500
+        });
+
+
+        $("a[id*='showConfirmApp']").click(function () {
+            var id = $(this).attr('id').match(/\d+/);
+            $("#confirmApp" + id).dialog('open');
+        });
+
+    });
+</script>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            @if (StormWeb.Helper.CookieHelper.isStaff())
+            {
+                 
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <a id="example" data-content="Request for Approval - Counselor has to call and confirm appointment with student"
+                            class="color-icons help_co pull-right" style="margin-right: 5px; margin-top: 5px"
+                            href="#" data-original-title="Appointment Status"></a>
+                        <li class="active"><a href="#tab1" data-toggle="tab">
+                            @if (Model.clientAppointments.Count() > 0)
+                            {
+                             
+                                <text>New Student Appointment&nbsp;</text><span class="label label-important">@Model.clientAppointments.Count()</span>
+                            }
+                            else
+                            { 
+                                <text>New Student Appointment</text>
+                            }</a></li>
+                        <li class=""><a href="#tab2" data-toggle="tab">
+                            @if (Model.myStudentAppointment.Count() > 0)
+                            {
+                                <text>My Student Appointment&nbsp;</text><span class="label label-important">@Model.myStudentAppointment.Count()</span>
+                            }
+                            else
+                            {
+                                <text>My Student Appointment</text>
+                            }</a></li>
+                        <li><a href="#tab3" data-toggle="tab">
+                            @if (Model.confirmedAppointments.Count() > 0)
+                            {
+                             
+                                <text>Upcoming Appointment&nbsp;</text><span class="label label-important">@Model.confirmedAppointments.Count()</span>  
+                            }
+                            else
+                            {
+                                <text>Upcoming Appointment</text>
+                            }</a></li>
+                        <li><a href="#tab4" data-toggle="tab">
+                            @if (Model.staffPreviousApp.Count() > 0)
+                            {
+                            
+                                <text>Previous Appointment&nbsp;</text> 
+                            }
+                            else
+                            {
+                                <text>Previous Appointment</text>
+                            }</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="row-fluid">
+                                <div class="span12"> 
+                                    <div class="box-tab" style="border:0">
+                                        <div class="tabbable tabs-left"> 
+                                        <!-- Only required for left/right tabs -->
+                                        <ul class="nav nav-tabs" style="margin-right:0px;border-right:none">
+                                            <li class="active"><a href="#C" data-toggle="tab">Case started Students<span class="color-icons help_co tip-right" data-original-title="Appointments of Students who completed registration but dont have a counsellor assigned to them"></span></a>
+                                            <li class=""><a href="#D" data-toggle="tab">General Enquiry Students<span class="color-icons help_co tip-right" data-original-title="Students who have booked an appointment during registration phase like a General Enquiry"></span></a></li>
+                                        </ul>
+                                        <div class="tab-content box-tab">
+                                            <div class="tab-pane active" id="C"> 
+                                             <div class="row-fluid">
+                                                 <div class="span12">
+                                                    <div class="widget-content" style="padding-left:13px">
+                                                        <div class="widget-box">
+                                                            @if (Model.caseStudentAppointments.Count() >= 0)
+                                                            {
+                                                            
+                                                                <table class="mydata-tbl-inbox table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                &nbsp;Student Name
+                                                                            </th>
+                                                                            <th>
+                                                                                &nbsp;Branch_Name
+                                                                            </th>
+                                                                            <th>
+                                                                                &nbsp;Preferred Date
+                                                                            </th>
+                                                                            <th>
+                                                                                &nbsp;Confirmation
+                                                                            </th>
+                                                                            <th>
+                                                                                &nbsp;Comments
+                                                                            </th>
+                                                                            <th>
+                                                                                &nbsp;Action
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var item in Model.caseStudentAppointments)
+                                                                        {                            
+                                                                            <tr>
+                                                                                <td>
+                                                                                    @if (item.Case == null)
+                                                                                    {
+                                                                                        <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.First().Client.Client_Id })" title="Student Details">
+                                                                                            @Html.DisplayFor(modelItem => item.General_Enquiry.First().Client.GivenName)</a>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.Case.Student.Client.Client_Id })" title="Student Details">
+                                                                                            @Html.DisplayFor(modelItem => item.Case.Student.Client.GivenName)</a>
+                                                                                    }
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.DisplayFor(modelItem => item.Confirmation)
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.DisplayFor(modelItem => item.Comments)
+                                                                                </td>
+                                                                                <td align="right">
+                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
+                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
+                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
+                                                                                        @Html.Partial("Edit", item,
+                                                                                            new ViewDataDictionary
+                                                                                            {
+                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
+                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
+                                                                                            }
+                                                                                        )
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                               </div>
+                                            </div>
+                                            <div class="tab-pane" id="D">
+                                                <div class="row-fluid">
+                                                    <div class="span12">
+                                                        <div class="widget-content" style="padding-left:13px">
+                                                            <div class="widget-box">
+                                                @if (Model.clientAppointments.Count() >= 0)
+                                                {
+                                                    <table class="mydata-tbl-inbox table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    &nbsp;Student Name
+                                                                </th>
+                                                                <th>
+                                                                    &nbsp;Branch_Name
+                                                                </th>
+                                                                <th>
+                                                                    &nbsp;Preferred Date
+                                                                </th>
+                                                                <th>
+                                                                    &nbsp;Confirmation
+                                                                </th>
+                                                                <th>
+                                                                    &nbsp;Comments
+                                                                </th>
+                                                                <th>
+                                                                    &nbsp;Action
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.clientAppointments)
+                                                            {
+                            
+                                                                <tr>
+                                                                    <td>
+                                                                        @if (item.Case == null)
+                                                                        {
+                                                                            <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.First().Client.Client_Id })" title="Student Details">
+                                                                                @Html.DisplayFor(modelItem => item.General_Enquiry.First().Client.GivenName)</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.Case.Student.Client.Client_Id })" title="Student Details">
+                                                                                @Html.DisplayFor(modelItem => item.Case.Student.Client.GivenName)</a>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Confirmation)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                                    </td>
+                                                                    <td align="right">
+                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
+                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
+                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
+                                                                                        @Html.Partial("Edit", item,
+                                                                                            new ViewDataDictionary
+                                                                                            {
+                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
+                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
+                                                                                            }
+                                                                                        )
+                                                                                    </div>
+                                                                                </td>
+                                                                </tr>
+                                                            }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </div>
+                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                  
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="widget-content">
+                                        <div class="widget-box">
+                                            @if (Model.myStudentAppointment.Count() <= 0)
+                                            {
+                                          
+                                                <b>No new client appointments</b>
+                                         
+                                            }
+                                            else
+                                            {
+                                                <table class="mydata-tbl-inbox table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                &nbsp;Student Name
+                                                            </th>
+                                                            <th>
+                                                                &nbsp;Branch Name
+                                                            </th>
+                                                            <th>
+                                                                &nbsp;Preferred Date
+                                                            </th>
+                                                            <th>
+                                                                &nbsp;Confirmation
+                                                            </th>
+                                                            <th>
+                                                                &nbsp;Comments
+                                                            </th>
+                                                            <th>
+                                                                &nbsp;Action
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.myStudentAppointment)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.Case.Student.Client.Client_Id })" title="Student Details">
+                                                                        @Html.DisplayFor(modelItem => item.Case.Student.Client.GivenName)</a>
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                </td>
+                                                                @if (item.AppDateTime < DateTime.Now)
+                                                                {
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Confirmation)<span class="label label-important tip-top"
+                                                                            data-original-title="The date of appointment is past the current date">Overdue</span>
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@Html.DisplayFor(modelItem => item.Confirmation)
+                                                                    </td>
+                                                                }
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Comments)
+                                                                </td>
+                                                                <td>
+
+                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
+                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
+                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
+                                                                                        @Html.Partial("Edit", item,
+                                                                                            new ViewDataDictionary
+                                                                                            {
+                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
+                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
+                                                                                            }
+                                                                                        )
+                                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="widget-content">
+                                        <div class="widget-box">
+                                            <table class="mydata-tbl-inbox table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            &nbsp;Student Name
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Branch_Name
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Date
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Confirmation
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Comments
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Action
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.confirmedAppointments)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @if (item.Case == null)
+                                                                {
+                                                                    <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.First().Client.Client_Id })" title="Student Details">
+                                                                        @Html.DisplayFor(modelItem => item.General_Enquiry.First().Client.GivenName)</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.Case.Student.Client.Client_Id })" title="Student Details">
+                                                                        @Html.DisplayFor(modelItem => item.Case.Student.Client.GivenName)</a>
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Confirmation)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Comments)
+                                                            </td>
+                                                            <td>
+                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Reschedule Appointment">
+                                                                                        <i class="white-icons phone_3"></i>Reschedule</a>
+                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
+                                                                                        @Html.Partial("Edit", item,
+                                                                                            new ViewDataDictionary
+                                                                                            {
+                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
+                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
+                                                                                            }
+                                                                                        )
+                                                                                    </div>
+                                                                                <a class="color-icons cross_co tip-top"
+                                                                        data-toggle="modal" href="#myModal1" data-original-title="Cancel Appointment">
+                                                                </a>
+                                                                <div class="modal hide fade" id="myModal1">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">
+                                                                            ×</button>
+                                                                        <h3>
+                                                                            Confirm Reschedule</h3>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            Are you sure you want to Cancel Appointment?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a href="#" class="btn" data-dismiss="modal" id="dismissModal">No</a> 
+                                                                        <a href="@Url.Action("Delete", new { id = item.Appointment_Id })" class="btn btn-modal" id="save" type="submit" value="Yes">Yes</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab4">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="widget-content">
+                                        <div class="widget-box">
+                                            <table class="mydata-tbl-inbox table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            &nbsp;Student Name
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Branch Name
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Date
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Confirmation
+                                                        </th>
+                                                        <th>
+                                                            &nbsp;Comments
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.staffPreviousApp)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @if (item.Case == null)
+                                                                {
+                                                                    <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.First().Client.Client_Id })" title="Student Details">
+                                                                        @Html.DisplayFor(modelItem => item.General_Enquiry.First().Client.GivenName)</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.Case.Student.Client.Client_Id })" title="Student Details">
+                                                                        @Html.DisplayFor(modelItem => item.Case.Student.Client.GivenName)</a>
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                            </td>
+                                                            @if (item.Confirmation == "Confirmed")
+                                                            {
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Confirmation) <a class="color-icons accept_co tip-top" data-original-title="Attended" href="@Url.Action("ChangeStatus", new { id = item.Appointment_Id, status = "attended" })">
+                                                                    </a><a class="color-icons cross_co tip-top" data-original-title="Not Attended" href="@Url.Action("ChangeStatus", new { id = item.Appointment_Id, status = "Notattended" })">
+                                                                    </a>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Confirmation)
+                                                                </td>   
+                                                            }
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Comments)
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+            }
+        </div>
+    </div>
+</div>
+@*<div class="span6 ">
+    <div class="nonboxy-widget">
+        <div class="widget-head">
+            <h5>
+                <i class="black-icons day_calendar"></i>Calendar</h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+                <div id="calendar-widget" class="fc">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+@if (StormWeb.Helper.CookieHelper.isStudent())
+{
+                  
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
+                        <small><b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
+                            | </small><small><b>Address</b>: @ViewBag.BranchAddress</small>
+                    </h1>
+                </div>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Upcoming Appointments</a></li>
+                        <li class=""><a href="#tab2" data-toggle="tab">Previous Appointment</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="widget-content">
+                                <div class="widget-box">
+                                    <table class="mydata-tbl-inbox table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    &nbsp;Branch Name
+                                                </th>
+                                                <th>
+                                                    &nbsp;Appointment Date & Time
+                                                </th>
+                                                <th>
+                                                    &nbsp;Confirmation<span class="color-icons help_co tip-right" data-original-title="WAITING FOR CONFIRMATION - Counselor will get in touch with you to confirm appointment<br/>CONFIRMED - Appointment has been confirmed for the booked date and time"></span>
+                                                </th>
+                                                <th>
+                                                    &nbsp;Comments
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.studentAppointments)
+                                            {
+                                                if (item.AppDateTime > DateTime.Now)
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.Confirmation == "Request for Approval")
+                                                        {
+                                                            <text>Waiting for Confirmation&nbsp;</text>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.Confirmation)
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                                }
+                                                else
+                                                    if (item.AppDateTime < DateTime.Now && item.Confirmation == "Request for Approval")
+                                                    {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.Confirmation == "Request for Approval")
+                                                        {
+                                                            <text>Waiting for Confirmation&nbsp;</text>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.Confirmation)
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                                    }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div class="widget-content">
+                                <div class="widget-box">
+                                    <table class="mydata-tbl-inbox table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    &nbsp;Branch_Name
+                                                </th>
+                                                <th>
+                                                    &nbsp;AppDateTime
+                                                </th>
+                                                <th>
+                                                    &nbsp;Confirmation
+                                                </th>
+                                                <th>
+                                                    &nbsp;Comments
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.studentPreviousApp)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Confirmation)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    foreach (var item in Model.studentAppointments)
+    {
+        if (item.AppDateTime < DateTime.Now && (item.Confirmation == "Request for Approval" || item.Confirmation == "Confirmed"))
+        {
+            <a class='if4 btn btn-info' href="@Url.Action("Create")" style:"align:'center'"><i
+                class="white-icons phone_3"></i>Book Appointment</a>
+                                               
+        }
+    }
+    if (Model.studentAppointments.Count == 0)
+    {
+        <a class='if4 btn btn-info' href="@Url.Action("Create")" style:"align:'center'"><i
+            class="white-icons phone_3"></i>Book Appointment</a>
+    }
+
+
+}
+<p style="align: center">
+    @if (StormWeb.Helper.CookieHelper.isStaff())
+    {
+        <a class='if4 btn btn-info' href="@Url.Action("Create")" style:"align:'center'"><i
+            class="white-icons phone_3"></i>Book Appointment</a>
+    }
+</p>
+
+<script type="text/javascript">  
+
+    $(function () {
+        $('.if4').colorbox({ iframe: true, width: "45%", height: "65%" });
+        //$('.iframe3').colorbox({ iframe: true, width: "55%", height: "65%" });
+        //$('.iframe2').colorbox({ iframe: true, width: "55%", height: "65%" });
+        $('.iframe1').colorbox({ iframe: true, width: "55%", height: "65%" });
+        //$('.iframe').colorbox({ iframe: true, width: "55%", height: "65%" });
+        $('.ifName').colorbox({ iframe: true, width: "50%", height: "75%" });
+    });
+
+    $(document).bind('cbox_closed', function () {       
+        //location.reload();
+    });
+ 
+     $(function () {
+        $('.mydata-tbl-inbox').dataTable({
+					    "aaSorting": [[0, 'desc']],
+                        "aoColumnDefs": [
+						    { "bSortable": false, "aTargets": [ 3 ] }
+					    ],
+                        "aaColumns": [
+                            null,
+                            { "sType": "date-euro-pre" }, // Sorting based on specific date format
+                            null,
+                            null
+                        ],
+                        "sPaginationType": "full_numbers",
+                        "iDisplayLength": 10,
+                        "oLanguage": {
+                            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Message per page:</span>",
+                        },
+                        "sDom": '<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
+
+                    });
+
+        $('#example').popover({
+        placement:'left',
+        trigger:'hover'
+        });
+
+        $('#popver1').popover({
+        placement:'left',
+        trigger: 'hover'
+        });
+
+        
+    });
+
+    $(function () {
+        $("div[id*='confirmApp']").dialog({
+            modal: true,
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            width: 500
+        });
+        
+
+        $("a[id*='showConfirmApp']").click(function() {            
+            var id = $(this).attr('id').match(/\d+/);
+            $("#confirmApp"+id).dialog('open');
+        });
+
+    });
+  
+  
+     
+ 
+</script>
+

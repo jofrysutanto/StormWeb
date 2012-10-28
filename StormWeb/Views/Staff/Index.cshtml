@@ -1,0 +1,205 @@
+﻿@model IEnumerable<StormWeb.Models.Staff>
+@{
+    ViewBag.Title = "Index";
+}
+<script>
+
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "aoColumnDefs": [
+						{ "bSortable": false, "aTargets": [ 7 ] }
+					],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+    });    
+    $("div.tbl-searchbox select").addClass('tbl_length');
+    $(".tbl_length").chosen({
+		disable_search_threshold: 4	
+	});
+		
+
+});
+</script>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    <i class="black-icons  documents"></i>Storm Staff
+                </h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                    <br />
+                    <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons user_co"></i>Staff
+                                </th>
+                                <th>
+                                    <i class="color-icons book_addresses_co"></i>Contact
+                                </th>
+                                <th>
+                                    <i class="black-icons paperclip"></i>Username
+                                </th>
+                                <th>
+                                    <i class="color-icons house_co"></i>Address
+                                </th>
+                                <th>
+                                    # of Students
+                                </th>
+                                <th>
+                                    <i class="color-icons buildings_co"></i>Department
+                                </th>
+                                <th>
+                                    <i class="color-icons arrow_branch_co"></i>Branch
+                                </th>
+                                <th>
+                                    <i class="color-icons user_business_boss_co"></i>Roles
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li><a class='tip-top' title="View profile" href="@Url.Action("Details", "Staff", new { id = @item.Staff_Id })">@item.FirstName
+                                                @item.LastName</a></li>
+                                            @{  
+                                           String @lastlogin1;
+                                           MembershipUser mu = Membership.GetUser(item.UserName);
+                                           if (mu != null)
+                                           {
+                                               StormWeb.Helper.CookieHelper.LastLogin = mu.LastLoginDate.ToString();
+                                               lastlogin1 = mu.LastLoginDate.ToString();
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@StormWeb.Helper.CookieHelper.LastLogin
+                                                </a></li>
+                                           }
+                                           else
+                                           {
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#"></a>
+                                                </li>
+                                           }
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @if (item.Email != null)
+                                            {
+                                                <li><i class="color-icons envelope_co"></i><a href="#">@item.Email</a></li>
+                                            }
+                                            @if (item.Mobile_Number != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.Mobile_Number</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @item.UserName
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            <li>@item.Address.Address_Name, @item.Address.City</li>
+                                            <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
+                                        </ul>
+                                    </td>
+                                    <td style="text-align: center">
+                                        @StormWeb.Helper.StudentsHelper.getStudentsList(item.Staff_Id).Count
+                                    </td>
+                                    <td>
+                                        @item.Staff_Dept.Dept_Name
+                                    </td>
+                                    <td>
+                                        @Html.Raw(StormWeb.Helper.BranchHelper.getBranchNameList(item.Staff_Id))
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (string s in Roles.GetRolesForUser(item.UserName))
+                                            {
+                                                <li>@s</li>       
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button data-toggle="dropdown" class="btn dropdown-toggle">
+                                                <i class="icon-cog"></i><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                @*     <li><a href="@Url.Action("Edit", new { id=item.Staff_Id })"><i class="color-icons application_edit_co"></i>Edit</a></li>  *@
+                                                <li><a class='iframe1'  href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
+                                                    class="color-icons application_edit_co"></i>Edit</a></li>
+                                                @* <li><a href="#" onclick="jQuery('#divEdit').dialog('open');"><i class="color-icons application_edit_co">
+                                                </i>Edit</a></li>*@
+                                                <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
+                                                </i>Details</a></li>
+                                                <li><a href="@Url.Action("Delete", new { id = item.Staff_Id })"><i class="color-icons application_delete_co">
+                                                </i>Remove</a></li>
+                                                <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
+                                                </i>Manage Roles</a></li>
+                                                <li><a id="dialog_link@(item.Staff_Id)" href="#"><i class="color-icons user_business_boss_co">
+                                                </i>Activate Staff</a> </li>
+                                            </ul>
+                                            <div id="dialog" title="Activate Staff" style="display: none">
+                                                <p>
+                                                    Lint to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr> 
+                                                  
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pull-left">@*iframe1cboxElement*@ <a class=" btn btn-info " href="@Url.Action("Create")">
+    Add new Staff</a>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<script type="text/javascript">
+    
+@{ 
+    if (ViewBag.message != null)
+    {
+    @:$(function () {
+    @:$.pnotify({
+            @:title:'Success',
+			@:layout : 'top',
+			@:text: 'Your edit has been successful',
+			@:type:'success',
+            @:history:false
+			
+			 @:});
+		  @:});
+
+    } 
+}
+
+$(document).ready(function() {  
+     $("a[id*='dialog_link']").click(function() {
+        $('#dialog').dialog();
+        return false;
+    });
+});
+   
+</script>

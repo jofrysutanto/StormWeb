@@ -1,0 +1,131 @@
+﻿@model IEnumerable<StormWeb.Models.InboxViewModel>
+<script type="text/javascript">
+               $(function () {
+                    // Calling ajax request to delete message
+                   $('a[name*="deleteBtnInbox"]').click(function () {
+                       var selected = $(this);
+                       $.ajax({
+                           type: 'GET',
+                           url: '@Url.Action("DeleteInbox","Message")',
+                           data: {
+                               id: $(this).attr("href")
+                           },
+                           success: function (data) {
+                               $("#inboxMessage").html(data);
+                           }
+                       });
+                   });
+
+                   // Setting the data tabl
+                   $('.mydata-tbl-inbox').dataTable({
+					    "aaSorting": [[0, 'desc']],
+                        "aoColumnDefs": [
+						    { "bSortable": false, "aTargets": [ 3 ] }
+					    ],
+                        "aaColumns": [
+                            null,
+                            { "sType": "date-euro-pre" }, // Sorting based on specific date format
+                            null,
+                            null
+                        ],
+                        "sPaginationType": "full_numbers",
+                        "iDisplayLength": 10,
+                        "oLanguage": {
+                            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Message per page:</span>",
+                        },
+                        "sDom": '<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
+
+                    });
+
+                    // Remove 'New' badge
+	                $(".iframe-inbox").colorbox({
+                        iframe:true, width:"80%", height:"80%",
+                        onOpen: function() {
+                               $(this).parent().find('.badge').remove();
+                        },
+                        onComplete: function() {
+                                   $("#cboxContent").niceScroll({
+                                    cursorcolor: "#2f2e2e",
+                                    cursoropacitymax: 0.7,
+                                    boxzoom: false,
+                                    touchbehavior: true
+                                });
+                        }            
+                    });
+               });
+
+</script>
+<table class="mydata-tbl-inbox table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-half">
+                Date
+            </th>
+            <th class="col-half">
+                From
+            </th>
+            <th>
+                Subject
+            </th>
+            <th style="width: 50px">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.message.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nameFrom)
+                </td>
+                <td>
+                    <a class='iframe-inbox' href="@Url.Action("Read", new { id = item.message.Id, type = "inbox" })" title="To close, click anywhere outside this window">@Html.DisplayFor(modelItem => item.message.Subject)</a>
+                    @if (!((bool)item.hasRead))
+                    {    
+                        <span class="badge badge-success">New</span>
+                    }
+                </td>
+                <td>
+                    <a class="color-icons cross_co" id="modalButton" data-toggle="modal"
+                                    href="@Html.Raw("#myModal" + item.message.Id)"></a>
+                </td>
+            </tr>
+           
+        }
+    </tbody>
+</table>
+@foreach (var item in Model)
+{
+    <div class="modal hide" id="@Html.Raw("myModal" + item.message.Id)">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                ×</button>
+            <h4>
+                Confirm</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                Confirm delete?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="@item.message.Id" name="@Html.Raw("deleteBtnInbox" + item.message.Id)" class="btn btn-mini btn-warning" data-dismiss="modal">
+                Delete</a> &nbsp; <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                    Cancel</a>
+        </div>
+    </div>
+    <script>
+        $('#@Html.Raw("myModal" + item.message.Id)').on('shown', function (e) {
+            var modal = $(this);
+
+            modal.css('margin-top', (modal.outerHeight() / 2) * -1)
+         .css('margin-left', (modal.outerWidth() / 2) * -1);
+
+            return this;
+        });
+    </script>
+}

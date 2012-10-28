@@ -1,0 +1,193 @@
+﻿@model StormWeb.Models.Appointment
+@{
+    ViewBag.Title = "Edit";
+    //Layout = "~/Views/Shared/_LayoutEmpty.cshtml"; 
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // For DatePicker
+
+        $(".dp1").datepicker({
+            dateFormat: 'mm/dd/yy',
+            disabled:false,
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-0',
+            maxDate: '+3M',
+            showAnim: "fold",
+            gotoCurrent: true,
+            beforeShowDay: $.datepicker.noWeekends
+        });
+
+        $('#example').popover({
+            placement: 'left',
+            trigger: 'hover'
+        });
+
+        $('a[id*="select"]').click(function () {
+            $(this).fadeOut('slow', function () {
+                $(this).parent().next().fadeIn('fast');
+            });
+        });
+
+        $('button[id*="cancel"]').click(function () {
+            $(this).parent().fadeOut('slow', function () {
+                $(this).prev().find('a').fadeIn('fast');
+            });
+        });
+    });
+</script>
+
+@using (Html.BeginForm("Edit", "Appointment", FormMethod.Post, new { @class = "form-horizontal well", id = "appointmentForm" }))
+{
+    @Html.ValidationSummary(true, "Edit was unsuccessful. Please correct errors and try again")
+    
+    <fieldset>
+        <table style="text-align: left;" class="table">
+            
+                @if (StormWeb.Helper.CookieHelper.isStaff())
+                {
+                    
+                        @Html.HiddenFor(model => model.Appointment_Id)
+                   if (Model.Case_Id != null)
+                   {
+                            @Html.HiddenFor(model => model.Case_Id)
+                   }
+                        @Html.HiddenFor(model => model.Branch_Id)
+                        <tbody>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <td>
+                        @if (Model.Case_Id != null)
+                        {
+                            @Html.DisplayFor(model => model.Case.Student.Client.GivenName)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.General_Enquiry.SingleOrDefault().Client.GivenName);
+                        }
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    
+                    <tr>
+                        <th>
+                            Primary Contact Number
+                        </th>
+                        <td>
+                        @if (Model.Case_Id != null)
+                        {
+                            @Html.DisplayFor(model => model.Case.Student.Client.ContactNumber)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.General_Enquiry.SingleOrDefault().Client.ContactNumber);
+                        }    
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th>
+                            Secondary Contact Number
+                        </th>
+                        <td>
+                        @if (Model.Case_Id != null)
+                        {
+                            @Html.DisplayFor(model => model.Case.Student.Client.SecondaryContactNumber)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.General_Enquiry.SingleOrDefault().Client.SecondaryContactNumber);
+                        }
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    
+                    <tr>
+                        <th>
+                            Branch Name
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Branch.Branch_Name)
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th>
+                            Preferred Date and Time
+                        </th>
+                        <td>
+                          @Html.DisplayFor(model => model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("dd/MM/yyyy") }) 
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th>
+                            Select date change(if any)
+                        </th>
+                        <td>
+                        @{string id = "AppDateTime" + Model.Appointment_Id;}
+
+                         @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("MM/dd/yyyy") }) 
+                            @Html.ValidationMessage("AppDateTime")
+                            @Html.ValidationMessage("DateError")
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th>
+                            Choose Time(Hour:Minute)
+                        </th>
+                        <td>
+                            @Html.DropDownList("listHours", ViewBag.Hours as SelectList, new { @class = "input-small" })&nbsp;&nbsp;:&nbsp;&nbsp;@Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, new { @class = "input-small" })@Html.ValidationMessage("AppTime")
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th>
+                            Comments
+                        </th>
+                        <td>
+                            @Html.TextAreaFor(model => model.Comments)
+                            @Html.ValidationMessageFor(model => model.Comments)
+                        </td>
+                    </tr>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                        <th></th>
+                        <td align="center">
+                        
+                        <div class="selectArea">
+                            <a class="confirm_try btn btn-primary" id="select@(Model.Appointment_Id)" href="#myModal">Confirm/Reschedule</a>&nbsp;&nbsp;&nbsp; 
+                            <a class="cancel_try btn btn-danger" onclick = " jQuery('#confirmApp@(Model.Appointment_Id)').dialog('close');">Cancel</a>&nbsp;&nbsp;&nbsp;                               
+                        </div>
+                        <div class="confirmArea" id="confirmArea@(Model.Appointment_Id)" style="display:none">
+                            <input type=submit class="btn btn-primary" />                            
+                            <button type="button" id="cancel@(Model.Appointment_Id)" class="btn btn-warning" value="@Model.Appointment_Id" name="cancel">Cancel</button>
+                        </div>               
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr style="height:10px"></tr>
+                    <tr>
+                    <td colspan="2">
+                           
+                            <div class="alert alert-info fade in">
+								<button data-dismiss="alert" class="close" type="button">×</button>
+								<strong>NB</strong> Call and confirm with students.
+							</div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                    
+                }
+         </table>
+    </fieldset>
+
+}
+

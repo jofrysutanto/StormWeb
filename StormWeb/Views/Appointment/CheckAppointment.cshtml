@@ -1,0 +1,90 @@
+﻿@model StormWeb.Models.Appointment
+@{
+    ViewBag.Title = "CheckAppointment";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml"; 
+}
+
+@if (StormWeb.Helper.CookieHelper.isStaff())
+{
+    if (Model == null)
+    {
+        <h4>No Scheduled Appointments</h4>
+        if (ViewBag.studentId == null)
+        {
+            <p align="center">
+                <a class='btn btn-info' href="@Url.Action("Create")"><i class="white-icons phone_3">
+            </i>Book Appointment</a>
+            </p>
+        }
+        else
+        {
+            <p align="center">
+                <a class='btn btn-info' href="@Url.Action("Create", new { studentId = Convert.ToInt32(ViewBag.studentId) })">
+            <i class="white-icons phone_3"></i>Book Appointment</a>
+            </p>
+        }
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.Appointment_Id)
+        <div class="form-horizontal well">
+        <br />
+        <fieldset>
+            <legend>Appointment Details</legend>
+            <table class="table" style="text-align: left;">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label("Branch Name")
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Branch_Id)
+                        </td>
+                    </tr>
+                    <tr style="height: 10px">
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.Label("Appointment Date and Time")
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.AppDateTime)
+                        </td>
+                    </tr>
+                    <tr style="height: 10px">
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.Label("Status")
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Confirmation)
+                        </td>
+                    </tr>
+                    <tr style="height: 10px">
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.Label("Comments")
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Comments)
+                        </td>
+                    </tr>
+                    <tr style="height: 10px">
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="center">
+                            <a class='btn btn-info' href="@Url.Action("Edit", new { id = Model.Appointment_Id })" title="Reschedule Appointment">
+                                <i class="white-icons phone_3"></i>Reschedule</a>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </fieldset>
+        </div> 
+        }
+}
+

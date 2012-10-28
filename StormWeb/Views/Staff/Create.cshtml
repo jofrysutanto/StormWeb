@@ -1,0 +1,385 @@
+﻿@model StormWeb.Models.Staff
+@{
+    ViewBag.Title = "Create";
+}
+@using StormWeb.Helper
+<h2>
+    Create</h2>
+<script type="text/javascript">
+    $(function () {
+         $("#errorMessages").dialog({
+            autoOpen: false,
+        });      
+
+
+        if ($("#errorMessages > div.validation-summary-errors").html() != null)
+        {
+            $("#errorMessages").dialog('open');            
+        }
+
+        $(".dp :text").attr("readonly","readonly");
+        $(".dp :text").datepicker({
+            dateFormat: 'mm/dd/yy',
+            yearRange: '-100:c',
+            changeMonth: true,
+            changeYear: true,
+        });
+         
+        $("#showError").click(function () {
+            alert($("#errorMessages > div.validation-summary-errors").html());        
+        
+        });
+        
+    }); 
+</script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("Create", "Staff", FormMethod.Post, new { id = "NewStaff" }))
+{ 
+@*<a class="btn" href="#" id="showError">Show Error</a> 
+   <div style="display: none" id="errorMessages" title="Error!">
+        @Html.ValidationSummary(false)
+    </div> *@
+    
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+ 
+    @Html.HiddenFor(x => x.Staff_Id)
+    <table style="text-align: left;">
+        <tr>
+            <th>
+                Department
+            </th>
+            <td>
+                @Html.DropDownList("Dept_Id", String.Empty)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Street Name and Number
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "text-tip", placeholder = "Street Name" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                City
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Address.City, new { @class = "text-tip", placeholder = "City" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                State
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Address.State, new { @class = "text-tip", placeholder = "State" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Zipcode
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "text-tip", placeholder = "ZipCode", @onkeypress = "return numbers_only(this);" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Country
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                <p class="help-block">
+                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Title
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["TitleValue"], new { @class = "chzn-select" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Given Name
+            </th>
+            <td>@Html.TextBoxFor(model => model.FirstName, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Surname
+            </th>
+            <td>@Html.TextBoxFor(model => model.LastName, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                DOB
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly", @Value = Model.DOB.ToString("MM/dd/yyyy") })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Date Of Joining
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly", @Value = Model.Date_Of_Joining.ToString("MM/dd/yyyy") })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Mobile Number
+            </th>
+            <td>@Html.TextBoxFor(model => model.Mobile_Number, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Email
+            </th>
+            <td>@Html.TextBoxFor(model => model.Email, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tax Type
+            </th>
+            <td>@Html.TextBoxFor(model => model.Tax_Type, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tax Number
+            </th>
+            <td>@Html.TextBoxFor(model => model.Tax_Number, new { @class = "text-tip" })
+            </td>
+        </tr>
+        <tr>
+            <th>
+                UserName
+            </th>
+            <td>@Html.TextBoxFor(model => model.UserName, new { @class = "text-tip" })
+            
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="span6">
+                    @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="pull-left">
+        <input type="submit" class="btn btn-primary" value="Save Changes"/>
+        <a href="Index" class="btn btn-danger">Cancel</a>
+    </div>
+    <br />
+    <br />
+    <br />
+@* <button class="btn btn-primary" type="submit" value="Create &raquo;"
+            onclick="return $('#NewStaff').validate()">
+           Save Changes
+        </button><fieldset>
+        <legend>Staff</legend>
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Dept_Id, "Department")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("Dept_Id", String.Empty)
+                    @Html.ValidationMessageFor(model => model.Dept_Id)
+                </div>
+                <div class="control-group">
+                    @Html.Label("Street Name and Number", null, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-xlarge text-tip", placeholder = "Street Name" })
+                        <p class="help-block">
+                            @Html.ValidationMessageFor(model => model.Address.Address_Name)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label("City", null, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Address.City, new { @class = "input-xlarge text-tip", placeholder = "City" })
+                        <p class="help-block">
+                            @Html.ValidationMessageFor(model => model.Address.City)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label("State", null, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Address.State, new { @class = "input-xlarge text-tip", placeholder = "State" })
+                        <p class="help-block">
+                            @Html.ValidationMessageFor(model => model.Address.State)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label("Country", null, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                        <p class="help-block">
+                            @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label("Zip Code", null, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-xlarge text-tip" })
+                        <p class="help-block">
+                            @Html.ValidationMessageFor(model => model.Address.Zipcode)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="span3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Title, "Title")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.FirstName, "First Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LastName, "Last Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DOB, "Birth Date")
+                </div>
+                <div class="editor-field dp">
+                    @Html.EditorFor(model => model.DOB)
+                    @Html.ValidationMessageFor(model => model.DOB)
+                </div>
+                @Html.HiddenFor(model => model.Date_Of_Joining, new { value = DateTime.Now.ToString("dd/MM/yyyy") })
+                @Html.ValidationMessageFor(model => model.Date_Of_Joining)
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Mobile_Number, "Mobile Number")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Mobile_Number)
+                    @Html.ValidationMessageFor(model => model.Mobile_Number)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email, "Email")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Tax_Type, "Tax Type")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Tax_Type)
+                    @Html.ValidationMessageFor(model => model.Tax_Type)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Tax_Number, "Tax Number")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Tax_Number)
+                    @Html.ValidationMessageFor(model => model.Tax_Number)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserName, "User Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+            </div>
+            <div class="span6">
+                @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
+            </div>
+        </div>
+    </fieldset>
+    <p>
+        <button class="btn btn-primary btn-large pull-right" type="submit" value="Create &raquo;"
+            onclick="return $('#NewStaff').validate()">
+            Submit
+        </button>
+    </p> *@
+}
+<script type="text/javascript">
+    $(function () {
+        $(".cancelButton").click(function () {
+            parent.$.fn.colorbox.close();
+        });
+    });
+
+
+    $(document).ready(function () {
+        $(".chooseDate").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '0'
+        });
+    });
+    $(document).ready(function () {
+        $(".chooseDate1").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '+10Y'
+        });
+    });
+ 
+    function alphabets_only(e) { 
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (event) keycode = event.keyCode;
+        else if (e) keycode = e.which; 
+        else return true;
+        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) { 
+            return true;
+        }
+        else {
+            alert("Allow only Characters");
+            return false;
+        } 
+        return true;
+    }
+
+    function numbers_only(e) {
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (event) keycode = event.keyCode;
+        else if (e) keycode = e.which;
+        else return true;
+        if ((keycode >= 48 && keycode <= 57)  || keycode == 32) {
+            return true;
+        }
+        else {
+            alert("Allow only numbers");
+            return false;
+        }
+        return true;
+    }
+ 
+</script>

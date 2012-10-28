@@ -1,0 +1,35 @@
+﻿@model StormWeb.Models.University
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>University</legend>
+
+    <div class="display-label">Country</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Country.Country_Name)
+    </div>
+
+    <div class="display-label">University_Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.University_Name)
+    </div>
+
+    <div class="display-label">Campus</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Campus)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.University_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

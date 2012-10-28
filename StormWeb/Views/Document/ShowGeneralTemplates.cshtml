@@ -1,0 +1,176 @@
+﻿@model IEnumerable<StormWeb.Models.CaseDoc_Template>
+@{
+    ViewBag.Title = "ShowAllCaseTemplates";
+}
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: "blind",
+            hide: "explode"
+        });
+
+
+        $("#openCreateCaseTemp").click(function () {
+            $("#dialog").dialog("open");
+            return false;
+        });
+
+    });
+
+</script>
+
+<h2>
+    General Document Templates </h2>
+<p>
+@*<a  href="@Url.Action("CreateCaseTemp", new { returnId = ViewBag.clientId })" class='iframe color-icons application_add_co tip-top' data-original-title="Add New General Document Template"></a>
+  *@  
+  <a id="openCreateCaseTemp"><i class="color-icons application_add_co"></i>New Template</a>
+
+<div id="dialog" title="Basic dialog">
+	 @Html.Partial("CreateCaseTemp", new StormWeb.Models.CaseDoc_Template())
+</div>
+
+
+
+</p>
+@using (Html.BeginForm())
+{
+
+
+<div class="row-fluid">
+    <div class="span11">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                </h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <div class="well white-box">
+                        <p>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Form Name
+                                    </th>
+                                    <th>
+                                        Path
+                                    </th>
+                                    <th>
+                                        File Name
+                                    </th>
+                                    <th>
+                                        Uploaded On
+                                    </th>
+                                    <th>
+                                        Uploaded By
+                                    </th>
+                                    <th>
+                                        Comment
+                                    </th>
+                                    <th>
+                                        Downloadable
+                                    </th>
+                                    <th>
+                                        Required
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Path)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FileName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UploadedOn)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UploadedBy)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Comment)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Downloadable)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Required)
+                                        </td>
+                                        <td>
+                                            <div class="widget-content">
+                                                <div class="widget-box">
+
+
+                                                  <a  href="@Url.Action("EditCaseTemp", new { id = item.CaseDocTemplate_Id, returnId = ViewBag.clientId })" class='iframe color-icons pencil_co tip-top' data-original-title="Edit Document Template"></a>
+ 
+                                                  <a class=" color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
+                                                        href="#myModal@(item.CaseDocTemplate_Id)"></a>
+                                                    <div class="modal hide fade" id="myModal@(item.CaseDocTemplate_Id)" style="display: none;">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                ×</button>
+                                                            <h3>
+                                                                Confirm</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>
+                                                                Confirm Delete?
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="@Url.Action("DeleteCaseTemp", new { id = item.CaseDocTemplate_Id, returnId = ViewBag.clientId })" class="btn btn-mini btn-warning">
+                                                                Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                    Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+  
+                                      </td>
+
+                                    </tr>
+                                }
+                            </table>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                               
+}
+
+<script type="text/javascript">
+@{
+
+    if (ViewBag.message != null)
+    {
+    @:$(function () {
+    @:var noty_id = noty({
+			@:layout : 'top',
+			@:text: "@ViewBag.message",
+			@:type:'success',
+			
+			 @:});
+		  @:});
+
+    }
+}
+</script>

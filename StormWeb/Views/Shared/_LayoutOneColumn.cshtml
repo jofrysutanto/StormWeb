@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>@ViewBag.Title</title>
+    @Html.Partial("_LoadHeaderWithScript");
+    @{ Html.EnableClientValidation(); }
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+			<div class="branding">
+				<div class="logo">
+					<a href="@Url.Action("LogOn","Account")" class="btn btn-inverse">
+                            <h5>
+                                Back to Login</h5>
+                        </a>
+				</div>
+			</div>
+			<ul class="nav pull-right">
+				@Html.Partial("_LogOnPartial")
+			</ul>
+		</div>
+	</div>
+</div>
+    <!-- End of Header -->
+    <!-- Sidebar start -->
+    <!-- Sidebar ends -->
+    <!-- Main container -->
+    <div id="main-content" style="margin-left: 0px">
+        <div class="container-fluid">
+        @RenderBody()
+        </div>
+    </div>
+    <!-- End of Main container -->
+</body>
+</html>
+

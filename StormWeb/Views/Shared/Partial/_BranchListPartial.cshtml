@@ -1,0 +1,86 @@
+﻿@model IEnumerable<StormWeb.Models.Branch>
+
+<script type='text/javascript'>
+    $(function () {
+
+        var $selectedBranch = null;
+
+        $('button[name=selectBranch]').click(function () {
+            if ($selectedBranch != null) {
+                $selectedBranch.removeClass("btn-success");
+                $selectedBranch.addClass("btn-info");
+                $selectedBranch.html("Select");
+            }
+
+            $selectedBranch = $(this);
+            $selectedBranch.addClass("btn-success");
+            $selectedBranch.removeClass("btn-info");
+            $selectedBranch.html("Selected");
+            $("#selectedBranch").val($selectedBranch.val());
+        });
+    });
+</script>
+<input type="hidden" class="input-medium text-tip" value="" name="selectedBranch" id="selectedBranch" style="display: none" />
+<!-- Start of row-fluid -->
+<div class="row-fluid">
+    <div class="span12">
+        <!-- Start of widget block -->
+        <div class="nonboxy-widget">
+<div class="widget-content">
+    <div class="widget-content">
+        <div class="widget-box">
+            <table class="data-tbl-simple table table-bordered dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Branch Name
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            State
+                        </th> 
+                        <th>
+                            Country
+                        </th>
+                        <th>
+                            Select
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Branch_Name)
+                            </td>
+                            <td>
+                                @{
+                                    string address = "";                                   
+                                    
+                                    address += item.Address.Address_Name + ", " + item.Address.City;
+                                    <text> @address </text>
+                                    }                                
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address.State)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address.Country.Country_Name)
+                            </td>
+                            <td style="text-align:center">
+                                <button type="button" class="btn btn-info" value="@item.Branch_Id" name="selectBranch">Select</button>              
+                            </td>
+                        </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>

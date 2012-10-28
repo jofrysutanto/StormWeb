@@ -1,0 +1,61 @@
+﻿@if (Request.IsAuthenticated)
+{
+                        <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"> My Branch <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                            @{
+                                <text> @Html.Raw(StormWeb.Helper.BranchHelper.getBranchNameList(StormWeb.Helper.CookieHelper.AssignedBranch,'|')) </text>
+                            }
+                            </li>
+                        </ul>
+                    </li>
+    <li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">@StormWeb.Helper.CookieHelper.Name @{ 
+    int totalCount = StormWeb.Helper.Utilities.countNewInbox();
+    if (totalCount > 0)
+    {
+                                   <text><span class='alert-noty'> @totalCount </span> </text>
+    }
+                                    }
+                        <i class="white-icons admin_user"></i><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index", "Message")"><i class="icon-envelope"></i>Inbox @{ 
+    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+    if (inboxCount > 0)
+    {
+                                    <text><span class='alert-noty'> @inboxCount </span> </text>
+    }
+                                    }</a></li>
+                     
+                            @if (HttpContext.Current.User.IsInRole("Student"))
+                            {                              
+                                <li><a href="@Url.Action("Profile", "StudentCentre", new {id=StormWeb.Helper.CookieHelper.StudentId })"><i class="icon-file"></i>Profile</a></li>
+                            }
+                            else if (HttpContext.Current.User.IsInRole("Admission") || HttpContext.Current.User.IsInRole("Counsellor")
+                                    || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Super"))
+                            {
+                                <li><a href="@Url.Action("Profile", "StaffCentre")"><i class="icon-file"></i>Profile</a></li>
+                            }
+                          @*  @if (HttpContext.Current.User.IsInRole("Student"))
+                            {                            
+                                
+                            }*@
+                            else if (HttpContext.Current.User.IsInRole("Admission") || HttpContext.Current.User.IsInRole("Counsellor")
+                                    || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Super"))
+                            {
+                                <li><a href="@Url.Action("Edit", "StaffCentre")"><i class="icon-pencil"></i>Edit Profile</a></li>
+                            }
+                            <li class="divider"></li>
+                            <li><a href="@Url.Action("LogOff", "Account")"><i class="icon-off"></i><strong>Logout</strong></a></li>
+                        </ul>
+                    </li>  
+}
+else
+{
+    <li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">Anonymus
+                        <i class="white-icons admin_user"></i><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-inbox"></i>No available menu</a></li>                            
+                        </ul>
+                    </li>
+}

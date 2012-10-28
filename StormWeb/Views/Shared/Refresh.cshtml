@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Refresh";
+    Layout = "";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.colorbox-min.js")"></script>
+<script>
+    $(function () {
+        parent.$.colorbox.resize(100, 100);
+        parent.location.reload();
+    });
+</script>
+Success! <br />
+You will be redirected shortly..
+ 

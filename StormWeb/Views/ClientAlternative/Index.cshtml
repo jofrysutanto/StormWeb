@@ -1,0 +1,123 @@
+﻿@model IEnumerable<StormWeb.Models.Client>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Dob
+        </th>
+        <th>
+            GivenName
+        </th>
+        <th>
+            LastName
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            ContactNumber
+        </th>
+        <th>
+            SecondaryContactNumber
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Services
+        </th>
+        <th>
+            PreferredCountry
+        </th>
+        <th>
+            InPreferredCountry
+        </th>
+        <th>
+            PreferredCountryVisaStatus
+        </th>
+        <th>
+            MaritalStatus
+        </th>
+        <th>
+            RelatedKinDetail
+        </th>
+        <th>
+            Nationality
+        </th>
+        <th>
+            Registered_On
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dob)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GivenName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SecondaryContactNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address.Street_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Services)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PreferredCountry)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InPreferredCountry)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PreferredCountryVisaStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaritalStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RelatedKinDetail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nationality)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Registered_On)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Client_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Client_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Client_Id })
+        </td>
+    </tr>
+}
+
+</table>

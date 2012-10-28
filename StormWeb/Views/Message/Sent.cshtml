@@ -1,0 +1,105 @@
+﻿@model IEnumerable<StormWeb.Models.OutboxViewModel>
+<script type="text/javascript">
+    $(function () {
+        $('a[name*="deleteBtnSent"]').click(function () {
+            
+            $.ajax({
+                type:'GET',
+                url: 'Message/DeleteSent/',
+                data: {
+                    id: $(this).attr("href")
+                },
+                success: function (data) {
+                    $("#outboxMessage").html(data);
+                }
+            });
+        });
+
+            $('.mydata-tbl-sent').dataTable({
+					    "aaSorting": [[0, 'desc']],
+                        "aoColumnDefs": [
+						    { "bSortable": false, "aTargets": [ 3 ] }
+					    ],                        
+                        "aaColumns": [
+                            null,
+                            { "sType": "date-euro-pre" },
+                            null,
+                            null
+                        ],
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Message per page:</span>",
+            },
+            "sDom": '<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
+
+        });
+    });
+
+</script>
+<table class="mydata-tbl-sent table table-bordered">
+    <thead>
+        <tr>
+            <th class="col-half">
+                Date
+            </th>
+            <th class="col-half">
+                To
+            </th>
+            <th>
+                Subject
+            </th>
+            <th style="width: 50px">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.message.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nameFrom)
+                </td>
+                <td>
+                    <a class='iframe' href="@Url.Action("Read", new { id = item.message.Id, type = "sent" })" title="To close, click anywhere outside this window">@Html.DisplayFor(modelItem => item.message.Subject)</a>
+                </td>
+                <td>
+                    <a class="color-icons cross_co" id="modalButton" data-toggle="modal"
+                                    href="@Html.Raw("#myModal" + item.message.Id)"></a>
+                </td>
+            </tr>
+            <div class="modal hide" id="@Html.Raw("myModal" + item.message.Id)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×</button>
+                    <h4>
+                        Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Confirm delete?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="@item.message.Id" name="@Html.Raw("deleteBtnSent" + item.message.Id)" class="btn btn-mini btn-warning" data-dismiss="modal">
+                        Delete</a> &nbsp; <a href="#" id="dismissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                            Cancel</a>
+                </div>
+            </div>
+            <script>
+                $('#@Html.Raw("myModal" + item.message.Id)').on('shown', function (e) {
+                    var modal = $(this);
+
+                    modal.css('margin-top', (modal.outerHeight() / 2) * -1)
+         .css('margin-left', (modal.outerWidth() / 2) * -1);
+
+                    return this;
+                });
+            </script>
+        }
+    </tbody>
+</table>

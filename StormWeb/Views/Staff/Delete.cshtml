@@ -1,0 +1,139 @@
+﻿@model StormWeb.Models.Staff
+@Html.ValidationSummary(true, "", new { @class = "error" })
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    Are you sure you want to delete this?</h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Department
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Staff_Dept.Dept_Name, new { Class = "input-xlarge" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Address.Address_Name)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Title
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Title)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                FirstName
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.FirstName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                LastName
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.LastName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Birth Date
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.DOB)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Joining Date
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Date_Of_Joining)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Mobile Number
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Mobile_Number)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Email
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Email)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Tax Type
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Tax_Type)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Tax Number
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Tax_Number)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                UserName
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.UserName)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <input type="submit" value="Delete" class="btn btn-danger  tip-top" data-toggle="modal"
+        href="#myModal1" data-original-title="Delete Staff Details" />
+    | @Html.ActionLink("Back to List", "Index")
+</p>
+@using (Html.BeginForm("Delete", "Staff", FormMethod.Post))
+{   
+    <div class="modal hide fade" id="myModal1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                ×</button>
+            <h3>
+                Delete Staff Details</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                Are you sure you want to delete this staff ?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" id="dismissModal">No</a> 
+            <input type="submit" class="btn btn-modal" id="save" type="submit" value="Yes" />
+        </div>
+    </div>
+}

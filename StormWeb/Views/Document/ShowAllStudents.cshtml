@@ -1,0 +1,132 @@
+﻿@model IEnumerable<StormWeb.Models.Client>
+@{
+    ViewBag.Title = "ShowAllStudents";
+}
+<p>
+@*    @Html.ActionLink("Create New", "Create")
+*@
+</p>
+
+<script>
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "aoColumnDefs": [
+						{ "bSortable": false, "aTargets": [ 1,2,3,4,5 ] }
+					],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+    });
+    $("div.tbl-searchbox select").addClass('tbl_length');
+/*$(".tbl_length").chosen({
+		disable_search_threshold: 4	
+	});
+		*/
+
+});
+</script>
+<div class="row-fluid">
+    <div class="span12">        
+        <div class="nonboxy-widget">
+          <div class="widget-head">
+            <h5><i class="black-icons  users"></i> My Students </h5>
+          </div>
+          <div class="widget-content">
+            <div class="widget-box">
+                <table class="my-data-tbl-boxy table">
+                        <thead>
+                            
+                            <tr>
+                                        <th>
+                                            <i class="black-icons user"></i>Name
+                                        </th>
+                                        <th>
+                                           <i class="black-icons day_calendar"></i> Dob
+                                        </th>
+                                        <th>
+                                            <i class="black-icons mail"></i>Email
+                                        </th>
+                                        <th>
+                                            <i class="black-icons mobile_phone"></i>Contact Numbers
+                                        </th>
+                                        
+                                        <th>
+                                            <i class="black-icons flag"></i>Nationality
+                                        </th>
+                                        <th>
+                                           <i class="black-icons day_calendar"></i> Registered_On
+                                        </th>
+                                        <th>
+                                           <i class="black-icons magnifier_zoom_in_co"></i> View
+                                        </th>
+                                    </tr>
+                        </thead>
+                        <tbody>
+                                 @foreach (var item in Model)
+                                 {                                                          
+                                   <tr>
+
+                                    <td>
+                                        <ul>
+                                            
+                                                <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Client_Id })">@item.GivenName
+                                                    @item.LastName</a></li>
+                                        </ul>
+                                    </td>
+                                       <td>
+                                        <ul>
+                                            <li>
+                                             @Html.Encode(item.Dob.ToShortDateString())
+                                             </li>
+                                         </ul>
+                                         </td>
+
+                                         
+                                         <td>
+                                             <ul>
+                                            <li>@Html.DisplayFor(modelItem => item.Email)</li>
+                                            </ul>
+                                         </td>
+
+                                         <td>
+                                         <ul>
+                                             <li>@Html.DisplayFor(modelItem => item.ContactNumber)</li>
+                                             <li>@Html.DisplayFor(modelItem => item.SecondaryContactNumber)</li>
+                                          </ul>      
+                                         </td>
+
+                                         <td>
+                                         <ul>
+                                             <li>@Html.DisplayFor(modelItem => item.Nationality)</li>
+                                         </ul>
+                                         </td>
+
+                                         <td>
+                                         <ul>
+                                             <li>@Html.Encode(item.Registered_On)</li>
+                                         </ul>
+                                         </td>
+                                         <td>
+                                         <ul>
+                                             <a href=@Url.Action("StudentDetailsCompleted", "Document", new { id = item.Client_Id })><i class='color-icons application_view_xp_co tip-top' data-original-title= "Show Completed Applications"></i></a>
+                                                                                                       
+                                             <a href=@Url.Action("StudentDetails", "Document", new { id = item.Client_Id })><i class='color-icons application_list_co tip-top' data-original-title= "Show Active Applications"></i></a>
+                                            
+                                         </ul>
+                                         </td>
+                                     </tr>                                     
+                                    }
+                        </tbody>
+                    </table>             
+            </div>
+          </div>
+        </div>
+    </div>
+    
+                
+<a href=@Url.Action("ShowAllDocumentTemplates","Document")><i class="color-icons application_co"></i>Document Template</a>
+@*@Html.ActionLink("Document Template","CreateCourseSelection")*@

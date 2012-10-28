@@ -1,0 +1,411 @@
+﻿@model IEnumerable<StormWeb.Models.Application>
+@{
+    ViewBag.Title = "Applications";
+}
+<script src="../../Scripts/jquery.nouislider.min.js" type="text/javascript"></script>
+<link href="../../Content/css/nouislider.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$(function () {
+        $('.my-data-tbl-boxy').dataTable({
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+            },
+            "sDom": '<"tbl-searchbox clearfix"fl<"search-help"><"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+        });
+        $("div.tbl-searchbox select").addClass('tbl_length');
+
+        $("div[id*='setStatusModal']").dialog({
+            autoOpen: false,        
+            width: 500,
+            resizable: false,
+        });
+        
+        var sliderExist = false;
+
+        $("a[id*='setStatus']").click( function() {
+
+            if (!sliderExist)
+            {
+                sliderExist = true;
+                var value = $(this).attr("value");
+
+                $("#progress" + value).hide();
+                $("#sliderContainer" + value).show();
+
+                //alert(value);
+                $("#setStatusModal" + value).dialog('open');
+            }
+        });
+
+        $("a[id*='cancel']").click( function() {
+            hideSlider($(this).attr("value"));
+        });
+
+        function hideSlider(value)
+        {
+            sliderExist = false;
+
+            $("#progress" + value).show();
+            $("#sliderContainer" + value).hide();   
+        }
+
+        $("a[id*='confirmSlider']").click( function () {
+            var value = $(this).attr("value");
+            var sId = $("#hidden" + value).val();
+            var newStatus = $("#slider" + value).slider( "option", "value" );    
+            value = value * 1.0;
+            
+            var data = "{'studentId':'"+sId+"','courseId':'"+value+"','status':'"+newStatus+"'}";
+
+            $.ajax({
+                url: '/Application/SetStatus/',
+                data: data,
+                success: function()
+                {
+                    hideSlider(value);
+
+                    // Update new value                    
+                    $("#progress"+value).find("div.bar").css("width", newStatus + "%");                    
+                    $("#progress"+value).attr("data-original-title",newStatus+"%");
+                },
+                error: function() 
+                {
+                    alert('Error setting values!');
+                },
+                type: 'POST',
+                contentType: 'application/json, charset=utf-8',
+                dataType: 'json'
+            });            
+        });
+    });
+</script>
+<style>
+    .tick
+    {
+        border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
+        position: absolute;
+        width: 1.2em;
+        margin-left: -.6em;
+        text-align: center;
+        left: 0;
+        line-height: 12px;
+    }
+    .steps-2
+    {
+        border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
+        width: 800px;
+        position: relative;
+        height: 30px;
+    }
+</style>
+ 
+<div class="row-fluid">
+    <div class="span12">
+        <div class="nonboxy-widget">
+            <div class="widget-head">
+                <h5>
+                    <i class="black-icons  documents"></i>Application Summary</h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <table class="my-data-tbl-boxy table">
+                        @if (Model.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    Currently You have no Applications <a href="@Url.Action("Index", "Course")">Start a
+                                        New Application</a>
+                                </td>
+                            </tr> 
+                        }
+                        else
+                        {
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <i class="color-icons book_open_co"></i>University
+                                    </th>
+                                    <th>
+                                        <i class="color-icons book_co"></i>Course
+                                    </th>
+                                    <th>
+                                        <i class="color-icons calendar_1_co"></i>Commencement Date
+                                    </th>
+                                    <th>
+                                        Submitted Date
+                                    </th>
+                                    <th>
+                                        Application Done
+                                    </th>
+                                    <th>
+                                        <i class="black-icons loading_bar"></i>Status <span class="color-icons help_co tip-right"
+                                            data-original-title="INITIATED - The student has just started the application<br /><br /><br />STAFF ASSIGNED - A counsellor has been assigned to the student<br /><br />DOCUMENTS COMPLETED - All the documents for the particular course has been upload<br /><br />APPLICATION SUBMITTED - The applications related to the particular course has been submitted to the university<br /><br />OFFER LETTER - Recieved offer letter<br /><br /> CoE- Recieved CoE">
+                                        </span>
+                                    </th>
+                                    @*    <th> <i class="black-icons loading_bar"></i>Progress </th>*@
+                                    @if (StormWeb.Helper.CookieHelper.isStaff())
+                                    {
+                                        <th>
+                                            Actions
+                                        </th>
+                                    
+                                    }
+                                    <th>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.Encode(item.Course.Faculty.University.University_Name)
+                                        </td>
+                                        <td>
+                                            @Html.Encode(item.Course.Course_Name)
+                                        </td>
+                                        <td>
+                                            @Html.Encode(item.Course.Commence_Date_Sem.Value.ToShortDateString())
+                                        </td>
+                                        <td>
+                                            @if (item.Status == "Application_Submitted")
+                                            {
+                                                @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString());
+                                            }
+                                            else
+                                            { 
+                                                <span>Application yet to be Submitted</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.Completed == true)
+                                            {@Html.Label("Yes")}
+                                            else
+                                            {@Html.Label("No") }
+                                        </td>
+                                        <td>
+                                        <ul>
+                                                <li>
+                                                    @{
+                                            string[] a = (item.Status).Split('_');
+                                            string b = "", cls = "";
+                                            if (a.Length == 2)
+                                            {
+                                                b = a[0] + " " + a[1];
+                                            }
+                                            else
+                                            {
+                                                b = a[0];
+                                            }
+
+                                            int c = (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status));
+                                            if (c == 0)
+                                            { cls = "label"; }
+                                            else if (c == 20)
+                                            { cls = "label label-inverse"; }
+                                            else if (c == 40)
+                                            { cls = "label label-important"; }
+                                            else if (c == 60)
+                                            { cls = "label label-warning"; }
+                                            else if (c == 80)
+                                            { cls = "label label-info"; }
+                                            else if (c == 100)
+                                            { cls = "label label-success"; }
+                                            
+                                                    }
+                                                    <a id="progress(@item.Status)" data-original-title="Progress Status" data-content='<div id="progressbar(@item.Application_Id)" class="progress progress-striped active tip-top" title="@(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%"><div class="bar" style="width: @(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%;">@(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%</div></div>'>
+                                                        <span class="@cls">@b</span> </a>@*    <a class="active tip-top" title='Progress <br /><div id="progressbar" style="width:200px" class="progress progress-striped active tip-top" title="@(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%">
+                                     <div class="bar" style="width: @(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%;">
+                                     @(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%</div></div>'>@b </a> *@
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        @*    <td class="rowspan4">
+                                        <div id="popover@(item.Course_Id)" class="progress progress-striped active tip-top" title="@(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%">
+                                            <div class="bar" style="width: @(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status))%">
+                                            </div>
+                                        </div>
+                                        <div id="sliderContainer@(item.Course_Id)" style="display: none">
+                                            <input type="hidden" id="hidden@(item.Course_Id)" value="@item.Student_Id" />
+                                            <ul style="width:400px">
+                                                <li>
+                                                    <div id="slider@(item.Course_Id)" class="noUiSlider"></div>
+                                                    
+                                                    <div class="steps-2">
+                                                        <span class="tick"><br><a class="tip-top" title="Initiated"><i class="color-icons add_co"></i></a></span>
+                                                        <span class="tick" style="left: 10%;"><br><a class="tip-top" title="Staff is assigned"><i class="color-icons user_business_co"></i></a></span>
+                                                        <span class="tick" style="left: 20%;"><br><a class="tip-top" title="Documents completed"><i class="color-icons folder_co"></i></a></span>
+                                                        <span class="tick" style="left: 30%;"><br><a class="tip-top" title="Application submitted"><i class="color-icons page_white_get_co"></i></a></span>
+                                                        <span class="tick" style="left: 40%;"><br><a class="tip-top" title="Offer Letter received"><i class="color-icons doc_pdf_co"></i></a></span>
+                                                        <span class="tick" style="left: 50%;"><br><a class="tip-top" title="CoE received"><i class="color-icons accept_co"></i></a></span>
+                                                    </div>
+                                                </li>
+                                                <li style="text-align: center">
+                                                    <a class="btn btn-mini btn-primary" id="confirmSlider@(item.Course_Id)" value="@item.Course_Id">Ok</a>
+                                                    <a class="btn btn-mini btn-warning" id="cancelSlider@(item.Course_Id)" value="@item.Course_Id">Cancel</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>*@
+                                        @if (StormWeb.Helper.CookieHelper.isStaff())
+                                        {
+                                            <td>
+                                                <a class="color-icons cross_co tip-top" data-toggle="modal" href="#myModal1" data-original-title="Cancel Application">
+                                                </a>
+                                                <div class="modal hide fade" id="myModal1">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            ×</button>
+                                                        <h3>
+                                                            Cancel Application</h3>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>
+                                                            Are you sure you want to Cancel Application?
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="#" class="btn" data-dismiss="modal" id="dismissModal">No</a> <a href="@Url.Action("DeleteConfirmed", new { id = item.Application_Id })" class="btn btn-modal" id="save" type="submit" value="Yes">
+                                                            Yes</a>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group pull-right">
+                                                    <button data-toggle="dropdown" class="btn dropdown-toggle">
+                                                        <i class="icon-cog"></i><span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" id="setStatus@(item.Course_Id)" value="@item.Course_Id"><i class="color-icons asterisk_orange_co">
+                                                        </i>Set status</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                    
+                                                                                                          if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 40)
+                                                                                                          {
+                                            <td>
+                                                <a href="@Url.Action("changeStatus", "Application", new { id = item.Application_Id })" class="btn btn-info">
+                                                    Submit Application</a>
+                                            </td>
+                                                                                                          }
+                                                                                                          else if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
+                                                                                                          {
+                                            <td>
+                                                <a href="@Url.Action("markStatusCompleted", "Application", new { id = item.Application_Id })" class="btn btn-info">
+                                                    Mark Status As Completed</a>
+                                            </td>
+                                                                                                          }
+
+                                                                                                          else
+                                                                                                          { <td>
+                                                                                                          </td>}
+                                        }
+                                        @if (StormWeb.Helper.CookieHelper.isStudent())
+                                        {
+                                            <td>
+                                           
+                                                 <a class="btn btn-danger tip-top disable" href="#" style="display:none" id="btnCancelApplicationsend(@item.Application_Id)"  disabled="disabled">Request send</a>}
+                                            
+                                             <a class="btn btn-danger tip-top" data-toggle="modal" href="#myModal2" id="btnCancelApplication(@item.Application_Id)" data-original-title="Cancel Application">
+                                                    Cancel</a>
+                                            
+                                                <div class="modal hide fade" id="myModal2">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            ×</button>
+                                                        <h3>
+                                                            Cancel Application</h3>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>
+                                                            Are you sure you want to Cancel Application?
+                                                        </p>
+                                                        <p>
+                                                            Please Provide Your Comments :
+                                                            <textarea id="txtComments" name="txtComments" value=""></textarea> 
+                                                        </p>
+                                                        <div id="spErrorMessage" class="error" style="display: none;">
+                                                            * Please Enter Your Comment</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="#" class="btn" data-dismiss="modal" id="dismissModal1">No</a> 
+                                                        <a class="btn btn-modal"
+                                                            id="saveComment" type="submit" value="Yes" onclick="checkComment();">Yes</a> 
+                                                    </div>
+                                                </div>
+                                               
+                                            </td>  
+                                         
+                                            <script type="text/javascript">
+                                                function checkComment() {
+                                                    var isValid = true;
+                                                    if (document.getElementById("txtComments").value == "") {
+                                                        document.getElementById("spErrorMessage").style.display = 'inline';
+                                                        isValid = false;
+                                                    }
+                                                    if (isValid == true) {
+                                                        var myvar = document.getElementById("txtComments").value.toString();
+                                                   
+                                                       $.ajax({
+                                                    url: "/Application/CancelApplication/",
+                                                    dataType: "json",
+                                                    cache: false,
+                                                    type: 'GET', 
+                                                    data: { comment: $("#txtComments").val(),id:@(item.Application_Id)}, 
+                                                    success: function (result) {
+                                                        if(result.Success) {
+                                                            $('#myModal2').hide();
+                                                            $('.modal-backdrop').hide(); 
+                                                             document.getElementById("btnCancelApplication(@item.Application_Id)").style.display='none';
+                                                            document.getElementById("btnCancelApplicationsend(@item.Application_Id)").style.display='inline';
+                                                            
+                                                        }
+                                                    } 
+                                                    });  
+                                                    }
+                                                }   
+                                            </script> 
+                                        }
+                                    </tr>
+                                    <script>
+                                        $(function () {
+                                            $("#slider@(item.Course_Id)").slider({                                                
+                                                value: @(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status)),
+                                                min: 0,
+                                                max: 100,
+                                                step: 20,
+                                                slide: function ()
+                                                {
+                                                    //alert($("#slider@(item.Course_Id)").slider( "option", "value" ));
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                }
+                            </tbody>
+                        }
+
+                    </table>
+                    <div class="text-align: center">
+                        @if (Model.Count() < 3)
+                        {
+                            <a href="@Url.Action("Index", "Course")" class="btn btn-success">Start another application</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    $(function () {
+        $('a[id*="progress"]').popover({
+            placement: 'top'
+        });
+    });
+
+    
+</script>

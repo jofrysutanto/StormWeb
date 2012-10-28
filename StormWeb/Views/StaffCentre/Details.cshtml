@@ -1,0 +1,75 @@
+﻿@model StormWeb.Models.Staff
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Staff</legend>
+
+    <div class="display-label">Staff_Dept</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Staff_Dept.Dept_Name)
+    </div>
+
+    <div class="display-label">Address</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address.Street_Name)
+    </div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">FirstName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">LastName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">DOB</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DOB)
+    </div>
+
+    <div class="display-label">Date_Of_Joining</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date_Of_Joining)
+    </div>
+
+    <div class="display-label">Mobile_Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mobile_Number)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">Tax_Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tax_Type)
+    </div>
+
+    <div class="display-label">Tax_Number</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tax_Number)
+    </div>
+
+    <div class="display-label">UserName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserName)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Staff_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

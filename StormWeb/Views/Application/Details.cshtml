@@ -1,0 +1,35 @@
+﻿@model StormWeb.Models.Application
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Application</legend>
+
+    <div class="display-label">Case</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Case.CreatedBy)
+    </div>
+
+    <div class="display-label">Student</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Student.Course_Choice)
+    </div>
+
+    <div class="display-label">Date_Of_ApplicationStatus</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date_Of_ApplicationStatus)
+    </div>
+
+    <div class="display-label">Course</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Course.Course_Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Application_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

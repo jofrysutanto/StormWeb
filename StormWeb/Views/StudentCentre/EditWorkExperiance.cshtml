@@ -1,0 +1,122 @@
+﻿@model StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>
+    Edit Work Experiance</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("EditWorkExperiance", "StudentCentre", FormMethod.Post))
+{
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+foreach (var item in Model.clientWorkExperience)
+{ 
+    <div id="divEditProfile">
+        <table style="text-align: left;">
+            @Html.HiddenFor(modelItem => item.Client_Id)
+               @Html.HiddenFor(modelItem => item.Id)
+            <tr>
+                <th>
+                    From Date
+                </th>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.From_Date, new { @class = "chooseDate", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    To Date
+                </th>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.To_Date, new { @class = "chooseDate", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Country
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Country, null, "Country")
+                    @Html.ValidationMessageFor(modelItem => item.Country)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Employer
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Employer, null, "employer")
+                    @Html.ValidationMessageFor(modelItem => item.Employer)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Position
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Position, null, "position")
+                    @Html.ValidationMessageFor(modelItem => item.Position)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Duties
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Duties, null, "duties")
+                    @Html.ValidationMessageFor(modelItem => item.Duties)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Client Reference Contact No
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Client_Reference_Contact_No, null, "Client_Reference_Contact_No")
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Client Reference Email
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Client_Reference_Email, null, "Client_Reference_Email")
+                </td>
+            </tr>
+        </table>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
+        </div>
+    </div>
+}
+}
+<script type="text/javascript">
+    $(function(){
+    @{
+        if (ViewBag.successEdit != null)
+        {
+        @:parent.location='/StudentCentre/Profile/@(Model.caseTable.First().Student_Id)?message=edit';
+        @:parent.$.fn.colorbox.close();
+        };
+    }
+     });
+      
+    $(function () {
+        $(".cancelButton").click(function () {            
+            parent.$.fn.colorbox.close();
+        });
+    });
+
+      $(document).ready(function () { 
+        $(".chooseDate").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '0'
+        });
+    });
+ 
+</script>

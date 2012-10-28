@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>UploadAppDoc</h2>
+ <script type="text/javascript">
+     $(document).ready(function () {
+//         alert("upload");
+        $(".upload-files").click(function () {
+             location.reload();
+              parent.$.fn.colorbox.close();
+//            alert("inside upload");
+//             parent.reload(true);
+//             alert("inside 2 upload");
+         });
+     });
+   
+
+</script>
+
+@using (Html.BeginForm("UploadAppDoc", "Document", 
+        FormMethod.Post, new { enctype = "multipart/form-data" })) {
+    <input id="comment"  name="comment" value=""/>
+    <input type="hidden" value="@ViewBag.ApplicationDoc_Id" name="ApplicationDoc_Id" />
+    <input id="file" type="file" name="file" />
+    <input type='submit' class='upload-files' value=' Upload Files ' />
+ }
+

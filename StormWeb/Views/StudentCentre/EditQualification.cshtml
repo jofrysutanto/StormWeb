@@ -1,0 +1,92 @@
+﻿@model StormWeb.Models.StudentCentreModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>Edit Qualification</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("EditQualification", "StudentCentre", FormMethod.Post))
+{
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+foreach (var item in Model.clientQualificationTable)
+{ 
+    <div id="divEditProfile">
+        <table style="text-align: left;">
+            @Html.HiddenFor(modelItem => item.Client_Id)
+            @Html.HiddenFor(modelItem => item.Id)
+            <tr>
+                <th>
+                    Qualification
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Qualification, null, "qualification")
+                    @Html.ValidationMessageFor(modelItem => item.Qualification) 
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Major
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Major, null, "major")
+                    @Html.ValidationMessageFor(modelItem => item.Major)
+                </td>
+            </tr>
+             <tr>
+                <th>
+                    University
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.University, null, "university")
+                    @Html.ValidationMessageFor(modelItem => item.University)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Year Of Passing
+                </th>
+                <td>
+                    @Html.EditorFor(modelItem => item.Year_of_Passing, null, "yearOfPassing")
+                    @Html.ValidationMessageFor(modelItem => item.Year_of_Passing)
+                </td> 
+            </tr>  
+        </table>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
+        </div>
+    </div>
+}
+}
+<script type="text/javascript">
+
+    $(function(){
+    @{
+        if (ViewBag.successEdit != null)
+        {
+        @:parent.location='/StudentCentre/Profile/@(Model.caseTable.First().Student_Id)?message=edit';
+        @:parent.$.fn.colorbox.close();
+        };
+    }
+     });
+      
+    $(function () {
+        $(".cancelButton").click(function () {            
+            parent.$.fn.colorbox.close();
+        });
+    });
+//     
+//  
+//        $(function() {
+//            $('#qualification').keypress(function(e) {
+//                if (e.which == 13) {
+//                  //  $('#loginForm').submit();
+//                  alert("asd");
+//                }
+//            });
+//        });
+  
+
+</script>

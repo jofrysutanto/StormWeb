@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "UploadFileTemp";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<h2>UploadFileTemp</h2>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#save").hide();
+
+        $("#upload-files").click(function () {
+            var valid = true;
+            if ($("#Form_Name").val() == '') {
+                valid = false;
+                alert("Form Name is required");
+            } if ($("#file").val() == '') {
+                valid = false;
+                alert("File is not selected");
+            }
+            var ext = $('#file').val().split('.').pop().toLowerCase();
+            if ($.inArray(ext, ['doc', 'gif', 'png', 'jpg', 'jpeg', 'pdf']) == -1) {
+                valid = false;
+                alert('invalid extension, only files with .doc .gif .png .jpg .jpeg .pdf is allowed!');
+            }
+            if (valid) {
+                $('#upload').submit();
+                
+            }
+
+        });
+    });
+</script>
+
+
+
+@using (Html.BeginForm("UploadFileTemp", "Document",
+        FormMethod.Post, new { id = "upload", enctype = "multipart/form-data" }))
+{
+    <label for="Form_Name">
+        Form Name:
+    </label>
+    <input id="Form_Name" name="formname" value="" />
+
+    <label for="comment">
+        Comment:
+    </label>
+    <input id="comment" name="comment" value="" />
+    
+    <input type="hidden" value="@ViewBag.Course_Id" name="Course_Id" />
+    <input type="hidden" value="@ViewBag.Uni_Id" name="Uni_Id" />
+    <label for="file">
+        Select File:
+    </label>
+    <input id="file" type="file" name="file" />
+    
+    <div style="text-align:center">
+    <input class="btn btn-primary" type='button' id='upload-files' value=' Upload Files ' />
+    </div>
+    
+@*   <div id="save">
+   <a   href="@Url.Action("Refresh", "Document")" class='myFrame color-icons drive_cd_empty_co tip-top' data-original-title="Close" title="Close "></a>
+    </div> 
+*@
+}

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<StormWeb.Models.Client>
+@{
+    ViewBag.Title = "List";
+}
+<!-- JQuery UI and WIdget -->
+<script src="@Url.Content("~/Scripts/jquery.widget.js")" type="text/javascript"></script>
+<div class="box">
+    <h4 class="white">
+        Client List</h4>
+    <div class="box-container">
+        @if (ViewBag.Msg != null)
+        {
+            @Html.Raw(@ViewBag.Msg)
+        }
+        <table class="table-long">
+            <thead>
+                <tr>
+                    <td>
+                        Given Name
+                    </td>
+                    <td>
+                        Last Name
+                    </td>
+                    <td>
+                        Purpose
+                    </td>
+                    <td>
+                        PreferredCountry
+                    </td>
+                    <td>
+                        Actions
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GivenName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Services)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PreferredCountry)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Client_Id/* id=item.PrimaryKey */ }, new { @class = "table-edit-link" })
+                            |
+                            @Html.ActionLink("Details", "Details", new { id = item.Client_Id /* id=item.PrimaryKey */ }, new { @class = "table-detail-link" })
+                            |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Client_Id /* id=item.PrimaryKey */ }, new { @class = "table-delete-link" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+     <span class="clearFix">&nbsp;</span>
+    
+    </div>
+</div> 

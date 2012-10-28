@@ -1,0 +1,78 @@
+﻿@model StormWeb.Models.ManageRoleModel
+
+@{
+    ViewBag.Title = "ManageRoles";
+}
+
+<h2>ManageRoles</h2>
+<form class="form-horizontal well ucase">
+@Html.HiddenFor( x => x.username)
+<div class="control-group">
+<label class="control-label">Tick the roles</label>
+<div class="controls">
+@foreach (string role in Model.rolesList)
+{
+    <label class="checkbox">
+    @Html.CheckBox(role, Model.assignedRolesList.Contains(role) ? true : false, new { @class="checkbox-b"})
+	@role</label>    
+}
+</div>
+</div>
+<div class="control-group">
+<div class="pull-left">
+    <a class="btn btn-primary" href="@Url.Action("Index")">Back to list</a>
+</div>
+</div>
+</form>
+
+<script>
+    $(function () {
+        //$(".checkbox-b").attr("disabled", "");
+
+        $(".checkbox-b").click(function () {
+            var selectedRole = $(this).attr("name");
+            var assign = $(this).attr("checked");
+
+            if (assign == null)
+                assign = false;
+
+            var username = $("#username").val();
+
+            //alert(selectedRole + " is now " + assign);
+
+            var data = "{'username':'" + username + "','role':'" + selectedRole + "','assign':'" + assign + "'}";
+
+            $.ajax({
+                url: '/Staff/ChangeRole/',
+                type: 'POST',
+                data: data,
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function () {
+                    $('.checkbox-b').attr("disabled", "");
+                },
+                complete: function () {
+                    $('.checkbox-b').removeAttr("disabled");
+                },
+                success: function (data) {
+                    //alert(data.success);
+                    $.pnotify({
+                        title: "Success",
+                        text: "Roles changed",
+                        history: false,
+                        type:"success",
+                        delay: 1000                        
+                    });
+                },
+                error: function () {
+                    $.pnotify({
+                        title: "Error",
+                        text: "Something happened, please try again",
+                        history: false,
+                        type:"error",
+                        delay: 1000                      
+                    });
+                }
+            });
+        });
+    });
+</script>

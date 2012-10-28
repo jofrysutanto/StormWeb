@@ -1,0 +1,35 @@
+﻿@model  StormWeb.Models.StudentCentreModel
+
+<script type="text/javascript">
+    $(function () {
+        $(".iframe1").colorbox({ iframe: true, width: "45%", height: "80%" });
+    });
+</script>
+<div class="span3">
+    <div class="widget-block">
+        <div class="widget-head">
+            <h5>
+                Student Details</h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+                <br />
+                <div class="well white-box">
+                    <div class="summary">
+                        <a class='iframe1'  href="@Url.Action("StudentProfile", "StudentCentre", new { id = Model.clientTable.First().Client_Id })">
+                            @Html.Encode(Model.clientTable.First().GivenName + " " + Model.clientTable.First().LastName)
+                        </a><br />
+                       
+                        @Html.Encode(Model.clientTable.First().Address.Address_Name) ,
+                        @Html.Encode(Model.clientTable.First().Address.City) ,
+                        @Html.Encode(Model.clientTable.First().Address.State) ,
+                        @Html.Encode(Model.clientTable.First().Address.Country.Country_Name)<br />
+                        <i class="color-icons mobile_phone_co"></i>@Html.Encode(Model.clientTable.First().ContactNumber)
+                        <br />
+                        <i class="color-icons email_co"></i>@Html.Encode(Model.clientTable.First().Email)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+﻿.logo img
+{
+    width: 100px;
+    height: 40px;
+    float: left;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+}
+
+
+#notificationCenterBox
+{
+    background:url('../img/box_bg.jpg') repeat-x center top #fcfcfc;
+	height:600px;
+	padding:20px;
+	margin-top:-10px;
+	padding-top:30px;
+	width:400px;
+	border:1px solid #EDE8FF;
+	color:#494848;
+	text-shadow:1px 1px 0 white;
+	font-family:'Myriad Pro',Arial,Helvetica,sans-serif;
+	z-index: 1050;
+}
+
+#notificationCenterBox li.content
+{
+    padding-left: 20px;
+}
+
+li.nav-header small
+{
+    font-size: 0.9em;
+    text-transform: none;
+}
+
+
+.divider
+{
+    height: 1px;
+margin: 8px 1px;
+overflow: hidden;
+background-color: #E5E5E5;
+border-bottom: 1px solid white;
+}
+
+
+a span.white-icons:hover 
+{
+    background:url(../img/sprite-icons/icon-dark-blue.png) no-repeat;
+}
+
+.summary li.important
+{
+    border: 1px solid #FFC2C2;
+    background-color: white;
+    padding: 5px;
+}
+
+.logo img:hover {
+    width: 105px;
+    height: 40px;
+}
+
+.appointment
+{
+    background:#F9F9F9 url(../img/Calendar.png) no-repeat right bottom;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+    padding: 30px;
+    margin-top: 100px;
+}
+
+.profile
+{
+    padding: 0px 100px 0px 50px;
+}
+
+.left-separator
+{
+    background: url(../img/separator.png) no-repeat 0 bottom;
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+a .dashboard-text
+{    
+    text-decoration: none;
+}
+
+table ul
+{
+    list-style: none;
+    margin-left: 0px;
+}
+
+table ul li 
+{
+    display: list-item;
+    text-align: -webkit-match-parent;
+    margin-bottom: 10px;
+}
+
+table .progress 
+{
+    height: 12px;
+}
+
+table .progress .bar
+{
+    height: 12px;
+}
+
+.help-block
+{
+    color: red;
+}

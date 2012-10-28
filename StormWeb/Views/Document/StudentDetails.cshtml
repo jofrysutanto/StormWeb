@@ -1,0 +1,517 @@
+﻿@model IEnumerable<StormWeb.Models.Application>
+@{
+    ViewBag.Title = "Document Page";
+    
+          
+}
+<script type="text/javascript">
+    $(function () {
+
+        $(".myFrame").colorbox({ iframe: true, width: "400px", height: "300px" });
+
+                $(document).bind('cbox_closed', function () {
+                   
+                    parent.location.reload();
+                });
+                  
+    });
+
+
+</script>
+
+
+@Html.ValidationSummary(true)
+@* The First Table*@
+
+<div class="row-fluid">
+    <div class="span12">        
+        <div class="nonboxy-widget">
+          <div class="widget-head">
+            <h5><i class="black-icons  user"></i> Applications Of : @ViewBag.studentName</h5>
+          </div>
+          <div class="widget-content">
+            <div class="widget-box">
+                <table class="my-data-tbl-boxy table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons flag_blue_co"></i>Country
+                                </th>
+                                <th>
+                                    <i class="color-icons book_open_co"></i>University
+                                </th>
+                                <th>
+                                    <i class="color-icons application_double_co"></i>Applications
+                                </th>
+                                <th>
+                                    <i class="color-icons envelope_co"></i>Offer Letter
+                                </th>
+                                <th>
+                                    <i class="color-icons email_open_image_co"></i>CoE
+                                </th>
+                                <th>
+                                    <i class="color-icons application_cascade_co"></i>Forms
+                                </th> 
+                                <th>
+                                    <i class="color-icons magnifier_co"></i>Details
+                                </th> 
+                                <th>
+                                    <i class="color-icons calendar_1_co"></i>Date
+                                </th>
+                                <th>
+                                    <i class="color-icons page_2_copy_co"></i>Documents
+                                </th>
+                                 <th>
+                                    <i class="color-icons comment_co"></i>Comment
+                                </th>
+                                 <th>
+                                    <i class="color-icons hammer_screwdriver_co "></i>Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                StormWeb.Models.DocumentIndexViewModel documentModel = StormWeb.Controllers.DocumentController.getDocumentViewModelByCourseId((List<StormWeb.Models.DocumentIndexViewModel>)ViewBag.DocumentViewModel, item.Course_Id);
+
+                                <tr>
+                                    <td>
+                                    
+                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Faculty.University.Country.Country_Name) </a>
+                                    
+                                    </td>
+
+                                    <td>
+                                    
+                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Faculty.University.University_Name) </a>
+                                    
+                                    </td>
+
+                                    <td>
+                                    
+                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Course_Name) </a>
+                                        @{
+                                            if (ViewBag.DocumentViewModel != null)
+                                            {
+                                                float progress = @StormWeb.Models.ModelHelper.ProgressHelper.GetCountAppUploads(item.Course_Id, item.Student_Id);
+                                
+                                                        <div class="progress progress-striped active">
+							        	                <div class="bar" style="width: @progress%;">
+							        	                </div>
+							                            </div>
+                                           }
+                                        }
+                                    </td>
+@* Offer Letter*@                                       
+                                     <td>
+                                            
+                                               <ul>
+                                                @* if application was submitted, upload offer letter will be shown *@
+                                                @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 60)
+                                                {
+                                                       
+                                                    <li>
+                                                    <a  href="@Url.Action("UploadOfferLetter", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName })" class='myFrame color-icons drive_cd_empty_co tip-top' data-original-title="Upload Offer Letter">
+                                                    </a>
+                                                    </li>                                                    
+                                                    }
+                                                    @* if application status is  "Offer_Letter", upload offer letter will be shown *@
+                                                    @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
+                                                    {
+                                                    <li>
+                                                        <div class="widget-content">
+                                                            <div class="widget-box">
+                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='white-icons download_to_computer tip-top' data-original-title="Download Offer Letter">
+                                                                </a>
+                                                                <a class="color-icons cross_co tip-top" data-original-title="Delete Offer Letter" data-toggle="modal"
+                                                                         href="#myModal@(item.Application_Id)"></a>
+                                                                <div class="modal hide fade" id="myModal@(item.Application_Id)" style="display: none;">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">
+                                                                            ×</button>
+                                                                        <h3>
+                                                                            Confirm</h3>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            Confirm Delete?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a href="@Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "OfferLetter", returnId = ViewBag.clientId })" class="btn btn-mini btn-warning">
+                                                                            Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                                Cancel</a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                         
+
+                                                    </li>
+                                                    }
+                                                    @if (item.Status == "CoE")
+                                                    {
+                                                    <li>
+                                                        <div class="widget-content">
+                                                            <div class="widget-box">
+                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='white-icons download_to_computer tip-top' data-original-title="Download Offer Letter">
+                                                                </a>
+
+                                                            </div>
+                                                        </div>
+                                                         
+
+                                                    </li>
+                                                    }
+
+                                               
+                                           </ul>
+                                        </td>
+@* CoE *@                                       
+
+                                        <td>
+                                            <ul>
+                                                    
+                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
+                                            {
+                                                <li>
+                                                <a  href="@Url.Action("UploadOfferLetter", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName })" class='myFrame color-icons drive_cd_empty_co tip-top' data-original-title="Upload CoE">
+                                                </a>
+
+                                                </li>
+                                                        
+                                            }
+                                                        
+                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
+
+                                                {
+                                                <li>
+                                                <div class="widget-content">
+                                                    <div class="widget-box">
+                                                        <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='white-icons download_to_computer tip-top' data-original-title="Download CoE">
+                                                        </a>
+                                                        <a class="color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
+                                                                    href="#myModal@(item.Application_Id)"></a>
+                                                        <div class="modal hide fade" id="myModal@(item.Application_Id)" style="display: none;">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                    ×</button>
+                                                                <h3>
+                                                                    Confirm</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>
+                                                                    Confirm Delete?
+                                                                </p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a href="@Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "CoE", returnId = ViewBag.clientId })" class="btn btn-mini btn-warning">
+                                                                    Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                        Cancel</a>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+
+                                            </li>
+
+                                               }
+                                           </ul>
+                                        </td>
+
+                                    <td>
+                                    <ul>
+                                    @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                    {
+
+
+                                        StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                       <li>@Html.DisplayFor(modelItem => x.Form_Name)                                      
+                                       <a href="@Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                       </a>
+                                        </li>
+                                    }
+
+                                   
+                                        
+                                       </ul>
+                                     </td>
+
+                                    <td>
+                                        <ul>
+                                   @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                   {
+                                       if (x.Comment != null)
+                                       {
+                                           StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                            <li>@Html.DisplayFor(modelItem => x.Comment)</li>
+                                       }
+                                       else
+                                       {
+                                           <li>&nbsp;</li>
+                                       }
+
+                                   }
+                                   
+                                    </ul>                                            
+                                    </td>
+
+                                    <td>
+                                    <ul>
+                                   @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                   {
+
+                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                       if (appDoc != null)
+                                       {
+                                 
+                                            <li>@Html.DisplayFor(modelItem => item.Date_Of_ApplicationStatus, "ShortDateTime") @Html.DisplayFor(modelItem => appDoc.Application.Course_Id)</li>
+                                  
+                                       }
+                                       else
+                                       {
+                                            <li>&nbsp;</li>
+                                       }
+                                   }
+                                    </ul>
+                                    </td>
+
+                                    <td>
+                                    <ul>
+                                   @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                   {
+
+                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                       if (appDoc == null)
+                                       {
+                                 
+                                        <li> <a  class='btn btn-danger' href='#'  > Not Uploaded </a></li>                                  
+                                       }
+                                       else
+                                       {
+                                        <li>@Html.DisplayFor(modelItem => appDoc.FileName)
+                                        <a href="@Url.Action("DownloadAppDoc", new { id = appDoc.ApplicationDoc_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                        </a></li>
+                                       }
+                                   }
+
+                                    </ul> 
+                                        </td>
+
+                                    <td>
+                                    <ul>
+                                   @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                   {
+
+                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                       if (appDoc != null)
+                                       {
+                                 
+                                            <li>@Html.DisplayFor(modelItem => appDoc.Comment)</li>
+                                  
+                                       }
+                                       else
+                                       {
+                                            <li>&nbsp;</li>
+                                       }
+                                   }
+                                    </ul>
+                                    </td>
+
+                                    <td>
+                                    <ul>
+                                   @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
+                                   {
+
+                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+
+                                       if (appDoc != null)
+                                       {
+                                           if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) < 60)
+                                           {
+                                               if (appDoc.Approved == false)
+                                               {
+                                                   
+                                                <li><a  class='color-icons accept_co tip-top' data-original-title='Approve' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'>  </a></li>
+                                               }
+                                               else
+                                               {
+                                                <li><a   class='color-icons cancel_co tip-top' data-original-title='Un Approve' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'> </a></li>
+                                               }
+
+                                           }
+                                           else
+                                           {
+                                               
+                                                <li><a   class='color-icons lock_co tip-top' data-original-title='Application Submitted' href='#'> </a></li>
+
+                                           }
+                                       }
+                                   }
+                                       </ul>
+                                    </td>
+
+                               </tr>
+                            }     
+                                
+                        </tbody>
+                    </table>             
+            </div>
+          </div>
+        </div>
+    </div>
+    
+                
+</div>
+
+
+
+
+@* The second table*@
+
+<div class="row-fluid">
+    <div class="span12">        
+        <div class="nonboxy-widget">
+          <div class="widget-head">
+
+ @{
+     List<StormWeb.Models.CaseDocument> caseDoc1 = (List<StormWeb.Models.CaseDocument>)ViewBag.casedocs;
+     if (caseDoc1 == null)
+     {
+         float progress1;
+             if (StormWeb.Helper.Utilities.countTotalCaseDocument(caseDoc1.FirstOrDefault().Case_Id) != 0)
+             {
+                 progress1 = @StormWeb.Models.ModelHelper.ProgressHelper.GetCountCaseUploads(caseDoc1.FirstOrDefault().Case_Id);
+                                    <h5>
+                                        <i class="black-icons  documents"></i>General Documents ( @progress1% )
+                                    </h5>
+             }
+             else
+             {
+                                    <h5>
+                                        <i class="black-icons  documents"></i>General Documents ( 0%)
+                                    </h5>
+
+             }
+
+             }
+                                 
+             }    
+                  <div class="widget-content">
+                    <div class="widget-box">
+                        <table class="my-data-tbl-boxy table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <i class="black-icons document"></i>Name
+                                        </th>
+                                        <th>
+                                            <i class="black-icons magnifying_glass"></i>Details
+                                        </th>
+                                        <th>
+                                            <i class="black-icons day_calendar"></i>Date
+                                        </th>
+                                
+                                        <th>
+                                            <i class="black-icons paperclip"></i>Documents
+                                        </th>
+                                        <th>
+                                            <i class="black-icons user_comment"></i>Comment
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                              
+                                            @{
+                                                List<StormWeb.Models.CaseDocument> caseDoc = (List<StormWeb.Models.CaseDocument>)ViewBag.casedocs;
+
+                                                foreach (StormWeb.Models.CaseDocument items in caseDoc)
+                                                {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => items.CaseDoc_Template.Name)
+                                                        @if (items.CaseDoc_Template.Downloadable == false)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+                                                         <a href="@Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                                            </a>
+                                                        }
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => items.CaseDoc_Template.Comment)
+                                            </td>
+
+                                            <td>
+                                                  @Html.DisplayFor(modelItem => items.UploadedOn)
+                                            </td> 
+                                    
+                                
+
+                                            <td>
+                                            @if (!(items.UploadedOn == null))
+                                            {
+                                                            @Html.DisplayFor(modelItem => items.FileName)
+                                                            <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                                            </a>
+                                            }
+                                            else
+                                            {
+                                                            <a  class='btn btn-danger' href='#'  > Not Uploaded </a>
+                                            }
+
+                                            </td>
+
+                                            <td>
+                                                  @Html.DisplayFor(modelItem => items.Comment)
+                                            </td>
+
+                                        </tr>
+                                                }  
+
+                                         }
+                       
+                       
+                        </tbody>
+                    </table> 
+                          <a  class='btn btn-info' href='@Url.Action("ShowAllCaseTemplates", new { id = ViewBag.clientId })'  > Update General Documents </a>
+               
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>  
+</div>
+
+<script type="text/javascript">
+@{
+
+    if (ViewBag.Message != null)
+    {
+    @:$(function () {
+    @:var noty_id = noty({
+			@:layout : 'top',
+			@:text: "@ViewBag.Message",
+			@:type:'success',
+			
+			 @:});
+		  @:});
+
+    }
+}
+
+@*******************************************************************************@
+
+@*<script type="text/javascript">
+	$(document).ready(function () {
+		
+	    $('.progress').bar({ value: parseInt(@ViewBag.documents.Count() / @ViewBag.templates.Count() * 100) });
+        
+        alert ($(".bar").value() );
+		});
+	});
+</script>*@

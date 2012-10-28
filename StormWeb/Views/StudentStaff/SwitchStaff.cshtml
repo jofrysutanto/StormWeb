@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "SwitchStaff";
+}
+@using (Html.BeginForm("SwitchStaff", "StudentStaff", FormMethod.Post))
+{
+    @Html.ValidationSummary(false)
+    <fieldset>
+        <legend>Select Staff</legend>
+                    @Html.Hidden("studentId", (int) @ViewBag.studentId)
+                    @if (StormWeb.Helper.CookieHelper.isStaff())
+                    {
+                        @Html.DropDownList("staffWithCases",ViewBag.staffWithCases as SelectList,"Select Staff")
+                        @Html.ValidationMessage("StudentEmpty")
+                     <div>
+                             <input id="submit" type="submit" value="Assign" class="btn btn-primary"/>
+                             <a class="btn btn-info" href="@Url.Action("Index")">Cancel</a> 
+                          
+                     </div>   
+                          
+                           
+                           
+                    }
+
+</fieldset>
+
+}

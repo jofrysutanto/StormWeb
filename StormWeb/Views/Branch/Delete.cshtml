@@ -1,0 +1,43 @@
+﻿@model StormWeb.Models.Branch
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Branch</legend>
+
+    <div class="display-label">Branch_Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Branch_Name)
+    </div>
+
+    <div class="display-label">Address</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address.Address_Name)
+    </div>
+
+    <div class="display-label">Primary_Contact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Primary_Contact)
+    </div>
+
+    <div class="display-label">Secondary_Contact</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Secondary_Contact)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

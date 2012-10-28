@@ -1,0 +1,198 @@
+﻿@model  StormWeb.Models.Staff 
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>
+    Edit Staff Details</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<ul class="error" id="ulError" style="display: none; list-style-type: disc; margin-left: 0px!important">
+</ul>
+@using (Html.BeginForm("Edit", "Staff", FormMethod.Post))
+{
+    @Html.ValidationSummary(false, null, new { @class = "error" })
+    <div id="divEditProfile">
+        @Html.HiddenFor(model => model.Staff_Id)
+        @Html.HiddenFor(model => model.Address.Address_Id)
+        @Html.HiddenFor(model => model.Address.Country.Country_Id)
+       
+        <table style="text-align: left;">
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Dept_Id, "Department")
+                </th>
+                <td>
+                    @Html.DropDownList("Dept_Id", String.Empty)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Address.Address_Name, "Address")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Address.Address_Name, "Address")
+                </td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(model => model.Address.City, "City")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Address.City)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Address.State, "State")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Address.State)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Address.Zipcode, "Zipcode")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Address.Zipcode)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Address.Country.Country_Name, "Country Name")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Address.Country.Country_Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Title, "Title")
+                </th>
+                <td>  
+                           @Html.EditorFor(model => model.Title) 
+                           @* @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["TitleValue"], new { @class = "chzn-select" })*@
+                       @*    @Html.DropDownListFor(model => model.Title, (SelectList)ViewData["TitleValue"], new { @class = "chzn-select" })*@
+                     
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.FirstName, "First Name")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.FirstName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.LastName, "Last Name")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.LastName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.DOB, "Birth Date")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Date_Of_Joining, "Joining Date")
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Mobile_Number, "Mobile Number")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Mobile_Number)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Email, "Email")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Tax_Type, "Tax Type")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Tax_Type)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Tax_Number, "Tax Number")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Tax_Number)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.UserName, "User Name")
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.UserName)
+                </td>
+            </tr> 
+           
+        </table>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
+        </div>
+    </div> 
+}
+<script type="text/javascript">
+    $(function () {
+        $(".cancelButton").click(function () {
+            parent.$.fn.colorbox.close();  
+        });
+    });
+     
+    
+    $(function(){  
+    $("#Title").trigger("liszt:updated");
+    @{ 
+        if (ViewBag.successEdit != null)
+        { 
+        @:parent.location='/Staff/Index/?message=edit';
+        @:parent.$.fn.colorbox.close();
+        };
+    }
+     });
+ 
+    $(document).ready(function () { 
+        $(".chooseDate").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '0'
+        });
+    });
+     $(document).ready(function () { 
+        $(".chooseDate1").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '0',
+            maxDate: '+10Y'
+        });
+    });
+
+
+</script>
