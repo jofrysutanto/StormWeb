@@ -278,16 +278,6 @@ namespace StormWeb.Controllers
             }
         }
 
-        public enum ApplicationStatusType
-        {
-            Initiated = 0,
-            Staff_Assigned = 20,
-            Documents_Completed = 40,
-            Application_Submitted = 60,
-            Offer_Letter = 80,
-            CoE = 100
-        }
-
         public ActionResult changeStatus(int id)
         {
             Application application = db.Applications.Single(x=>x.Application_Id==id);
@@ -321,7 +311,16 @@ namespace StormWeb.Controllers
             LogHelper.writeToLog(new string[] { CookieHelper.Username }, ("Requested a cancelation for the application :" + application.Course.Course_Name + "by the Student : " + application.Student.Client.GivenName + " " + application.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return Json(new {Success=true}, JsonRequestBehavior.AllowGet); 
         }
+        public enum ApplicationStatusType
+        {
+            Initiated = 0,
+            Staff_Assigned = 20,
+            Documents_Completed = 40,
+            Application_Submitted = 60,
+            Offer_Letter = 80,
+            CoE = 100
+        }
 
-         private static string mycomment = "";
+         
     }
 }

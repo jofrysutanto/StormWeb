@@ -122,7 +122,7 @@
                 DOB
             </th>
             <td>
-                @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly", @Value = Model.DOB.ToString("MM/dd/yyyy") })
+                @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly", @Value = Model.DOB.ToString("dd/MM/yyyy") })
             </td>
         </tr>
         <tr>
@@ -130,7 +130,7 @@
                 Date Of Joining
             </th>
             <td>
-                @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly", @Value = Model.Date_Of_Joining.ToString("MM/dd/yyyy") })
+                @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly", @Value = Model.Date_Of_Joining.ToString("dd/MM/yyyy") })
             </td>
         </tr>
         <tr>

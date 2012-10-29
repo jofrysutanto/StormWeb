@@ -101,7 +101,6 @@ $(function () {
         height: 30px;
     }
 </style>
- 
 <div class="row-fluid">
     <div class="span12">
         <div class="nonboxy-widget">
@@ -187,7 +186,7 @@ $(function () {
                                             {@Html.Label("No") }
                                         </td>
                                         <td>
-                                        <ul>
+                                            <ul>
                                                 <li>
                                                     @{
                                             string[] a = (item.Status).Split('_');
@@ -303,67 +302,81 @@ $(function () {
                                                                                                           </td>}
                                         }
                                         @if (StormWeb.Helper.CookieHelper.isStudent())
-                                        {
+                                        { 
                                             <td>
-                                           
-                                                 <a class="btn btn-danger tip-top disable" href="#" style="display:none" id="btnCancelApplicationsend(@item.Application_Id)"  disabled="disabled">Request send</a>}
-                                            
-                                             <a class="btn btn-danger tip-top" data-toggle="modal" href="#myModal2" id="btnCancelApplication(@item.Application_Id)" data-original-title="Cancel Application">
-                                                    Cancel</a>
-                                            
-                                                <div class="modal hide fade" id="myModal2">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">
-                                                            ×</button>
-                                                        <h3>
-                                                            Cancel Application</h3>
+                                                @if (item.Application_Cancel != null)
+                                                {
+                                                    if (item.Application_Cancel.Status == true)
+                                                    {
+                                                        <a class="btn btn-danger tip-top disable" href="#" id="btnCancelApplicationsend(@item.Application_Id)"  disabled="disabled">
+                                                        Request send</a> 
+                                                    }
+                                                }
+                                                else
+                                                { 
+                                                    if(StormWeb.Controllers.ApplicationController.getProgressValue(item.Status)<60)
+                                                    {
+                                                    <a class="btn btn-danger tip-top" data-toggle="modal" style="direction:inline;" href="#myModal2" id="btnCancelApplication(@item.Application_Id)" data-original-title="Cancel Application">
+                                                        Cancel</a>
+                                                     <a class="btn btn-danger tip-top disable" href="#" id="btnCancelApplicationsend1(@item.Application_Id)"  disabled="disabled" style="display:none;">
+                                                        Request send</a> 
+                                                    <div class="modal hide fade" id="myModal2">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                ×</button>
+                                                            <h3>
+                                                                Cancel Application</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>
+                                                                Are you sure you want to Cancel Application?
+                                                            </p>
+                                                            <p>
+                                                                Please Provide Your Comments :
+                                                                <textarea id="txtComments" name="txtComments" value=""></textarea>
+                                                            </p>
+                                                            <div id="spErrorMessage" class="error" style="display: none;">
+                                                                * Please Enter Your Comment</div>  
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="#" class="btn" data-dismiss="modal" id="dismissModal1">No</a> <a class="btn btn-modal"
+                                                                id="saveComment" type="submit" value="Yes" onclick="checkComment('@item.Application_Id');">Yes</a>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <p>
-                                                            Are you sure you want to Cancel Application?
-                                                        </p>
-                                                        <p>
-                                                            Please Provide Your Comments :
-                                                            <textarea id="txtComments" name="txtComments" value=""></textarea> 
-                                                        </p>
-                                                        <div id="spErrorMessage" class="error" style="display: none;">
-                                                            * Please Enter Your Comment</div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <a href="#" class="btn" data-dismiss="modal" id="dismissModal1">No</a> 
-                                                        <a class="btn btn-modal"
-                                                            id="saveComment" type="submit" value="Yes" onclick="checkComment();">Yes</a> 
-                                                    </div>
-                                                </div>
-                                               
-                                            </td>  
-                                         
+                                                    }
+
+                                                }   
+                                            </td>
                                             <script type="text/javascript">
-                                                function checkComment() {
+                                                function checkComment(val) 
+                                                { 
                                                     var isValid = true;
-                                                    if (document.getElementById("txtComments").value == "") {
+                                                    if (document.getElementById("txtComments").value == "") 
+                                                    {
                                                         document.getElementById("spErrorMessage").style.display = 'inline';
                                                         isValid = false;
                                                     }
-                                                    if (isValid == true) {
+                                                    if (isValid == true) 
+                                                    {
                                                         var myvar = document.getElementById("txtComments").value.toString();
-                                                   
-                                                       $.ajax({
-                                                    url: "/Application/CancelApplication/",
-                                                    dataType: "json",
-                                                    cache: false,
-                                                    type: 'GET', 
-                                                    data: { comment: $("#txtComments").val(),id:@(item.Application_Id)}, 
-                                                    success: function (result) {
-                                                        if(result.Success) {
-                                                            $('#myModal2').hide();
-                                                            $('.modal-backdrop').hide(); 
-                                                             document.getElementById("btnCancelApplication(@item.Application_Id)").style.display='none';
-                                                            document.getElementById("btnCancelApplicationsend(@item.Application_Id)").style.display='inline';
-                                                            
-                                                        }
-                                                    } 
-                                                    });  
+
+                                                        $.ajax({
+                                                            url: "/Application/CancelApplication/",
+                                                            dataType: "json",
+                                                            cache: false,
+                                                            type: 'GET',
+                                                            data: { comment: $("#txtComments").val(), id: val },
+                                                            success: function (result) 
+                                                            {
+                                                                if (result.Success) 
+                                                                {
+                                                                    $('#myModal2').hide();
+                                                                    $('.modal-backdrop').hide(); 
+                                                                    document.getElementById("btnCancelApplication(" + val + ")").style.display = 'none';
+                                                                    document.getElementById("btnCancelApplicationsend1(" + val + ")").style.display = 'inline'; 
+                                                                }
+                                                            }
+                                                        });  
                                                     }
                                                 }   
                                             </script> 
@@ -386,7 +399,6 @@ $(function () {
                                 }
                             </tbody>
                         }
-
                     </table>
                     <div class="text-align: center">
                         @if (Model.Count() < 3)
@@ -399,7 +411,6 @@ $(function () {
         </div>
     </div>
 </div>
- 
 <script type="text/javascript">
     $(function () {
         $('a[id*="progress"]').popover({
