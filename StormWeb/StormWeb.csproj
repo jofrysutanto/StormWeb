@@ -78,6 +78,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Controllers\StaffCentreController.cs" />
@@ -736,6 +737,10 @@
     <Content Include="Views\Document\StudentDetailsCompleted.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\RunReport.cshtml" />
+    <Content Include="Views\Report\Report\Index.cshtml" />
+    <Content Include="Views\Report\Report\RunReport.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\Create.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

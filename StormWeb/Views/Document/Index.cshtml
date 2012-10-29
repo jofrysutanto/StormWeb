@@ -114,12 +114,19 @@ foreach (var item in Model)
                                         <td>
                                        
                                             
-                                         @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) >= 80)
+                                         @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
+                                             {
+                                             <a href="#" class='white-icons download_to_computer tip-top' data-original-title="Download Offer Letter"></a>
+                                           
+                                             }  
+                                             
+                                        @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) > 80 && StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) <= 100)
                                              {
                                              <a href="#" class='white-icons download_to_computer tip-top' data-original-title="Download Offer Letter"></a>
                                            <text>/</text>
                                             <a href="#" class='white-icons download_to_computer tip-top' data-original-title="Download CoE Letter"></a>
                                              }   
+ 
                                         </td>
 
                                         <td>
@@ -295,7 +302,8 @@ foreach (var item in Model)
                                                 }
                                             </ul>
                                         </td>
-                                                                                <td>
+
+                                        <td>
                                             <ul>
                                                 @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
                                                 {

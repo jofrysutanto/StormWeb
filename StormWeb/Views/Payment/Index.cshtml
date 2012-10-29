@@ -1,0 +1,179 @@
+﻿@model IEnumerable<StormWeb.Models.Application>
+@{
+    ViewBag.Title = "ShowApplications";
+}
+<p>
+</p>
+
+<script>
+$(function () {
+    $('.my-data-tbl-boxy').dataTable({
+        "sPaginationType": "full_numbers",
+        "aoColumnDefs": [
+						{ "bSortable": false, "aTargets": [ 1,2,3,4,5 ] }
+					],
+        "iDisplayLength": 10,
+        "oLanguage": {
+            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+        },
+        "sDom": '<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>'
+
+    });
+    $("div.tbl-searchbox select").addClass('tbl_length');
+/*$(".tbl_length").chosen({
+		disable_search_threshold: 4	
+	});
+		*/
+
+});
+</script>
+
+<div class="row-fluid">
+    <div class="span12">        
+        <div class="nonboxy-widget">
+          <div class="widget-head">
+            <h5><i class="color-icons  application_cascade_co"></i> Outstanding Applications </h5>
+          </div>
+          <div class="widget-content">
+            <div class="widget-box">
+                <table class="my-data-tbl-boxy table">
+                        <thead>
+                            
+                            <tr>
+                                        <th>
+                                            <i class="color-icons user_business_co"></i>Student Name
+                                        </th>
+                                        <th>
+                                           <i class="color-icons day_calendar"></i> Date Of Application Status
+                                        </th>
+                                        <th>
+                                            <i class="color-icons book_open_co"></i>Course Name
+                                        </th>
+                                        <th>
+                                            <i class="color-icons zone_money_co"></i>Status
+                                        </th>
+                                        
+                                        <th>
+                                           <i class="color-icons money_co"></i> Payment
+                                        </th>
+                                    </tr>
+                        </thead>
+                        <tbody>
+                                 @foreach (var item in Model)
+                                 {                                                          
+                                   <tr>
+
+                                    <td>
+                                        <ul>
+                                            
+                                          <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">@item.Student.Client.GivenName
+                                              @item.Student.Client.LastName</a></li>
+                                        </ul>
+                                    </td>
+                                       <td>
+                                        <ul>
+                                            <li>
+                                             @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
+                                             </li>
+                                         </ul>
+                                         </td>
+
+                                         
+                                         <td>
+                                             <ul>
+                                            <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
+                                            </ul>
+                                         </td>
+
+                                         <td>
+                                         <ul>
+                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
+                                          </ul>      
+                                         </td>
+
+                                         <td>
+                                         <ul>
+                                             <a href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top' data-original-title= "Add Payment"></i></a>
+                                                                                                                                                   
+                                         </ul>
+                                         </td>
+                                     </tr>                                     
+                                    }
+                        </tbody>
+                    </table>             
+            </div>
+          </div>
+        </div>
+    </div>
+</div>    
+                
+@*<a href=@Url.Action("ShowAllDocumentTemplates","Document")><i class="color-icons application_co"></i>Document Template</a>
+*@
+
+
+
+@*@model IEnumerable<StormWeb.Models.Application>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Case_Id
+        </th>
+        <th>
+            Student Name
+        </th>
+        <th>
+            Date_Of_ApplicationStatus
+        </th>
+        <th>
+            Course Name
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Completed
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Case_Id)
+        </td>
+        <td>
+        
+            @Html.DisplayFor(modelItem => item.Student.Client.GivenName)  @Html.DisplayFor(modelItem => item.Student.Client.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date_Of_ApplicationStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.Course_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Completed)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Application_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Application_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Application_Id })
+        </td>
+    </tr>
+}
+
+</table>
+*@

@@ -19,7 +19,6 @@
         </div>
         Date From :
         <div class="editor-field">
-        
             @Html.TextBox("Date_From", DateTime.Now.ToShortDateString(), new { @class = "dp" })
         </div>
 
@@ -34,11 +33,11 @@
                         <div class="control-group">
                         <div class="controls">
                             <label class="radio">
-                                @Html.RadioButton("report", "Option1", new { id = "Option1", @class = "radio-b" })
-                                List Of Staffs</label>
+                                @Html.RadioButton("x", true, new { id = "InPreferredCountry_True", @class = "radio-b" })
+                                Yes</label>
                             <label class="radio">
-                                @Html.RadioButton("report", "Option2", new { id = "option2", @class = "radio-b" })
-                                List Of Students</label>
+                                @Html.RadioButton("y", false, new { id = "InPreferredCountry_False", @class = "radio-b" })
+                                No</label>
                         </div>
                     </div>
 
@@ -48,3 +47,38 @@
         </p>
     </fieldset>
 }
+
+
+
+@*@using (Html.BeginForm("RunReport", "Report", 
+        FormMethod.Post, new { id= "edit", enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <label for="Date_From">
+        Date From:
+    </label>
+    <input id="Date_From" name="datefrom" value="" />
+
+    <label for="Date_To">
+        Date To:
+    </label>
+    <input id="Date_To" name="dateto" value="" />
+    
+    <input type="hidden" value="@ViewBag.Course_Id" name="Course_Id" />
+    <input type="hidden" value="@ViewBag.Uni_Id" name="Uni_Id" />
+   
+    <label for="branch">
+        Select Branch :
+    </label>
+    
+    <input type="radio" name="branch" value="red" /> 
+    <input type="radio" name="branch" value="green" />
+    <input type="radio" name="branch" value="blue" /> 
+    
+    <div style="text-align:center">
+    <input class="btn btn-primary" type='submit' id='run_report' value='Run Report' />
+    </div>
+    
+}
+*@

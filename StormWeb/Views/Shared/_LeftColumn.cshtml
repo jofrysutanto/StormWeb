@@ -65,7 +65,7 @@
                     }
                                     }</a> </li> 
             
-                    //------------Documents ----------//
+                    //------------start Documents ----------//
             <li><a href="#"><span class="white-icons documents"></span>Documents</a>
                 <ul class="acitem">
                     <li><a href="@Url.Action("ShowAllStudents", "Document")">My Students </a></li>
@@ -76,7 +76,17 @@
                 </ul>
             </li>
 
-                   //------------Documents ----------//
+                   //------------end Documents ----------//
+                   
+                   //------------start Payment ----------//
+            <li><a href="#"><span class="white-icons documents"></span>Payments</a>
+                <ul class="acitem">
+                    <li><a href="@Url.Action("Index", "Payment")">List Of Unpaid Applications  </a></li>
+                </ul>
+            </li>
+
+                    //------------end Payment ----------//
+          
             <li><a href="#"><span class="white-icons book_large"></span>Universities</a>
                 <ul class="acitem">
                     <li><a href="@Url.Action("Index", "University")"><span class="sidenav-icon"><span
@@ -107,7 +117,7 @@
                 Site</a></li>
                 }
                 
-            <li><a href="@Url.Action("Index","Event")"><span class="color-icons weather_clouds_co"></span>
+            <li><a href="@Url.Action("Index", "Event")"><span class="color-icons weather_clouds_co"></span>
                 Events</a></li>
     </ul>    
     @{

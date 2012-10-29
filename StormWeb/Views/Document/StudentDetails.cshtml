@@ -183,7 +183,7 @@
                                                         
                                             }
                                                         
-                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
+                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) > 80 && StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) <= 100)
 
                                                 {
                                                 <li>
