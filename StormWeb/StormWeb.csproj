@@ -163,10 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Templates\General\th0.jpg" />
-    <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.xml" />
-    <Content Include="bin\StormWeb.dll" />
-    <Content Include="bin\StormWeb.pdb" />
     <Content Include="Content\css\bootstrap-clean.css" />
     <Content Include="Content\css\bootstrap-responsive.css" />
     <Content Include="Content\css\bootstrap.css" />
