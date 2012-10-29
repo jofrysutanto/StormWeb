@@ -28,7 +28,164 @@ $(function () {
 });
 </script>
 
-<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
+                        <small><b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
+                            | </small><small><b>Address</b>: @ViewBag.BranchAddress</small>
+                    </h1>
+                </div>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Unpaid Applications</a></li>
+                        <li class=""><a href="#tab2" data-toggle="tab">Paid Applications</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="widget-content">
+                                <div class="widget-box">
+                                    <table class="mydata-tbl-inbox table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    &nbsp;Branch Name
+                                                </th>
+                                                <th>
+                                                    &nbsp;Appointment Date & Time
+                                                </th>
+                                                <th>
+                                                    &nbsp;Confirmation<span class="color-icons help_co tip-right" data-original-title="WAITING FOR CONFIRMATION - Counselor will get in touch with you to confirm appointment<br/>CONFIRMED - Appointment has been confirmed for the booked date and time"></span>
+                                                </th>
+                                                <th>
+                                                    &nbsp;Comments
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.studentAppointments)
+                                            {
+                                                if (item.AppDateTime > DateTime.Now)
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.Confirmation == "Request for Approval")
+                                                        {
+                                                            <text>Waiting for Confirmation&nbsp;</text>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.Confirmation)
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                                }
+                                                else
+                                                    if (item.AppDateTime < DateTime.Now && item.Confirmation == "Request for Approval")
+                                                    {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.Confirmation == "Request for Approval")
+                                                        {
+                                                            <text>Waiting for Confirmation&nbsp;</text>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.Confirmation)
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                                    }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div class="widget-content">
+                                <div class="widget-box">
+                                    <table class="mydata-tbl-inbox table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    &nbsp;Branch_Name
+                                                </th>
+                                                <th>
+                                                    &nbsp;AppDateTime
+                                                </th>
+                                                <th>
+                                                    &nbsp;Confirmation
+                                                </th>
+                                                <th>
+                                                    &nbsp;Comments
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.studentPreviousApp)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Confirmation)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@*<div class="row-fluid">
     <div class="span12">        
         <div class="nonboxy-widget">
           <div class="widget-head">
@@ -106,74 +263,4 @@ $(function () {
         </div>
     </div>
 </div>    
-                
-@*<a href=@Url.Action("ShowAllDocumentTemplates","Document")><i class="color-icons application_co"></i>Document Template</a>
-*@
-
-
-
-@*@model IEnumerable<StormWeb.Models.Application>
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            Case_Id
-        </th>
-        <th>
-            Student Name
-        </th>
-        <th>
-            Date_Of_ApplicationStatus
-        </th>
-        <th>
-            Course Name
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Completed
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Case_Id)
-        </td>
-        <td>
-        
-            @Html.DisplayFor(modelItem => item.Student.Client.GivenName)  @Html.DisplayFor(modelItem => item.Student.Client.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date_Of_ApplicationStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Course.Course_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Completed)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Application_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Application_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Application_Id })
-        </td>
-    </tr>
-}
-
-</table>
-*@
+*@                

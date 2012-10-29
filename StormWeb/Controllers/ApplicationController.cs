@@ -321,6 +321,7 @@ namespace StormWeb.Controllers
             Documents_Completed = 40,
             Application_Submitted = 60,
             Offer_Letter = 80,
+            Payment_Received = 90,
             CoE = 100
         }
 
