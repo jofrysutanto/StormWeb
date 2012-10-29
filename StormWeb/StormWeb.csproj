@@ -150,10 +150,10 @@
     <Compile Include="Models\OutboxViewModel.cs" />
     <Compile Include="Models\StaffAppointmentListViewModel.cs" />
     <Compile Include="Models\StaffMD.cs" />
-    <Compile Include="Models\Sto.Designer.cs">
+    <Compile Include="Models\StormDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Sto.edmx</DependentUpon>
+      <DependentUpon>StormDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\StudentCentreModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
@@ -603,9 +603,9 @@
     <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps_CoE_6.pdf" />
     <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps_Offer_Letter_6.pdf" />
     <None Include="App_Data\Uploads\2_Stewie Griffin\Passport_Case.pdf" />
-    <EntityDeploy Include="Models\Sto.edmx">
+    <EntityDeploy Include="Models\StormDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Sto.Designer.cs</LastGenOutput>
+      <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\ResolveAssemblyReference.cache" />

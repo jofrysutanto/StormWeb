@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Address), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Cancel", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Application_Cancel), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Case), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Document_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application_Document), true)]
@@ -141,6 +142,22 @@ namespace StormWeb.Models
             }
         }
         private ObjectSet<Application> _Applications;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Application_Cancel> Application_Cancel
+        {
+            get
+            {
+                if ((_Application_Cancel == null))
+                {
+                    _Application_Cancel = base.CreateObjectSet<Application_Cancel>("Application_Cancel");
+                }
+                return _Application_Cancel;
+            }
+        }
+        private ObjectSet<Application_Cancel> _Application_Cancel;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -529,22 +546,6 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Log> Logs
-        {
-            get
-            {
-                if ((_Logs == null))
-                {
-                    _Logs = base.CreateObjectSet<Log>("Logs");
-                }
-                return _Logs;
-            }
-        }
-        private ObjectSet<Log> _Logs;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Login> Logins
         {
             get
@@ -753,6 +754,22 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Student_Log> Student_Log
+        {
+            get
+            {
+                if ((_Student_Log == null))
+                {
+                    _Student_Log = base.CreateObjectSet<Student_Log>("Student_Log");
+                }
+                return _Student_Log;
+            }
+        }
+        private ObjectSet<Student_Log> _Student_Log;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<sysdiagram> sysdiagrams
         {
             get
@@ -765,6 +782,22 @@ namespace StormWeb.Models
             }
         }
         private ObjectSet<sysdiagram> _sysdiagrams;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<System_Log> System_Log
+        {
+            get
+            {
+                if ((_System_Log == null))
+                {
+                    _System_Log = base.CreateObjectSet<System_Log>("System_Log");
+                }
+                return _System_Log;
+            }
+        }
+        private ObjectSet<System_Log> _System_Log;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -815,6 +848,14 @@ namespace StormWeb.Models
         public void AddToApplications(Application application)
         {
             base.AddObject("Applications", application);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Application_Cancel EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplication_Cancel(Application_Cancel application_Cancel)
+        {
+            base.AddObject("Application_Cancel", application_Cancel);
         }
     
         /// <summary>
@@ -1010,14 +1051,6 @@ namespace StormWeb.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Logs EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToLogs(Log log)
-        {
-            base.AddObject("Logs", log);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Logins EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToLogins(Login login)
@@ -1122,11 +1155,27 @@ namespace StormWeb.Models
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Student_Log EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToStudent_Log(Student_Log student_Log)
+        {
+            base.AddObject("Student_Log", student_Log);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the sysdiagrams EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddTosysdiagrams(sysdiagram sysdiagram)
         {
             base.AddObject("sysdiagrams", sysdiagram);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the System_Log EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSystem_Log(System_Log system_Log)
+        {
+            base.AddObject("System_Log", system_Log);
         }
     
         /// <summary>
@@ -1660,6 +1709,44 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application_Cancel")]
+        public Application_Cancel Application_Cancel
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application_Cancel>("StormDBModel.FK_Application_Cancel_Application", "Application_Cancel").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application_Cancel>("StormDBModel.FK_Application_Cancel_Application", "Application_Cancel").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Application_Cancel> Application_CancelReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application_Cancel>("StormDBModel.FK_Application_Cancel_Application", "Application_Cancel");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Application_Cancel>("StormDBModel.FK_Application_Cancel_Application", "Application_Cancel", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Application_Cases", "Case")]
         public Case Case
         {
@@ -1808,6 +1895,154 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Student>("StormDBModel.FK_Application_Student", "Student", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Application_Cancel")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Application_Cancel : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Application_Cancel object.
+        /// </summary>
+        /// <param name="application_Id">Initial value of the Application_Id property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        public static Application_Cancel CreateApplication_Cancel(global::System.Int32 application_Id, global::System.Boolean status, global::System.String comment)
+        {
+            Application_Cancel application_Cancel = new Application_Cancel();
+            application_Cancel.Application_Id = application_Id;
+            application_Cancel.Status = status;
+            application_Cancel.Comment = comment;
+            return application_Cancel;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Application_Id
+        {
+            get
+            {
+                return _Application_Id;
+            }
+            set
+            {
+                if (_Application_Id != value)
+                {
+                    OnApplication_IdChanging(value);
+                    ReportPropertyChanging("Application_Id");
+                    _Application_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Application_Id");
+                    OnApplication_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Application_Id;
+        partial void OnApplication_IdChanging(global::System.Int32 value);
+        partial void OnApplication_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Boolean _Status;
+        partial void OnStatusChanging(global::System.Boolean value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application")]
+        public Application Application
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Application_Cancel_Application", "Application").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Application_Cancel_Application", "Application").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Application> ApplicationReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Application_Cancel_Application", "Application");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Application>("StormDBModel.FK_Application_Cancel_Application", "Application", value);
                 }
             }
         }
@@ -8300,217 +8535,6 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Log")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Log : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Log object.
-        /// </summary>
-        /// <param name="log_Id">Initial value of the Log_Id property.</param>
-        /// <param name="dateTime">Initial value of the DateTime property.</param>
-        /// <param name="comment">Initial value of the Comment property.</param>
-        /// <param name="userName">Initial value of the UserName property.</param>
-        /// <param name="type">Initial value of the Type property.</param>
-        /// <param name="section">Initial value of the Section property.</param>
-        /// <param name="deleted">Initial value of the Deleted property.</param>
-        public static Log CreateLog(global::System.Int32 log_Id, global::System.DateTime dateTime, global::System.String comment, global::System.String userName, global::System.String type, global::System.String section, global::System.Boolean deleted)
-        {
-            Log log = new Log();
-            log.Log_Id = log_Id;
-            log.DateTime = dateTime;
-            log.Comment = comment;
-            log.UserName = userName;
-            log.Type = type;
-            log.Section = section;
-            log.Deleted = deleted;
-            return log;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Log_Id
-        {
-            get
-            {
-                return _Log_Id;
-            }
-            set
-            {
-                if (_Log_Id != value)
-                {
-                    OnLog_IdChanging(value);
-                    ReportPropertyChanging("Log_Id");
-                    _Log_Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Log_Id");
-                    OnLog_IdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Log_Id;
-        partial void OnLog_IdChanging(global::System.Int32 value);
-        partial void OnLog_IdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime DateTime
-        {
-            get
-            {
-                return _DateTime;
-            }
-            set
-            {
-                OnDateTimeChanging(value);
-                ReportPropertyChanging("DateTime");
-                _DateTime = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateTime");
-                OnDateTimeChanged();
-            }
-        }
-        private global::System.DateTime _DateTime;
-        partial void OnDateTimeChanging(global::System.DateTime value);
-        partial void OnDateTimeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Comment
-        {
-            get
-            {
-                return _Comment;
-            }
-            set
-            {
-                OnCommentChanging(value);
-                ReportPropertyChanging("Comment");
-                _Comment = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Comment");
-                OnCommentChanged();
-            }
-        }
-        private global::System.String _Comment;
-        partial void OnCommentChanging(global::System.String value);
-        partial void OnCommentChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String UserName
-        {
-            get
-            {
-                return _UserName;
-            }
-            set
-            {
-                OnUserNameChanging(value);
-                ReportPropertyChanging("UserName");
-                _UserName = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("UserName");
-                OnUserNameChanged();
-            }
-        }
-        private global::System.String _UserName;
-        partial void OnUserNameChanging(global::System.String value);
-        partial void OnUserNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Type
-        {
-            get
-            {
-                return _Type;
-            }
-            set
-            {
-                OnTypeChanging(value);
-                ReportPropertyChanging("Type");
-                _Type = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Type");
-                OnTypeChanged();
-            }
-        }
-        private global::System.String _Type;
-        partial void OnTypeChanging(global::System.String value);
-        partial void OnTypeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Section
-        {
-            get
-            {
-                return _Section;
-            }
-            set
-            {
-                OnSectionChanging(value);
-                ReportPropertyChanging("Section");
-                _Section = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Section");
-                OnSectionChanged();
-            }
-        }
-        private global::System.String _Section;
-        partial void OnSectionChanging(global::System.String value);
-        partial void OnSectionChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean Deleted
-        {
-            get
-            {
-                return _Deleted;
-            }
-            set
-            {
-                OnDeletedChanging(value);
-                ReportPropertyChanging("Deleted");
-                _Deleted = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Deleted");
-                OnDeletedChanged();
-            }
-        }
-        private global::System.Boolean _Deleted;
-        partial void OnDeletedChanging(global::System.Boolean value);
-        partial void OnDeletedChanged();
-
-        #endregion
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Login")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -11100,6 +11124,241 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Student_Log")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Student_Log : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Student_Log object.
+        /// </summary>
+        /// <param name="studentLog_Id">Initial value of the StudentLog_Id property.</param>
+        /// <param name="dateTime">Initial value of the DateTime property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        /// <param name="userName">Initial value of the UserName property.</param>
+        /// <param name="type">Initial value of the Type property.</param>
+        /// <param name="section">Initial value of the Section property.</param>
+        /// <param name="deleted">Initial value of the Deleted property.</param>
+        public static Student_Log CreateStudent_Log(global::System.Int32 studentLog_Id, global::System.DateTime dateTime, global::System.String comment, global::System.String userName, global::System.String type, global::System.String section, global::System.Boolean deleted)
+        {
+            Student_Log student_Log = new Student_Log();
+            student_Log.StudentLog_Id = studentLog_Id;
+            student_Log.DateTime = dateTime;
+            student_Log.Comment = comment;
+            student_Log.UserName = userName;
+            student_Log.Type = type;
+            student_Log.Section = section;
+            student_Log.Deleted = deleted;
+            return student_Log;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 StudentLog_Id
+        {
+            get
+            {
+                return _StudentLog_Id;
+            }
+            set
+            {
+                if (_StudentLog_Id != value)
+                {
+                    OnStudentLog_IdChanging(value);
+                    ReportPropertyChanging("StudentLog_Id");
+                    _StudentLog_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("StudentLog_Id");
+                    OnStudentLog_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _StudentLog_Id;
+        partial void OnStudentLog_IdChanging(global::System.Int32 value);
+        partial void OnStudentLog_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DateTime
+        {
+            get
+            {
+                return _DateTime;
+            }
+            set
+            {
+                OnDateTimeChanging(value);
+                ReportPropertyChanging("DateTime");
+                _DateTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateTime");
+                OnDateTimeChanged();
+            }
+        }
+        private global::System.DateTime _DateTime;
+        partial void OnDateTimeChanging(global::System.DateTime value);
+        partial void OnDateTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                OnUserNameChanging(value);
+                ReportPropertyChanging("UserName");
+                _UserName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UserName");
+                OnUserNameChanged();
+            }
+        }
+        private global::System.String _UserName;
+        partial void OnUserNameChanging(global::System.String value);
+        partial void OnUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Section
+        {
+            get
+            {
+                return _Section;
+            }
+            set
+            {
+                OnSectionChanging(value);
+                ReportPropertyChanging("Section");
+                _Section = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Section");
+                OnSectionChanged();
+            }
+        }
+        private global::System.String _Section;
+        partial void OnSectionChanging(global::System.String value);
+        partial void OnSectionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Deleted
+        {
+            get
+            {
+                return _Deleted;
+            }
+            set
+            {
+                OnDeletedChanging(value);
+                ReportPropertyChanging("Deleted");
+                _Deleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Deleted");
+                OnDeletedChanged();
+            }
+        }
+        private global::System.Boolean _Deleted;
+        partial void OnDeletedChanging(global::System.Boolean value);
+        partial void OnDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Author
+        {
+            get
+            {
+                return _Author;
+            }
+            set
+            {
+                OnAuthorChanging(value);
+                ReportPropertyChanging("Author");
+                _Author = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Author");
+                OnAuthorChanged();
+            }
+        }
+        private global::System.String _Author;
+        partial void OnAuthorChanging(global::System.String value);
+        partial void OnAuthorChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="sysdiagram")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -11247,6 +11506,217 @@ namespace StormWeb.Models
         private global::System.Byte[] _definition;
         partial void OndefinitionChanging(global::System.Byte[] value);
         partial void OndefinitionChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="System_Log")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class System_Log : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new System_Log object.
+        /// </summary>
+        /// <param name="systemLog_Id">Initial value of the SystemLog_Id property.</param>
+        /// <param name="dateTime">Initial value of the DateTime property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        /// <param name="userName">Initial value of the UserName property.</param>
+        /// <param name="type">Initial value of the Type property.</param>
+        /// <param name="section">Initial value of the Section property.</param>
+        /// <param name="deleted">Initial value of the Deleted property.</param>
+        public static System_Log CreateSystem_Log(global::System.Int32 systemLog_Id, global::System.DateTime dateTime, global::System.String comment, global::System.String userName, global::System.String type, global::System.String section, global::System.Boolean deleted)
+        {
+            System_Log system_Log = new System_Log();
+            system_Log.SystemLog_Id = systemLog_Id;
+            system_Log.DateTime = dateTime;
+            system_Log.Comment = comment;
+            system_Log.UserName = userName;
+            system_Log.Type = type;
+            system_Log.Section = section;
+            system_Log.Deleted = deleted;
+            return system_Log;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SystemLog_Id
+        {
+            get
+            {
+                return _SystemLog_Id;
+            }
+            set
+            {
+                if (_SystemLog_Id != value)
+                {
+                    OnSystemLog_IdChanging(value);
+                    ReportPropertyChanging("SystemLog_Id");
+                    _SystemLog_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("SystemLog_Id");
+                    OnSystemLog_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _SystemLog_Id;
+        partial void OnSystemLog_IdChanging(global::System.Int32 value);
+        partial void OnSystemLog_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DateTime
+        {
+            get
+            {
+                return _DateTime;
+            }
+            set
+            {
+                OnDateTimeChanging(value);
+                ReportPropertyChanging("DateTime");
+                _DateTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateTime");
+                OnDateTimeChanged();
+            }
+        }
+        private global::System.DateTime _DateTime;
+        partial void OnDateTimeChanging(global::System.DateTime value);
+        partial void OnDateTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                OnUserNameChanging(value);
+                ReportPropertyChanging("UserName");
+                _UserName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UserName");
+                OnUserNameChanged();
+            }
+        }
+        private global::System.String _UserName;
+        partial void OnUserNameChanging(global::System.String value);
+        partial void OnUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Section
+        {
+            get
+            {
+                return _Section;
+            }
+            set
+            {
+                OnSectionChanging(value);
+                ReportPropertyChanging("Section");
+                _Section = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Section");
+                OnSectionChanged();
+            }
+        }
+        private global::System.String _Section;
+        partial void OnSectionChanging(global::System.String value);
+        partial void OnSectionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Deleted
+        {
+            get
+            {
+                return _Deleted;
+            }
+            set
+            {
+                OnDeletedChanging(value);
+                ReportPropertyChanging("Deleted");
+                _Deleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Deleted");
+                OnDeletedChanged();
+            }
+        }
+        private global::System.Boolean _Deleted;
+        partial void OnDeletedChanging(global::System.Boolean value);
+        partial void OnDeletedChanged();
 
         #endregion
     
