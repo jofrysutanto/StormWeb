@@ -624,11 +624,6 @@
     <Content Include="Views\Staff\Create.cshtml" />
     <Content Include="Views\Staff\Edit.cshtml" />
     <Content Include="Views\Staff\Delete.cshtml" />
-    <Content Include="Views\ClientAlternative\Index.cshtml" />
-    <Content Include="Views\ClientAlternative\Details.cshtml" />
-    <Content Include="Views\ClientAlternative\Create.cshtml" />
-    <Content Include="Views\ClientAlternative\Edit.cshtml" />
-    <Content Include="Views\ClientAlternative\Delete.cshtml" />
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Application\Details.cshtml" />
     <Content Include="Views\Application\Create.cshtml" />
