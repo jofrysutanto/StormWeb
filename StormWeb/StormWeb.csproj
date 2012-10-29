@@ -69,7 +69,6 @@
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
-    <Compile Include="Controllers\ClientAlternativeController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
