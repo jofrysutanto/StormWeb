@@ -332,9 +332,6 @@
     <Content Include="Content\site_img\logo.png" />
     <Content Include="Content\site_img\univ.jpg" />
     <Content Include="Global.asax" />
-    <Content Include="obj\Debug\StormWeb.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\StormWeb.dll" />
-    <Content Include="obj\Debug\StormWeb.pdb" />
     <Content Include="Scripts\accordion.jquery.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\chart\jqplot.barRenderer.min.js" />
@@ -603,8 +600,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="obj\Debug\ResolveAssemblyReference.cache" />
     <Content Include="Views\Appointment\Index.cshtml" />
     <Content Include="Views\Appointment\Details.cshtml" />
     <Content Include="Views\Appointment\Create.cshtml" />
