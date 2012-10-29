@@ -75,6 +75,12 @@ namespace StormWeb.Controllers
             int branchId = id;
             var branches = db.Branches.ToList().Where(x => x.Branch_Id == branchId);
             branchmodel.branchTable = branches.ToList();
+
+             List<Address> l = new List<Address>();
+
+             l.Add(branchmodel.branchTable.First().Address);
+
+            branchmodel.addressTable = l;
             
             return View(branchmodel);
         }

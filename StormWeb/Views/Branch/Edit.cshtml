@@ -14,10 +14,11 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Branch</legend>
-
-        @Html.HiddenFor(model => model.)
+        @foreach(var item in Model.branchTable)
+        {
+         @Html.HiddenFor(modelitem=>item.Branch_Id)
         @Html.HiddenFor(model => model.addressTable.First().Address_Id)
-
+            }
         <div class="editor-label">
             @Html.LabelFor(model => model.branchTable.First().Branch_Name, "Branch Name")
         </div>

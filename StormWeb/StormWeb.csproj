@@ -718,7 +718,8 @@
     </Content>
     <Content Include="Views\StudentStaff\NewStudent.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
-    <Content Include="Views\University\Faculties.cshtml" />
+    <Content Include="Views\University\Faculties.cshtml" /> 
+	
     <Content Include="Views\University\CreateFaculty.cshtml" />
     <Content Include="Views\Account\ActivateStaff.cshtml" />
     <Content Include="Views\University\EditFaculty.cshtml" />
