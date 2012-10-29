@@ -171,17 +171,17 @@ namespace StormWeb.Controllers
             {
                 StudentCentreModel stmodel = new StudentCentreModel();
                 int studentId = id;
-                var client = db.Students.Single(c => c.Student_Id == studentId);
+                var student = db.Students.Single(c => c.Student_Id == studentId);
                 var cases = db.Cases.ToList().Where(x => x.Student_Id == studentId);
 
-                clientQualification.Client_Id = client.Client_Id;
+                clientQualification.Client_Id = student.Client_Id;
                 stmodel.caseTable = cases.ToList();
-                stmodel.clientChildrenDetail = db.Client_Children_Detail.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
-                stmodel.clientQualificationTable = db.Client_Qualification.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
-                stmodel.clientSkillTestTable = db.Client_SkillTest.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
-                stmodel.clientSpouse = db.Client_Spouse.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
-                stmodel.clientStudyServiceDetails = db.Client_StudyServiceDetails.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
-                stmodel.clientWorkExperience = db.Client_Work_Experience.ToList().Where(x => x.Client_Id == client.Client_Id).ToList();
+                stmodel.clientChildrenDetail = db.Client_Children_Detail.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
+                stmodel.clientQualificationTable = db.Client_Qualification.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
+                stmodel.clientSkillTestTable = db.Client_SkillTest.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
+                stmodel.clientSpouse = db.Client_Spouse.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
+                stmodel.clientStudyServiceDetails = db.Client_StudyServiceDetails.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
+                stmodel.clientWorkExperience = db.Client_Work_Experience.ToList().Where(x => x.Client_Id == student.Client_Id).ToList();
 
                 if (clientQualification.Qualification == null || clientQualification.Qualification == "")
                 {
@@ -206,7 +206,7 @@ namespace StormWeb.Controllers
                 }
                 db.Client_Qualification.AddObject(clientQualification);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Qualification to Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username +" Added Qualification to Student Profile of the Student " + student.Client.GivenName + " " + student.Client.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Qualification");
                 return View("Refresh");
             }
@@ -227,8 +227,8 @@ namespace StormWeb.Controllers
             {
                 StudentCentreModel stmodel = new StudentCentreModel();
                 int studentId = id;
-                var client = db.Students.Single(c => c.Student_Id == studentId);
-                int clientId = client.Client_Id;
+                var student = db.Students.Single(c => c.Student_Id == studentId);
+                int clientId = student.Client_Id;
                 Case cases = new Case();
                 cases = db.Cases.Single(x => x.Student_Id == studentId);
 
@@ -270,7 +270,7 @@ namespace StormWeb.Controllers
                 stmodel.clientWorkExperience = db.Client_Work_Experience.ToList().Where(x => x.Client_Id == clientId).ToList();
                 BindGender(childrenDetails.Gender);
 
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Childrens Details to Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added Childrens Details to the Student Profile of the Student" + student.Client.GivenName + " " + student.Client.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Children's Details");
 
                 return View("Refresh");
@@ -292,8 +292,8 @@ namespace StormWeb.Controllers
             {
                 StudentCentreModel stmodel = new StudentCentreModel();
                 int studentId = id;
-                var client = db.Students.Single(c => c.Student_Id == studentId);
-                int clientId = client.Client_Id;
+                var student = db.Students.Single(c => c.Student_Id == studentId);
+                int clientId = student.Client_Id;
                 skills.Client_Id = clientId;
                 Case cases = new Case();
                 cases = db.Cases.Single(x => x.Student_Id == studentId);
@@ -309,7 +309,7 @@ namespace StormWeb.Controllers
 
                 db.Client_SkillTest.AddObject(skills);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Skills to Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added Skills to  the Student Profile of the Student " + student.Client.GivenName + " " + student.Client.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Skills");
 
                 return View("Refresh");
@@ -334,8 +334,8 @@ namespace StormWeb.Controllers
                 int studentId = id;
                 Case cases = new Case();
                 cases = db.Cases.Single(x => x.Student_Id == studentId);
-                var client = db.Students.Single(c => c.Student_Id == studentId);
-                int clientId = client.Client_Id;
+                var student = db.Students.Single(c => c.Student_Id == studentId);
+                int clientId = student.Client_Id;
 
                 spouse.Client_Id = clientId;
 
@@ -371,7 +371,7 @@ namespace StormWeb.Controllers
 
                 db.Client_Spouse.AddObject(spouse);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Spouse Details Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added Spouse Details to the  Student Profile of the Student" + student.Client.GivenName + " " + student.Client.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Spouse Details");
                 return View("Refresh");
             } return View("Refresh");
@@ -395,8 +395,8 @@ namespace StormWeb.Controllers
                 Case cases = new Case();
                 cases = db.Cases.Single(x => x.Student_Id == studentId);
 
-                var client = db.Students.Single(c => c.Student_Id == studentId);
-                int clientId = client.Client_Id;
+                var student = db.Students.Single(c => c.Student_Id == studentId);
+                int clientId = student.Client_Id;
                  
                 stmodel.caseTable = db.Cases.ToList().Where(x => x.Case_Id == cases.Case_Id).ToList();
                 stmodel.clientChildrenDetail = db.Client_Children_Detail.ToList().Where(x => x.Client_Id == clientId).ToList();
@@ -415,7 +415,7 @@ namespace StormWeb.Controllers
                 services.Client_Id = clientId;
                 db.Client_StudyServiceDetails.AddObject(services);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Study Service Details to Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added Study Service Details to the Student Profile of the Student " + student.Client.GivenName + " " + student.Client.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Service Details");
                 return View("Refresh"); 
             } return View("Refresh");
@@ -437,8 +437,8 @@ namespace StormWeb.Controllers
                 //int studentId = Convert.ToInt32(CookieHelper.StudentId);
                 StudentCentreModel stmodel = new StudentCentreModel();
                 int studentId = id;
-                var client = db.Students.Single(c => c.Student_Id == studentId);
-                int clientId = client.Client_Id;
+                var student = db.Students.Single(c => c.Student_Id == studentId);
+                int clientId = student.Client_Id;
 
                 Case cases = new Case();
                 cases = db.Cases.Single(x => x.Student_Id == studentId);
@@ -485,7 +485,7 @@ namespace StormWeb.Controllers
                 }
                 db.Client_Work_Experience.AddObject(workExperiance);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Added Work Experiance to Student Profile with Student Id" + id), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added Work Experiance to the Student Profile of the Student " + student.Client.GivenName + " " + student.Client.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Added Work Experiance");
                 return View("Refresh");
             }
@@ -627,7 +627,7 @@ namespace StormWeb.Controllers
 
                     //TempData[SUCCESS_EDIT] = true;
 
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Primary Details of the Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Edited Primary Details of the Student " + student.Client.GivenName + " " + student.Client.LastName ), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited Student Profile");
                     return View("Refresh");
                     // return View(stmodel);
@@ -718,7 +718,7 @@ namespace StormWeb.Controllers
                     db.ObjectStateManager.ChangeObjectState(cases, EntityState.Modified);
 
                     db.SaveChanges();
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited the Qualification of the Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Edited the Qualification of the Student " + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully edited Qualification");
                     return View("Refresh");
                 }
@@ -819,7 +819,7 @@ namespace StormWeb.Controllers
                     db.ObjectStateManager.ChangeObjectState(cases, EntityState.Modified);
                     db.SaveChanges();
                    // TempData[SUCCESS_EDIT] = true;
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Children's Details of Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited Children's Details of Student" + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited Childrens Details");
                     return View("Refresh");
                     //return View(stmodel);
@@ -897,7 +897,7 @@ namespace StormWeb.Controllers
                     //  TempData[SUCCESS_EDIT] = true;
                     //return View(stmodel);
                     //return RedirectToAction("EditSkillTest", "StudentCentre", new { message = "Successfully edited" });
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Skill test Details of the student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited Skill test Details of the student" + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName ), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited Skills");
                     return View("Refresh");
                 }
@@ -995,7 +995,7 @@ namespace StormWeb.Controllers
                     db.ObjectStateManager.ChangeObjectState(cases, EntityState.Modified);
 
                     db.SaveChanges();
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Spouse Details of the Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited Spouse Details of the Student " + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited Spouse Details");
                     return View("Refresh");
                     // TempData[SUCCESS_EDIT] = true;
@@ -1086,7 +1086,7 @@ namespace StormWeb.Controllers
                     db.ObjectStateManager.ChangeObjectState(cases, EntityState.Modified);
 
                     db.SaveChanges();
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Service Details of the Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited Service Details of the Student" + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName ), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited Study Service Details");
                     return View("Refresh");
                     //TempData[SUCCESS_EDIT] = true;
@@ -1197,7 +1197,7 @@ namespace StormWeb.Controllers
                     db.ObjectStateManager.ChangeObjectState(cases, EntityState.Modified);
 
                     db.SaveChanges();
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edited Work Experiance Details of the Student with Student Id" + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Edited Work Experiance Details of the Student " + cases.Student.Client.GivenName + " " + cases.Student.Client.LastName ), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
                   
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully edited Work Experiance");
                     return View("Refresh");

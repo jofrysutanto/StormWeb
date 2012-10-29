@@ -31,7 +31,7 @@ namespace StormWeb.Helper
         /// <param name="Type"> See LogHelper.LOG_* for list of type </param>
         /// <param name="Section"> See LogHelper.SECTION_* for list of sections </param>
         /// <returns>True if successful log write </returns>
-        public static bool writeToLog(int CaseID, string Comment, string Type, string Section)
+        public static bool writeToStudentLog(int CaseID, string Comment, string Type, string Section)
         {
             List<Student_Log> log = new List<Student_Log>();
 
@@ -47,13 +47,14 @@ namespace StormWeb.Helper
                 l = new Student_Log();
                 l.UserName = s.Staff.UserName; l.Comment = Comment; l.Type = Type; l.Section = Section;
                 l.DateTime = DateTime.Now; l.Deleted = false;
+                l.Author = CookieHelper.Username;
                 log.Add(l);
             }
             
-            return saveLog(log);
+            return saveStudentLog(log);
         }
 
-        public static bool writeToLog(string[] username, string Comment, string Type, string Section)
+        public static bool writeToStudentLog(string[] username, string Comment, string Type, string Section)
         {
             List<Student_Log> log = new List<Student_Log>();
 
@@ -63,14 +64,52 @@ namespace StormWeb.Helper
                 l.Comment = Comment; l.Type = Type; l.Section = Section;
                 l.DateTime = DateTime.Now; l.Deleted = false;
                 l.UserName = s;
-
+                l.Author = CookieHelper.Username; 
                 log.Add(l);
             }
 
-            return saveLog(log);
+            return saveStudentLog(log);
         }
 
-        private static bool saveLog(Student_Log log)
+        public static bool writeToSystemLog(int CaseID, string Comment, string Type, string Section)
+        {
+            List<System_Log> log = new List<System_Log>();
+
+            string studentUsername = db.Cases.SingleOrDefault(x => x.Case_Id == CaseID).Student.UserName;
+
+            System_Log l = new System_Log();
+            l.UserName = studentUsername; l.Comment = Comment; l.Type = Type; l.Section = Section;
+            l.DateTime = DateTime.Now; l.Deleted = false;
+            log.Add(l);
+
+            foreach (Case_Staff s in db.Case_Staff.Where(x => x.Case_Id == CaseID).ToList())
+            {
+                l = new System_Log();
+                l.UserName = s.Staff.UserName; l.Comment = Comment; l.Type = Type; l.Section = Section;
+                l.DateTime = DateTime.Now; l.Deleted = false; 
+                log.Add(l);
+            }
+
+            return saveSystemLog(log);
+        }
+
+        public static bool writeToSystemLog(string[] username, string Comment, string Type, string Section)
+        {
+            List<System_Log> log = new List<System_Log>();
+
+            foreach (string s in username)
+            {
+                System_Log l = new System_Log();
+                l.Comment = Comment; l.Type = Type; l.Section = Section;
+                l.DateTime = DateTime.Now; l.Deleted = false;
+                l.UserName = s; 
+                log.Add(l);
+            }
+
+            return saveSystemLog(log);
+        }
+
+        private static bool saveStudentLog(Student_Log log)
         {
             try
             {
@@ -87,12 +126,47 @@ namespace StormWeb.Helper
             return true;
         }
 
-        private static bool saveLog(List<Student_Log> log)
+        private static bool saveStudentLog(List<Student_Log> log)
         {
             try
             {
                 foreach (Student_Log l in log)
                     db.Student_Log.AddObject(l);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool saveSystemLog(System_Log log)
+        {
+            try
+            {
+                db.System_Log.AddObject(log);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool saveSystemLog(List<System_Log> log)
+        {
+            try
+            {
+                foreach (System_Log l in log)
+                    db.System_Log.AddObject(l);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -119,11 +193,16 @@ namespace StormWeb.Helper
         public static string LOG_OTHER = "OTHER";
 
         public static string SECTION_ACCOUNT = "Account";
+        public static string SECTION_APPLICATION = "Application";
+        public static string SECTION_APPOINTMENT = "Appointment";
+        public static string SECTION_BRANCH = "Branch";
         public static string SECTION_DOCUMENT = "Document";
         public static string SECTION_PROFILE = "Profile";
-        public static string SECTION_APPOINTMENT = "Appointment";
-        public static string SECTION_APPLICATION = "Application";
         public static string SECTION_MESSAGE = "Message";
+        public static string SECTION_UNIVERSITY = "University";
+        public static string SECTION_FACULTY = "Faculty";
+        public static string SECTION_COURSE = "Course";
+        public static string SECTION_CLIENT = "Client";
 
         #endregion
     }   

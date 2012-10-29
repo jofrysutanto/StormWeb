@@ -28,6 +28,8 @@ namespace StormWeb.Controllers
         }
 
         #endregion
+
+        #region MANAGE ROLE
         [Authorize(Roles="Super")]
         public ActionResult ManageRoles(int id)
         {
@@ -41,7 +43,10 @@ namespace StormWeb.Controllers
 
             return View(roleModel);
         }
+      
+        #endregion
 
+        #region CHANGE ROLE
         [HttpPost]
         public ActionResult ChangeRole(string username, string role, string assign)
         {
@@ -56,6 +61,8 @@ namespace StormWeb.Controllers
 
             return Json(new { success = true });
         }
+
+        #endregion
 
         #region Details
         [Authorize(Roles = "Super")]
@@ -195,7 +202,7 @@ namespace StormWeb.Controllers
             ViewBag.Branch = db.Branches.ToList(); 
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", staff.Address_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
-            
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Created a new staff" + staff.FirstName + " " + staff.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
             return View(staff);
         }
         
@@ -345,7 +352,7 @@ namespace StormWeb.Controllers
             }  
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", staff.Address_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
-           
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username +" Edited the Details of the staff " + staff.FirstName + " " + staff.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return View(staff);
         } 
         #endregion
@@ -374,6 +381,7 @@ namespace StormWeb.Controllers
             }  
             db.Staffs.DeleteObject(staff);
             db.SaveChanges();
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Deleted the Details of the Staff" + staff.FirstName + " " + staff.LastName ), LogHelper.LOG_DELETE, LogHelper.SECTION_PROFILE);
             return RedirectToAction("Index");
         }
        

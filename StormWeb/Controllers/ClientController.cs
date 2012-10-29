@@ -14,30 +14,25 @@ namespace StormWeb.Controllers
 {
     public class ClientController : Controller
     {
-        //
-        // GET: /Client/
         private StormDBEntities db = new StormDBEntities();
-        //
-        // GET: /ClientAlternative/
-          [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super")]
         public ViewResult Index()
         {
             var clients = db.Clients.Include("Address");
             return View(clients.ToList());
         }
 
-        //
-        // GET: /ClientAlternative/Details/5
-          [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super")]
         public ViewResult Details(int id)
         {
             Client client = db.Clients.Single(c => c.Client_Id == id);
             return View(client);
         }
 
-        //
-        // GET: /ClientAlternative/Edit/5
-          [Authorize(Roles = "Super")]
+        #region EDIT
+
+        [Authorize(Roles = "Super")]
         public ActionResult Edit(int id)
         {
             Client client = db.Clients.Single(c => c.Client_Id == id);
@@ -45,10 +40,8 @@ namespace StormWeb.Controllers
             return View(client);
         }
 
-        //
-        // POST: /ClientAlternative/Edit/5
-
-        [Authorize(Roles="Super")]
+        
+        [Authorize(Roles = "Super")]
         [HttpPost]
         public ActionResult Edit(Client client)
         {
@@ -60,11 +53,13 @@ namespace StormWeb.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", client.Address_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the client Details " + client.GivenName +" " +client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return View(client);
         }
 
+        #endregion
 
-        [Authorize (Roles="Super")]
+        [Authorize(Roles = "Super")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult List()
         {
@@ -82,6 +77,8 @@ namespace StormWeb.Controllers
             return View(db.Clients.ToList());
         }
 
+        #region REGISTER
+
         public ActionResult Register()
         {
             ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName");
@@ -93,7 +90,7 @@ namespace StormWeb.Controllers
 
             IEnumerable<Branch> branch = db.Branches.ToList();
             ViewBag.Branch = branch;
-           
+
             return View(new ClientViewModel());
         }
 
@@ -106,10 +103,10 @@ namespace StormWeb.Controllers
             ViewBag.Services = new SelectList(ServiceHelper.GetItems(), "ServiceType", "ServiceType");
             ViewBag.Status = new SelectList(StatusTypeHelper.GetStatus(), "StatusType", "StatusType");
             ViewBag.CourseLevel = new SelectList(CourseLevelHelper.GetItems(), "CourseLevel", "CourseLevel");
-            
+
             IEnumerable<Branch> branch = db.Branches.ToList();
             ViewBag.Branch = branch;
-            
+
             ClientViewModel model = new ClientViewModel();
 
             // Manually adding data into the model (sadly)
@@ -117,7 +114,7 @@ namespace StormWeb.Controllers
             model.ClientModel.Title = fc["ClientModel.Title"];
             model.ClientModel.GivenName = fc["ClientModel.GivenName"];
             model.ClientModel.LastName = fc["ClientModel.LastName"];
-            model.ClientModel.Dob = DateTime.ParseExact(fc["ClientModel.Dob"], "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture);
+            model.ClientModel.Dob = DateTime.ParseExact(fc["ClientModel.Dob"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
             model.ClientModel.Nationality = fc["ClientModel.Nationality"];
             model.ClientModel.Email = fc["ClientModel.Email"];
             model.ClientModel.ContactNumber = fc["ClientModel.ContactNumber"];
@@ -129,23 +126,23 @@ namespace StormWeb.Controllers
             model.ClientModel.Address.Country_Id = Convert.ToInt32(fc["AddressModel.Country_Id"]);
             model.ClientModel.Address.Zipcode = Convert.ToInt32(fc["AddressModel.Zipcode"]);
             model.ClientModel.PreferredCountry = fc["ClientModel.PreferredCountry"];
-            model.ClientModel.Services = fc["ClientModel.Services"];            
+            model.ClientModel.Services = fc["ClientModel.Services"];
             model.ClientModel.Registered_On = DateTime.Now;
             model.ClientModel.Branch_Id = Convert.ToInt32(fc["selectedBranch"]);
 
 
             // Partial registration (user choose to book an appointment for enquiry
             if (!(fc["isFullRegistration"] == "yes"))
-            {                
+            {
                 try
                 {
                     //if (ModelState.IsValid)
                     //if (TryValidateModel(model.ClientModel))
                     //{
-                        ValidateModel(model.ClientModel);
-                        db.Clients.AddObject(model.ClientModel);
-                        db.SaveChanges();
-                        return RedirectToAction("RequestAppointment", "Client", new { id = model.ClientModel.Client_Id });
+                    ValidateModel(model.ClientModel);
+                    db.Clients.AddObject(model.ClientModel);
+                    db.SaveChanges();
+                    return RedirectToAction("RequestAppointment", "Client", new { id = model.ClientModel.Client_Id });
                     //}
                 }
                 catch (Exception e)
@@ -166,7 +163,7 @@ namespace StormWeb.Controllers
                         Debug.Write(fc["Password"]);
 
                         // Attempt to register the user
-                        
+
                         string username = fc["Username"];
                         string password = fc["Password"];
                         MembershipCreateStatus createStatus;
@@ -180,8 +177,8 @@ namespace StormWeb.Controllers
                             Student student = new Student();
                             student.Client_Id = model.ClientModel.Client_Id;
                             student.UserName = username;
-                            model.ClientModel.Students.Add(student);                            
-                            
+                            model.ClientModel.Students.Add(student);
+
                             db.Clients.AddObject(model.ClientModel);
                             db.SaveChanges();
 
@@ -200,17 +197,17 @@ namespace StormWeb.Controllers
                                 CaseDocument cd = new CaseDocument();
                                 cd.CaseDocTemplate_Id = cdTemplates.CaseDocTemplate_Id;
                                 cd.Case_Id = nCase.Case_Id;
-                                db.CaseDocuments.AddObject(cd);                                
+                                db.CaseDocuments.AddObject(cd);
                             }
                             db.SaveChanges();
 
-
+                            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Registered a new client " + model.ClientModel.GivenName + " " + model.ClientModel.LastName), LogHelper.LOG_OTHER, LogHelper.SECTION_CLIENT);
                             return RedirectToAction("LogOn", "Account", new { message = "registration-success" });
                         }
                         else
                         {
                             ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                        }                        
+                        }
                     }
                 }
                 catch (Exception e)
@@ -223,7 +220,10 @@ namespace StormWeb.Controllers
             return View(model);
         }
 
-        // Request appointment for partially registered client
+        #endregion
+
+        #region Request appointment for partially registered client
+
         public ActionResult RequestAppointment(int id)
         {
             // Check if there is already appointment for this client id
@@ -264,12 +264,13 @@ namespace StormWeb.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {                    
+                {
                     model.Appointment.Branch_Id = model.Branch_Id;
                     model.Appointment.Confirmation = AppointmentController.APP_REQUEST_APPROVAL;
                     db.General_Enquiry.AddObject(model);
                     db.SaveChanges();
-                    return RedirectToAction("AppointmentSuccess", "Client", new { id=model.Appointment.Appointment_Id });
+                    LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + "Requested appointment "), LogHelper.LOG_OTHER, LogHelper.SECTION_CLIENT);
+                    return RedirectToAction("AppointmentSuccess", "Client", new { id = model.Appointment.Appointment_Id });
                 }
             }
             catch (Exception e)
@@ -281,8 +282,11 @@ namespace StormWeb.Controllers
 
             Client c = db.Clients.Single(x => x.Client_Id == model.Client_Id);
             ViewBag.ClientName = c.GivenName + " " + c.LastName;
+
             return View(model);
         }
+
+        #endregion
 
         public ActionResult AppointmentSuccess(int id)
         {
@@ -295,11 +299,11 @@ namespace StormWeb.Controllers
             return View(b);
         }
 
-        // GET: /Default1/Delete/5
+        #region DELETE
 
-        [Authorize(Roles="Super")]
+        [Authorize(Roles = "Super")]
         public ActionResult Delete(int id)
-        {            
+        {
             Client client = db.Clients.First(i => i.Client_Id == id);
 
             // Delete addresses
@@ -330,11 +334,12 @@ namespace StormWeb.Controllers
                     db.General_Enquiry.DeleteObject(generalEnquiry);
                 }
             }
-            
+
             // Delete 
             try
             {
                 db.Clients.DeleteObject(client);
+                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the client Details of" + client.GivenName + " " + client.LastName), LogHelper.LOG_DELETE, LogHelper.SECTION_CLIENT);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -345,6 +350,8 @@ namespace StormWeb.Controllers
 
             return RedirectToAction("Index");
         }
+
+        #endregion
 
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)

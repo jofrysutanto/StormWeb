@@ -216,11 +216,11 @@ namespace StormWeb.Controllers
                 if (appointment.Case_Id == null)
                 {
                                
-                    LogHelper.writeToLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.General_Enquiry.SingleOrDefault().Client.GivenName+" to "+ appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.General_Enquiry.SingleOrDefault().Client.GivenName+" to "+ appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
                 }
                 else
                 {
-                    LogHelper.writeToLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.Case.Student.Client.GivenName + " to " + appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.Case.Student.Client.GivenName + " to " + appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
                 }
                 return RedirectToAction("Index");
 
@@ -451,7 +451,7 @@ namespace StormWeb.Controllers
                     TempData[SUCCESS_BOOK] = true;
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your Appointment was successfully booked");
                     //return RedirectToAction("Create", new { message = "Successfully Booked" });
-                    LogHelper.writeToLog(Convert.ToInt32(appointment.Case_Id), appointment.Staff.FirstName +" booked an appointment for "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), appointment.Staff.FirstName +" booked an appointment for "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
                     //return RedirectToAction("Index");
                     return View("Refresh");
                 }
@@ -477,7 +477,7 @@ namespace StormWeb.Controllers
                     TempData[SUCCESS_BOOK] = true;
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your Appointment was successfully booked");
                     //return RedirectToAction("Create", new { message = "Booked Successfully" });
-                    LogHelper.writeToLog(Convert.ToInt32(appointment.Case_Id), "Appointment booked by "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Appointment booked by "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
                     //return RedirectToAction("Index");
                     return View("Refresh");
                 }
@@ -578,7 +578,7 @@ namespace StormWeb.Controllers
                     //return RedirectToAction("Edit", new { mess = "EditSuccess" });
                     if (appointment.Case_Id != null)
                     {
-                        LogHelper.writeToLog(Convert.ToInt32(appointment.Case_Id), "Edited " + appointment.Case.Student.Client.GivenName+"'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+                        LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Edited " + appointment.Case.Student.Client.GivenName+"'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                     }
                     return RedirectToAction("Index");
 
@@ -588,7 +588,7 @@ namespace StormWeb.Controllers
             {
                 Debug.WriteLine("{0} First exception caught.", e);
                 Debug.WriteLine(e.InnerException);
-                LogHelper.writeToLog(Convert.ToInt32(appointment.Case_Id), "Error:"+e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+                LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Error:"+e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                 ModelState.AddModelError("", e);
             }
             return View(appointment);
@@ -606,7 +606,7 @@ namespace StormWeb.Controllers
                 General_Enquiry genEnquiry = db.General_Enquiry.Single(g => g.Appointment_Id == id);
                 try
                 {
-                    LogHelper.writeToLog((int)(appointment.Case_Id),appointment.Staff.FirstName + " Deleted " + genEnquiry.Client.GivenName + "'s General Enquiry appointment entry", LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id),appointment.Staff.FirstName + " Deleted " + genEnquiry.Client.GivenName + "'s General Enquiry appointment entry", LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
                     db.General_Enquiry.DeleteObject(genEnquiry);
                     db.SaveChanges();
                     
@@ -616,7 +616,7 @@ namespace StormWeb.Controllers
                     Debug.WriteLine(e.Message);
                 }
             }
-            LogHelper.writeToLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Deleted " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+            LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Deleted " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
             db.Appointments.DeleteObject(appointment);
             db.SaveChanges();
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Appointment Deleted");

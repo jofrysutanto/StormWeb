@@ -167,8 +167,7 @@ namespace StormWeb.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-
+                // TODO: Add update logic here 
                 return RedirectToAction("Index");
             }
             catch
@@ -279,7 +278,7 @@ namespace StormWeb.Controllers
                 if (appointment != null)
                 {
                     //LogHelper.writeToLog(caseId, st.Client.GivenName + "'s existing appointment was cancelled because his counsellor" + fstname + "is changed to " + fname, LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
-                    LogHelper.writeToLog(caseId, st.Client.GivenName + "'s existing appointment was cancelled because his counsellor is changed to " + fname, LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog(caseId, st.Client.GivenName + "'s existing appointment was cancelled because his counsellor is changed to " + fname, LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
                     db.Appointments.DeleteObject(appointment);
                     db.SaveChanges();
                 }
@@ -297,7 +296,7 @@ namespace StormWeb.Controllers
                 //Update case staff table where staff id= new staff id
                 StudentStaffModel ssModel = new StudentStaffModel();
                 
-                LogHelper.writeToLog(caseId,  st.Client.GivenName+ "'s counsellor was changed to " + fname, LogHelper.LOG_OTHER, LogHelper.SECTION_ACCOUNT);
+                LogHelper.writeToStudentLog(caseId,  st.Client.GivenName+ "'s counsellor was changed to " + fname, LogHelper.LOG_OTHER, LogHelper.SECTION_ACCOUNT);
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfull!");
                 return RedirectToAction("Index");
             }

@@ -90,7 +90,7 @@ namespace StormWeb.Controllers
 
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            string jsonResult = serializer.Serialize(db.Student_Log.OrderByDescending(x => x.DateTime).Take(10).ToList());
+            string jsonResult = serializer.Serialize(db.Student_Log.OrderByDescending(x => x.DateTime).Take(5).ToList());
 
             return new ContentResult{ Content = jsonResult, ContentType = "application/json"};
         }

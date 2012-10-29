@@ -24,9 +24,7 @@ namespace StormWeb.Controllers
     public class CourseController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
-
-        //
-        // GET: /Course/
+         
         [Authorize(Roles = "Super")]
         public ViewResult List()
         {
@@ -85,19 +83,17 @@ namespace StormWeb.Controllers
 
             return View(courses.Except(studentApplication).ToList());
         }
-
-        //
-        // GET: /Course/Details/5
+ 
         [Authorize(Roles = "Super")]
         public ViewResult Details(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
-
-        //
-        // GET: /Course/Create
+         
         [Authorize(Roles = "Super")]
+
+        #region CREATE
 
         public ActionResult Create()
         {
@@ -114,9 +110,7 @@ namespace StormWeb.Controllers
             return View();
 
         }
-
-        //
-        // POST: /Course/Create
+         
         [Authorize(Roles = "Super")]
 
         [HttpPost]
@@ -174,10 +168,12 @@ namespace StormWeb.Controllers
           
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added a new Course "+ course.Course_Name), LogHelper.LOG_CREATE, LogHelper.SECTION_COURSE);
             return View(course);
         }
 
-        // Return the list of faculties
+        #endregion
+
         [Authorize(Roles = "Super")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetFaculties(int uniID = -1)
@@ -196,8 +192,8 @@ namespace StormWeb.Controllers
             return Json(selectList);
         }
 
-        //
-        // GET: /Course/Edit/5
+        #region EDIT
+
         [Authorize(Roles = "Super")]
         public ActionResult Edit(int id)
         {
@@ -206,9 +202,7 @@ namespace StormWeb.Controllers
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
             return View(course);
         }
-
-        //
-        // POST: /Course/Edit/5
+         
         [Authorize(Roles = "Super")]
         [HttpPost]
         public ActionResult Edit(Course course,FormCollection fc)
@@ -259,20 +253,21 @@ namespace StormWeb.Controllers
             
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the new Course " + course.Course_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_COURSE);
             return View(course);
         }
 
-        //
-        // GET: /Course/Delete/5
+        #endregion
+
+        #region DELETE
+
         [Authorize(Roles = "Super")]
         public ActionResult Delete(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
-
-        //
-        // POST: /Course/Delete/5
+         
         [Authorize(Roles = "Super")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
@@ -282,6 +277,7 @@ namespace StormWeb.Controllers
             {
                 db.Courses.DeleteObject(course);
                 db.SaveChanges();
+                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the Course " + course.Course_Name), LogHelper.LOG_DELETE, LogHelper.SECTION_COURSE);
                 return RedirectToAction("List");
             }
              catch (Exception e)
@@ -292,6 +288,8 @@ namespace StormWeb.Controllers
                  return View(course);
              }    
         }
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

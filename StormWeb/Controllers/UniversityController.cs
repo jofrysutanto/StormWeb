@@ -19,59 +19,56 @@ using System.Diagnostics;
 using StormWeb.Helper;
 
 namespace StormWeb.Controllers
-{ 
+{
     public class UniversityController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
 
-        //
-        // GET: /University/
-         [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super")]
         public ViewResult Index()
         {
             var universities = db.Universities.Include("Country");
             return View(universities.ToList());
         }
-         
 
-        //
-        // GET: /University/Details/5
-         [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super")]
         public ViewResult Details(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
             return View(university);
         }
 
-        //
-        // GET: /University/Create
-         [Authorize(Roles = "Super")]
+        #region CREATE
+
+        [Authorize(Roles = "Super")]
         public ActionResult Create()
         {
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
-           
-            return View();
-        } 
 
-        //
-        // POST: /University/Create
-         [Authorize(Roles = "Super")]
+            return View();
+        }
+
+        [Authorize(Roles = "Super")]
         [HttpPost]
-        public ActionResult Create(University university,FormCollection fc)
-        {          
+        public ActionResult Create(University university, FormCollection fc)
+        {
             if (ModelState.IsValid)
             {
                 db.Universities.AddObject(university);
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Added a New University" + university.University_Name), LogHelper.LOG_CREATE, LogHelper.SECTION_UNIVERSITY);
             return View(university);
         }
-        
-        //
-        // GET: /University/Edit/5
+
+        #endregion
+
+        #region EDIT
+
         [Authorize(Roles = "Super")]
         public ActionResult Edit(int id)
         {
@@ -80,46 +77,44 @@ namespace StormWeb.Controllers
             return View(university);
         }
 
-        //
-        // POST: /University/Edit/5
-         [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super")]
         [HttpPost]
         public ActionResult Edit(University university)
         {
-            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);            
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             if (ModelState.IsValid)
             {
                 db.Universities.Attach(university);
                 db.ObjectStateManager.ChangeObjectState(university, EntityState.Modified);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            
-         
+            } 
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the details of the University" + university.University_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_UNIVERSITY);
             return View(university);
         }
 
-        //
-        // GET: /University/Delete/5
-         [Authorize(Roles = "Super")]
+        #endregion
+
+        #region DELETE
+
+        [Authorize(Roles = "Super")]
         public ActionResult Delete(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
             return View(university);
         }
 
-        //
-        // POST: /University/Delete/5
-         [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
             University university = db.Universities.Single(u => u.University_Id == id);
             try
             {
                 db.Universities.DeleteObject(university);
                 db.SaveChanges();
+                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the University" + university.University_Name), LogHelper.LOG_DELETE, LogHelper.SECTION_UNIVERSITY);
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -128,8 +123,10 @@ namespace StormWeb.Controllers
                 ModelState.AddModelError(String.Empty, "Cannot delete");
                 return View(university);
             }
-            
+
         }
+
+        #endregion
 
         public ActionResult Faculties(int id)
         {
@@ -137,6 +134,8 @@ namespace StormWeb.Controllers
             ViewBag.UniversityId = id;
             return View(fac.ToList());
         }
+
+        #region CREATE FACULTY
 
         [Authorize(Roles = "Super")]
         public ActionResult CreateFaculty(int id)
@@ -147,13 +146,11 @@ namespace StormWeb.Controllers
             return View();
         }
 
-        //
-        // POST: /University/Edit/5
         [HttpPost]
-        public ActionResult CreateFaculty(int id,Faculty fac,FormCollection fc)
+        public ActionResult CreateFaculty(int id, Faculty fac, FormCollection fc)
         {
             //ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
-            
+
             //ViewBag.UniId = university.ToList();
             var university = db.Universities.SingleOrDefault(u => u.University_Id == id);
             ViewBag.UniId = university;
@@ -163,18 +160,21 @@ namespace StormWeb.Controllers
                 db.SaveChanges();
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "You have successfully created a Faculty");
                 return RedirectToAction("Index");
-            }
-
-
+            } 
             //ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Added a New Faculty" + fac.Faculty_Name), LogHelper.LOG_CREATE, LogHelper.SECTION_FACULTY);
             return View();
         }
+
+        #endregion
+
+        #region EDIT FACULTY
 
         public ActionResult EditFaculty(int id)
         {
             var Faculty = db.Faculties.Single(f => f.Faculty_Id == id);
             ViewBag.FacId = Faculty;
-            
+
             return View(Faculty);
         }
 
@@ -188,10 +188,15 @@ namespace StormWeb.Controllers
                 db.ObjectStateManager.ChangeObjectState(fac, EntityState.Modified);
                 db.SaveChanges();
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "You have successfully edited Faculty details");
+                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Edited the details of the Faculty" + fac.Faculty_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_FACULTY);
                 return RedirectToAction("Faculties", new { id = universityid });
             }
             return View();
         }
+
+        #endregion
+
+        #region DELETE FACULTY
 
         public ActionResult DeleteFaculty(int id)
         {
@@ -227,8 +232,11 @@ namespace StormWeb.Controllers
             }
 
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Faculty deleted");
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Deleted the Faculty" + f.Faculty_Name ), LogHelper.LOG_DELETE, LogHelper.SECTION_FACULTY);
             return RedirectToAction("Faculties", new { id = universityId });
         }
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

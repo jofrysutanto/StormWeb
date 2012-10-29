@@ -99,7 +99,7 @@ namespace StormWeb.Controllers
                     {
                         db.CaseDocuments.DeleteObject(casedoc);
                         db.SaveChanges();
-                        LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc.CaseDocTemplate_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc.CaseDocTemplate_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
                     }
                 }
@@ -183,7 +183,7 @@ namespace StormWeb.Controllers
 
                 db.SaveChanges();
 
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Created Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Created Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Created Successfully!");
             }
@@ -218,7 +218,7 @@ namespace StormWeb.Controllers
                 db.CaseDoc_Template.Attach(casedoc_template);
                 db.ObjectStateManager.ChangeObjectState(casedoc_template, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edit Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Edit Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
             }
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Modified Successfully!");
@@ -247,7 +247,7 @@ namespace StormWeb.Controllers
 
                 db.CaseDoc_Template.DeleteObject(casedoc_template);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was deleted successfully!");
             }
@@ -410,7 +410,7 @@ namespace StormWeb.Controllers
                 // check all application documents for status update
 
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Approve Application " + app.Application_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Approve Application " + app.Application_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
             }
             else
@@ -472,7 +472,7 @@ namespace StormWeb.Controllers
                 db.Template_Document.Attach(template_document);
                 db.ObjectStateManager.ChangeObjectState(template_document, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edit Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Edit Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
             ViewBag.Course_Id = new SelectList(db.Courses, "Course_Id", "Course_Name", template_document.Course_Id);
@@ -576,7 +576,7 @@ namespace StormWeb.Controllers
                     app.Status = "Offer_Letter";
                 }
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Application Result  " +"-" + application.Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Application Result  " +"-" + application.Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
 
@@ -597,7 +597,7 @@ namespace StormWeb.Controllers
 
                 db.Template_Document.DeleteObject(template_document);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Deleted Successfully!");
                 
@@ -640,7 +640,7 @@ namespace StormWeb.Controllers
                 db.Application_Document.DeleteObject(application);
 
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Application Document  " + application.ApplicationDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Application Document  " + application.ApplicationDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
                 
             }
 
@@ -666,7 +666,7 @@ namespace StormWeb.Controllers
                 application.Comment = null;
 
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Delete Case Document  " + application.CaseDocument_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Document  " + application.CaseDocument_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
 
@@ -737,7 +737,7 @@ namespace StormWeb.Controllers
             {
                 db.Template_Document.AddObject(appDoc);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + appDoc.TemplateDoc_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + appDoc.TemplateDoc_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was uploaded successfully!");
                 return View("Refresh");
@@ -836,8 +836,8 @@ namespace StormWeb.Controllers
 
                 file.SaveAs(path);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
@@ -938,7 +938,7 @@ namespace StormWeb.Controllers
 
                     file.SaveAs(path); 
                     db.SaveChanges();
-                    LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
@@ -1196,7 +1196,7 @@ namespace StormWeb.Controllers
                 db.Applications.Attach(application);
                 db.ObjectStateManager.ChangeObjectState(application, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToLog(new string[] { CookieHelper.Username }, (" Edit Application " + application.Application_Id), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Edit Application " + application.Application_Id), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
 
                 return RedirectToAction("Index");
             }
