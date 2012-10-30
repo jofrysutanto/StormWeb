@@ -273,7 +273,6 @@ namespace StormWeb.Controllers
                     return "Offer letter is issued";
                 case ApplicationStatusType.Payment_Received:
                     return "Payment is received";
-
                 case ApplicationStatusType.CoE:
                     return "Confirmation of Enrollment is issued";
                 default:

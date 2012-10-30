@@ -61,13 +61,15 @@ namespace StormWeb.Controllers
         // POST: /Payment/Create
 
         [HttpPost]
-        public ActionResult Create(int id,Payment payment)
+        public ActionResult Create(int id, Payment payment)
         {
             
             if (ModelState.IsValid)
             {
                 payment.Application_Id = id;
                 db.Payments.AddObject(payment);
+                Application app = db.Applications.Single(a => a.Application_Id == id);
+                app.Status = "Payment_Received";
                 db.SaveChanges();
                 return View("Refresh");
             }
