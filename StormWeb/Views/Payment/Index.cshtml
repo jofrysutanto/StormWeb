@@ -1,7 +1,8 @@
-﻿@model IEnumerable<StormWeb.Models.Application>
+﻿@model StormWeb.Models.PaymentViewModel
 @{
     ViewBag.Title = "ShowApplications";
 }
+
 <p>
 </p>
 
@@ -28,15 +29,16 @@ $(function () {
 });
 </script>
 
+    @Html.ValidationSummary(true)
     <div class="row-fluid">
         <div class="span12">
             <div class="box-tab">
                 <div class="page-header">
                     <h1>
-                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
+@*                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
                         <small><b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
                             | </small><small><b>Address</b>: @ViewBag.BranchAddress</small>
-                    </h1>
+*@                    </h1>
                 </div>
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
@@ -51,79 +53,57 @@ $(function () {
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    &nbsp;Branch Name
+                                                    <i class="color-icons user_business_co"></i>Student Name
                                                 </th>
                                                 <th>
-                                                    &nbsp;Appointment Date & Time
+                                                    <i class="color-icons day_calendar"></i> Date Of Application Status
                                                 </th>
                                                 <th>
-                                                    &nbsp;Confirmation<span class="color-icons help_co tip-right" data-original-title="WAITING FOR CONFIRMATION - Counselor will get in touch with you to confirm appointment<br/>CONFIRMED - Appointment has been confirmed for the booked date and time"></span>
+                                                   <i class="color-icons book_open_co"></i>Course Name
                                                 </th>
                                                 <th>
-                                                    &nbsp;Comments
+                                                   <i class="color-icons zone_money_co"></i>Status
                                                 </th>
                                                 <th>
+                                                    <i class="color-icons money_co"></i> Payment
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.studentAppointments)
-                                            {
-                                                if (item.AppDateTime > DateTime.Now)
-                                                {
+                                            @foreach (var item in Model.unpaidApplications)
+                                            { 
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                        <ul>
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">
+                                                            @item.Student.Client.GivenName
+                                                            @item.Student.Client.LastName</a></li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                        <ul>
+                                                            <li>
+                                                                @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
+                                                            </li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @if (item.Confirmation == "Request for Approval")
-                                                        {
-                                                            <text>Waiting for Confirmation&nbsp;</text>
-                                                        }
-                                                        else
-                                                        {
-                                                            @Html.DisplayFor(modelItem => item.Confirmation)
-                                                        }
+                                                        <ul>
+                                                            <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                        <ul>
+                                                            <li>@Html.DisplayFor(modelItem => item.Status)</li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                        <ul>
+                                                            <a class='tip-top ifName' href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top'
+                                                                data-original-title="Add Payment"></i></a>
+                                                        </ul>
                                                     </td>
                                                 </tr>
-                                                }
-                                                else
-                                                    if (item.AppDateTime < DateTime.Now && item.Confirmation == "Request for Approval")
-                                                    {
-                                                <tr>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
-                                                    </td>
-                                                    <td>
-                                                        @if (item.Confirmation == "Request for Approval")
-                                                        {
-                                                            <text>Waiting for Confirmation&nbsp;</text>
-                                                        }
-                                                        else
-                                                        {
-                                                            @Html.DisplayFor(modelItem => item.Confirmation)
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Comments)
-                                                    </td>
-                                                    <td>
-                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
-                                                    </td>
-                                                </tr>
-                                                    }
                                             }
                                         </tbody>
                                     </table>
@@ -134,42 +114,79 @@ $(function () {
                             <div class="widget-content">
                                 <div class="widget-box">
                                     <table class="mydata-tbl-inbox table table-bordered">
-                                        <thead>
+                                      <thead>
                                             <tr>
                                                 <th>
-                                                    &nbsp;Branch_Name
+                                                    <i class="color-icons user_business_co"></i>Student Name
                                                 </th>
                                                 <th>
-                                                    &nbsp;AppDateTime
+                                                    <i class="color-icons day_calendar"></i> Date Of Application Status
                                                 </th>
                                                 <th>
-                                                    &nbsp;Confirmation
+                                                   <i class="color-icons book_open_co"></i>Course Name
                                                 </th>
                                                 <th>
-                                                    &nbsp;Comments
+                                                   <i class="color-icons zone_money_co"></i>Status
                                                 </th>
                                                 <th>
+                                                    <i class="color-icons money_co"></i> Payment
                                                 </th>
                                             </tr>
                                         </thead>
+
                                         <tbody>
-                                            @foreach (var item in Model.studentPreviousApp)
+                                            @foreach (var item in Model.paidApplications)
                                             {
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
+                                                        <ul>
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">@item.Student.Client.GivenName
+                                                                @item.Student.Client.LastName</a></li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                        <ul>
+                                                            <li>
+                                                                @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
+                                                            </li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Confirmation)
+                                                        <ul>
+                                                            <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Comments)
+                                                        <ul>
+                                                            <li>@Html.DisplayFor(modelItem => item.Status)</li>
+                                                        </ul>
                                                     </td>
                                                     <td>
-                                                        @Html.ActionLink("Details", "Details", new { id = item.Appointment_Id })
+                                                        <div class="widget-content">
+                                                            <div class="widget-box">
+                                                                <a class='tip-top ifName' href="@Url.Action("Edit", new { id = item.Payments.FirstOrDefault().Id })" class='color-icons page_white_paintbrush_co tip-top' data-original-title="Edit Payment">
+                                                                </a><a class="color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
+                                                                    href="#myModal"></a>
+                                                                <div class="modal hide fade" id="myModal" style="display: none;">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">
+                                                                            ×</button>
+                                                                        <h3>
+                                                                            Confirm</h3>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            Confirm Delete?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a href="@Url.Action("Delete", new { id = item.Payments.FirstOrDefault().Id })" class="btn btn-mini btn-warning">
+                                                                            Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                                Cancel</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             }
@@ -184,83 +201,17 @@ $(function () {
         </div>
     </div>
 
+<script type="text/javascript">
+    $(function () {
 
-@*<div class="row-fluid">
-    <div class="span12">        
-        <div class="nonboxy-widget">
-          <div class="widget-head">
-            <h5><i class="color-icons  application_cascade_co"></i> Outstanding Applications </h5>
-          </div>
-          <div class="widget-content">
-            <div class="widget-box">
-                <table class="my-data-tbl-boxy table">
-                        <thead>
-                            
-                            <tr>
-                                        <th>
-                                            <i class="color-icons user_business_co"></i>Student Name
-                                        </th>
-                                        <th>
-                                           <i class="color-icons day_calendar"></i> Date Of Application Status
-                                        </th>
-                                        <th>
-                                            <i class="color-icons book_open_co"></i>Course Name
-                                        </th>
-                                        <th>
-                                            <i class="color-icons zone_money_co"></i>Status
-                                        </th>
-                                        
-                                        <th>
-                                           <i class="color-icons money_co"></i> Payment
-                                        </th>
-                                    </tr>
-                        </thead>
-                        <tbody>
-                                 @foreach (var item in Model)
-                                 {                                                          
-                                   <tr>
+        $(".myFrame").colorbox({ iframe: true, width: "500px", height: "800px" });
 
-                                    <td>
-                                        <ul>
-                                            
-                                          <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">@item.Student.Client.GivenName
-                                              @item.Student.Client.LastName</a></li>
-                                        </ul>
-                                    </td>
-                                       <td>
-                                        <ul>
-                                            <li>
-                                             @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
-                                             </li>
-                                         </ul>
-                                         </td>
+        $(document).bind('cbox_closed', function () {
 
-                                         
-                                         <td>
-                                             <ul>
-                                            <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
-                                            </ul>
-                                         </td>
+            parent.location.reload();
+        });
 
-                                         <td>
-                                         <ul>
-                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
-                                          </ul>      
-                                         </td>
+    });
 
-                                         <td>
-                                         <ul>
-                                             <a href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top' data-original-title= "Add Payment"></i></a>
-                                                                                                                                                   
-                                         </ul>
-                                         </td>
-                                     </tr>                                     
-                                    }
-                        </tbody>
-                    </table>             
-            </div>
-          </div>
-        </div>
-    </div>
-</div>    
-*@                
+
+</script>

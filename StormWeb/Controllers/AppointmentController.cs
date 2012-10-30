@@ -578,7 +578,7 @@ namespace StormWeb.Controllers
                     //return RedirectToAction("Edit", new { mess = "EditSuccess" });
                     if (appointment.Case_Id != null)
                     {
-                        LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Edited " + appointment.Case.Student.Client.GivenName+"'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username },CookieHelper.Username +" Edited " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                     }
                     return RedirectToAction("Index");
 
@@ -588,7 +588,7 @@ namespace StormWeb.Controllers
             {
                 Debug.WriteLine("{0} First exception caught.", e);
                 Debug.WriteLine(e.InnerException);
-                LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Error:"+e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+              //  LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, "Error:" + e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                 ModelState.AddModelError("", e);
             }
             return View(appointment);

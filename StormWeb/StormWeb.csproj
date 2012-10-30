@@ -150,10 +150,10 @@
     <Compile Include="Models\OutboxViewModel.cs" />
     <Compile Include="Models\StaffAppointmentListViewModel.cs" />
     <Compile Include="Models\StaffMD.cs" />
-    <Compile Include="Models\StormDB.Designer.cs">
+    <Compile Include="Models\StromDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StormDB.edmx</DependentUpon>
+      <DependentUpon>StromDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\StudentCentreModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
@@ -737,9 +737,9 @@
     <Content Include="Views\Report\Report\RunReport.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\Create.cshtml" />
-    <EntityDeploy Include="Models\StormDB.edmx">
+    <EntityDeploy Include="Models\StromDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>StromDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -759,7 +759,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4592</DevelopmentServerPort>
+          <DevelopmentServerPort>4126</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

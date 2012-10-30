@@ -27,8 +27,15 @@ namespace StormWeb.Controllers
 
         public ViewResult Index()
         {
-            var applications = db.Applications.Where( p => p.Status== "Offer_Letter").ToList();
-            return View(applications);
+            
+            PaymentViewModel model = new PaymentViewModel();
+
+            var unpaidApplications = db.Applications.Where(p => p.Status == "Offer_Letter").ToList();
+            var paidApplications = db.Applications.Where(p => p.Status == "Payment_Received").ToList();
+
+            model.unpaidApplications = unpaidApplications;
+            model.paidApplications = paidApplications;
+            return View(model);
         }
 
         //
@@ -46,7 +53,7 @@ namespace StormWeb.Controllers
         public ActionResult Create(int id)
         {
             ViewBag.Application_Id = id;
-            ViewBag.Approved_By = new SelectList(db.Staffs, "Staff_Id", "FirstName");
+            ViewBag.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
             return View();
         } 
 
@@ -54,17 +61,17 @@ namespace StormWeb.Controllers
         // POST: /Payment/Create
 
         [HttpPost]
-        public ActionResult Create(Payment payment)
+        public ActionResult Create(int id,Payment payment)
         {
+            
             if (ModelState.IsValid)
             {
+                payment.Application_Id = id;
                 db.Payments.AddObject(payment);
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+                return View("Refresh");
             }
 
-            ViewBag.Application_Id = new SelectList(db.Applications, "Application_Id", "Status", payment.Application_Id);
-            ViewBag.Approved_By = new SelectList(db.Staffs, "Staff_Id", "Title", payment.Approved_By);
             return View(payment);
         }
         

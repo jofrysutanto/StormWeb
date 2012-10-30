@@ -288,7 +288,7 @@ namespace StormWeb.Controllers
             application.Date_Of_ApplicationStatus = DateTime.Now;
             db.ObjectStateManager.ChangeObjectState(application, EntityState.Modified);
             db.SaveChanges();
-            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Changed the application status of the Student : " + application.Student.Client.GivenName +" "+ application.Student.Client.LastName + "and Application Id : " + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username +" Changed the application status of the Student : " + application.Student.Client.GivenName +" "+ application.Student.Client.LastName + "for the Application : " + application.Course.Course_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return RedirectToAction("Index");
         }
 
@@ -298,7 +298,7 @@ namespace StormWeb.Controllers
             application.Completed = true;
             db.ObjectStateManager.ChangeObjectState(application, EntityState.Modified);
             db.SaveChanges();
-            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Changed the application status of the Student: " +application.Student.Client.GivenName +" "+ application.Student.Client.LastName + "and Application Id : " + id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Changed the application status of the Student: " + application.Student.Client.GivenName + " " + application.Student.Client.LastName + "for the Application : " + application.Course.Course_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return RedirectToAction("Index");
         }
         public JsonResult CancelApplication(string comment, int id)
@@ -311,7 +311,7 @@ namespace StormWeb.Controllers
             application_cancel.Application_Id = application.Application_Id;
             db.Application_Cancel.AddObject(application_cancel);
             db.SaveChanges();
-            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, ("Requested a cancelation for the application :" + application.Course.Course_Name + "by the Student : " + application.Student.Client.GivenName + " " + application.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Requested a cancelation for the application :" + application.Course.Course_Name + "by the Student : " + application.Student.Client.GivenName + " " + application.Student.Client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return Json(new {Success=true}, JsonRequestBehavior.AllowGet); 
         }
         public enum ApplicationStatusType

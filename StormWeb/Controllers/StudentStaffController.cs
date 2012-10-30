@@ -100,6 +100,8 @@ namespace StormWeb.Controllers
 
             TempData["message"] = "success";
 
+            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Assigned a new student " + cs.Case.Student.Client.GivenName + " " + cs.Case.Student.Client.LastName + " to the Staff " + cs.Staff.FirstName + " " + cs.Staff.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+
             return RedirectToAction("NewStudent");
         }
 

@@ -14,11 +14,8 @@
     <fieldset>
         <legend>Payment</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Application_Id)
-        </div>
         <div class="editor-field">
-            @Html.(@ViewBag.Application_Id)
+             <input  id="Application_Id" type="hidden" value="@ViewBag.Application_Id" name="Application_Id" />
             @Html.ValidationMessageFor(model => model.Application_Id)
         </div>
 
@@ -58,17 +55,8 @@
             @Html.LabelFor(model => model.Date_Of_Payment)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Date_Of_Payment)
+             @Html.TextBoxFor(model => model.Date_Of_Payment, new { @class = "chooseDate1", @readonly = "readonly" })
             @Html.ValidationMessageFor(model => model.Date_Of_Payment)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Approved_By)
-        </div>
-        <div class="editor-field">
-       
-            @Html.DropDownList("Approved_By" , string.Empty)
-            @Html.ValidationMessageFor(model => model.Approved_By)
         </div>
 
         <p>
@@ -80,3 +68,16 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script type="text/javascript">
+   
+    $(document).ready(function () {
+        $(".chooseDate1").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '-100Y',
+            maxDate: '+10Y'
+        });
+    });
+
+</script>
