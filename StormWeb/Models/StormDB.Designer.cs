@@ -28,6 +28,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Document_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application_Document), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Result_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Result", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application_Result), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Student", "Student", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Student), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Payment_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Payment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Payment), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Document_Template_Document", "Template_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Template_Document), "Application_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application_Document), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Appointment_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Appointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Appointment), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Appointment_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Case), "Appointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Appointment), true)]
@@ -56,6 +57,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Template_Document_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Template_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Template_Document), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Faculty_University", "University", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.University), "Faculty", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Faculty), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Message_To_Message", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Message), "Message_To", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Message_To), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Payment_Staff", "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Staff), "Payment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Payment), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Side_Menu_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Side_Menu", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Side_Menu), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Role_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Staff_Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff_Role), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Employee_Emp_Dept", "Staff_Dept", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff_Dept), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
@@ -658,6 +660,22 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Payment> Payments
+        {
+            get
+            {
+                if ((_Payments == null))
+                {
+                    _Payments = base.CreateObjectSet<Payment>("Payments");
+                }
+                return _Payments;
+            }
+        }
+        private ObjectSet<Payment> _Payments;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Role> Roles
         {
             get
@@ -1104,6 +1122,14 @@ namespace StormWeb.Models
         public void AddToPassword_Reset(Password_Reset password_Reset)
         {
             base.AddObject("Password_Reset", password_Reset);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Payments EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPayments(Payment payment)
+        {
+            base.AddObject("Payments", payment);
         }
     
         /// <summary>
@@ -1895,6 +1921,28 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Student>("StormDBModel.FK_Application_Student", "Student", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Payment_Application", "Payment")]
+        public EntityCollection<Payment> Payments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Payment>("StormDBModel.FK_Payment_Application", "Payment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Payment>("StormDBModel.FK_Payment_Application", "Payment", value);
                 }
             }
         }
@@ -9758,6 +9806,334 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Payment")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Payment : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Payment object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="application_Id">Initial value of the Application_Id property.</param>
+        public static Payment CreatePayment(global::System.Int32 id, global::System.Int32 application_Id)
+        {
+            Payment payment = new Payment();
+            payment.Id = id;
+            payment.Application_Id = application_Id;
+            return payment;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Application_Id
+        {
+            get
+            {
+                return _Application_Id;
+            }
+            set
+            {
+                OnApplication_IdChanging(value);
+                ReportPropertyChanging("Application_Id");
+                _Application_Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Application_Id");
+                OnApplication_IdChanged();
+            }
+        }
+        private global::System.Int32 _Application_Id;
+        partial void OnApplication_IdChanging(global::System.Int32 value);
+        partial void OnApplication_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Amount
+        {
+            get
+            {
+                return _Amount;
+            }
+            set
+            {
+                OnAmountChanging(value);
+                ReportPropertyChanging("Amount");
+                _Amount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Amount");
+                OnAmountChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Amount;
+        partial void OnAmountChanging(Nullable<global::System.Decimal> value);
+        partial void OnAmountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Currency
+        {
+            get
+            {
+                return _Currency;
+            }
+            set
+            {
+                OnCurrencyChanging(value);
+                ReportPropertyChanging("Currency");
+                _Currency = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Currency");
+                OnCurrencyChanged();
+            }
+        }
+        private global::System.String _Currency;
+        partial void OnCurrencyChanging(global::System.String value);
+        partial void OnCurrencyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Receipt_No
+        {
+            get
+            {
+                return _Receipt_No;
+            }
+            set
+            {
+                OnReceipt_NoChanging(value);
+                ReportPropertyChanging("Receipt_No");
+                _Receipt_No = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Receipt_No");
+                OnReceipt_NoChanged();
+            }
+        }
+        private global::System.String _Receipt_No;
+        partial void OnReceipt_NoChanging(global::System.String value);
+        partial void OnReceipt_NoChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Payment_Method
+        {
+            get
+            {
+                return _Payment_Method;
+            }
+            set
+            {
+                OnPayment_MethodChanging(value);
+                ReportPropertyChanging("Payment_Method");
+                _Payment_Method = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Payment_Method");
+                OnPayment_MethodChanged();
+            }
+        }
+        private global::System.String _Payment_Method;
+        partial void OnPayment_MethodChanging(global::System.String value);
+        partial void OnPayment_MethodChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> Date_Of_Payment
+        {
+            get
+            {
+                return _Date_Of_Payment;
+            }
+            set
+            {
+                OnDate_Of_PaymentChanging(value);
+                ReportPropertyChanging("Date_Of_Payment");
+                _Date_Of_Payment = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Date_Of_Payment");
+                OnDate_Of_PaymentChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _Date_Of_Payment;
+        partial void OnDate_Of_PaymentChanging(Nullable<global::System.DateTime> value);
+        partial void OnDate_Of_PaymentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Approved_By
+        {
+            get
+            {
+                return _Approved_By;
+            }
+            set
+            {
+                OnApproved_ByChanging(value);
+                ReportPropertyChanging("Approved_By");
+                _Approved_By = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Approved_By");
+                OnApproved_ByChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Approved_By;
+        partial void OnApproved_ByChanging(Nullable<global::System.Int32> value);
+        partial void OnApproved_ByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Payment_Application", "Application")]
+        public Application Application
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Payment_Application", "Application").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Payment_Application", "Application").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Application> ApplicationReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("StormDBModel.FK_Payment_Application", "Application");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Application>("StormDBModel.FK_Payment_Application", "Application", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Payment_Staff", "Staff")]
+        public Staff Staff
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Staff>("StormDBModel.FK_Payment_Staff", "Staff").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Staff>("StormDBModel.FK_Payment_Staff", "Staff").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Staff> StaffReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Staff>("StormDBModel.FK_Payment_Staff", "Staff");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Staff>("StormDBModel.FK_Payment_Staff", "Staff", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Role")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -10546,6 +10922,28 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Case_Staff>("StormDBModel.FK_Case_Staff_Staff", "Case_Staff", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Payment_Staff", "Payment")]
+        public EntityCollection<Payment> Payments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Payment>("StormDBModel.FK_Payment_Staff", "Payment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Payment>("StormDBModel.FK_Payment_Staff", "Payment", value);
                 }
             }
         }
