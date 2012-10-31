@@ -839,6 +839,10 @@ namespace StormWeb.Controllers
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
 
+                string sys_message = "Your offer letter for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
+
+                MessageController.sendSystemMessage(app.Student.UserName, "Offer Letter received", sys_message);
+
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
             }

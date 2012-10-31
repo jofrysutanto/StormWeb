@@ -95,6 +95,13 @@ namespace StormWeb.Controllers
             cs.Staff_Id = CookieHelper.getStaffId();
             cs.Role = "Counsellor";
 
+            var apps = db.Applications.Where(x => x.Case_Id == id).ToList();
+
+            foreach (Application a in apps)
+            {
+                a.Status = "Staff_Assigned";
+            }
+
             db.Case_Staff.AddObject(cs);
             db.SaveChanges();
 

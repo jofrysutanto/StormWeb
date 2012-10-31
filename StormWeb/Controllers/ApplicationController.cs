@@ -287,6 +287,11 @@ namespace StormWeb.Controllers
             application.Date_Of_ApplicationStatus = DateTime.Now;
             db.ObjectStateManager.ChangeObjectState(application, EntityState.Modified);
             db.SaveChanges();
+
+            string sys_message = "Your application for " + application.Course.Course_Name + " at " + application.Course.Faculty.University.University_Name + " has been submitted."; 
+
+            MessageController.sendSystemMessage(application.Student.UserName, "Application submission", sys_message);
+
             LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (CookieHelper.Username +" Changed the application status of the Student : " + application.Student.Client.GivenName +" "+ application.Student.Client.LastName + "for the Application : " + application.Course.Course_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return RedirectToAction("Index");
         }

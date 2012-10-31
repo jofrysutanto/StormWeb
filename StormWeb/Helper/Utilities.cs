@@ -116,6 +116,9 @@ namespace StormWeb.Helper
         // GIven the username, get the Full Name of the person
         public static string getName(string username)
         {
+            if (username == "SYSTEM")
+                return "SYSTEM";
+
             StormWeb.Models.StormDBEntities db = new StormWeb.Models.StormDBEntities();
             if (isStudent(username))
             {

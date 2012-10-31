@@ -187,6 +187,33 @@ namespace StormWeb.Controllers
             return PartialView("~/Views/Message/Inbox.cshtml", getInboxMessages(CookieHelper.Username));
         }
 
+        public static void sendSystemMessage(string username, string subject, string content)
+        {
+            Message m = new Message();
+            StormDBEntities db = new StormDBEntities();
+
+            m.TimeStamp = DateTime.Now;
+            m.Deleted = false;
+            m.UserFrom = "SYSTEM";
+            
+            m.Subject = subject;
+            m.MessageContent = content;
+
+            db.Messages.AddObject(m);
+            db.SaveChanges();
+
+            Message_To mt = new Message_To();
+            mt.UserTo = username;
+            mt.HasRead = false;
+            mt.Deleted = false;
+            mt.Message_Id = m.Id;
+
+            db.Message_To.AddObject(mt);
+            db.SaveChanges();
+
+            return;
+        }
+
         // Return the list of contacts for the particular user based on their role and their id
       [Authorize(Roles = "Student,Counsellor")]
         [Authorize(Roles = "Student,Counsellor")]
