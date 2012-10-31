@@ -1,15 +1,5 @@
 ﻿@if (Request.IsAuthenticated)
 {
-                        <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"> My Branch <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                            @{
-                                <text> @Html.Raw(StormWeb.Helper.BranchHelper.getBranchNameList(StormWeb.Helper.CookieHelper.AssignedBranch,'|')) </text>
-                            }
-                            </li>
-                        </ul>
-                    </li>
     <li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">@StormWeb.Helper.CookieHelper.Name @{ 
     int totalCount = StormWeb.Helper.Utilities.countNewInbox();
     if (totalCount > 0)

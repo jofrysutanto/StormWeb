@@ -74,80 +74,118 @@ s=stripCharsInBag(strPhone,validWorldPhoneChars);
 return (isInteger(s) && s.length >= minDigitsInIPhoneNumber);
 }
 
+function loadNotifications(action)
+{
+    $('#notificationCenterBox').html("loading...");
+    var pageCount = action;
+
+    var reqData = "{'id':'"+pageCount+"'}";
+    
+    $.ajax({
+        url: '../Log/getLogs/',
+        data: reqData,
+        contentType: 'application/json, charset=utf-8',
+        dataType: 'json',
+        type: 'POST',
+        success: function (result) {
+            var resultHtml = "<h4 style='text-align:center'>Notifications</h4><hr style='margin-top:5px;margin-bottom:5px'/>";
+            resultHtml += '<ul class="nav">';
+            if (result == "")
+            {
+                resultHtml+="<li>No notifications to be shown</li>";                
+            }                 
+            for( var i = 0; i < result.length; i++)
+            {
+                var data = result[i];
+                var date = data.DateTime;
+                var re = /-?\d+/; 
+                var m = re.exec(date); 
+                var d = new Date(parseInt(m[0]));
+
+                var a_p = "";
+                var curr_hour = d.getHours();
+                if (curr_hour < 12)
+                    {
+                    a_p = "AM";
+                    }
+                else
+                    {
+                    a_p = "PM";
+                    }
+                if (curr_hour == 0)
+                    {
+                    curr_hour = 12;
+                    }
+                if (curr_hour > 12)
+                    {
+                    curr_hour = curr_hour - 12;
+                    }
+
+                var curr_min = d.getMinutes();
+
+                curr_min = curr_min + "";
+
+                if (curr_min.length == 1)
+                    {
+                    curr_min = "0" + curr_min;
+                    }
+                                    
+                resultHtml += '<li class="nav-header">' + data.Section + ' <small> on ' + d.getDate() + '-' + d.getMonth() + '-' + d.getYear() + ' at ' + curr_hour + ":" + curr_min + " " + a_p + '</small></li>';
+                resultHtml += '<li class="content alert alert-warning" style="padding-top:2px;padding-bottom:2px;margin-bottom:2px;">' + data.Comment + '</li><li class="divider"></li>';
+                
+            }
+            resultHtml += '</ul>';
+
+            if (pageCount == 0)
+            {
+                resultHtml += "<div class='row' style='padding-left:40px'><div class='pull-left'><div class='btn btn-primary disabled' id='notificationPrevBtn'>Prev</div></div>";
+            }
+            else
+            {
+                resultHtml += "<div class='row' style='padding-left:40px'><div class='pull-left'><div class='btn btn-primary' id='notificationPrevBtn' onClick='loadNotifications("+((pageCount*1)-1)+")'>Prev</div></div>"
+                
+            }
+            if (result == "")
+            {
+                resultHtml += "<div class='pull-right'><div class='btn btn-primary disabled' id='notificationNextBtn'>Next</div></div></div>";
+            }
+            else
+            {                
+                resultHtml += "<div class='pull-right'><div class='btn btn-primary' id='notificationNextBtn' onClick='loadNotifications("+((pageCount*1)+1)+")'>Next</div></div></div>";
+            }
+
+            resultHtml += "<div style='text-align:center'><div class='btn btn-warning' id='notificationClose' onClick=\"$('#notificationCenterBox').bounceBoxHide()\">x Close</div></div>";
+
+
+            $('#notificationCenterBox').html(resultHtml);
+        },
+        error: function (result) {
+            alert('Error retrieving notifications');
+        }
+
+    });
+}
+
 // Notification center
 $(function () {
             /* Converting the #box div into a bounceBox: */
             $('#notificationCenterBox').bounceBox();
 
+            /* Ajax call to load notifications */
+
+            
+
             /* Listening for the click event and toggling the box: */
             $('.toggleNotificationCenter').click(function (e) {
                  $('#notificationCenterBox').html("loading...");
-                $.ajax({
-                    url: '../Log/getLogs/',
-                    dataType: "json",
-                    data: "",
-                    type: "GET",
-                    success: function (result) {
-                        var resultHtml = '<ul class="nav">';                        
-                        for( var i = 0; i < result.length; i++)
-                        {
-                            var data = result[i];
-                            var date = data.DateTime;
-                            var re = /-?\d+/; 
-                            var m = re.exec(date); 
-                            var d = new Date(parseInt(m[0]));
 
-                            var a_p = "";
-                            var curr_hour = d.getHours();
-                            if (curr_hour < 12)
-                               {
-                               a_p = "AM";
-                               }
-                            else
-                               {
-                               a_p = "PM";
-                               }
-                            if (curr_hour == 0)
-                               {
-                               curr_hour = 12;
-                               }
-                            if (curr_hour > 12)
-                               {
-                               curr_hour = curr_hour - 12;
-                               }
-
-                            var curr_min = d.getMinutes();
-
-                            curr_min = curr_min + "";
-
-                            if (curr_min.length == 1)
-                               {
-                               curr_min = "0" + curr_min;
-                               }
-
-
-                            resultHtml += '<li class="nav-header">' + data.Section + ' <small> on ' + d.getDate() + '-' + d.getMonth() + '-' + d.getYear() + ' at ' + curr_hour + ":" + curr_min + " " + a_p + '</small></li>';
-                            resultHtml += '<li class="content">' + data.Comment + '</li><li class="divider"></li>';
-                        }
-                        resultHtml += '</ul>';
-
-                        $('#notificationCenterBox').html(resultHtml);
-                    },
-                    error: function (result) {
-                        alert('failed');
-                    }
-
-                });
+                 loadNotifications(0);
 
 
                 $('#notificationCenterBox').bounceBoxToggle();
                 e.preventDefault();
             });
 
-            /* When the box is clicked, hide it: */
-            $('#notificationCenterBox').click(function () {
-                $('#notificationCenterBox').bounceBoxHide();
-            });
         });
 
 $(function () {

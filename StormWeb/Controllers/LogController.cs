@@ -83,14 +83,15 @@ namespace StormWeb.Controllers
             return RedirectToAction("Home", "Index");
         }
 
-        [HttpGet]
-        public ContentResult getLogs()
+        [HttpPost]
+        public ContentResult getLogs(int id)
         {
             string username = CookieHelper.Username;
 
+
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            string jsonResult = serializer.Serialize(db.Student_Log.OrderByDescending(x => x.DateTime).Take(5).ToList());
+            string jsonResult = serializer.Serialize(db.Student_Log.Where(x => x.UserName == username).OrderByDescending(x => x.DateTime).Skip(id * 5).Take(5).ToList());
 
             return new ContentResult{ Content = jsonResult, ContentType = "application/json"};
         }

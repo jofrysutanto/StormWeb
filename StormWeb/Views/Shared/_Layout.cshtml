@@ -26,7 +26,9 @@
 
 </head>
 <body>
-    <div id="notificationCenterBox">
+    <div id="notificationCenterBox">        
+        <div style='text-align:center'><div class='btn btn-error' id='notificationClose'>x Close</div></div>
+        
     </div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner top-nav">
@@ -40,12 +42,7 @@
                     </div>
                 </div>
                 <ul class="nav pull-right">
-                    <li><a href="http://time.is/Melbourne" id="time_is_link"><i class="white-icons clock"></i>Melbourne: <span id="Melbourne_z609"></span>
-                        <script src="http://widget.time.is/t.js"></script>
-                        <script>
-                            //time_is_widget.init({ Melbourne_z609: {} });
-                        </script>
-                    </a></li>
+                    
                     @Html.Partial("_LogOnPartial")                    
                 </ul>
                 <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar"
@@ -84,6 +81,7 @@
                         </li>
                         <li style="text-align:center">
                             <a href="#" class="toggleNotificationCenter"><i class="white-icons alert_2"></i>Notifications</a>
+                            <input type="hidden" value="0" id="pageCount"/>
                         </li>
                     </ul>
                 </div>

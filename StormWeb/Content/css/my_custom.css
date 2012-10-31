@@ -12,12 +12,12 @@
 #notificationCenterBox
 {
     background:url('../img/box_bg.jpg') repeat-x center top #fcfcfc;
-	height:600px;
+	height:550px;
 	padding:20px;
 	margin-top:-10px;
-	padding-top:30px;
+	padding-top:15px;
 	width:400px;
-	border:1px solid #EDE8FF;
+	border:1px solid #5CAAFF;
 	color:#494848;
 	text-shadow:1px 1px 0 white;
 	font-family:'Myriad Pro',Arial,Helvetica,sans-serif;
