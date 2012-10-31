@@ -21,12 +21,11 @@
 
     });
 </script>
-<div class="row-fluid">
-    <div class="span12">
-        <div class="box-tab">
-            @if (StormWeb.Helper.CookieHelper.isStaff())
-            {
-                 
+ @if (StormWeb.Helper.CookieHelper.isStaff())
+ {
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box-tab">
                 <div class="tabbable">
                     <ul class="nav nav-tabs" id="myTab">
                         <a id="example" data-content="Request for Approval - Counselor has to call and confirm appointment with student"
@@ -242,7 +241,7 @@
                                                             }
                                                     </tbody>
                                                 </table>
-                                            }
+                                                }
                                         </div>
                                     </div>
                                                     </div>
@@ -520,11 +519,10 @@
                         </div>
                     </div>
                 </div>
-                    
-            }
+            </div>
         </div>
     </div>
-</div>
+ }
 @*<div class="span6 ">
     <div class="nonboxy-widget">
         <div class="widget-head">
@@ -545,14 +543,14 @@
                   
     <div class="row-fluid">
         <div class="span12">
-            <div class="box-tab">
-                <div class="page-header">
-                    <h1>
-                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
-                        <small><b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
-                            | </small><small><b>Address</b>: @ViewBag.BranchAddress</small>
-                    </h1>
-                </div>
+            
+            <blockquote class="quote_blue">
+					<h2>Your counsellor: @ViewBag.StaffName</h2>
+                        <b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
+                            | <b>Address</b>: @ViewBag.BranchAddress
+                    
+				</blockquote>
+                <div class="box-tab">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab1" data-toggle="tab">Upcoming Appointments</a></li>

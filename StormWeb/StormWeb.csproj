@@ -201,6 +201,7 @@
     <Content Include="Content\img\bg_login.jpg" />
     <Content Include="Content\img\bg_login.png" />
     <Content Include="Content\img\bg_login_gradient.jpg" />
+    <Content Include="Content\img\box_bg.jpg" />
     <Content Include="Content\img\bubble.png" />
     <Content Include="Content\img\buttons.gif" />
     <Content Include="Content\img\Calendar.png" />
@@ -285,6 +286,10 @@
     <Content Include="Content\img\sprite-icons\cs_h.png" />
     <Content Include="Content\img\sprite-icons\dashboard-icons-dark.png" />
     <Content Include="Content\img\sprite-icons\icon-black.png" />
+    <Content Include="Content\img\sprite-icons\icon-dark-blue.jpg" />
+    <Content Include="Content\img\sprite-icons\icon-dark-blue.png" />
+    <Content Include="Content\img\sprite-icons\icon-light-blue.jpg" />
+    <Content Include="Content\img\sprite-icons\icon-light-blue.png" />
     <Content Include="Content\img\sprite-icons\icons-a.png" />
     <Content Include="Content\img\sprite-icons\icons-color.png" />
     <Content Include="Content\img\sprite-icons\icons-glossy.png" />

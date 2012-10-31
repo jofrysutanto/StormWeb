@@ -47,7 +47,7 @@
             if (step_num == 1)
             {
                 toValidate = new Array("#ClientModel_GivenName", "#ClientModel_LastName", "#ClientModel_Dob","#ClientModel_Email", "#ClientModel_ContactNumber",
-                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Street_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
+                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Address_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
                                             "#AddressModel_Zipcode", "#selectedBranch" );
             }
             else if(step_num == 2)
@@ -79,6 +79,7 @@
                     }
                     else
                     {
+                        
                         var valid = $("#registrationForm").validate().element(toValidate[i]);
                         if (!(valid))
                         {
@@ -297,7 +298,7 @@
       // On finish, we validate and submit
       function onFinishCallback(){
             toValidate = new Array("#ClientModel_GivenName", "#ClientModel_LastName", "#ClientModel_Dob","#ClientModel_Email", "#ClientModel_ContactNumber",
-                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Street_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
+                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Address_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
                                             "#AddressModel_Zipcode", "#Username", "#Password", "#Confirm","#selectedBranch" );
 
             var isValid = true;

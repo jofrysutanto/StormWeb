@@ -83,9 +83,6 @@ namespace StormWeb.Controllers
         {
             StaffAppointmentListViewModel model = new StaffAppointmentListViewModel();
             var appointments = db.Appointments.Include("Case");
-            //ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours", appointment.AppDateTime.Hour);
-            //ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes", "Minutes", appointment.AppDateTime.Minute);
-            //ViewBag.Case_Id = new SelectList(db.Cases, "Case_Id", "CreatedBy", appointment.Case_Id);
             if (StormWeb.Helper.CookieHelper.isStudent())
             {
                 int studentId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StudentId);
@@ -257,34 +254,38 @@ namespace StormWeb.Controllers
 
             if (StormWeb.Helper.CookieHelper.isStaff())
             {
-                /* *
-                 * Retriving all students specific to a particular counselor
-                 * */
-                
-                    int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
-                    var student = from caseStaff in db.Case_Staff
-                                  from cases in db.Cases
-                                  from stud in db.Students
-                                  where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
-                                  select stud.Client.GivenName;
-                    SelectList studs = new SelectList(student);
-                    ViewBag.staffSpecificStudent = studs.ToList();
                
 
                 /* *
                  * Gets the specific student via check appointment for whom the counsellor wants to book an appointment with
                  * */
-                if (Request.QueryString["studentId"] != null)
-                {
-                    int studentId = Convert.ToInt32(Request.QueryString["studentId"]);
+                    if (Request.QueryString["studentId"] != null)
+                    {
+                        int studentId = Convert.ToInt32(Request.QueryString["studentId"]);
 
-                    Client client = (from st in db.Students
-                                     from cl in db.Clients
-                                     where st.Student_Id == studentId && st.Client_Id == cl.Client_Id
-                                     select cl).Single();
+                        Client client = (from st in db.Students
+                                         from cl in db.Clients
+                                         where st.Student_Id == studentId && st.Client_Id == cl.Client_Id
+                                         select cl).Single();
 
-                    ViewBag.specificStudent = client.GivenName;
-                }
+                        ViewBag.specificStudent = client.GivenName;
+                    }
+                    else
+                    {
+                        /* *
+                         * Retriving all students specific to a particular counselor
+                         * */
+
+                        int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
+                        var student = from caseStaff in db.Case_Staff
+                                      from cases in db.Cases
+                                      from stud in db.Students
+                                      where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
+                                      select stud.Client.GivenName;
+                        SelectList studs = new SelectList(student);
+                        ViewBag.staffSpecificStudent = studs.ToList();
+               
+                    }
             }
             else
             {
@@ -307,6 +308,13 @@ namespace StormWeb.Controllers
         public ActionResult Create(Appointment appointment, FormCollection fc)
         {
             #region Populating Drop down list for Hours,Minutes and Student
+            string studentName = fc["staffSpecificStudent"];
+            
+            if (studentName != "" || studentName != null)
+            {
+                ViewBag.name = studentName;
+            }
+            
             if (fc["listHours"] == "" && fc["listMinutes"] == "")
             {
                 ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours","Hours");
@@ -324,23 +332,26 @@ namespace StormWeb.Controllers
                 /* *
                  * Retrieving all students specific to a particular counselor
                  * */
-                Branch_Staff br = db.Branch_Staff.Single(x => x.Staff_Id == staffId);
-                var student = from caseStaff in db.Case_Staff
-                              from cases in db.Cases
-                              from stud in db.Students
-                              where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
-                              select stud.Client.GivenName;
-                
-                
-                SelectList studs = new SelectList(student, fc["staffSpecificStudent"]);
-                
-                ViewBag.staffSpecificStudent = studs.ToList();
+               
+                    Branch_Staff br = db.Branch_Staff.Single(x => x.Staff_Id == staffId);
+                    var student = from caseStaff in db.Case_Staff
+                                  from cases in db.Cases
+                                  from stud in db.Students
+                                  where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
+                                  select stud.Client.GivenName;
+
+
+                    SelectList studs = new SelectList(student, fc["staffSpecificStudent"]);
+
+                    ViewBag.staffSpecificStudent = studs.ToList();
+                    studentName = fc["staffSpecificStudent"];
+               
             }
             #endregion
 
-            string studentName = fc["staffSpecificStudent"];
+            
 
-            if (studentName == "")
+            if (studentName == "" || studentName == null)
             {
                 ModelState.AddModelError("StudentEmpty", "Please select a student!");
                 return View(appointment);
@@ -399,7 +410,7 @@ namespace StormWeb.Controllers
                 /* *
                 * Gets the specific student via check appointment for whom the counsellor wants to book an appointment with
                 * */
-                if (Request.QueryString["studentId"] != null)
+                /*if (Request.QueryString["studentId"] != null)
                 {
                     int studentId = Convert.ToInt32(Request.QueryString["studentId"]);
 
@@ -409,8 +420,12 @@ namespace StormWeb.Controllers
                                      select cl).Single();
 
                     ViewBag.specificStudent = client.GivenName;
+                }*/
+
+                if (ViewBag.specificStudent != null)
+                {
+                    studentName = (string)ViewBag.specificStudent;
                 }
-                
                 
 
                 /* *

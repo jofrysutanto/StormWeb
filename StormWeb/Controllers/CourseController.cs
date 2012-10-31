@@ -125,7 +125,9 @@ namespace StormWeb.Controllers
                                    {
                                        Text = u.University_Name,
                                        Value = SqlFunctions.StringConvert((double)u.University_Id),
-                                   };           
+                                   };
+
+            course.Faculty_Id = Convert.ToInt32(fc["Faculty_Select"]);
             if (ModelState.IsValid)
             {
                 if (course.Commence_Date_Sem < DateTime.Now)

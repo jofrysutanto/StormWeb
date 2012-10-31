@@ -34,7 +34,7 @@
                         <td>
                         @if (ViewBag.specificStudent != null)
                         {
-                            @Html.Encode(ViewBag.specificStudent);
+                            @Html.TextBox("staffSpecificStudent", (string)ViewBag.specificStudent, new {  @readonly = "readonly" });
                         }
                         else
                         {
