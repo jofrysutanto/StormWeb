@@ -95,7 +95,7 @@
                                                     <li>
                                                         <div class="widget-content">
                                                             <div class="widget-box">
-                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='white-icons download_to_computer tip-top' data-original-title="Download Offer Letter">
+                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Application_Id })" class='black-icons download tip-top' data-original-title="Download Offer Letter">
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -114,7 +114,7 @@
                                                 <li>
                                                 <div class="widget-content">
                                                     <div class="widget-box">
-                                                        <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='white-icons download_to_computer tip-top' data-original-title="Download CoE">
+                                                        <a href="@Url.Action("DownloadCoE", new { id = item.Application_Result.FirstOrDefault().Application_Id})" class='black-icons download tip-top' data-original-title="Download CoE">
                                                         </a>
                                                          </div>
                                                 </div>
@@ -132,7 +132,7 @@
                                         if (appDoc != null)
                                         {
                                        <li>@Html.DisplayFor(modelItem => x.Form_Name)                                      
-                                       <a href="@Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                       <a href="@Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id })" class='black-icons download tip-top' data-original-title="Download">
                                        </a>
                                         </li>
                                         }
@@ -304,7 +304,7 @@
                                                 }
                                                 else
                                                 {
-                                                 <a href="@Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                                 <a href="@Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id })" class='black-icons download tip-top' data-original-title="Download">
                                                     </a>
                                                 }
                                     </td>
@@ -323,7 +323,7 @@
                                     @if (!(items.UploadedOn == null))
                                     {
                                                     @Html.DisplayFor(modelItem => items.FileName)
-                                                    <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download">
+                                                    <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })" class='black-icons download tip-top' data-original-title="Download">
                                                     </a>
                                     }
                                     else

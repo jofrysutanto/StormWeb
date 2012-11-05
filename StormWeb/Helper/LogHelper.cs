@@ -197,6 +197,7 @@ namespace StormWeb.Helper
         public static string SECTION_APPOINTMENT = "Appointment";
         public static string SECTION_BRANCH = "Branch";
         public static string SECTION_DOCUMENT = "Document";
+        public static string SECTION_PAYMENT = "Payment";
         public static string SECTION_PROFILE = "Profile";
         public static string SECTION_MESSAGE = "Message";
         public static string SECTION_UNIVERSITY = "University";

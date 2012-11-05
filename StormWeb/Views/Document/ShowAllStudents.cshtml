@@ -61,7 +61,7 @@ $(function () {
                                            <i class="black-icons day_calendar"></i> Registered_On
                                         </th>
                                         <th>
-                                           <i class="black-icons magnifier_zoom_in_co"></i> View
+                                           <i class="black-icons documents"></i>  Applications
                                         </th>
                                     </tr>
                         </thead>
@@ -112,9 +112,9 @@ $(function () {
                                          </td>
                                          <td>
                                          <ul>
-                                             <a href=@Url.Action("StudentDetailsCompleted", "Document", new { id = item.Client_Id })><i class='color-icons application_view_xp_co tip-top' data-original-title= "Show Completed Applications"></i></a>
+                                             <a href=@Url.Action("StudentDetailsCompleted", "Document", new { id = item.Client_Id })><i class='black-icons document tip-top' data-original-title= "Completed Applications"></i></a>
                                                                                                        
-                                             <a href=@Url.Action("StudentDetails", "Document", new { id = item.Client_Id })><i class='color-icons application_list_co tip-top' data-original-title= "Show Active Applications"></i></a>
+                                             <a href=@Url.Action("StudentDetails", "Document", new { id = item.Client_Id })><i class='color-icons application_list_co tip-top' data-original-title= "Active Applications"></i></a>
                                             
                                          </ul>
                                          </td>

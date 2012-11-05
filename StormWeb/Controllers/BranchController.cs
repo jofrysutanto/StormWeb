@@ -16,7 +16,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Index()
         {
 
@@ -25,7 +25,7 @@ namespace StormWeb.Controllers
 
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
         {
             Branch branch = db.Branches.Single(b => b.Branch_Id == id);
@@ -34,7 +34,7 @@ namespace StormWeb.Controllers
 
         #region CREATE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Create()
         {
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name");
@@ -42,7 +42,7 @@ namespace StormWeb.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost]
         public ActionResult Create(Branch branch)
         {
@@ -63,7 +63,7 @@ namespace StormWeb.Controllers
 
         #region EDIT
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Edit(int id)
         {
             BranchModel branchmodel = new BranchModel();
@@ -81,7 +81,7 @@ namespace StormWeb.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Edit(BranchModel branchmodel, FormCollection collection)
         {
             if (ModelState.IsValid)
@@ -112,7 +112,7 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Delete(int id)
         {
             Branch branch = db.Branches.Single(b => b.Branch_Id == id);
@@ -121,7 +121,7 @@ namespace StormWeb.Controllers
 
 
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult DeleteConfirmed(int id)
         {
             Branch branch = db.Branches.Single(b => b.Branch_Id == id);

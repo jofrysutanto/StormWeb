@@ -24,15 +24,15 @@ namespace StormWeb.Controllers
     public class CourseController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
-         
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult List()
         {
             var courses = db.Courses.Include("Course_Level").Include("Faculty");
             return View(courses.ToList());
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult ViewCourses(int id)
         {
             //var courses = db.Courses.Include("Course_Level").Include("Faculty");
@@ -83,15 +83,15 @@ namespace StormWeb.Controllers
 
             return View(courses.Except(studentApplication).ToList());
         }
- 
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
-         
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
 
         #region CREATE
 
@@ -110,8 +110,8 @@ namespace StormWeb.Controllers
             return View();
 
         }
-         
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
 
         [HttpPost]
         public ActionResult Create(Course course, FormCollection fc)
@@ -176,7 +176,7 @@ namespace StormWeb.Controllers
 
         #endregion
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetFaculties(int uniID = -1)
         {
@@ -196,7 +196,7 @@ namespace StormWeb.Controllers
 
         #region EDIT
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Edit(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
@@ -204,8 +204,8 @@ namespace StormWeb.Controllers
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
             return View(course);
         }
-         
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost]
         public ActionResult Edit(Course course,FormCollection fc)
         {
@@ -263,14 +263,14 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Delete(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
-         
-        [Authorize(Roles = "Super")]
+
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

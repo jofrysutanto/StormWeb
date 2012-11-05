@@ -15,6 +15,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
+using StormWeb.Helper;
+using System.Xml;
 
 namespace StormWeb.Controllers
 { 
@@ -22,6 +24,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
+        
         //
         // GET: /Payment/
 
@@ -38,6 +41,7 @@ namespace StormWeb.Controllers
             return View(model);
         }
 
+
         //
         // GET: /Payment/Details/5
 
@@ -47,13 +51,14 @@ namespace StormWeb.Controllers
             return View(payment);
         }
 
-        //
-        // GET: /Payment/Create
-
+        
         public ActionResult Create(int id)
         {
             ViewBag.Application_Id = id;
-            ViewBag.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
+
+            ViewBag.curr = new SelectList(StormWeb.Models.ModelHelper.Currency.getCurrencyFromXml(), "curr", "curr");
+
+            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetType(), "MethodType", "MethodType");
             return View();
         } 
 
@@ -67,10 +72,17 @@ namespace StormWeb.Controllers
             if (ModelState.IsValid)
             {
                 payment.Application_Id = id;
+                payment.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
                 db.Payments.AddObject(payment);
+                
                 Application app = db.Applications.Single(a => a.Application_Id == id);
                 app.Status = "Payment_Received";
+
                 db.SaveChanges();
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Payment added   " + payment.Id), LogHelper.LOG_CREATE, LogHelper.SECTION_PAYMENT);
+
+                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Payment transaction was created!");
+
                 return View("Refresh");
             }
 
@@ -83,8 +95,8 @@ namespace StormWeb.Controllers
         public ActionResult Edit(int id)
         {
             Payment payment = db.Payments.Single(p => p.Id == id);
-            ViewBag.Application_Id = new SelectList(db.Applications, "Application_Id", "Status", payment.Application_Id);
-            ViewBag.Approved_By = new SelectList(db.Staffs, "Staff_Id", "Title", payment.Approved_By);
+            payment.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
+            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetType(), "MethodType", "MethodType");
             return View(payment);
         }
 
@@ -99,33 +111,44 @@ namespace StormWeb.Controllers
                 db.Payments.Attach(payment);
                 db.ObjectStateManager.ChangeObjectState(payment, EntityState.Modified);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Payment Modified   " + payment.Id), LogHelper.LOG_UPDATE, LogHelper.SECTION_PAYMENT);
+
+                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Payment transaction was modified!");
+
+                return View("Refresh");
             }
-            ViewBag.Application_Id = new SelectList(db.Applications, "Application_Id", "Status", payment.Application_Id);
-            ViewBag.Approved_By = new SelectList(db.Staffs, "Staff_Id", "Title", payment.Approved_By);
+
             return View(payment);
         }
 
         //
         // GET: /Payment/Delete/5
  
-        public ActionResult Delete(int id)
-        {
-            Payment payment = db.Payments.Single(p => p.Id == id);
-            return View(payment);
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    Payment payment = db.Payments.Single(p => p.Id == id);
+        //    return View(payment);
+        //}
 
-        //
-        // POST: /Payment/Delete/5
+        ////
+        //// POST: /Payment/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        //[HttpPost, ActionName("Delete")]
+        public ActionResult Delete(int id, int appId)
         {            
             Payment payment = db.Payments.Single(p => p.Id == id);
             db.Payments.DeleteObject(payment);
+            Application app = db.Applications.Single(a => a.Application_Id == appId);
+            app.Status = "Offer_Letter";
+            db.ObjectStateManager.ChangeObjectState(app, EntityState.Modified);
             db.SaveChanges();
+            LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Payment Deleted   " + payment.Id), LogHelper.LOG_DELETE, LogHelper.SECTION_PAYMENT);
+
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Payment transaction was deleted!");
+
             return RedirectToAction("Index");
         }
+        
 
         protected override void Dispose(bool disposing)
         {

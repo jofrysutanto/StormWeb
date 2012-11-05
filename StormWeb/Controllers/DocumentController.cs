@@ -963,7 +963,24 @@ namespace StormWeb.Controllers
         [Authorize]
         public FileResult DownloadOfferLetter(int id)
         {
-            Application_Result appDoc = db.Application_Result.Single(x => x.Id == id);
+            Application_Result appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "O");
+            string path = appDoc.Path;
+            string fileToDownload = appDoc.FileName;
+            string file = Path.Combine(path, fileToDownload);
+            string ext = Path.GetExtension(file);
+            string contentType = "application/doc/pdf";
+
+            //Parameters to file are
+            //1. The File Path on the File Server
+            //2. The content type MIME type
+            //3. The parameter for the file save by the browser
+
+            return File(file, contentType, appDoc.FileName);
+        }
+        // The following is used to download the previously uploaded CoE
+        public FileResult DownloadCoE(int id)
+        {
+            Application_Result appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "C");
             string path = appDoc.Path;
             string fileToDownload = appDoc.FileName;
             string file = Path.Combine(path, fileToDownload);

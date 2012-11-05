@@ -16,14 +16,14 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Index()
         {
             var clients = db.Clients.Include("Address");
             return View(clients.ToList());
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
         {
             Client client = db.Clients.Single(c => c.Client_Id == id);
@@ -59,7 +59,7 @@ namespace StormWeb.Controllers
 
         #endregion
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult List()
         {
@@ -301,7 +301,7 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Delete(int id)
         {
             Client client = db.Clients.First(i => i.Client_Id == id);

@@ -83,7 +83,7 @@ $(function () {
                                     <td>
                                         <ul>
                                             <li>@Html.DisplayFor(modelItem => item.Course_Name)
-                                                <a href="@Url.Action("UploadFileTemp", "Document", new { id = item.Course_Id , uni_Id = item.Faculty.University_Id})" class='myFrame color-icons drive_cd_empty_co tip-top' data-original-title="Upload New Form" title="Upload ">
+                                                <a href="@Url.Action("UploadFileTemp", "Document", new { id = item.Course_Id , uni_Id = item.Faculty.University_Id})" class='myFrame black-icons upload tip-top' data-original-title="Upload New Form" title="Upload ">
                                                 </a></li>
                                             <li><i class="icon-small-black "></i>
                                                 @Html.DisplayFor(modelItem => item.Faculty.University.University_Name)
@@ -99,7 +99,7 @@ $(function () {
                                                 if (appDoc.FileName != null)
                                                 {
                                                 <li>@Html.DisplayFor(modelItem => appDoc.Form_Name)
-                                                <a href="@Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id })" class='white-icons download_to_computer tip-top' data-original-title="Download Template">
+                                                <a href="@Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id })" class='black-icons download tip-top' data-original-title="Download Template">
                                                                 </a></li>
                                                 }
                                                 else

@@ -111,6 +111,7 @@
     <Compile Include="Helper\PageExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\PaymentHelper.cs" />
     <Compile Include="Helper\RolesHelper.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +131,7 @@
     <Compile Include="Models\DocumentIndexModel.cs" />
     <Compile Include="Models\General_EnquiryMD.cs" />
     <Compile Include="Models\ManageRoleModel.cs" />
+    <Compile Include="Models\ModelHelper\Currency.cs" />
     <Compile Include="Models\ModelHelper\DocumentHelper.cs" />
     <Compile Include="Models\ModelHelper\ProgressHelper.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\currency.xml" />
     <Content Include="App_Data\Templates\General\th0.jpg" />
     <Content Include="Content\css\bootstrap-clean.css" />
     <Content Include="Content\css\bootstrap-responsive.css" />
@@ -747,6 +750,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Views\Payment\Edit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -34,12 +34,18 @@ $(function () {
         <div class="span12">
             <div class="box-tab">
                 <div class="page-header">
-                    <h1>
-@*                        &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
+                 <h1>
+                       &nbsp;&nbsp;Payment
+                        
+                   </h1>
+                
+
+@*                    <h1>
+                       &nbsp;&nbsp;Your counsellor: @ViewBag.StaffName
                         <small><b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
                             | </small><small><b>Address</b>: @ViewBag.BranchAddress</small>
-*@                    </h1>
-                </div>
+                   </h1>
+*@                </div>
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab1" data-toggle="tab">Unpaid Applications</a></li>
@@ -70,41 +76,61 @@ $(function () {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.unpaidApplications)
-                                            { 
+                                           
                                                 <tr>
                                                     <td>
                                                         <ul>
+                                                         @foreach (var item in Model.unpaidApplications)
+                                                            { 
                                                             <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">
                                                             @item.Student.Client.GivenName
-                                                            @item.Student.Client.LastName</a></li>
+                                                            @item.Student.Client.LastName</a>
+                                                            </li>
+                                                             }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.unpaidApplications)
+                                                            {
                                                             <li>
                                                                 @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
                                                             </li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.unpaidApplications)
+                                                            {
                                                             <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.unpaidApplications)
+                                                            {
                                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
+                                                            }
                                                         </ul>
                                                     </td>
+                                                    
+                                                    
+
                                                     <td>
                                                         <ul>
-                                                            <a class='tip-top ifName' href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top'
+                                                        @foreach (var item in Model.unpaidApplications)
+                                                            {
+                                                            <li><a class='tip-top ifName' href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top'
                                                                 data-original-title="Add Payment"></i></a>
+                                                            </li>
+                                                            }
                                                         </ul>
                                                     </td>
+
                                                 </tr>
-                                            }
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -129,67 +155,190 @@ $(function () {
                                                    <i class="color-icons zone_money_co"></i>Status
                                                 </th>
                                                 <th>
-                                                    <i class="color-icons money_co"></i> Payment
+                                                    <i class="color-icons comment_co"></i> Comment
                                                 </th>
+                                                <th>
+                                                    <i class="color-icons calendar_2_co"></i> Date Of Payment
+                                                </th>
+
+                                                <th>
+                                                    <i class="color-icons coins_co"></i> Payment Method
+                                                </th>
+                                                <th>
+                                                    <i class="color-icons zone_money_co"></i> Receipt No
+                                                </th>
+                                                <th>
+                                                    <i class="color-icons money_co"></i> Amount
+                                                </th>
+                                                <th>
+                                                    <i class="color-icons hammer_screwdriver_co"></i> Action
+                                                </th>
+
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            @foreach (var item in Model.paidApplications)
-                                            {
+                                            
                                                 <tr>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                        {
                                                             <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">@item.Student.Client.GivenName
                                                                 @item.Student.Client.LastName</a></li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {
                                                             <li>
                                                                 @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
                                                             </li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {       
                                                             <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
                                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
+                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
-                                                        <div class="widget-content">
+                                                        <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
+                                                            if (item.Payments.Single().Comment != null)
+                                                            {
+                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Comment)</li>
+                                                            }
+                                                            else
+                                                            {
+                                                            
+                                                                <li>&nbsp;</li>
+                                                            } 
+                                                          }                                                       
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
+                                                            if (item.Payments.Single().Date_Of_Payment != null)
+                                                            {
+                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Date_Of_Payment)</li>
+                                                            }
+                                                            else
+                                                            {
+                                                            
+                                                                <li>&nbsp;</li>
+                                                            } 
+                                                          }                                                       
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
+                                                            if (item.Payments.Single().Payment_Method != null)
+                                                            {
+                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Payment_Method)</li>
+                                                            }
+                                                            else
+                                                            {
+                                                            
+                                                                <li>&nbsp;</li>
+                                                            } 
+                                                          }                                                       
+                                                        </ul>
+                                                    </td>
+
+                                                    <td>
+                                                        <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
+                                                            if (item.Payments.Single().Receipt_No != null)
+                                                            {
+                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Receipt_No)</li>
+                                                            }
+                                                            else
+                                                            {
+                                                            
+                                                                <li>&nbsp;</li>
+                                                            } 
+                                                          }                                                       
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                        @foreach (var item in Model.paidApplications)
+                                                         {  
+                                                            if (item.Payments.Single().Amount != null)
+                                                            {
+                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Currency) @Html.DisplayFor(modelItem => item.Payments.Single().Amount) </li>
+                                                            }
+                                                            else
+                                                            {
+                                                            
+                                                                <li>&nbsp;</li>
+                                                            } 
+                                                          }                                                       
+                                                        </ul>
+                                                    </td>
+
+                                                    <td>
+                                                    <ul>
+                                                    @foreach (var item in Model.paidApplications)
+                                                    {
+                                                        if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) < 100)
+                                                        {
+                                                        <li><div class="widget-content">
                                                             <div class="widget-box">
-                                                                <a class='tip-top ifName' href="@Url.Action("Edit", new { id = item.Payments.FirstOrDefault().Id })" class='color-icons page_white_paintbrush_co tip-top' data-original-title="Edit Payment">
-                                                                </a><a class="color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
-                                                                    href="#myModal"></a>
-                                                                <div class="modal hide fade" id="myModal" style="display: none;">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal">
-                                                                            ×</button>
-                                                                        <h3>
-                                                                            Confirm</h3>
+                                                                <a  href="@Url.Action("Edit", new { id = item.Payments.FirstOrDefault().Id })"  class='ifName color-icons pencil_co tip-top' data-original-title="Edit Payment">
+                                                                </a>
+
+                                                                    <a class="color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
+                                                                             href="#myModal@(item.Payments.FirstOrDefault().Id)"></a>
+                                                                    <div class="modal hide fade" id="myModal@(item.Payments.FirstOrDefault().Id)" style="display: none;">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                                ×</button>
+                                                                            <h3>
+                                                                                Confirm</h3>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>
+                                                                                Confirm Delete?
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <a href="@Url.Action("Delete", new { id = item.Payments.FirstOrDefault().Id , appId = item.Application_Id })" class="btn btn-mini btn-warning">
+                                                                                Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                                                                                    Cancel</a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        <p>
-                                                                            Confirm Delete?
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <a href="@Url.Action("Delete", new { id = item.Payments.FirstOrDefault().Id })" class="btn btn-mini btn-warning">
-                                                                            Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
-                                                                                Cancel</a>
-                                                                    </div>
-                                                                </div>
+                                                            
                                                             </div>
                                                         </div>
+                                                        </li>
+                                                        }            
+                                                    }
+                                                    </ul>
                                                     </td>
+
                                                 </tr>
-                                            }
+                                            
                                         </tbody>
                                     </table>
                                 </div>

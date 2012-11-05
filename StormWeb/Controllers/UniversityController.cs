@@ -24,7 +24,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Index()
         {
             var universities = db.Universities.Include("Country");
@@ -32,7 +32,7 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
@@ -41,7 +41,7 @@ namespace StormWeb.Controllers
 
         #region CREATE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Create()
         {
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
@@ -49,7 +49,7 @@ namespace StormWeb.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost]
         public ActionResult Create(University university, FormCollection fc)
         {
@@ -69,7 +69,7 @@ namespace StormWeb.Controllers
 
         #region EDIT
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Edit(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
@@ -77,7 +77,7 @@ namespace StormWeb.Controllers
             return View(university);
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost]
         public ActionResult Edit(University university)
         {
@@ -98,14 +98,14 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Delete(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
             return View(university);
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -137,7 +137,7 @@ namespace StormWeb.Controllers
 
         #region CREATE FACULTY
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult CreateFaculty(int id)
         {
             var university = db.Universities.SingleOrDefault(u => u.University_Id == id);
