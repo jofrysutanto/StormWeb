@@ -1,4 +1,4 @@
-﻿@model StormWeb.Models.Event
+﻿@model StormWeb.Models.EventAppointment
 
 @{
     ViewBag.Title = "Details";
@@ -6,35 +6,31 @@
 
 <h2>Details</h2>
 
-<fieldset>
+<fieldset class = "form-horizontal span6">
     <legend>Event</legend>
-
+    
+    <div class="display-label">Appointment with</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.client.GivenName)
+    </div>
+   
     <div class="display-label">Venue</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Venue)
+        @Html.TextAreaFor(model => model.add)
     </div>
 
     <div class="display-label">DateTime</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.DateTime)
+        @Html.DisplayFor(model => model.appointment.AppDateTime)
     </div>
 
     <div class="display-label">Comments</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Comments)
+        @Html.DisplayFor(model => model.appointment.Comments)
     </div>
 
-    <div class="display-label">EventAddedBy</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.EventAddedBy)
-    </div>
-
-    <div class="display-label">AudienceType</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.AudienceType)
-    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.EventId }) |
+    
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -34,11 +34,11 @@
                         <td>
                         @if (ViewBag.specificStudent != null)
                         {
-                            @Html.TextBox("staffSpecificStudent", (string)ViewBag.specificStudent, new {  @readonly = "readonly" });
+                            @Html.TextBox("staffSpecificStudent", (string)ViewBag.specificStudent, new { @readonly = "readonly" });
                         }
                         else
                         {
-                            @Html.DropDownList("staffSpecificStudent", ViewBag.staffSpecificStudent as SelectList,"Select Student")
+                            @Html.DropDownList("staffSpecificStudent", ViewBag.staffSpecificStudent as SelectList, "Select Student")
                             @Html.ValidationMessage("StudentEmpty")
                         }
                         </td> 
@@ -95,6 +95,8 @@
                     </td>
                 </tr>
             </thead>
+            @if (StormWeb.Helper.CookieHelper.isStaff())
+            {
             <tfoot>
                     <tr style="height:10px"></tr>
                     <tr>
@@ -107,6 +109,7 @@
                         </td>
                     </tr>
                     </tfoot>
+            }
         </table>
     </fieldset>
     

@@ -332,20 +332,29 @@ namespace StormWeb.Controllers
                 /* *
                  * Retrieving all students specific to a particular counselor
                  * */
-               
-                    Branch_Staff br = db.Branch_Staff.Single(x => x.Staff_Id == staffId);
-                    var student = from caseStaff in db.Case_Staff
-                                  from cases in db.Cases
-                                  from stud in db.Students
-                                  where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
-                                  select stud.Client.GivenName;
+
+                Branch_Staff br = db.Branch_Staff.Single(x => x.Staff_Id == staffId);
+                var student = from caseStaff in db.Case_Staff
+                              from cases in db.Cases
+                              from stud in db.Students
+                              where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
+                              select stud.Client.GivenName;
 
 
-                    SelectList studs = new SelectList(student, fc["staffSpecificStudent"]);
+                SelectList studs = new SelectList(student, fc["staffSpecificStudent"]);
 
-                    ViewBag.staffSpecificStudent = studs.ToList();
-                    studentName = fc["staffSpecificStudent"];
-               
+                ViewBag.staffSpecificStudent = studs.ToList();
+                studentName = fc["staffSpecificStudent"];
+
+            }
+            else
+            {
+                int stuId = Convert.ToInt32(CookieHelper.StudentId);
+                Client cl = (from st in db.Students
+                            from cli in db.Clients
+                            where st.Student_Id == stuId && st.Client_Id == cli.Client_Id
+                            select cli).Single();
+                studentName = cl.GivenName; 
             }
             #endregion
 
@@ -651,7 +660,7 @@ namespace StormWeb.Controllers
                 Case cases = db.Cases.Single(x => x.Student_Id == id);
                 DateTime current = DateTime.Now; 
                 var a = (from appo in db.Appointments
-                               where appo.Case_Id == cases.Case_Id && appo.Confirmation == APP_CONFIRMED && appo.AppDateTime >= current && appo.Staff_Id == staffId
+                               where appo.Case_Id == cases.Case_Id && (appo.Confirmation == APP_CONFIRMED || appo.Confirmation == APP_REQUEST_APPROVAL) && appo.AppDateTime >= current && appo.Staff_Id == staffId
                                orderby appo.AppDateTime ascending
                                select appo);
                 if(a.Count()>0)

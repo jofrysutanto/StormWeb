@@ -35,40 +35,40 @@
                             @if (Model.clientAppointments.Count() > 0)
                             {
                              
-                                <text>New Student Appointment&nbsp;</text><span class="label label-important">@Model.clientAppointments.Count()</span>
+                                <text><span class="dropcapG">N</span>ew Student Appointment&nbsp;</text><span class="label label-important">@Model.clientAppointments.Count()</span>
                             }
                             else
                             { 
-                                <text>New Student Appointment</text>
+                                <text><span class="dropcapG">N</span>ew Student Appointment</text>
                             }</a></li>
                         <li class=""><a href="#tab2" data-toggle="tab">
                             @if (Model.myStudentAppointment.Count() > 0)
                             {
-                                <text>My Student Appointment&nbsp;</text><span class="label label-important">@Model.myStudentAppointment.Count()</span>
+                                <text><span class="dropcapG">M</span>y Student Appointment&nbsp;</text><span class="label label-important">@Model.myStudentAppointment.Count()</span>
                             }
                             else
                             {
-                                <text>My Student Appointment</text>
+                                <text><span class="dropcapG">M</span>y Student Appointment</text>
                             }</a></li>
                         <li><a href="#tab3" data-toggle="tab">
                             @if (Model.confirmedAppointments.Count() > 0)
                             {
                              
-                                <text>Upcoming Appointment&nbsp;</text><span class="label label-important">@Model.confirmedAppointments.Count()</span>  
+                                <text><span class="dropcapG">U</span>pcoming Appointment&nbsp;</text><span class="label label-important">@Model.confirmedAppointments.Count()</span>  
                             }
                             else
                             {
-                                <text>Upcoming Appointment</text>
+                                <text><span class="dropcapG">U</span>pcoming Appointment</text>
                             }</a></li>
                         <li><a href="#tab4" data-toggle="tab">
                             @if (Model.staffPreviousApp.Count() > 0)
                             {
                             
-                                <text>Previous Appointment&nbsp;</text> 
+                                <text><span class="dropcapG">P</span>revious Appointment&nbsp;</text> 
                             }
                             else
                             {
-                                <text>Previous Appointment</text>
+                                <text><span class="dropcapG">P</span>revious Appointment</text>
                             }</a></li>
                     </ul>
                     <div class="tab-content">
@@ -711,6 +711,7 @@
             class="white-icons phone_3"></i>Book Appointment</a>
     }
 
+    
 
 }
 <p style="align: center">
@@ -719,7 +720,17 @@
         <a class='if4 btn btn-info' href="@Url.Action("Create")" style:"align:'center'"><i
             class="white-icons phone_3"></i>Book Appointment</a>
     }
-</p>
+    </p>
+<p style="align: center">
+    @if (StormWeb.Helper.CookieHelper.isStudent())
+    {
+
+    <div class="alert fade in span4" style="margin-left:30%;margin-right:30%">
+								<button data-dismiss="alert" class="close" type="button">×</button>
+								To cancel an appointment,please <b>ring</b> your counsellor.
+							</div>
+  }
+    </p>
 
 <script type="text/javascript">  
 

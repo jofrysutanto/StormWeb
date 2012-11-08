@@ -1,0 +1,231 @@
+﻿@model StormWeb.Models.ClientViewModel
+
+@{
+    ViewBag.Title = "RegisterContinue";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@using StormWeb.Helper
+<script type="text/javascript">
+    
+    $(function () {        
+        // Client-side validation
+        //custom validation rule - text only
+       $.validator.addMethod("phoneNumber", 
+                              checkInternationalPhone, 
+                              "Invalid international phone format"
+       );
+
+        var validator = $("#registrationForm").validate({
+        rules: {
+            Username: {
+                required: true,
+                remote: {
+                    url: '@Url.Action("IsUsernameExist", "Account")',
+                    type: "post",
+                }
+            },
+            Password: {
+                required: true,
+                minlength: 6,
+            },
+            Confirm: {
+                required: true, equalTo: "#Password", minlength: 6
+            }
+        },
+        messages: {
+            Username: {
+                remote: "Username already exist",
+                required: "This field is required"
+            }
+        },
+    });    
+    
+
+    $("#registrationForm").submit(function () {
+        return $("#registrationForm").valid();
+    });
+
+    $("#submitBtn").click(function (e) {
+        e.preventDefault();
+        if ($("#registrationForm").valid())
+        {
+            $("#registrationForm").submit();
+        }
+        else
+        {
+            $.pnotify({
+                title: 'Error',
+                text: 'Please fix all the errors',
+                styling: 'bootstrap',
+                type: 'error'
+            });
+
+            return false;
+        }
+    });
+
+});  
+</script>
+<div class="page-header">
+    <h1>
+        Get your account <small>Please check your information and register a new account</small></h1>
+</div>
+<!-- Start of row-fluid -->
+<div class="row-fluid">
+    <div class="container">
+        <!-- Start of widget block -->
+        <div class="nonboxy-widget">
+            <div class="widget-content">
+                <!-- Start of Box widget -->
+                <div class="widget-box">
+                    <!-- Start of Form Wizard -->
+                    @Html.ValidationSummary(true)
+                    @using (Html.BeginForm("RegisterAccount", "Client", FormMethod.Post, new { @class = "form-horizontal well", id = "registrationForm" }))
+                    {
+                        <input type="hidden" name="clientID" id="clientID" value="@Model.ClientModel.Client_Id"
+                            style="display: none" />
+                        @Html.HiddenFor(model => model.ClientModel.Services, "Study", "");
+                        
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors user_sl"></span>Personal details
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Given Name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.GivenName, new { @class = "input-xlarge text-tip disabled", disabled="disabled", placeholder = "Given Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.GivenName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Last name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "Last Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.LastName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Nationality", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.Nationality, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "Nationality" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.LastName)
+                                        </p>
+                                    </div>
+                                </div>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors contact_sl"></span>Contact details
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Email Address", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip disabled", disabled="disabled", placeholder = "email@domain.com" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Email)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.ContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Secondary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.SecondaryContactNumber, new { @class = "input-xlarge text-tip disabled", disabled="disabled", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.SecondaryContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                        </fieldset>                        
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors lock_sl"></span>Account Information
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Username", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.Username)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Password", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.PasswordFor(model => model.Password, new { @class = "input-xlarge text-tip", placeholder = "******" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.Password)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Confirm Password", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.Password("Confirm", "", new { @class = "input-xlarge text-tip", placeholder = "******" })
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>This will be your username and password to our Student Portal</li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div style="text-align: center">
+                            <input type="submit" class="btn btn-large btn-primary" value="Submit" id="submitBtn"
+                                name="submitBtn" />
+                        </div>  
+                        <!-- End of Form Wizard -->
+                    }
+                </div>
+                <!-- End of Box widget -->
+            </div>
+        </div>
+        <!-- End of widget block -->
+    </div>
+</div>
+<!-- End of row-fluid -->
+<script type="text/javascript">
+    function alphanumeric_only(e) {
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (event) keycode = event.keyCode;
+        else if (e) keycode = e.which;
+        else return true;
+        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+</script>
+

@@ -11,10 +11,11 @@ using System.Linq;
 using System.Web;
 using System.Net.Mail;
 using System.Net;
+using System.Text;
 
 namespace StormWeb.Helper
 {
-    public class EmailHelper
+    public static class EmailHelper
     {
         /// <summary>
         /// Send an email using default Email Server configuration settings
@@ -23,7 +24,7 @@ namespace StormWeb.Helper
         /// <param name="to">Recipient of the email</param>
         /// <param name="subject">Subject</param>
         /// <param name="body">Email content</param>
-        public void sendEmail(MailAddress to, string subject, string body)
+        public static void sendEmail(MailAddress to, string subject, string body)
         {
             ServiceConfiguration config = new ServiceConfiguration();
 
@@ -42,11 +43,23 @@ namespace StormWeb.Helper
             using (var message = new MailMessage(fromAddress, to)
             {
                 Subject = subject,
-                Body = body
+                Body = body,
+                BodyEncoding = Encoding.UTF8,
+                IsBodyHtml = true
             })
             {
                 smtp.Send(message);
             }
+        }
+
+        private static string buildEmail(string body)
+        {
+            string result = "<html>";
+
+            result += "<body>" + body + "</body>";
+
+            result += "</html>";
+            return result;
         }
     }
 }

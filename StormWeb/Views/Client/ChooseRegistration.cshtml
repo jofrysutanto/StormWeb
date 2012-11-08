@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "ChooseRegistration";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<script>
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: "slide",
+            hide: "slide",
+            width: "500px"
+        });
+
+        $("#openDialog").click(function () {
+            $("#dialog").dialog("open");
+            return false;
+        });
+    });
+
+    function continueRegister() {
+        var clientID = $("#prevID").val();
+
+        if (clientID == "") {
+            $.pnotify({
+                title: 'Error',
+                text: 'Enter client id or username',
+                type: 'error',
+                history: false
+            });
+            return false;
+        }
+
+        var myData = "{'id':'" + clientID + "'}";
+
+        $.ajax({
+            url: '/Client/CheckPreviousRegistration',
+            type: "POST",
+            dataType: "json",
+            data: ({
+                id: clientID
+            }),
+            success: function (result) {
+                if (result.result == "bad") {
+                    // Invalid client id or email
+                    alert("You don't have previous registration with us");
+                }
+                else {
+                    // Proceed with registration
+
+                    var url = "/Client/Register/" + result.clientID;
+                    window.location = url;
+                }
+            },
+            error: function (result) {
+                alert('There is a problem processing request, please try again in few minutes or contact administrator');
+            },
+            complete: function () {
+                $("#RegisterBtn").removeClass("disabled");
+                $("#submitPrevID").removeClass("disabled");
+                $("#submitPrevID").html("Submit");
+            },
+            beforeSend: function () {
+                $("#RegisterBtn").addClass("disabled");
+                $("#submitPrevID").addClass("disabled");
+                $("#submitPrevID").html("Wait..");
+            }
+        });
+    }
+
+</script>
+<div class="container register-type">
+    <div class="row">
+        <div class="span8 offset2 well">
+            <div style="text-align: center">
+                <h3>
+                    Choose your type of registration</h3>
+            </div>
+            <hr />
+            <div class="span4">
+                <div class="widget-block">
+                    <div class="widget-head red" style="">
+                        <h5>
+                            Enquiry/Appointment</h5>
+                    </div>
+                    <div class="widget-content" style="text-align: left">
+                        <div class="widget-box">
+                            <div class="well white-box clock-bg">
+                                <ul class="register-desc">
+                                    <li>Select this if you want to create an appointment with us to discuss your needs</li>
+                                    <li>Our staff will promptly be in touch with you</li>
+                                </ul>
+                                <div style="text-align: right">
+                                    <a class="btn btn-primary" href="@Url.Action("Enquire")">Start now &raquo;</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="widget-block">
+                    <div class="widget-head dark-red">
+                        <h5>
+                            Full Registration</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div class="well white-box paper-bg">
+                                <ul class="register-desc">
+                                    <li>Make use of our student portal</li>
+                                    <li>Start and manage all your applications to your favourite universities online.</li>
+                                </ul>
+                                <div style="text-align: right">
+                                    <a class="btn btn-primary" id="openDialog" href="@Url.Action("Register")">Start now
+                                        &raquo;</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog" title="Previous registration">
+    <p class="padding-top:10px; padding-bottom:10px">
+        <div class="alert alert-info">
+            <div style="padding-bottom: 10px;">
+                If you have registered with us before for enquiry please enter your Client ID (this
+                is sent to your email upon previous registration) or your email address used to
+                register with us.</div>
+            <div style="text-align: center">
+                <input class="login-input" placeholder="Client ID or email address" style="width: 200px"
+                    id="prevID"></input>
+                <a class="btn btn-primary" style="color: #fff" href="#" id="submitPrevID" onclick="continueRegister()">
+                    Submit</a>
+            </div>
+        </div>
+    </p>
+    <p>
+        <div class="alert alert-success">
+        <div style="padding-bottom: 10px;">
+        If not, please click the button below.
+        </div>
+        <div style="text-align: center">
+            <a class="btn btn-success" style="color:#fff" id="RegisterBtn" href="@Url.Action("Register")">
+                Continue &raquo</a>
+        </div>
+        </div>
+    </p>
+</div>

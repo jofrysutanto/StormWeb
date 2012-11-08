@@ -18,7 +18,7 @@ namespace StormWeb.Models.ModelHelper
         public static IEnumerable<Currency> getCurrencyFromXml()
         {
             XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(HttpContext.Current.Server.MapPath("~/App_Data/currency.xml"));
+            xmldoc.Load(HttpContext.Current.Server.MapPath("~/ModelBinding/currency.xml"));
 
             XmlNodeList currencies = xmldoc.GetElementsByTagName("currency");
 

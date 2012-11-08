@@ -1,0 +1,415 @@
+﻿@model StormWeb.Models.ClientViewModel
+
+@{
+    ViewBag.Title = "Enquire";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@using StormWeb.Helper
+<script type="text/javascript">
+    
+    $(function () {
+
+        $("#AddressModel_Country_Country_Id").chosen().change(function() {
+             var table = $(".data-tbl-simple").dataTable();
+            // alert($(this).val());
+             table.fnFilter( $(this).find("option[value*='"+$(this).val()+"']").html() );
+        });
+
+        
+         $(".dp1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-100:c',
+            changeMonth: true,
+            changeYear: true,
+            showOn: "button",
+            buttonImage: "../Content/img/calendar_btn.png",
+            buttonImageOnly: true
+        });
+
+
+        
+        // Client-side validation
+        //custom validation rule - text only
+       $.validator.addMethod("phoneNumber", 
+                              checkInternationalPhone, 
+                              "Invalid international phone format"
+       );
+
+        var validator = $("#registrationForm").validate({
+        rules: {
+            "ClientModel.GivenName": {
+                required: true
+            },
+            "ClientModel.LastName": {
+                required: true
+            },
+            "ClientModel.Dob": {
+                required: true
+            },
+            "ClientModel.Email": {
+                required: true,
+                email: true,
+                remote: {
+                    url: '@Url.Action("IsEmailExist", "Client")',
+                    type: "post",                   
+                }                
+            },
+            "ClientModel.ContactNumber": {
+                required: true,
+                phoneNumber: true
+            },
+            "ClientModel.SecondaryContactNumber": {
+                phoneNumber: true
+            },
+            "AddressModel.Address_Name": {
+                required: true
+            },
+            "AddressModel.Apartment_Number": {
+                required: true,
+                digits: true
+            },
+            "AddressModel.City": {
+                required: true
+            },
+            "AddressModel.State": {
+                required: true
+            },
+            "AddressModel.Zipcode": {
+                required: true,
+                digits: true
+            },
+            "ClientModel.MaritalStatus": {
+                required: true,
+            },            
+            selectedBranch: {
+                required: function(element) {       
+                    return ($("#selectedBranch").val().length == 0);
+                }
+            },
+        },
+        messages: {
+            "AddressModel.Apartment_Number": {
+                required: "",                
+            },
+            "ClientModel.Email": {
+                remote: "This email is already registered with us"
+            },            
+            selectedBranch: {
+                required: "You have to select a branch",                
+            }
+        },
+        errorPlacement: function(error, element) {
+            if ( element.attr("name") == "ClientModel.Dob")
+                 error.appendTo( element.parent().next());
+            else
+                error.appendTo( element.parent());
+            },
+    });    
+    
+
+    $("#registrationForm").submit(function () {
+        return $("#registrationForm").valid();
+    });
+
+    $("#submitBtn").click(function (e) {
+        e.preventDefault();
+        if ($("#registrationForm").valid())
+        {
+            if (isBranchSelected())
+            {
+                $("#registrationForm").submit();
+            }
+            else
+            {
+                $.pnotify({
+                    title: 'Error',
+                    text: 'Please select a branch',
+                    styling: 'bootstrap',
+                    type: 'error'
+                 });
+            }
+        }
+        else
+        {
+            $.pnotify({
+                title: 'Error',
+                text: 'Please fix all the errors',
+                styling: 'bootstrap',
+                type: 'error'
+            });
+
+            return false;
+        }
+    });
+
+});  
+</script>
+<div class="page-header">
+    <h1>
+        Enquiry <small>Please fill in all the information</small></h1>
+</div>
+<!-- Start of row-fluid -->
+<div class="row-fluid">
+    <div class="span12">
+        <!-- Start of widget block -->
+        <div class="nonboxy-widget">
+            <div class="widget-content">
+                <!-- Start of Box widget -->
+                <div class="widget-box">
+                    <!-- Start of Form Wizard -->
+                    @Html.ValidationSummary(true)
+                    @using (Html.BeginForm("Register", "Client", FormMethod.Post, new { @class = "form-horizontal well", id = "registrationForm" }))
+                    {
+                        <input type="hidden" name="isFullRegistration" id="isFullRegistration" value='no'
+                            style="display: none" />
+                        @Html.HiddenFor(model => model.ClientModel.Services, "Study", "");
+                        
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors user_sl"></span>Personal details
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Title", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <select data-placeholder="Title" style="width: 100px" class="chzn-select" tabindex="13"
+                                            id="ClientModel_Title" name="ClientModel.Title">
+                                            <optgroup label="Title">
+                                                <option>Mr.</option>
+                                                <option>Ms.</option>
+                                                <option>Mrs.</option>
+                                                <option>Miss.</option>
+                                                <option>Other</option>
+                                            </optgroup>
+                                        </select>
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Title)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Given Name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.GivenName, new { @class = "input-xlarge text-tip", placeholder = "Given Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.GivenName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Last name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip", placeholder = "Last Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.LastName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="input-append date dp" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                    <div class="control-group">
+                                        @Html.Label("Date of Birth", null, new { @class = "control-label" })
+                                        <div class="controls">
+                                            <div class="input-append">
+                                                @Html.TextBoxFor(model => model.ClientModel.Dob, new { @readonly = "readonly", @class = "dp1" })
+                                            </div>
+                                            <p class="help-block">
+                                                @Html.ValidationMessageFor(model => model.ClientModel.Dob)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Nationality", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.ClientModel.Nationality, (IEnumerable<SelectListItem>)ViewBag.NationalityList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Nationality)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <br />
+                                    Please fill <strong>ALL</strong> information in this section
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors contact_sl"></span>Contact details
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Email Address", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Email)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.ContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Secondary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.SecondaryContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.SecondaryContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>Please enter at least <strong>one</strong> phone contact information </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors address_sl"></span>Mailing Address
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Street Name and Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBox("AddressModel.Address_Name", "", new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "Street Name" })
+                                        @Html.TextBox("AddressModel.Apartment_Number", "", new { placeholder = "Street Number", @class = "input-small" })
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("City", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.City, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "City" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.City)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("State", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.State, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "State" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.State)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Country", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.AddressModel.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Zip Code", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.Zipcode, new { @class = "input-xlarge text-tip" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Zipcode)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Country of Residence", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.AddressModel.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>Please enter complete address information </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                                
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors milestone_sl"></span>Select closest branch
+                            </h5>
+                        </div>    
+                        <div class="control-group">
+                            @Html.Partial("Partial/_BranchListPartial", (IEnumerable<StormWeb.Models.Branch>)ViewBag.Branch)
+                        </div>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors milestone_sl"></span>Choose your service
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Country of Destination", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.ClientModel.PreferredCountry, (IEnumerable<SelectListItem>)ViewBag.RepresentedCountry, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.PreferredCountry)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>You have to choose service and preferred country </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>                        
+                        <div style="text-align: center">
+                            <input type="submit" class="btn btn-large btn-primary" value="Submit" id="submitBtn"
+                                name="submitBtn" />
+                        </div>  
+                        <!-- End of Form Wizard -->
+                    }
+                </div>
+                <!-- End of Box widget -->
+            </div>
+        </div>
+        <!-- End of widget block -->
+    </div>
+</div>
+<!-- End of row-fluid -->
+<script type="text/javascript">
+    function alphanumeric_only(e) {
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (event) keycode = event.keyCode;
+        else if (e) keycode = e.which;
+        else return true;
+        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+</script>
+

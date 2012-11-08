@@ -18,11 +18,21 @@ using System.IO;
 using StormWeb.Helper;
 using System.Data.Objects.SqlClient;
 using System.Web.Script.Serialization;
+using Amazon.S3.Model;
+using Amazon.S3;
+using System.Collections.Specialized;
+using System.Configuration;
+using Amazon;
+using System.Net;
 
 namespace StormWeb.Controllers
 {
     public class DocumentController : Controller
     {
+        private string accessKey = "";
+        private string secretKey = "";
+        private string bucketName = "";
+
         private StormDBEntities db = new StormDBEntities();
         private string fileName;
         private string path;
@@ -63,6 +73,34 @@ namespace StormWeb.Controllers
 
             return View(db.CaseDoc_Template.ToList());
             //return View();
+        }
+
+
+        public bool checkRequiredFields()
+        {
+            ServiceConfiguration config = new ServiceConfiguration();
+
+            accessKey = config.AWSAccessKey;
+            secretKey = config.AWSSecretKey;
+            bucketName = config.BucketName;
+
+            if (string.IsNullOrEmpty(accessKey))
+            {
+                Console.WriteLine("AWSAccessKey was not set in the App.config file.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                Console.WriteLine("AWSSecretKey was not set in the App.config file.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(bucketName))
+            {
+                Console.WriteLine("The variable bucketName is not set.");
+                return false;
+            }
+
+            return true;
         }
 
 
@@ -158,28 +196,16 @@ namespace StormWeb.Controllers
                 pathToCreate = TEMPLATE_GENERAL_PATH;
 
                 // create / update folder 
-                if (Directory.Exists(Server.MapPath(pathToCreate)))
-                {
-
-                }
-                else
-                {
-                    Directory.CreateDirectory(Server.MapPath(pathToCreate));
-                }
-
-                if (file != null)
-                {
-                    fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath(pathToCreate), fileName);
-                    file.SaveAs(path);
-                }
-
-                casedoc_template.Path = Path.Combine(Server.MapPath(pathToCreate));
+                casedoc_template.Path = pathToCreate;
                 casedoc_template.FileName = fileName;
                 casedoc_template.UploadedOn = System.DateTime.Now;
                 casedoc_template.UploadedBy = CookieHelper.Username;
                
                 db.CaseDoc_Template.AddObject(casedoc_template);
+
+                string fileToCreate = pathToCreate + '/' + casedoc_template.FileName;
+
+                uploadAWS(fileToCreate, file);
 
                 db.SaveChanges();
 
@@ -564,8 +590,8 @@ namespace StormWeb.Controllers
                 Application app = db.Applications.Single(a => a.Application_Id == application.Application_Id);
 
                 string completFileName = Server.MapPath(application.Path + '/' + application.FileName);
-                System.IO.File.Delete(completFileName);
-
+                //System.IO.File.Delete(completFileName);
+                DeletingAWS(application.Path + '/' + application.FileName);
                 db.Application_Result.DeleteObject(application);
                 if (doctype == "OfferLetter")
                 {
@@ -594,6 +620,7 @@ namespace StormWeb.Controllers
            {
                //string completFileName = Server.MapPath(template_document.Path + '/' + template_document.FileName);
                //System.IO.File.Delete(completFileName);
+               DeletingAWS(template_document.Path + '/' + template_document.FileName);
 
                 db.Template_Document.DeleteObject(template_document);
                 db.SaveChanges();
@@ -635,8 +662,9 @@ namespace StormWeb.Controllers
             {
                 Application_Document application = db.Application_Document.Single(a => a.ApplicationDoc_Id == id);
                 string completFileName = Server.MapPath(application.Path + '/' + application.FileName);
-                System.IO.File.Delete(completFileName);
+                //System.IO.File.Delete(completFileName);
 
+                DeletingAWS(application.Path + '/'+ application.FileName);
                 db.Application_Document.DeleteObject(application);
 
                 db.SaveChanges();
@@ -657,8 +685,9 @@ namespace StormWeb.Controllers
                 CaseDocument application = db.CaseDocuments.Single(a => a.CaseDocument_Id == id);
                 // delete file from student's folder
                 string completFileName = Server.MapPath(application.Path + '/' + application.FileName);
-                System.IO.File.Delete(completFileName);
+                //System.IO.File.Delete(completFileName);
 
+                DeletingAWS(application.Path + '/' + application.FileName);
                 // modify database
                 application.Path = null;
                 application.UploadedOn = null;
@@ -675,8 +704,216 @@ namespace StormWeb.Controllers
 
         #endregion
 
-        #region Uploads  Documents
+        #region AWS
+        public ViewResult viewAWS()
+        {
+            string result = "";
+            if (!checkRequiredFields())
+            {
+                ViewBag.Result = "";
+                return View();
+            }
+            AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(RegionEndpoint.APSoutheast1);
 
+            ListObjectsRequest request = new  ListObjectsRequest();
+
+
+            request.BucketName = bucketName;
+            using (ListObjectsResponse response = client.ListObjects(request))
+            {
+                foreach (S3Object entry in response.S3Objects)
+                {
+                    result += "key = " + entry.Key + " size = " + entry.Size + "<br/>";
+                }
+            }
+            ViewBag.Result = result;
+            return View();
+        }
+
+
+            //ViewBag.Result = result;
+            //return View();
+
+
+            //string result = "";
+
+            //try
+            //{
+
+            //    ListObjectsRequest request = new ListObjectsRequest();
+            //    request.BucketName = bucketName;
+
+            //    PutObjectRequest uploadrequest = new PutObjectRequest();
+            //    uploadrequest.WithContentBody("this is a test")
+            //        .WithBucketName(bucketName)
+            //        .WithKey("testupload.pdf")
+            //        .WithContentType("applicaton/pdf")
+
+            //        //.WithFilePath("Upload/2_Stewie")
+            //        .WithInputStream(file.InputStream);
+
+
+            //    S3Response uploadResponse = client.PutObject(uploadrequest);
+            //    uploadResponse.Dispose();
+            //}
+            //catch (AmazonS3Exception amazonS3Exception)
+            //{
+            //    if (amazonS3Exception.ErrorCode != null && (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId") || amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
+            //    {
+            //        Console.WriteLine("Please check the provided AWS Credentials.");
+            //        Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("An error occurred with the message '{0}' when listing objects", amazonS3Exception.Message);
+            //    }
+            //}
+
+            //using (ListObjectsResponse response = client.ListObjects(request))
+            //{
+            //    foreach (S3Object entry in response.S3Objects)
+            //    {
+            //        result += "key = " + entry.Key + " size = " + entry.Size + "<br/>";
+            //    }
+            //}
+
+            // simple object put
+
+
+            //ViewBag.Result = result;
+            //return View();
+
+
+
+        // upload to Amazon  s3
+        [HttpPost]
+        public ActionResult uploadAWS(string path, HttpPostedFileBase file)
+        {
+
+            if (!checkRequiredFields())
+            {
+                ViewBag.Result = "";
+                return View();
+            }
+            AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(RegionEndpoint.APSoutheast1);
+
+            PutObjectRequest request = new PutObjectRequest();
+
+            request.BucketName = bucketName;
+            request.ContentType = ("applicaton/pdf");
+            request.Key = path;
+            request.StorageClass = S3StorageClass.ReducedRedundancy; //set storage to reduced redundancy
+            request.InputStream = file.InputStream;
+            client.PutObject(request);
+
+            return View("Refresh");
+
+        }
+
+        [HttpPost]
+
+        public ActionResult DeletingAWS(string keyName)
+        {
+            if (!checkRequiredFields())
+                {
+                    ViewBag.Result = "";
+                    return View();
+                }
+            try
+            {
+                
+                DeleteObjectRequest request = new DeleteObjectRequest();
+                request.WithBucketName(bucketName)
+                    .WithKey(keyName);
+                AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(RegionEndpoint.APSoutheast1);
+                client.DeleteObject(request);
+
+                //using (DeleteObjectResponse response = client.DeleteObject(request))
+                //{
+                //    WebHeaderCollection headers = response.Headers;
+                //    foreach (string key in headers.Keys)
+                //    {
+                //        Console.WriteLine("Response Header: {0}, Value: {1}", key, headers.Get(key));
+                //    }
+                //}
+            }
+            catch (AmazonS3Exception amazonS3Exception)
+            {
+                if (amazonS3Exception.ErrorCode != null &&
+                    (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId") ||
+                    amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
+                {
+                    Console.WriteLine("Please check the provided AWS Credentials.");
+                    Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
+                }
+                else
+                {
+                    Console.WriteLine("An error occurred with the message '{0}' when deleting an object", amazonS3Exception.Message);
+                }
+            }
+            return View("Refresh");
+        }
+
+
+        public void downloadAWS(int id, string path, string filename)
+        {
+            string keyName = path + "/" + filename;
+
+            if (!checkRequiredFields())
+            {
+                ViewBag.Result = "";
+                
+            }
+            AmazonS3 client;
+            try
+            {
+             using (client = Amazon.AWSClientFactory.CreateAmazonS3Client())
+                {
+                    GetObjectRequest request = new GetObjectRequest().WithBucketName(bucketName).WithKey(keyName);
+                
+                    //string dest = ("C:\\user\\Downloads\\" + path + "\\" + filename);
+
+                    string dest = HttpContext.Server.MapPath("~/App_Data/Downloads/" + id + '-' + filename );
+                    using (GetObjectResponse response = client.GetObject(request))
+                    {
+                        response.WriteResponseStreamToFile(dest , false);
+            
+                        HttpContext.Response.Clear();
+                        HttpContext.Response.AppendHeader("content-disposition", "attachment; filename=" + filename);
+                        HttpContext.Response.ContentType = response.ContentType;
+                        HttpContext.Response.TransmitFile(dest);
+                        HttpContext.Response.Flush();
+                        HttpContext.Response.End();
+                    }
+        
+        
+                     //Clean up temporary file.
+                    //System.IO.File.Delete(dest);
+    
+                    }
+            }
+            catch (AmazonS3Exception amazonS3Exception)
+            {
+                if (amazonS3Exception.ErrorCode != null &&
+                    (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId") ||
+                    amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
+                {
+                    Console.WriteLine("Please check the provided AWS Credentials.");
+                    Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
+                }
+                else
+                {
+                    Console.WriteLine("An error occurred with the message '{0}' when reading an object", amazonS3Exception.Message);
+                }
+
+               
+            }
+           
+        }
+        #endregion
+
+
+        #region Uploads  Documents
         [AcceptVerbs(HttpVerbs.Get)]
         public ViewResult UploadFileTemp(int id, int uni_Id)
         {
@@ -705,20 +942,6 @@ namespace StormWeb.Controllers
             pathToCreate = TEMPLATE_APPLICATION_PATH + UniId + '_' + CourseId;
 
             // create / update folder 
-            if (Directory.Exists(Server.MapPath(pathToCreate)))
-            {
-
-            }
-            else
-            {
-                Directory.CreateDirectory(Server.MapPath(pathToCreate));
-            }
-            if (file.Equals(null))
-            {
-                ModelState.AddModelError("UploadFileTemp", " Please Select a file! ");
-            }
-            else
-            {
                 fileName = Path.GetFileName(file.FileName);
                 path = Path.Combine(Server.MapPath(pathToCreate), fileName);
                 file.SaveAs(path);
@@ -731,7 +954,9 @@ namespace StormWeb.Controllers
                 appDoc.FileName = fileName;
                 appDoc.UploadedBy = CookieHelper.Username;
                 appDoc.Comment = comment;
-            }
+
+                string fileToCreate = pathToCreate + '/' + appDoc.FileName;
+                uploadAWS(fileToCreate, file);
 
             if (ModelState.IsValid)
             {
@@ -792,16 +1017,6 @@ namespace StormWeb.Controllers
 
             pathToCreate = STUDENT_UPLOADS_PATH + case_Id + '_' + studentName;
            
-            // create / update folder 
-            if (Directory.Exists(Server.MapPath(pathToCreate)))
-            {
-
-            }
-            else
-            {
-                Directory.CreateDirectory(Server.MapPath(pathToCreate));
-            }
-
             Application_Result appDoc = new Application_Result();
             Application app = db.Applications.Single(a => a.Application_Id == Doc_Id);
             // Update object of application Result file for Offer Letter
@@ -829,12 +1044,15 @@ namespace StormWeb.Controllers
 
                 appDoc.Comment = comment;
                 db.Application_Result.AddObject(appDoc);
+
+                string fileToCreate = pathToCreate + '/' + appDoc.FileName;
+                uploadAWS(fileToCreate, file);
                 //db.ObjectStateManager.ChangeObjectState(app, EntityState.Modified);
 
             if (ModelState.IsValid)
             {
 
-                file.SaveAs(path);
+                //file.SaveAs(path);
                 db.SaveChanges();
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
@@ -871,87 +1089,161 @@ namespace StormWeb.Controllers
         [Authorize]
         public ActionResult UploadCaseDoc(FormCollection fc, HttpPostedFileBase file)
         {
-                int Doc_Id =  Convert.ToInt32(fc["Doc_Id"]);
-                int Template_Id = Convert.ToInt32(fc["Template_Id"]);
-                string comment = (fc["comment"]);
-                int caseId = Convert.ToInt32(fc["caseId"]);
+            int Doc_Id = Convert.ToInt32(fc["Doc_Id"]);
+            int Template_Id = Convert.ToInt32(fc["Template_Id"]);
+            string comment = (fc["comment"]);
+            int caseId = Convert.ToInt32(fc["caseId"]);
 
-                if (file== null)
-                {
-                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "File is not selected!");
-                }
-
-                
-
-                // ****************************************************************
-                // create a new folder if folder does not exist for that student  *
-                // ****************************************************************
-                
-                fileName = Path.GetFileName(file.FileName);
-                string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
-                string pathToCreate = STUDENT_UPLOADS_PATH + caseId + '_' + name;
-                
-                if (Directory.Exists(Server.MapPath(pathToCreate)))
-                {
-                        
-                }
-                else
-                {
-                    Directory.CreateDirectory(Server.MapPath(pathToCreate));
-                }
+            if (file == null)
+            {
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "File is not selected!");
+            }
 
 
-                // Update object of application document file
-                if (fc["doctype"] == "ApplicationDocument")
-                {
-                    Application_Document appDoc = new Application_Document();
 
-                    appDoc.Application_Id = Doc_Id;
-                    ViewBag.doc = "Application Document" + Doc_Id;
-                    appDoc.TemplateDoc_Id = Template_Id;
-                    appDoc.UploadedOn = System.DateTime.Now;
-                    appDoc.UploadedBy = CookieHelper.Username;
-                    appDoc.Path = pathToCreate;
-                    appDoc.Approved = false;
+            // ****************************************************************
+            // create a new folder if folder does not exist for that student  *
+            // ****************************************************************
 
-                    // to save file name with the application Id
-                    appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Application_" + appDoc.Application_Id + Path.GetExtension(fileName);
-                    path = Path.Combine(Server.MapPath(pathToCreate), appDoc.FileName);
+            fileName = Path.GetFileName(file.FileName);
+            string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
+            path = STUDENT_UPLOADS_PATH;
 
-                    appDoc.Comment = comment;
-                    db.Application_Document.AddObject(appDoc);
 
-                }
-                else
-                    if (fc["doctype"] == "CaseDocument")
+            if (fc["doctype"] == "ApplicationDocument")
+            {
+                Application_Document appDoc = new Application_Document();
+
+                appDoc.Application_Id = Doc_Id;
+                ViewBag.doc = "Application Document" + Doc_Id;
+                appDoc.TemplateDoc_Id = Template_Id;
+                appDoc.UploadedOn = System.DateTime.Now;
+                appDoc.UploadedBy = CookieHelper.Username;
+                appDoc.Path = path + caseId + '_' + name;
+                appDoc.Approved = false;
+                appDoc.FileName = Path.GetFileNameWithoutExtension(file.FileName) + "_Application_" + appDoc.Application_Id + Path.GetExtension(file.FileName);
+                appDoc.Comment = comment;
+
+                string fileToCreate = appDoc.Path + '/' + appDoc.FileName;
+                uploadAWS(fileToCreate, file);
+
+                db.Application_Document.AddObject(appDoc);
+
+            }
+            else
+                if (fc["doctype"] == "CaseDocument")
                 {
                     CaseDocument caseDoc = db.CaseDocuments.Single(x => x.Case_Id == Doc_Id && x.CaseDocTemplate_Id == Template_Id);
                     ViewBag.doc = "Case Document" + Doc_Id;
                     caseDoc.UploadedOn = System.DateTime.Now;
                     caseDoc.UploadedBy = CookieHelper.Username;
                     caseDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Case" + Path.GetExtension(fileName);
-                    caseDoc.Path = pathToCreate;
-                    path = Path.Combine(Server.MapPath(pathToCreate), caseDoc.FileName);
+                    caseDoc.Path = path + caseId + '_' + name;
                     caseDoc.Comment = comment;
+
+                    string fileToCreate = caseDoc.Path + '/' + caseDoc.FileName;
+                    uploadAWS(fileToCreate, file);
+
                     db.ObjectStateManager.ChangeObjectState(caseDoc, EntityState.Modified);
-                   
-                }
-
-                if (ModelState.IsValid)
-                {
-
-                    file.SaveAs(path); 
-                    db.SaveChanges();
-                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
-
-                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
                 }
 
-            
+            if (ModelState.IsValid)
+            {
+                db.SaveChanges();
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+
+                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
+
+            }
+
+
             TempData[SUCCESS_EDIT] = "true";
             return RedirectToAction("Index", new { message = "Successfully Uploaded" });
+
+            //    int Doc_Id =  Convert.ToInt32(fc["Doc_Id"]);
+            //    int Template_Id = Convert.ToInt32(fc["Template_Id"]);
+            //    string comment = (fc["comment"]);
+            //    int caseId = Convert.ToInt32(fc["caseId"]);
+
+            //    if (file== null)
+            //    {
+            //        NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "File is not selected!");
+            //    }
+
+
+            //    //file.InputStream;
+            //    // ****************************************************************
+            //    // create a new folder if folder does not exist for that student  *
+            //    // ****************************************************************
+                
+            //    fileName = Path.GetFileName(file.FileName);
+            //    string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
+            //    string pathToCreate = STUDENT_UPLOADS_PATH + caseId + '_' + name;
+                
+            //    if (Directory.Exists(Server.MapPath(pathToCreate)))
+            //    {
+                        
+            //    }
+            //    else
+            //    {
+            //        Directory.CreateDirectory(Server.MapPath(pathToCreate));
+            //    }
+
+
+            //    // Update object of application document file
+            //    if (fc["doctype"] == "ApplicationDocument")
+            //    {
+            //        Application_Document appDoc = new Application_Document();
+
+            //        appDoc.Application_Id = Doc_Id;
+            //        ViewBag.doc = "Application Document" + Doc_Id;
+            //        appDoc.TemplateDoc_Id = Template_Id;
+            //        appDoc.UploadedOn = System.DateTime.Now;
+            //        appDoc.UploadedBy = CookieHelper.Username;
+            //        appDoc.Path = pathToCreate;
+            //        appDoc.Approved = false;
+
+            //        // to save file name with the application Id
+            //        appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Application_" + appDoc.Application_Id + Path.GetExtension(fileName);
+            //        path = Path.Combine(Server.MapPath(pathToCreate), appDoc.FileName);
+
+            //        appDoc.Comment = comment;
+            //        db.Application_Document.AddObject(appDoc);
+
+            //    }
+            //    else
+            //        if (fc["doctype"] == "CaseDocument")
+            //    {
+            //        CaseDocument caseDoc = db.CaseDocuments.Single(x => x.Case_Id == Doc_Id && x.CaseDocTemplate_Id == Template_Id);
+            //        ViewBag.doc = "Case Document" + Doc_Id;
+            //        caseDoc.UploadedOn = System.DateTime.Now;
+            //        caseDoc.UploadedBy = CookieHelper.Username;
+            //        caseDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Case" + Path.GetExtension(fileName);
+            //        caseDoc.Path = pathToCreate;
+            //        path = Path.Combine(Server.MapPath(pathToCreate), caseDoc.FileName);
+            //        caseDoc.Comment = comment;
+            //        db.ObjectStateManager.ChangeObjectState(caseDoc, EntityState.Modified);
+                   
+            //    }
+
+            //    if (ModelState.IsValid)
+            //    {
+
+            //        file.SaveAs(path); 
+            //        db.SaveChanges();
+            //        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+
+            //        NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
+
+            //    }
+
+            
+            //TempData[SUCCESS_EDIT] = "true";
+            //return RedirectToAction("Index", new { message = "Successfully Uploaded" });
         }
+
+
         public string GetFileNameFromTemplate(int tempId)
         {
             return db.Template_Document.DefaultIfEmpty(null).SingleOrDefault(x => x.TemplateDoc_Id == tempId).FileName;
@@ -961,123 +1253,133 @@ namespace StormWeb.Controllers
         #region Downloads
         // The following is used to download the previously uploaded Offer Letter 
         [Authorize]
-        public FileResult DownloadOfferLetter(int id)
+        public void DownloadOfferLetter(int id)
         {
-            Application_Result appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "O");
-            string path = appDoc.Path;
-            string fileToDownload = appDoc.FileName;
-            string file = Path.Combine(path, fileToDownload);
-            string ext = Path.GetExtension(file);
-            string contentType = "application/doc/pdf";
+            Application_Result appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == "O");
+            downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
+            //string path = appDoc.Path;
+            //string fileToDownload = appDoc.FileName;
+            //string file = Path.Combine(path, fileToDownload);
+            //string ext = Path.GetExtension(file);
+            //string contentType = "application/doc/pdf";
 
-            //Parameters to file are
-            //1. The File Path on the File Server
-            //2. The content type MIME type
-            //3. The parameter for the file save by the browser
+            ////Parameters to file are
+            ////1. The File Path on the File Server
+            ////2. The content type MIME type
+            ////3. The parameter for the file save by the browser
 
-            return File(file, contentType, appDoc.FileName);
+            //return File(file, contentType, appDoc.FileName);
         }
         // The following is used to download the previously uploaded CoE
-        public FileResult DownloadCoE(int id)
+        public void DownloadCoE(int id)
         {
             Application_Result appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "C");
-            string path = appDoc.Path;
-            string fileToDownload = appDoc.FileName;
-            string file = Path.Combine(path, fileToDownload);
-            string ext = Path.GetExtension(file);
-            string contentType = "application/doc/pdf";
+            downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
+            //string path = appDoc.Path;
+            //string fileToDownload = appDoc.FileName;
+            //string file = Path.Combine(path, fileToDownload);
+            //string ext = Path.GetExtension(file);
+            //string contentType = "application/doc/pdf";
 
-            //Parameters to file are
-            //1. The File Path on the File Server
-            //2. The content type MIME type
-            //3. The parameter for the file save by the browser
+            ////Parameters to file are
+            ////1. The File Path on the File Server
+            ////2. The content type MIME type
+            ////3. The parameter for the file save by the browser
 
-            return File(file, contentType, appDoc.FileName);
+            //return File(file, contentType, appDoc.FileName);
         }
 
 
         [Authorize]
-        public FileResult DownloadTempDoc(int id)
+        public void DownloadTempDoc(int id)
         {
-            string path;
-            string fileToDownload;
-            string file;
-            string contentType;
-            try
-            {
+            //string path;
+            //string fileToDownload;
+            //string file;
+            //string contentType;
+            //try
+            //{
                 Template_Document temDoc = db.Template_Document.Single(x => x.TemplateDoc_Id == id);
-                path = temDoc.Path;
-                fileToDownload = temDoc.FileName;
-                file = Path.Combine(path, fileToDownload);
-                contentType = "application/doc/pdf";
+                downloadAWS(temDoc.TemplateDoc_Id, temDoc.Path, temDoc.FileName);
+                //path = temDoc.Path;
+                //fileToDownload = temDoc.FileName;
+                //file = Path.Combine(path, fileToDownload);
+                //contentType = "application/doc/pdf";
 
                 //Parameters to file are
                 //1. The File Path on the File Server
                 //2. The content type MIME type
                 //3. The parameter for the file save by the browser
-                return File(file, contentType, fileToDownload);
+                //return File(file, contentType, fileToDownload);
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("{0} Exception caught.File not found", e);
-            }
-            return null;
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("{0} Exception caught.File not found", e);
+            //}
+            //return null;
 
         }
 
         // The following is used to download the previously uploaded file in the application list
         [Authorize]
-        public FileResult DownloadAppDoc(int id)
+        public void DownloadAppDoc(int id)
         {
             Application_Document appDoc = db.Application_Document.Single(x => x.ApplicationDoc_Id == id);
-            string path = appDoc.Path;
-            string fileToDownload = appDoc.FileName;
-            string file = Path.Combine(path, fileToDownload);
-            string ext = Path.GetExtension(file);
-            string contentType = "application/doc/pdf";
+
+            downloadAWS(appDoc.ApplicationDoc_Id, appDoc.Path, appDoc.FileName);
+            //string path = appDoc.Path;
+            //string fileToDownload = appDoc.FileName;
+            //string file = Path.Combine(path, fileToDownload);
+            //string ext = Path.GetExtension(file);
+            //string contentType = "application/doc/pdf";
 
             //Parameters to file are
             //1. The File Path on the File Server
             //2. The content type MIME type
             //3. The parameter for the file save by the browser
 
-            return File(file, contentType, appDoc.FileName);
+            //return File(file, contentType, appDoc.FileName);
+            //downloadAWS(path + '/' + fileToDownload);
+
         }
 
-        
-        public FileResult DownloadCaseDocTemp(int id)
+
+        public void DownloadCaseDocTemp(int id)
         {
             CaseDoc_Template casetemp = db.CaseDoc_Template.Single(x => x.CaseDocTemplate_Id == id);
-            string path = casetemp.Path;
-            string fileToDownload = casetemp.FileName;
-            string file = Path.Combine(path, fileToDownload);
-            string ext = Path.GetExtension(file);
-            string contentType = "application/doc/pdf";
+
+            downloadAWS(casetemp.CaseDocTemplate_Id, casetemp.Path, casetemp.FileName);
+            //string path = casetemp.Path;
+            //string fileToDownload = casetemp.FileName;
+            //string file = Path.Combine(path, fileToDownload);
+            //string ext = Path.GetExtension(file);
+            //string contentType = "application/doc/pdf";
 
             //Parameters to file are
             //1. The File Path on the File Server
             //2. The content type MIME type
             //3. The parameter for the file save by the browser
 
-            return File(file, contentType, casetemp.FileName);
+            //return File(file, contentType, casetemp.FileName);
         }
 
-        public FileResult DownloadCaseDoc(int id)
+        public void DownloadCaseDoc(int id)
         {
             CaseDocument caseDoc = db.CaseDocuments.Single(x => x.CaseDocument_Id == id);
-            string path = caseDoc.Path;
-            string fileToDownload = caseDoc.FileName;
-            string file = Path.Combine(path, fileToDownload);
-            string ext = Path.GetExtension(file);
-            string contentType = "application/doc/pdf";
+            downloadAWS(caseDoc.CaseDocument_Id, caseDoc.Path, caseDoc.FileName);
+            //string path = caseDoc.Path;
+            //string fileToDownload = caseDoc.FileName;
+            //string file = Path.Combine(path, fileToDownload);
+            //string ext = Path.GetExtension(file);
+            //string contentType = "application/doc/pdf";
 
             //Parameters to file are
             //1. The File Path on the File Server
             //2. The content type MIME type
             //3. The parameter for the file save by the browser
 
-            return File(file, contentType, caseDoc.FileName);
+            //return File(file, contentType, caseDoc.FileName);
         }
 
         #endregion Downloads
@@ -1240,9 +1542,9 @@ namespace StormWeb.Controllers
         public static string SUCCESS_BOOK = "SuccessfulBook";
         public static string SUCCESS_EDIT = "SuccessfulEdit";
         public static string NO_BOOK = "NoBook";
-        public static string TEMPLATE_APPLICATION_PATH = "~/App_Data/Templates/";
-        public static string TEMPLATE_GENERAL_PATH = "~/App_Data/Templates/General";
-        public static string STUDENT_UPLOADS_PATH = "~/App_Data/Uploads/";
+        public static string TEMPLATE_APPLICATION_PATH = "Templates/";
+        public static string TEMPLATE_GENERAL_PATH = "Templates/General";
+        public static string STUDENT_UPLOADS_PATH = "Student/Uploads/";
         #endregion
     }
        

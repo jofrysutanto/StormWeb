@@ -19,6 +19,12 @@
             $("#selectedBranch").val($selectedBranch.val());
         });
     });
+
+    function isBranchSelected() {
+        if ($("#selectedBranch").val() == "")
+            return false;
+        return true;
+    }
 </script>
 <input type="hidden" class="input-medium text-tip" value="" name="selectedBranch" id="selectedBranch" style="display: none" />
 <!-- Start of row-fluid -->

@@ -117,3 +117,72 @@ table .progress .bar
 {
     color: red;
 }
+
+/**
+* Registration type
+*/
+
+.register-type .row 
+{
+    
+}
+
+.register-type .span4
+{
+    text-align: center; margin-left: 10px;
+}
+
+.register-type .widget-head.green
+{
+    background-color: #189C1D
+}
+
+.register-type .widget-head.red
+{
+    background-color: #DA8080
+}
+
+.register-type .widget-head.dark-red
+{
+    background-color: #9C1818
+}
+
+.register-type .widget-content
+{
+    text-align: left;
+    font-size: 1.1em;    
+}
+
+.register-type .register-desc
+{
+    height: 150px;
+}
+
+.register-type ul
+{
+margin-left: 2em;
+padding: 0;
+margin: 0 0 10.5px 25px;
+}
+
+.register-type ul.icons
+{
+list-style-type: none;
+text-indent: -0.8em;
+}
+
+.register-type ul li
+{
+    padding-bottom: 5px;
+    height: 30px;
+}
+
+.clock-bg
+{
+    background: url(../img/clock_small.png) no-repeat left bottom;
+}
+
+.paper-bg
+{
+    background: url(../img/papers_small.png) no-repeat left bottom;
+}

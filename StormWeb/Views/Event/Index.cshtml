@@ -1,4 +1,4 @@
-﻿@model IEnumerable<StormWeb.Models.Event>
+﻿@model StormWeb.Models.EventAppointment
 
 @{
     ViewBag.Title = "Index";
@@ -7,110 +7,166 @@
 
 <script type="text/javascript" src="../../Scripts/gcal.js"></script>
 
-
+<script type="text/javascript">
+    $("#dialogform").dialog({
+        modal: true,
+        autoOpen: false,
+        draggable: true,
+        resizable: false,
+        width: 500
+    });
+</script>
 <div class="span2">&nbsp;</div>
 <div class="span12">
         <div class="nonboxy-widget">
         
           <div class="widget-content">
             <div class="widget-box">
-              <div id="calendar-widget"> </div>
+              <div id="calendar"> </div>
             </div>
           </div>
         </div>
       </div>
 <div class="span2">&nbsp;</div>
+<div id="calEventDialog">
+    <form>
+        <fieldset>
+        <label for="eventTitle">Title</label>
+        <input type="text" name="eventTitle" id="eventTitle" /><br>
+        <label for="eventStart">Start Date</label>
+        
+        @Html.TextBox("eventStart")
+        <!--<input type="text" name="eventStart" id="eventStart" />--><br>
+        <label for="eventEnd">End Date</label>
+        @Html.TextBox("eventEnd")<br>
+        <label for="eventComment">Comments</label>
+        @Html.TextArea("eventComment")<br>
+        </fieldset>
+    </form>
+</div>
+
       <script>
-          $(function () {
+          $(document).ready(function () {
+              $calendar = $('#calendar').fullCalendar({
+                  header: {
+                      left: 'prev,next today',
+                      center: 'title',
+                      right: 'month,agendaWeek,agendaDay'
+                  },
+                  selectable: true,
+                  selectHelper: true,
+                  select: function (start, end, allDay) {
+                      
+                      /*Using jquery date picker*/
+                      //$('#eventStart').datepicker({ dateFormat: 'yy-mm-dd' }); // format to show
+                      //$('#eventStart').datepicker({ gotoCurrent: true });
+                      //$('#datePicker').datepicker('defaultDate', start);
 
-              $('#calendar-widget').fullCalendar({
-                header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'month,agendaWeek,agendaDay'
-              },
-              
-              
-              buttonText: {
-                  prev: 'Prev',
-                  next: 'Next',
-                  today: 'Today',
-                  month: 'Month',
-                  week: 'Week',
-                  day: 'Day'
-              },
-                  
-                  eventSources:[
-                  "https://www.google.com/calendar/feeds/storm.notify%40gmail.com/private-b1aa902d61814543a881e38ed00a3748/basic",
-                  "https://www.google.com/calendar/feeds/jaisyabraham%40gmail.com/private-56e69e4b711306c6cd3654e13598a044/basic"
-                  ]
-                });
 
-//          var date = new Date();
-//          var d = date.getDate();
-//          var m = date.getMonth();
-//          var y = date.getFullYear();
-//          $('#calendar-widget').fullCalendar({
-//              header: {
-//                  left: 'prev,next today',
-//                  center: 'title',
-//                  right: 'month,agendaWeek,agendaDay'
-//              },
-//              buttonText: {
-//                  prev: 'Prev',
-//                  next: 'Next',
-//                  today: 'Today',
-//                  month: 'Month',
-//                  week: 'Week',
-//                  day: 'Day'
-//              },
-//              editable: true,
-//              events: [
-//				{
-//				    title: 'All Day Event',
-//				    start: new Date(y, m, 1)
-//				},
-//				{
-//				    title: 'Long Event',
-//				    start: new Date(y, m, d - 5),
-//				    end: new Date(y, m, d - 2)
-//				},
-//				{
-//				    id: 999,
-//				    title: 'Repeating Event',
-//				    start: new Date(y, m, d - 3, 16, 0),
-//				    allDay: false
-//				},
-//				{
-//				    id: 999,
-//				    title: 'Repeating Event',
-//				    start: new Date(y, m, d + 4, 16, 0),
-//				    allDay: false
-//				},
-//				{
-//				    title: 'Meeting',
-//				    start: new Date(y, m, d, 10, 30),
-//				    allDay: false
-//				},
-//				{
-//				    title: 'Lunch',
-//				    start: new Date(y, m, d, 12, 0),
-//				    end: new Date(y, m, d, 14, 0),
-//				    allDay: false
-//				},
-//				{
-//				    title: 'Birthday Party',
-//				    start: new Date(y, m, d + 1, 19, 0),
-//				    end: new Date(y, m, d + 1, 22, 30),
-//				    allDay: false
-//				},
-//				{
-//				    title: 'Click for Google',
-//				    start: new Date(y, m, 28),
-//				    end: new Date(y, m, 29),
-//				    url: 'http://google.com/'
-//				}
-//			]
-//          });
-      });
+                      $('#eventStart').val(new Date(start).toLocaleDateString('dd/mm/yy'));
+                      $('#eventEnd').val(new Date(end).toLocaleDateString('dd/mm/yy'));
+                      $('#calEventDialog').dialog('open');
+
+                  },
+                  editable: true,
+                  theme: true,
+                  editable: false,
+                  buttonText: {
+                      prev: 'Prev',
+                      next: 'Next',
+                      today: 'Today',
+                      month: 'Month',
+                      week: 'Week',
+                      day: 'Day'
+                  },
+                  events: {
+                      url: "/Event/GetEvents",
+                      textColor: 'black'
+                  },
+                  eventClick: function (calEvent, jsEvent, view) {
+
+                      alert('Event: ' + calEvent.title);
+                      alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                      alert('View: ' + view.name);
+
+                      // change the border color just for fun
+                      $(this).css('border-color', 'red');
+
+                  },
+                  eventDrop: function (event, delta) {
+                      alert(event.title + ' was moved ' + delta + ' days\n');
+                  }
+
+
+              });
+              var title = $('#eventTitle');
+              var start = $('#eventStart');
+              var end = $('#eventEnd');
+              var eventClass, color;
+              $('#calEventDialog').dialog({
+                  resizable: false,
+                  autoOpen: false,
+                  title: 'Add Event',
+                  width: 400,
+                  buttons: {
+                      Save: function () {
+                         
+                          if (title !== '') {
+                              $calendar.fullCalendar('renderEvent', {
+                                  title: title.val(),
+                                  start: start.val(),
+                                  end: end.val(),
+                                  allDay: true,
+                                  className: eventClass,
+                                  color: color
+                              }, true // make the event "stick"
+                            );
+                            
+                            var date = new Date(start);
+
+                            var NextMonth = date.getMonth() + 1; // Reason: it is bacause of month array it starts from 0
+
+                            var dateString = (date.getDate()) + '/' + NextMonth + '/' + date.getFullYear();
+
+                              $.ajax({
+                                type:"GET",
+                                url: "/Event/Create",
+                                data:"title="+title
+                                });
+                            }
+                          $calendar.fullCalendar('unselect');
+                          $(this).dialog('close');
+                      },
+                      Cancel: function () {
+                          $(this).dialog('close');
+                      }
+                  }
+              });
+          }); 
       </script>
+      <style type="text/css">
+        
+        .genStud .fc-event-skin 
+        {
+            background-color:Maroon;
+        }
+        
+        .staff .fc-event-skin 
+        {
+            background-color:Yellow;
+        }
+        
+        .stud .fc-event-skin 
+        {
+            background-color: #F8D6F1;
+        }
+        
+        #calendar
+        {
+		    width: 900px;
+		    margin: 0 auto;
+		}
+
+        
+      </style>
+

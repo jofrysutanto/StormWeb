@@ -274,7 +274,7 @@
                                        if (appDoc != null)
                                        {
                                  
-                                            <li>@Html.DisplayFor(modelItem => item.Date_Of_ApplicationStatus, "ShortDateTime") @Html.DisplayFor(modelItem => appDoc.Application.Course_Id)</li>
+                                            <li>@Html.DisplayFor(modelItem => item.Application_Document.FirstOrDefault().UploadedOn, "ShortDateTime") @Html.DisplayFor(modelItem => appDoc.Application.Course_Id)</li>
                                   
                                        }
                                        else

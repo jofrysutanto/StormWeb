@@ -9,6 +9,18 @@
         <div class="widget-content">
             <div class="widget-box">
                 <table style="margin-left: 25px" class="table">
+                    @foreach (var item1 in Model.clientTable)
+                        {
+                        <tr>
+                            <th>
+                                Client Id
+                            </th>
+                            <td>
+                                @Html.Encode(item1.Client_Id)
+                            </td>
+                            
+                        </tr>
+                        } 
                     @foreach (var item in Model.studentTable)
                     {
                         <br />
@@ -16,7 +28,7 @@
                             Personal Details</span> 
                         <a class='btn btn-info' href="@Url.Action("Profile", new { id = item.Student_Id })" style="margin-bottom:10px;" target="_parent">
                             <i class="color-icons pencil_co"></i>View / Edit Full Details </a>
-                  
+                        
                         <tr>
                             <th>
                                 Username
@@ -34,7 +46,7 @@
                         </tr>                    
                     }
                     @foreach (var item in Model.clientTable)
-                    { 
+                    {  
                         <tr>
                             <th>
                                 Title
@@ -60,7 +72,7 @@
                             <th>
                                 Email
                             </th>
-                            <td>@Html.Label(item.Email)
+                            <td>@Html.Encode(item.Email)
                             </td>
                         </tr>
                         <tr>

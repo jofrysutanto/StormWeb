@@ -9,12 +9,18 @@ using StormWeb.Models.ModelHelper;
 using System.Diagnostics;
 using System.Web.Security;
 using System.Data;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Net.Mail;
 
 namespace StormWeb.Controllers
 {
     public class ClientController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
+
+        // Checking email
+        private bool invalid = false;
 
         [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Index()
@@ -79,7 +85,19 @@ namespace StormWeb.Controllers
 
         #region REGISTER
 
-        public ActionResult Register()
+        public ActionResult ChooseRegistration()
+        {
+            return View();
+        }
+
+        public ActionResult Enquire()
+        {
+            FillRegistrationViewBagComponent();
+
+            return View();
+        }
+
+        private void FillRegistrationViewBagComponent()
         {
             ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName");
             ViewBag.RepresentedCountry = new SelectList(CountryHelper.GetRepresentedCountries(), "CountryCode", "CountryName");
@@ -90,8 +108,168 @@ namespace StormWeb.Controllers
 
             IEnumerable<Branch> branch = db.Branches.ToList();
             ViewBag.Branch = branch;
+        }
 
-            return View(new ClientViewModel());
+        
+        public JsonResult CheckPreviousRegistration(string id)
+        {
+            Client c;
+
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+
+            bool smth1 = checkAllNumber(id);
+            bool smth2 = IsValidEmail(id);
+
+            // Fail number and email test
+            if (!checkAllNumber(id) && !IsValidEmail(id))
+            {
+                dict.Add("result", "bad");
+                return Json(dict);
+            }
+
+            if (checkAllNumber(id))
+            {
+                int testClientID = Convert.ToInt32(id);
+                c = db.Clients.DefaultIfEmpty(null).SingleOrDefault(x => x.Client_Id == testClientID);
+            }
+            else
+                c = null;
+
+            // Not Client, check email
+            if (c == null)
+            {
+                c = db.Clients.DefaultIfEmpty(null).SingleOrDefault(x => x.Email == id);
+
+                if (c == null)
+                {
+                    dict.Add("result", "bad");
+                    return Json(dict);
+                }
+            }
+
+                
+                // !! IMPORTANT !! 
+                // Should check if this client ID already have username
+
+                dict.Add("clientID", Convert.ToString(c.Client_Id));
+                dict.Add("result", "good");
+
+                return Json(dict);
+        }
+
+        private bool checkAllNumber(string str)
+        {
+            int num;
+            bool isNum = int.TryParse(str, out num);
+            if (isNum)
+                return true;
+            else
+                return false;
+        }
+
+        private bool IsValidEmail(string strIn)
+        {
+            invalid = false;
+            if (String.IsNullOrEmpty(strIn))
+                return false;
+
+            // Use IdnMapping class to convert Unicode domain names. 
+            try {
+                strIn = Regex.Replace(strIn, @"(@)(.+)$", this.DomainMapper,
+                                    RegexOptions.None);
+            }
+            catch (Exception) {
+                return false;
+            }
+
+            if (invalid) 
+                return false;
+
+            // Return true if strIn is in valid e-mail format. 
+            try {
+                return Regex.IsMatch(strIn, 
+                    @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + 
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$", 
+                    RegexOptions.IgnoreCase);
+            }  
+            catch (Exception) {
+                return false;
+            }
+        }
+
+        private string DomainMapper(Match match)
+           {
+              // IdnMapping class with default property values.
+              IdnMapping idn = new IdnMapping();
+
+              string domainName = match.Groups[2].Value;
+              try {
+                 domainName = idn.GetAscii(domainName);
+              }
+              catch (ArgumentException) {
+                 invalid = true;      
+              }      
+              return match.Groups[1].Value + domainName;
+           }
+
+
+        public ActionResult Register(int id = -1)
+        {
+            FillRegistrationViewBagComponent();
+
+            if (id <= -1)
+            {
+                ViewBag.RegisterType = "full";
+                return View(new ClientViewModel());
+            }
+            else
+            {
+                ViewBag.RegisterType = "continue";
+                Client c = db.Clients.SingleOrDefault(x => x.Client_Id == id);
+
+                ClientViewModel cViewModel = new ClientViewModel();
+                cViewModel.ClientModel = c;
+                return View("RegisterContinue", cViewModel);
+            }            
+        }
+
+        [HttpPost]
+        public ActionResult RegisterAccount(FormCollection fc)
+        {
+            // Attempt to register the user
+            string username = fc["Username"];
+            string password = fc["Password"];
+            int clientID = Convert.ToInt32(fc["clientID"]);
+
+            Client c = db.Clients.SingleOrDefault(x => x.Client_Id == clientID);
+
+            MembershipCreateStatus createStatus;
+            Membership.CreateUser(username, password, c.Email, null, null, true, null, out createStatus);
+            Roles.AddUserToRole(fc["Username"], "Student");
+
+            if (createStatus == MembershipCreateStatus.Success)
+            {
+                //FormsAuthentication.SetAuthCookie(fc["Username"], false /* createPersistentCookie */);
+                // Create new student entry in Database
+                Student student = new Student();
+                student.Client_Id = Convert.ToInt32(clientID);
+                student.UserName = username;
+                db.Students.AddObject(student);
+                db.SaveChanges();
+
+                Case nCase = AddNewCase(c.Branch_Id, student);
+                AddDocumentTemplate(nCase);
+                                
+                return RedirectToAction("LogOn", "Account", new { message = "registration-success" });
+            }
+            else
+            {
+                // Some error happened
+                ModelState.AddModelError("", ErrorCodeToString(createStatus));
+            }
+
+            NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error handling your request!");
+            return RedirectToAction("LogOn", "Account");
         }
 
         [HttpPost]
@@ -159,11 +337,9 @@ namespace StormWeb.Controllers
                 {
                     //if (ModelState.IsValid)
                     if (TryValidateModel(model.ClientModel))
-                    {
-                        Debug.Write(fc["Password"]);
+                    {                        
 
                         // Attempt to register the user
-
                         string username = fc["Username"];
                         string password = fc["Password"];
                         MembershipCreateStatus createStatus;
@@ -182,23 +358,9 @@ namespace StormWeb.Controllers
                             db.Clients.AddObject(model.ClientModel);
                             db.SaveChanges();
 
-                            // Create new Case entry in Database
-                            Case nCase = new Case();
-                            nCase.Branch_Id = (int)model.ClientModel.Branch_Id;
-                            nCase.Status = CaseController.CASE_INITIATED;
-                            nCase.Student_Id = student.Student_Id;
-                            nCase.CreatedDate = DateTime.Now;
-                            db.Cases.AddObject(nCase);
-                            db.SaveChanges();
+                            Case nCase = AddNewCase(model.ClientModel.Branch_Id, student);
 
-                            // Create entries for General documents to be uploaded by the students
-                            foreach (CaseDoc_Template cdTemplates in db.CaseDoc_Template.Where(x => x.Required == true).ToList())
-                            {
-                                CaseDocument cd = new CaseDocument();
-                                cd.CaseDocTemplate_Id = cdTemplates.CaseDocTemplate_Id;
-                                cd.Case_Id = nCase.Case_Id;
-                                db.CaseDocuments.AddObject(cd);
-                            }
+                            AddDocumentTemplate(nCase);
                             db.SaveChanges();
 
                             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Registered a new client " + model.ClientModel.GivenName + " " + model.ClientModel.LastName), LogHelper.LOG_OTHER, LogHelper.SECTION_CLIENT);
@@ -218,6 +380,31 @@ namespace StormWeb.Controllers
                 }
             }
             return View(model);
+        }
+
+        private Case AddNewCase(int branchID, Student student)
+        {
+            // Create new Case entry in Database
+            Case nCase = new Case();
+            nCase.Branch_Id = branchID;
+            nCase.Status = CaseController.CASE_INITIATED;
+            nCase.Student_Id = student.Student_Id;
+            nCase.CreatedDate = DateTime.Now;
+            db.Cases.AddObject(nCase);
+            db.SaveChanges();
+            return nCase;
+        }
+
+        private void AddDocumentTemplate(Case nCase)
+        {
+            // Create entries for General documents to be uploaded by the students
+            foreach (CaseDoc_Template cdTemplates in db.CaseDoc_Template.Where(x => x.Required == true).ToList())
+            {
+                CaseDocument cd = new CaseDocument();
+                cd.CaseDocTemplate_Id = cdTemplates.CaseDocTemplate_Id;
+                cd.Case_Id = nCase.Case_Id;
+                db.CaseDocuments.AddObject(cd);
+            }
         }
 
         #endregion
@@ -270,6 +457,12 @@ namespace StormWeb.Controllers
                     db.General_Enquiry.AddObject(model);
                     db.SaveChanges();
                     LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + "Requested appointment "), LogHelper.LOG_OTHER, LogHelper.SECTION_CLIENT);
+
+                    string messageBody = "<div>Your appointment is scheduled on: " + model.Appointment.AppDateTime.ToShortDateString() + " on " + model.Appointment.AppDateTime.ToShortTimeString() + "</div>";
+
+                    messageBody += "<div><br/> <strong>This is your client ID for future reference: " + model.Client_Id + "</strong></div>";
+
+                    EmailHelper.sendEmail(new MailAddress(model.Client.Email), "We have received your appointment request", messageBody);
                     return RedirectToAction("AppointmentSuccess", "Client", new { id = model.Appointment.Appointment_Id });
                 }
             }
@@ -349,6 +542,26 @@ namespace StormWeb.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Email Check
+
+        public JsonResult IsEmailExist([Bind(Prefix = "ClientModel.Email")]string email)
+        {
+            JsonResult result = new JsonResult();
+
+            Client c = db.Clients.DefaultIfEmpty(null).SingleOrDefault(x => x.Email == email);
+
+            if (c == null)
+            {
+                result.Data = true;
+            }
+            else
+                result.Data = false;
+
+            return result;
         }
 
         #endregion

@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "TestAWS";
+}
+
+<h2>TestAWS</h2>
+
+@*@Html.Encode(ViewBag.Result)
+*@
+@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<h2>UploadFile</h2>
+ <script type="text/javascript">
+     $(document).ready(function () {
+         $(".upload-files").click(function () {
+             parent.$.fn.colorbox.close();
+         });
+     });
+   
+
+</script>
+
+@using (Html.BeginForm("TestAWS", "Document", 
+        FormMethod.Post, new { enctype = "multipart/form-data" })) {
+ @*   <input id="comment"  name="comment" value=""/>
+    <input type="hidden" value="@ViewBag.ApplicationDoc_Id" name="ApplicationDoc_Id" />
+*@    
+    <input  type="file" id="file" name="file" />
+    <input type='submit' class='upload-files' value=' Upload Files ' />
+ }
+

@@ -325,12 +325,10 @@ namespace StormWeb.Controllers
                 db.Password_Reset.AddObject(reset);
                 db.SaveChanges();
 
-                EmailHelper email = new EmailHelper();
-
                 string emailBody = "Please use this link to reset your email: ";
                 emailBody += Url.Action("ResetPassword", "Account", new { id = secretKey }, "http");
 
-                email.sendEmail(new System.Net.Mail.MailAddress(user.Email), "Password Reset", emailBody);
+                EmailHelper.sendEmail(new System.Net.Mail.MailAddress(user.Email), "Password Reset", emailBody);
 
                 return new JsonResult()
                 {

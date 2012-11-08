@@ -15,7 +15,10 @@
             changeYear: true,
             minDate:  '+1',
             maxDate: '+3M',
-            beforeShowDay: $.datepicker.noWeekends
+            beforeShowDay: $.datepicker.noWeekends,
+            showOn: "button",
+            buttonImage: "/Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
 });
 
@@ -49,7 +52,9 @@
                                         <div class="editor-field">
                                             @Html.TextBoxFor(model => model.Client_Id, new { @class = "input-medium text-tip", @readonly = "readonly" })
                                             @Html.ValidationMessageFor(model => model.Client_Id)
+                                            <span class="alert alert-info">Please remember your Client ID for future reference</span>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="control-group">

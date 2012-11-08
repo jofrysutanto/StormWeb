@@ -3,9 +3,6 @@
     ViewBag.Title = "New Client Registration";
     Layout = "~/Views/Shared/_LayoutOneColumn.cshtml";
 }
-
-
-
 @using StormWeb.Helper
 <script type="text/javascript">
     
@@ -22,175 +19,13 @@
             dateFormat: 'dd/mm/yy',
             yearRange: '-100:c',
             changeMonth: true,
-            changeYear: true
+            changeYear: true,
+            showOn: "button",
+            buttonImage: "/Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
 
 
-        // Smart Wizard     	
-  		var myWizard = $('#wizard').smartWizard({
-            onLeaveStep:leaveAStepCallback,
-            onFinish:onFinishCallback
-            });
-      
-      // When click next, validate the current steps
-      function leaveAStepCallback(obj){
-        var step_num= obj.attr('rel');
-        return validateSteps(step_num);
-      }      
-
-       // Validate depends on which step_num
-       function validateSteps(step_num)
-       {
-            var isValid = true;
-            var toValidate;
-            
-            if (step_num == 1)
-            {
-                toValidate = new Array("#ClientModel_GivenName", "#ClientModel_LastName", "#ClientModel_Dob","#ClientModel_Email", "#ClientModel_ContactNumber",
-                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Address_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
-                                            "#AddressModel_Zipcode", "#selectedBranch" );
-            }
-            else if(step_num == 2)
-            {
-
-            }
-            else if (step_num == 3)
-            {
-                toValidate = new Array("#Username", "#Password");
-            }
-            
-            if (toValidate) 
-            {                
-                for ( i = 0; i < toValidate.length; i++)
-                {
-                    if (toValidate[i] == "#selectedBranch")
-                    {   
-                        //alert("validate selectedBranch == " + $("#selectedBranch").val());                     
-                        if ($("#selectedBranch").val().length == 0)
-                        {
-                            isValid = false;
-                            $.pnotify({
-                                 title: 'Error',
-                                 text: 'Select closest branch!',
-                                 type: 'error',
-                                 history: false
-                            });
-                        }
-                    }
-                    else
-                    {
-                        
-                        var valid = $("#registrationForm").validate().element(toValidate[i]);
-                        if (!(valid))
-                        {
-                            //alert('not valid at ' + toValidate[i]);
-                            isValid = false;
-                        }
-                    }
-                    $(toValidate).blur();
-                }
-            }
-            
-            // To refresh to content view of step number one in the wizard
-            if (!isValid)
-            {
-                $("#ClientModel_Services").val("--Choose one--");       
-                $.fn.smartWizard.loadContent(step_num-1);
-            }
-            
-            return isValid;
-       }
-
-
-        // Pop over for Qualifications tips
-        $(".mypopover").popover({
-            placement:'top'            
-            });
-
-        // When choosing services
-        $("#ClientModel_Services").change(function () {
-            var selected = $(this).val();
-            $("#ErrorStep").hide();
-            $("#StudyServiceSection").hide();
-
-            if (selected == "Study") {
-                $("#StudyServiceSection").show();
-                $("#modalButton").click();
-            }
-            else if (selected == "--Choose one--") {
-                $("#ErrorStep").show();
-            }
-        });
-
-        // Adding and deleteting qualification field dynamically
-        var countQ = 1;
-        var qString = "#prevQualification";
-        var limit = 4;
-        $("#minus1").hide();
-        $("#plus1").click(function () {
-            countQ++;
-            $("#minus1").show();
-            $(qString + countQ).show();
-            if (countQ == limit)
-                $("#plus1").hide();
-        });
-        $("#minus1").click(function () {
-            $(qString + countQ).hide();
-            countQ--;
-            $("#plus1").show();            
-            if (countQ == 1)
-                $("#minus1").hide();
-        });
-
-        // Top Notification
-        $("#noty_clickNext").click(function() {
-		
-		var noty_id = $.pnotify({
-                     title: 'Continue registration',
-                     text: 'Please click \'Next\' at the bottom right of the form',
-                     type: 'info',
-                     history: false
-                 });
-                 });
-
-        // When choosing In Preferred Country (Yes or No)
-        $("#InPreferredCountry_True, #InPreferredCountry_False").change(function () {
-            var selected = $(this).val();
-            if (selected == "True") {
-                $("#InPreferredCountryStatus").show();
-                $("#InPreferredCountryStatus_Tips").show();
-            }
-            else {
-                $("#InPreferredCountryStatus").hide();
-                $("#InPreferredCountryStatus_Tips").hide();
-            }
-            $.fn.smartWizard.loadContent(1);
-        });
-
-        // When choosing In Preferred Country (Yes or No)
-        $("#Married_True, #Married_False").change(function () {
-            var selected = $(this).val();
-            if (selected == "True") {
-                $("#IsMarried").show();
-                $("#IsMarried_Tips").show();
-            }
-            else {
-                $("#IsMarried").hide();
-                $("#IsMarried_Tips").hide();
-            }
-            $.fn.smartWizard.loadContent(1);
-        });
-
-        // User decided to request for appointment (Partial Registration)
-        $("#partialRegisterButton").click(function () {
-            if (validateSteps(1))
-            {
-                $('#isFullRegistration').val('no');
-                $('#registrationForm').submit();
-            }
-            //$("#registrationForm").valid();
-            
-        });
         
         // Client-side validation
         //custom validation rule - text only
@@ -198,11 +33,6 @@
                               checkInternationalPhone, 
                               "Invalid international phone format"
        );
-
-        // validate signup form on keyup and submit
-        var isFullRegistration = function() {
-            return $('input[name=isFullRegistration]').val() == 'yes';
-        }
 
         var validator = $("#registrationForm").validate({
         rules: {
@@ -217,14 +47,17 @@
             },
             "ClientModel.Email": {
                 required: true,
-                email: true,                
+                email: true,
+                remote: {
+                    url: '@Url.Action("IsEmailExist", "Client")',
+                    type: "post",
+                }                
             },
             "ClientModel.ContactNumber": {
                 required: true,
                 phoneNumber: true
             },
             "ClientModel.SecondaryContactNumber": {
-                required: true,
                 phoneNumber: true
             },
             "AddressModel.Address_Name": {
@@ -263,8 +96,6 @@
             },
             selectedBranch: {
                 required: function(element) {       
-                    //alert($("#selectedBranch").val());
-                    //alert($("#selectedBranch").val().length == 0);
                     return ($("#selectedBranch").val().length == 0);
                 }
             },
@@ -272,6 +103,9 @@
         messages: {
             "AddressModel.Apartment_Number": {
                 required: "",                
+            },
+            "ClientModel.Email": {
+                remote: "This email is already registered with us"
             },
             Username: {
                 remote: "Username already exist",
@@ -287,62 +121,43 @@
             else
                 error.appendTo( element.parent());
             },
-            
-        invalidHandler: function(form, validator) {            
-             $("#ClientModel_Services").val("--Choose one--");         
-             $.fn.smartWizard.loadContent(0);
-        },
+    });    
+    
+
+    $("#registrationForm").submit(function () {
+        return $("#registrationForm").valid();
     });
 
-    
-      // On finish, we validate and submit
-      function onFinishCallback(){
-            toValidate = new Array("#ClientModel_GivenName", "#ClientModel_LastName", "#ClientModel_Dob","#ClientModel_Email", "#ClientModel_ContactNumber",
-                                            "#ClientModel_SecondaryContactNumber", "#AddressModel_Address_Name", "#AddressModel_Apartment_Number", "#AddressModel_City", "#AddressModel_State",
-                                            "#AddressModel_Zipcode", "#Username", "#Password", "#Confirm","#selectedBranch" );
-
-            var isValid = true;
-            if (toValidate) 
-            {                
-                for ( i = 0; i < toValidate.length; i++)
-                {
-                    // For some reason not properly validating selected branch
-                    if (toValidate[i] == "#selectedBranch")
-                    {                        
-                        if ($("#selectedBranch").val().length == 0)
-                            isValid = false;
-                    }
-                    else
-                    {
-                        var valid = $("#registrationForm").validate().element(toValidate[i]);
-                        if (!(valid))
-                        {                            
-                            isValid = false;
-                        }
-                        $(toValidate).blur();
-                    }
-                }
+    $("#submitBtn").click(function (e) {
+        e.preventDefault();
+        if ($("#registrationForm").valid())
+        {
+            if (isBranchSelected())
+            {
+                $("#registrationForm").submit();
             }
-           
+            else
+            {
+                $.pnotify({
+                    title: 'Error',
+                    text: 'Please select a branch',
+                    styling: 'bootstrap',
+                    type: 'error'
+                 });
+            }
+        }
+        else
+        {
+            $.pnotify({
+                title: 'Error',
+                text: 'Please fix all the errors',
+                styling: 'bootstrap',
+                type: 'error'
+            });
 
-           if(isValid)
-           {                 
-                $('#isFullRegistration').val('yes');
-                $('#registrationForm').submit();
-                return true;
-           }
-           
-           var noty_id = $.pnotify({
-			    title : 'Error',
-			    text: "There are some errors in the form",
-			    type:'error',
-                history: false			
-			 });
-
-             $.fn.smartWizard.loadContent(0);
-           
-           return false;
-       }
+            return false;
+        }
+    });
 
 });  
 </script>
@@ -364,609 +179,270 @@
                     {
                         <input type="hidden" name="isFullRegistration" id="isFullRegistration" value='yes'
                             style="display: none" />
-                        <div id="wizard" class="content-wizard">
-                            <ul class="clearfix">
-                                <li><a href="#step-1"><span class="stepNumber">1</span> <span class="stepDesc">Step
-                                    1 <small>Personal Info</small></span></a></li>
-                                @*<li><a href="#step-2"><span class="stepNumber">2</span> <span class="stepDesc">Step
-                                    2 <small>Your service</small></span></a></li>*@
-                                <li><a href="#step-2"><span class="stepNumber">2</span> <span class="stepDesc">Step
-                                    2 <small>You Account </small></span></a></li>
-                            </ul>
-                            <!-- Start of Step 1 -->
-                            <div id="step-1">
-                                <div class="widget-head">
-                                    <h5 style="vertical-align: bottom">
-                                        <span class="dashboard-icons-colors user_sl"></span>Personal details
-                                    </h5>
-                                </div>
-                                <fieldset>
-                                    <span class="span8">
-                                        <div class="control-group">
-                                            @Html.Label("Title", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                <select data-placeholder="Title" style="width: 100px" class="chzn-select" tabindex="13"
-                                                    id="ClientModel_Title" name="ClientModel.Title">
-                                                    <optgroup label="Title">
-                                                        <option>Mr.</option>
-                                                        <option>Ms.</option>
-                                                        <option>Mrs.</option>
-                                                        <option>Miss.</option
-                                                        <option>Other</option
-                                                    </optgroup>
-                                                </select>
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.Title)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Given Name", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.ClientModel.GivenName, new { @class = "input-xlarge text-tip", placeholder = "Given Name" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.GivenName)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Last name", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip", placeholder = "Last Name" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.LastName)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="input-append date dp" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                            <div class="control-group">
-                                                @Html.Label("Date of Birth", null, new { @class = "control-label" })
-                                                <div class="controls">
-                                                    <div class="input-append">
-                                                        @Html.TextBoxFor(model => model.ClientModel.Dob, new { @readonly = "readonly", @class="dp1" })
-                                                    </div>
-                                                    <p class="help-block">
-                                                        @Html.ValidationMessageFor(model => model.ClientModel.Dob)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Nationality", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.DropDownListFor(model => model.ClientModel.Nationality, (IEnumerable<SelectListItem>)ViewBag.NationalityList, new { @class = "chzn-select" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.Nationality)
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </span><span class="span4">
-                                        <div class="well info">
-                                            Tips
-                                            <br />
-                                            Please fill <strong>ALL</strong> information in this section
-                                        </div>
-                                    </span>
-                                </fieldset>
-                                <div class="widget-head">
-                                    <h5 style="vertical-align: bottom">
-                                        <span class="dashboard-icons-colors contact_sl"></span>Contact details
-                                    </h5>
-                                </div>
-                                <fieldset>
-                                    <span class="span8">
-                                        <div class="control-group">
-                                            @Html.Label("Email Address", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.Email)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.ContactNumber)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Secondary Contact Number", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.ClientModel.SecondaryContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.SecondaryContactNumber)
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </span><span class="span4">
-                                        <div class="well info">
-                                            Tips
-                                            <ul>
-                                                <li>Please enter at least <strong>one</strong> phone contact information </li>
-                                            </ul>
-                                        </div>
-                                    </span>
-                                </fieldset>
-                                <div class="widget-head">
-                                    <h5 style="vertical-align: bottom">
-                                        <span class="dashboard-icons-colors address_sl"></span>Mailing Address
-                                    </h5>
-                                </div>
-                                <fieldset>
-                                    <span class="span8">
-                                        <div class="control-group">
-                                            @Html.Label("Street Name and Number", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBox("AddressModel.Address_Name", "", new { @class = "input-xlarge text-tip",@onkeypress = "return alphanumeric_only(this);", placeholder = "Street Name" })
-                                                @Html.TextBox("AddressModel.Apartment_Number", "", new { placeholder = "Street Number", @class = "input-small" })
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("City", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.AddressModel.City, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "City" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.AddressModel.City)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("State", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.AddressModel.State, new { @class = "input-xlarge text-tip",@onkeypress = "return alphanumeric_only(this);", placeholder = "State" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.AddressModel.State)
-                                                </p>
-                                            </div>
-                                        </div>
-                                       <div class="control-group">
-                                            @Html.Label("Country", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.DropDownListFor(model => model.AddressModel.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Zip Code", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.AddressModel.Zipcode, new { @class = "input-xlarge text-tip" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.AddressModel.Zipcode)
-                                                </p>
-                                            </div>
-                                        </div>
-                                       <div class="control-group">
-                                            @Html.Label("Country of Residence", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.DropDownListFor(model => model.AddressModel.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </span><span class="span4">
-                                        <div class="well info">
-                                            Tips
-                                            <ul>
-                                                <li>Please enter complete address information </li>
-                                            </ul>
-                                        </div>
-                                    </span>
-                                </fieldset>
-                                
-                                <div class="widget-head">
-                                <h5 style="vertical-align: bottom">
-                                    <span class="dashboard-icons-colors milestone_sl"></span>Select closest branch
-                                </h5>
-                                </div>    
-                                <div class="control-group">
-                                @Html.Partial("Partial/_BranchListPartial", (IEnumerable<StormWeb.Models.Branch>)ViewBag.Branch)
-                                </div>
-                                <div class="widget-head">
-                                    <h5 style="vertical-align: bottom">
-                                        <span class="dashboard-icons-colors milestone_sl"></span>Choose your service
-                                    </h5>
-                                </div>
-                                <fieldset>
-                                    <span class="span8">
-                                        <div class="control-group">
-                                            @Html.Label("Country of Destination", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.DropDownListFor(model => model.ClientModel.PreferredCountry, (IEnumerable<SelectListItem>)ViewBag.RepresentedCountry, new { @class = "chzn-select" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.PreferredCountry)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Service", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.DropDownListFor(model => model.ClientModel.Services, (IEnumerable<SelectListItem>)ViewBag.Services)
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.ClientModel.Services)
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </span><span class="span4">
-                                        <div class="well info">
-                                            Tips
-                                            <ul>
-                                                <li>You have to choose service and preferred country </li>
-                                            </ul>
-                                        </div>
-                                    </span>
-                                </fieldset>
-                                <a class="btn btn-modal" style="display: none" id="modalButton" data-toggle="modal"
-                                    href="#myModal">Launch Modal</a>
-                                <div class="modal hide fade" id="myModal">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">
-                                            ×</button>
-                                        <h4>
-                                            Choose an option</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="widget-head">
-                                            <h5 style="vertical-align: bottom">
-                                                Do you want to book an appointment now?
-                                            </h5>
-                                        </div>
-                                        <fieldset>
-                                            If you book an appointment you can:
-                                            <ul>
-                                                <li>Directly talk with one of the counsellor to discuss your study opportunities</li>
-                                                <li>Express your concern or problems early on with the counsellor</li>
-                                                <li>Choose this if you are want to study abroad but unsure about your choice </li>
-                                            </ul>
-                                        </fieldset>
-                                        <div class="widget-head">
-                                            <h5 style="vertical-align: bottom">
-                                                Or continue with registration
-                                            </h5>
-                                        </div>
-                                        <fieldset>
-                                            If you proceed with the registration you can:
-                                            <ul>
-                                                <li>Make use of our student portal (start online application to your university of choice,
-                                                    request appointment, send message to counsellor, and more!)</li>
-                                                <li>Choose this for full Storm International study service and experience</li>
-                                            </ul>
-                                        </fieldset>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="#" id="noty_clickNext" class="btn btn-info" data-dismiss="modal">Continue with
-                                            registration</a> <a href="#" id="partialRegisterButton" class="btn btn-primary" data-dismiss="modal">
-                                                Book me an Appointment!</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of Step 1 -->
-                           @* <div id="step-2">
-                                <!-- If client did not choose any service at previous step -->
-                                <div id="ErrorStep">
-                                    <div class="widget-head well">
-                                        <div class="alert-error">
-                                            <h4 class="alert-heading">
-                                                Halt!</h4>
-                                            <p>
-                                                Please return to previous step and choose one of the service</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Enf if not choosing anything -->
-                                <!-- If client chooses Study Service show these -->
-                                <div id="StudyServiceSection" style="display: none">
-                                    <div class="widget-head">
-                                        <h5 style="vertical-align: bottom">
-                                            <span class="dashboard-icons-colors order_1_sl"></span>Please answer and fill the
-                                            following
-                                        </h5>
-                                    </div>
-                                    <fieldset>
-                                        <span class="span8">
-                                            <div class="control-group">
-                                                @Html.Label("Are you in your preferred country?", null, new { @class = "control-label" })
-                                                <div class="controls">
-                                                    <label class="radio">
-                                                        @Html.RadioButtonFor(model => model.ClientModel.InPreferredCountry, true, new { id = "InPreferredCountry_True", @class = "radio-b" })
-                                                        Yes</label>
-                                                    <label class="radio">
-                                                        @Html.RadioButtonFor(model => model.ClientModel.InPreferredCountry, false, new { id = "InPreferredCountry_False", @class = "radio-b" })
-                                                        No</label>
-                                                    <p class="help-block">
-                                                        @Html.ValidationMessageFor(model => model.ClientModel.Services)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div id="InPreferredCountryStatus" style="display: none">
-                                                <div class="control-group">
-                                                    @Html.Label("Your status at chosen country", null, new { @class = "control-label" })
-                                                    <div class="controls">
-                                                        @Html.DropDownListFor(model => model.ClientModel.PreferredCountryVisaStatus, (IEnumerable<SelectListItem>)ViewBag.Status, new { @class = "chzn-select" })
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.ClientModel.PreferredCountryVisaStatus)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </span><span class="span4">
-                                            <div class="well info" id="InPreferredCountryStatus_Tips" style="display: none">
-                                                Tips
-                                                <ul>
-                                                    <li>Please select one of the options</li>
-                                                </ul>
-                                            </div>
-                                        </span>
-                                    </fieldset>
-                                    <div class="widget-head">
-                                        <h5 style="vertical-align: bottom">
-                                            <span class="dashboard-icons-colors order_1_sl"></span>Additional Information
-                                        </h5>
-                                    </div>
-                                    <fieldset>
-                                        <span class="span8">
-                                            <div class="control-group">
-                                                @Html.Label("Are you married?", null, new { @class = "control-label" })
-                                                <div class="controls">
-                                                    <label class="radio">
-                                                        @Html.RadioButtonFor(model => model.ClientModel.MaritalStatus, true, new { id = "Married_True", @class = "radio-b inline" })
-                                                        Yes</label>
-                                                    <label class="radio">
-                                                        @Html.RadioButtonFor(model => model.ClientModel.MaritalStatus, false, new { id = "Married_False", @class = "radio-b inline" })
-                                                        No</label>
-                                                    <p class="help-block">
-                                                        @Html.ValidationMessageFor(model => model.ClientModel.MaritalStatus)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div id="IsMarried" style="display: none">
-                                                <div class="control-group">
-                                                    @Html.Label("Spouse Given Name", null, new { @class = "control-label" })
-                                                    <div class="controls">
-                                                        @Html.TextBoxFor(model => model.SpouseModel.GivenName, new { @class = "input-xlarge text-tip", placeholder = "Given Name" })
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.SpouseModel.GivenName)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="control-group">
-                                                    @Html.Label("Spouse Last name", null, new { @class = "control-label" })
-                                                    <div class="controls">
-                                                        @Html.TextBoxFor(model => model.SpouseModel.LastName, new { @class = "input-xlarge text-tip", placeholder = "Last Name" })
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.SpouseModel.LastName)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="input-append date dp" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                                    <div class="control-group">
-                                                        @Html.Label("Spouse Date of Birth", null, new { @class = "control-label" })
-                                                        <div class="controls">
-                                                            <div class="input-append">
-                                                                @Html.TextBoxFor(model => model.SpouseModel.Dob, new { @readonly = "readonly", @class="dp1" })
-                                                            </div>
-                                                            <p class="help-block">
-                                                                @Html.ValidationMessageFor(model => model.SpouseModel.Dob)
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="control-group">
-                                                    @Html.Label("Spouse Nationality", null, new { @class = "control-label" })
-                                                    <div class="controls">
-                                                        @Html.DropDownListFor(model => model.SpouseModel.Nationality, (IEnumerable<SelectListItem>)ViewBag.NationalityList, new { @class = "chzn-select" })
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.SpouseModel.Nationality)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="control-group">
-                                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
-                                                    <div class="controls">
-                                                        @Html.TextBoxFor(model => model.SpouseModel.PrimaryContact, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.SpouseModel.PrimaryContact)
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </span><span class="span4">
-                                            <div class="well info" id="IsMarried_Tips" style="display: none">
-                                                Tips
-                                                <ul>
-                                                    <li>Please enter all of your spouse information</li>
-                                                </ul>
-                                            </div>
-                                        </span>
-                                    </fieldset>
-                                    <div class="widget-head">
-                                        <h5 style="vertical-align: bottom">
-                                            <span class="dashboard-icons-colors cv_sl"></span>Skills and Qualifications <a class="mypopover"
-                                                data-content="Please list up to 4 recent qualifications" href="#" title="Tips"><span
-                                                    class="black-icons info_about"></span></a>
-                                        </h5>
-                                    </div>
-                                    <fieldset>
-                                        <div class="span12">
-                                            <!-- To store how many qualification entered by user -->
-                                            <input type="hidden" name="QualificationCount" value="1" style="display: none" />
-                                            <div class="control-group well">
-                                                <div class="row-fluid">
-                                                    <div class="span3">
-                                                        <h4 style="text-align: center">
-                                                            Major <a class="mypopover" data-content="Enter your full major name<br>E.g. <small>Bachelor of Computer Science</small>"
-                                                                href="#" title="Tips"><span class="black-icons info_about"></span></a>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="span3">
-                                                        <h4 style="text-align: center">
-                                                            Qualification <a class="mypopover" data-content="Select your qualification level (or the equivalent according to your country of study)"
-                                                                href="#" title="Tips"><span class="black-icons info_about"></span></a>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="span3">
-                                                        <h4 style="text-align: center">
-                                                            University <a class="mypopover" data-content="Enter complete university name<br>E.g. <small>Swinburne University of Technology</small>"
-                                                                href="#" title="Tips"><span class="black-icons info_about"></span></a>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="span3">
-                                                        <h4 style="text-align: center">
-                                                            Date of Completion <a class="mypopover" data-content="Enter your completion date as accurate as possible<br>E.g. <small>14 July 2010</small> or <small>August 2012 (less preferred)</small>"
-                                                                href="#" title="Tips"><span class="black-icons info_about"></span></a>
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div id="qualificationArea">
-                                                    <div class="row-fluid" style="margin-top: 5px; text-align:center">
-                                                        <div class="span3">
-                                                            @Html.TextBox("Major1", "", new { @class = "input-xlarge text-tip", placeholder = "e.g. Bachelor of Computer Science" })
-                                                        </div>
-                                                        <div class="span3">
-                                                            @Html.DropDownList("Qualification1", (IEnumerable<SelectListItem>)ViewBag.CourseLevel, new { @class = "chzn-select" })
-                                                        </div>
-                                                        <div class="span3">
-                                                            @Html.TextBox("University1", "", new { @class = "input-xlarge text-tip", placeholder = "University Name" })
-                                                        </div>
-                                                        <div class="span3">
-                                                            @Html.TextBox("Completion1", "", new { @class = "input-xlarge text-tip", placeholder = "17-08-2009" })
-                                                        </div>
-                                                        <p class="help-block">
-                                                            @Html.ValidationMessageFor(model => model.QualificationsModel)
-                                                        </p>
-                                                        <br />
-                                                    </div>
-                                                    <div id="prevQualification2" style="display: none">
-                                                        <div class="row-fluid" style="margin-top: 5px">
-                                                            <div class="span3">
-                                                                @Html.TextBox("Major2", "", new { @class = "input-large text-tip", placeholder = "e.g. Bachelor of Computer Science" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.DropDownList("Qualification2", (IEnumerable<SelectListItem>)ViewBag.CourseLevel, new { @class = "chzn-select" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("University2", "", new { @class = "input-large text-tip", placeholder = "University Name" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("Completion2", "", new { @class = "input-large text-tip", placeholder = "17-08-2009" })
-                                                            </div>
-                                                            <p class="help-block">
-                                                                @Html.ValidationMessageFor(model => model.QualificationsModel)
-                                                            </p>
-                                                            <br />
-                                                        </div>
-                                                    </div>
-                                                    <div id="prevQualification3" style="display: none">
-                                                        <div class="row-fluid" style="margin-top: 5px">
-                                                            <div class="span3">
-                                                                @Html.TextBox("Major3", "", new { @class = "input-large text-tip", placeholder = "e.g. Bachelor of Computer Science" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.DropDownList("Qualification3", (IEnumerable<SelectListItem>)ViewBag.CourseLevel, new { @class = "chzn-select" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("University3", "", new { @class = "input-large text-tip", placeholder = "University Name" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("Completion3", "", new { @class = "input-large text-tip", placeholder = "17-08-2009" })
-                                                            </div>
-                                                            <p class="help-block">
-                                                                @Html.ValidationMessageFor(model => model.QualificationsModel)
-                                                            </p>
-                                                            <br />
-                                                        </div>
-                                                    </div>
-                                                    <div id="prevQualification4" style="display: none">
-                                                        <div class="row-fluid" style="margin-top: 5px">
-                                                            <div class="span3">
-                                                                @Html.TextBox("Major4", "", new { @class = "input-large text-tip", placeholder = "e.g. Bachelor of Computer Science" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.DropDownList("Qualification4", (IEnumerable<SelectListItem>)ViewBag.CourseLevel, new { @class = "chzn-select" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("University4", "", new { @class = "input-large text-tip", placeholder = "University Name" })
-                                                            </div>
-                                                            <div class="span3">
-                                                                @Html.TextBox("Completion4", "", new { @class = "input-large text-tip", placeholder = "17-08-2009" })
-                                                            </div>
-                                                            <p class="help-block">
-                                                                @Html.ValidationMessageFor(model => model.QualificationsModel)
-                                                            </p>
-                                                            <br />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="control-group well" style="text-align: center">
-                                                <a id="plus1" href="#" onclick="$.fn.smartWizard.loadContent(1);" class="btn btn-success"
-                                                    title="Add">Add</a> &nbsp;<a id="minus1" class="btn btn-danger" onclick="$.fn.smartWizard.loadContent(1);"
-                                                        href="#" title="Remove"> Remove</a>
-                                            </div>
-                                            <br />
-                                            <div class="control-group">
-                                                @Html.Label("Preferred Course", null, new { @class = "control-label" })
-                                                <div class="controls">
-                                                    @Html.TextAreaFor(model => model.StudentModel.Course_Choice, new { @class = "input-xlarge text-tip", placeholder = "e.g. Master of Computer Science at Monash University (You can list more than one)" })
-                                                    <p class="help-block">
-                                                        @Html.ValidationMessageFor(model => model.StudentModel.Course_Choice)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <!-- End of study service details -->
-                            </div>*@
-                            <div id="step-2">
-                                <div class="widget-head">
-                                    <h5 style="vertical-align: bottom">
-                                        <span class="dashboard-icons-colors lock_sl"></span>Account Information
-                                    </h5>
-                                </div>
-                                <fieldset>
-                                    <span class="span8">
-                                        <div class="control-group">
-                                            @Html.Label("Username", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.Username)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Password", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.PasswordFor(model => model.Password, new { @class = "input-xlarge text-tip", placeholder = "******" })
-                                                <p class="help-block">
-                                                    @Html.ValidationMessageFor(model => model.Password)
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            @Html.Label("Confirm Password", null, new { @class = "control-label" })
-                                            <div class="controls">
-                                                @Html.Password("Confirm", "", new { @class = "input-xlarge text-tip", placeholder = "******" })
-                                            </div>
-                                        </div>
-                                    </span><span class="span4">
-                                        <div class="well info">
-                                            Tips
-                                            <ul>
-                                                <li>This will be your username and password to our Student Portal</li>
-                                            </ul>
-                                        </div>
-                                    </span>
-                                </fieldset>
-                            </div>
+                        @Html.HiddenFor(model => model.ClientModel.Services, "Study", "");
+                        
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors user_sl"></span>Personal details
+                            </h5>
                         </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Title", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        <select data-placeholder="Title" style="width: 100px" class="chzn-select" tabindex="13"
+                                            id="ClientModel_Title" name="ClientModel.Title">
+                                            <optgroup label="Title">
+                                                <option>Mr.</option>
+                                                <option>Ms.</option>
+                                                <option>Mrs.</option>
+                                                <option>Miss.</option>
+                                                <option>Other</option>
+                                            </optgroup>
+                                        </select>
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Title)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Given Name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.GivenName, new { @class = "input-xlarge text-tip", placeholder = "Given Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.GivenName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Last name", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip", placeholder = "Last Name" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.LastName)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="input-append date dp" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                    <div class="control-group">
+                                        @Html.Label("Date of Birth", null, new { @class = "control-label" })
+                                        <div class="controls">
+                                            <div class="input-append">
+                                                @Html.TextBoxFor(model => model.ClientModel.Dob, new { @readonly = "readonly", @class = "dp1" })
+                                            </div>
+                                            <p class="help-block">
+                                                @Html.ValidationMessageFor(model => model.ClientModel.Dob)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Nationality", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.ClientModel.Nationality, (IEnumerable<SelectListItem>)ViewBag.NationalityList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Nationality)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <br />
+                                    Please fill <strong>ALL</strong> information in this section
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors contact_sl"></span>Contact details
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Email Address", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.Email)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.ContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Secondary Contact Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.ClientModel.SecondaryContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.SecondaryContactNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>Please enter at least <strong>one</strong> phone contact information </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors address_sl"></span>Mailing Address
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Street Name and Number", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBox("AddressModel.Address_Name", "", new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "Street Name" })
+                                        @Html.TextBox("AddressModel.Apartment_Number", "", new { placeholder = "Street Number", @class = "input-small" })
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("City", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.City, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "City" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.City)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("State", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.State, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "State" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.State)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Country", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.AddressModel.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Zip Code", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.AddressModel.Zipcode, new { @class = "input-xlarge text-tip" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Zipcode)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Country of Residence", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.AddressModel.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.AddressModel.Country_Id)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>Please enter complete address information </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                                
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors milestone_sl"></span>Select closest branch
+                            </h5>
+                        </div>    
+                        <div class="control-group">
+                            @Html.Partial("Partial/_BranchListPartial", (IEnumerable<StormWeb.Models.Branch>)ViewBag.Branch)
+                        </div>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors milestone_sl"></span>Choose your service
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Country of Destination", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DropDownListFor(model => model.ClientModel.PreferredCountry, (IEnumerable<SelectListItem>)ViewBag.RepresentedCountry, new { @class = "chzn-select" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.ClientModel.PreferredCountry)
+                                        </p>
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>You have to choose service and preferred country </li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors lock_sl"></span>Account Information
+                            </h5>
+                        </div>
+                        <fieldset>
+                            <span class="span8">
+                                <div class="control-group">
+                                    @Html.Label("Username", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.Username)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Password", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.PasswordFor(model => model.Password, new { @class = "input-xlarge text-tip", placeholder = "******" })
+                                        <p class="help-block">
+                                            @Html.ValidationMessageFor(model => model.Password)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    @Html.Label("Confirm Password", null, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.Password("Confirm", "", new { @class = "input-xlarge text-tip", placeholder = "******" })
+                                    </div>
+                                </div>
+                            </span><span class="span4">
+                                <div class="well info">
+                                    Tips
+                                    <ul>
+                                        <li>This will be your username and password to our Student Portal</li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </fieldset>
+                        <div style="text-align: center">
+                            <input type="submit" class="btn btn-large btn-primary" value="Submit" id="submitBtn"
+                                name="submitBtn" />
+                        </div>  
                         <!-- End of Form Wizard -->
                     }
                 </div>
@@ -977,19 +453,19 @@
     </div>
 </div>
 <!-- End of row-fluid -->
-<script type="text/javascript">  
-    function alphanumeric_only(e) { 
+<script type="text/javascript">
+    function alphanumeric_only(e) {
         var keycode;
         if (window.event) keycode = window.event.keyCode;
         else if (event) keycode = event.keyCode;
-        else if (e) keycode = e.which; 
+        else if (e) keycode = e.which;
         else return true;
-        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) { 
+        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) {
             return true;
-        } 
-        else { 
+        }
+        else {
             return false;
-        } 
+        }
         return true;
     }
 </script>

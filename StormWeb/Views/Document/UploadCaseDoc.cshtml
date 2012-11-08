@@ -6,21 +6,32 @@
      $(document).ready(function () {
 
          $("#upload-files").click(function () {
-             var valid = true;
-             if ($("#file").val() == '') {
-                 valid = false;
-                 alert("File is not selected");
-             }
-             var ext = $('#file').val().split('.').pop().toLowerCase();
-             if ($.inArray(ext, ['pdf']) == -1) {
-                 valid = false;
-                 alert('invalid extension, only files with .pdf is allowed!');
-             }
 
-             if (valid) {
-                 $('#upload').submit();         
-             }
+                 var valid = true;
+                 $('#upload-files').attr("disabled", true);
+                 $("#upload-files").addClass("disabled");
+                 $("#upload-files").val("Loading...");
 
+                 disableButton = true;
+
+                 if ($("#file").val() == '') {
+                     valid = false;
+                     alert("File is not selected");
+                 }
+                 var ext = $('#file').val().split('.').pop().toLowerCase();
+                 if ($.inArray(ext, ['pdf']) == -1) {
+                     valid = false;
+                     alert('invalid extension, only files with .pdf is allowed!');
+                 }
+
+                 if (valid) {
+                     $('#upload').submit();
+                 }
+                 else {
+                     $("#upload-files").removeClass('disabled');
+                     $("#upload-files").val('Upload Documents');
+                     $('#upload-files').attr("disabled", false);
+                 }
          });
      });
 </script>

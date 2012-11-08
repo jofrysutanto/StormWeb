@@ -209,7 +209,7 @@ foreach (var item in Model)
                                                     if (appDoc != null)
                                                     {
                                  
-                                                        <li>@Html.DisplayFor(modelItem => item.Date_Of_ApplicationStatus, "ShortDateTime")</li>
+                                                        <li>@Html.DisplayFor(modelItem => item.Application_Document.FirstOrDefault().UploadedOn, "ShortDateTime")</li>
                                   
                                                     }
                                                     else
@@ -246,12 +246,18 @@ foreach (var item in Model)
                                                         if (appDoc == null)
                                                         {
                                                         <li><a  href="@Url.Action("UploadCaseDoc", new { Doc_Id = item.Application_Id, Template_Id = x.TemplateDoc_Id, doctype = "ApplicationDocument", caseId = item.Case_Id })"   class='myFrame black-icons upload tip-top' data-original-title="Upload Document">
-                                                        </a></li>                                                    
-                                                        }
-                                                        else
+                                                        </a></li>  
+                                                        @* <li><a  href="@Url.Action("TestAWS")"   class='myFrame black-icons upload tip-top' data-original-title="Upload Document">
+                                                        </a></li>     *@                                               
+                                                       }
+
+@*                                                                                                          
+                                                       }
+  *@                                                         
+                                                    else
+                                                    {
+                                                        if (appDoc.Approved == false)
                                                         {
-                                                            if (appDoc.Approved == false)
-                                                            {
                                                         <li>
                                                             <div class="widget-content">
                                                                 <div class="widget-box">
@@ -280,9 +286,9 @@ foreach (var item in Model)
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                            }
-                                                            else
-                                                            {
+                                                        }
+                                                        else
+                                                        {
                                                             <li>
                                                             <div class="widget-content">
                                                                 <div class="widget-box">
@@ -291,10 +297,10 @@ foreach (var item in Model)
                                                               </div>
                                                             </div>
                                                              </li>
-                                                            }
                                                         }
-
                                                     }
+
+                                                }
                                                     else
                                                     {
 
