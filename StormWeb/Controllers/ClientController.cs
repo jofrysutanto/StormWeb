@@ -462,7 +462,7 @@ namespace StormWeb.Controllers
 
                     messageBody += "<div><br/> <strong>This is your client ID for future reference: " + model.Client_Id + "</strong></div>";
 
-                    //EmailHelper.sendEmail(new MailAddress(model.Client.Email), "We have received your appointment request", messageBody);
+                    EmailHelper.sendEmail(new MailAddress(model.Client.Email), "We have received your appointment request", messageBody);
                     return RedirectToAction("AppointmentSuccess", "Client", new { id = model.Appointment.Appointment_Id });
                 }
             }
