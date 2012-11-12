@@ -175,6 +175,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\img\calendar_btn.png" />
+    <Content Include="Content\img\clock.png" />
+    <Content Include="Content\img\clock_small.png" />
+    <Content Include="Content\img\papers.png" />
+    <Content Include="Content\img\papers_small.png" />
     <Content Include="ModelBinding\currency.xml" />
     <Content Include="App_Data\Templates\General\th0.jpg" />
     <Content Include="Content\css\bootstrap-clean.css" />
