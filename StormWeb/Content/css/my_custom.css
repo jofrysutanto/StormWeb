@@ -186,3 +186,10 @@ text-indent: -0.8em;
 {
     background: url(../img/papers_small.png) no-repeat left bottom;
 }
+
+
+/* Validation error */
+.field-validation-error
+{
+    color: Red;
+}

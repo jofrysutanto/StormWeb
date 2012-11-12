@@ -137,6 +137,7 @@
     <Compile Include="Models\AppointmentMD.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\CalendarEvent.cs" />
+    <Compile Include="Models\CaseDoc_TemplateMD.cs" />
     <Compile Include="Models\DocumentIndexModel.cs" />
     <Compile Include="Models\EventAppointment.cs" />
     <Compile Include="Models\General_EnquiryMD.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\img\calendar_btn.png" />
     <Content Include="Content\img\clock.png" />
     <Content Include="Content\img\clock_small.png" />

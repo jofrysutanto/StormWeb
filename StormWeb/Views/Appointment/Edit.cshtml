@@ -1,10 +1,10 @@
 ﻿@model StormWeb.Models.Appointment
 @{
     ViewBag.Title = "Edit";
-    //Layout = "~/Views/Shared/_LayoutEmpty.cshtml"; 
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml"; 
 }
 
-
+<h2>Reschedule/Confirm</h2>
 <script type="text/javascript">
     $(document).ready(function () {
         // For DatePicker
@@ -51,6 +51,7 @@
                 {
                     
                         @Html.HiddenFor(model => model.Appointment_Id)
+                        @Html.HiddenFor(model => model.Confirmation)
                    if (Model.Case_Id != null)
                    {
                             @Html.HiddenFor(model => model.Case_Id)

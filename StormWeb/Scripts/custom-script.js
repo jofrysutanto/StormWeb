@@ -79,6 +79,7 @@ function checkInternationalPhone(strPhone, element){
 
 function loadNotifications(action)
 {
+    $('#notificationCenterBox').show();
     $('#notificationCenterBox').html("loading...");
     var pageCount = action;
 
@@ -174,9 +175,7 @@ $(function () {
             /* Converting the #box div into a bounceBox: */
             $('#notificationCenterBox').bounceBox();
 
-            /* Ajax call to load notifications */
-
-            
+            /* Ajax call to load notifications */     
 
             /* Listening for the click event and toggling the box: */
             $('.toggleNotificationCenter').click(function (e) {

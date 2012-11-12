@@ -187,42 +187,58 @@ namespace StormWeb.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Super")]
-        public ActionResult CreateCaseTemp(CaseDoc_Template casedoc_template, HttpPostedFileBase file, int returnId=0)
+        public ActionResult CreateCaseTemp(CaseDoc_Template casedoc_template, HttpPostedFileBase file, int returnId = 0)
         {
+
+
+                if (casedoc_template.Downloadable == true && file.FileName == null)
+                {
+                    ModelState.AddModelError("FileNameError", "Please select file!");
+                    return View();
+                }
+
+                if (casedoc_template.Downloadable == true && file.FileName != null)
+                {
+                    string pathToCreate;
+                    pathToCreate = TEMPLATE_GENERAL_PATH;
+                    string fileToCreate = pathToCreate + '/' + casedoc_template.FileName;
+                    casedoc_template.FileName = file.FileName;
+                    casedoc_template.Path = pathToCreate;
+                    casedoc_template.UploadedOn = System.DateTime.Now;
+                    casedoc_template.UploadedBy = CookieHelper.Username;
+
+                    uploadAWS(fileToCreate, file);
+                }
+            // create / update folder 
+                db.CaseDoc_Template.AddObject(casedoc_template);
             if (ModelState.IsValid)
             {
-                string pathToCreate;
-
-                pathToCreate = TEMPLATE_GENERAL_PATH;
-
-                // create / update folder 
-                casedoc_template.Path = pathToCreate;
-                casedoc_template.FileName = fileName;
-                casedoc_template.UploadedOn = System.DateTime.Now;
-                casedoc_template.UploadedBy = CookieHelper.Username;
-               
-                db.CaseDoc_Template.AddObject(casedoc_template);
-
-                string fileToCreate = pathToCreate + '/' + casedoc_template.FileName;
-
-                uploadAWS(fileToCreate, file);
 
                 db.SaveChanges();
 
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Created Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Created Successfully!");
-            }
-            if (returnId != 0)
-            {
-                return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+                return View("Refresh");
+
             }
             else
             {
-                return RedirectToAction("ShowGeneralTemplates");
+                ModelState.AddModelError("NameError", "Please enter name !");
+                return View();
             }
-            //return View(casedoc_template);
+
         }
+            //if (returnId != 0)
+            //{
+            //    return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+            //}
+            //else
+            //{
+            //    return RedirectToAction("ShowGeneralTemplates");
+            //}
+            //return View(casedoc_template);
+        
 
         // GET: /CaseTemp/Edit/5
         [Authorize(Roles = "Super")]
@@ -248,14 +264,17 @@ namespace StormWeb.Controllers
 
             }
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Modified Successfully!");
-            if (returnId != 0)
-            {
-                return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
-            }
-            else
-            {
-                return RedirectToAction("ShowGeneralTemplates");
-            }
+            return View("Refresh");
+            //if (returnId != 0)
+            //{
+            //    //return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+            //    return View("Refresh");
+            //}
+            //else
+            //{
+               // return RedirectToAction("ShowGeneralTemplates");
+                
+            //}
         }
 
 
@@ -268,29 +287,38 @@ namespace StormWeb.Controllers
 
             CaseDoc_Template casedoc_template = db.CaseDoc_Template.DefaultIfEmpty(null).SingleOrDefault(c => c.CaseDocTemplate_Id == id );
 
-            if ((casedoc_template != null) && ( found == null))
-            {
+                if ((casedoc_template != null && casedoc_template.Required == false) && (found == null))
+                {
 
-                db.CaseDoc_Template.DeleteObject(casedoc_template);
-                db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                    db.CaseDoc_Template.DeleteObject(casedoc_template);
 
-                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was deleted successfully!");
-            }
+                    if (casedoc_template.FileName != null)
+                    {
+                        //System.IO.File.Delete(completFileName);
+                        DeletingAWS(casedoc_template.Path + '/' + casedoc_template.FileName);
+                    }
+                    db.SaveChanges();
+                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
-            else
-            {
-                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Template cannot be deleted as it is used in another application!");
-                
-            }
-            if (returnId != 0)
-            {
-                return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
-            }
-            else
-            {
-                return RedirectToAction("ShowGeneralTemplates");
-            }
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was deleted successfully!");
+                    
+                }
+
+                else
+                {
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Template cannot be deleted as it is either used in another application or it is required!");
+                   
+                }
+
+
+                if (returnId != 0)
+                {
+                    return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+                }
+                else
+                {
+                    return RedirectToAction("ShowGeneralTemplates");
+                }
         }
                     
 

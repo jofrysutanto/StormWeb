@@ -10,6 +10,7 @@ using StormWeb.Models.ModelHelper;
 using StormWeb.Helper;
 using Newtonsoft.Json;
 
+
 namespace StormWeb.Controllers
 { 
     public class EventController : Controller
@@ -64,7 +65,7 @@ namespace StormWeb.Controllers
         //
         // POST: /Event/Create
 
-        [HttpGet]
+        /*[HttpGet]
         public ActionResult Create(Event event1,FormCollection formEvent)
         {
             string titles = Request.QueryString["title"];
@@ -76,8 +77,14 @@ namespace StormWeb.Controllers
             }
 
             return View(event1);
+        }*/
+
+        [HttpPost]
+        public JsonResult Create(string eventTitle, string eventStart, string eventEnd)
+        {
+
+            return Json(eventTitle);
         }
-        
         //
         // GET: /Event/Edit/5
  

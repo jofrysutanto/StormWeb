@@ -143,17 +143,8 @@
                                                                                     @Html.DisplayFor(modelItem => item.Comments)
                                                                                 </td>
                                                                                 <td align="right">
-                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
-                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
-                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
-                                                                                        @Html.Partial("Edit", item,
-                                                                                            new ViewDataDictionary
-                                                                                            {
-                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
-                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
-                                                                                            }
-                                                                                        )
-                                                                                    </div>
+                                                                                    <a class='iframe btn btn-info' href="@Url.Action("Edit", new { id = item.Appointment_Id })" title="Confirm Appointment">
+                                                                                    <i class="white-icons phone_3"></i>Confirm</a>
                                                                                 </td>
                                                                             </tr>
                                                                         }
@@ -225,17 +216,8 @@
                                                                         @Html.DisplayFor(modelItem => item.Comments)
                                                                     </td>
                                                                     <td align="right">
-                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
-                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
-                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
-                                                                                        @Html.Partial("Edit", item,
-                                                                                            new ViewDataDictionary
-                                                                                            {
-                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
-                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
-                                                                                            }
-                                                                                        )
-                                                                                    </div>
+                                                                                   <a class='iframe btn btn-info' href="@Url.Action("Edit", new { id = item.Appointment_Id })" title="Confirm Appointment">
+                                                                            <i class="white-icons phone_3"></i>Confirm</a>
                                                                                 </td>
                                                                 </tr>
                                                             }
@@ -324,17 +306,9 @@
                                                                 </td>
                                                                 <td>
 
-                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Confirm Appointment">
-                                                                                        <i class="white-icons phone_3"></i>Confirm</a>
-                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
-                                                                                        @Html.Partial("Edit", item,
-                                                                                            new ViewDataDictionary
-                                                                                            {
-                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
-                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
-                                                                                            }
-                                                                                        )
-                                                                                    </div>
+                                                                    <a class='iframe1 btn btn-info' href="@Url.Action("Edit", new { id = item.Appointment_Id })" title="Confirm Appointment">
+                                                                            <i class="white-icons phone_3"></i>Confirm</a>
+                                                                                    
                                                                 </td>
                                                             </tr>
                                                         }
@@ -403,17 +377,8 @@
                                                                 @Html.DisplayFor(modelItem => item.Comments)
                                                             </td>
                                                             <td>
-                                                                                    <a class='btn btn-info' id="showConfirmApp@(item.Appointment_Id)" href="#" title="Reschedule Appointment">
-                                                                                        <i class="white-icons phone_3"></i>Reschedule</a>
-                                                                                    <div id="confirmApp@(item.Appointment_Id)" title="Edit Appointment">
-                                                                                        @Html.Partial("Edit", item,
-                                                                                            new ViewDataDictionary
-                                                                                            {
-                                                                                                { "Hours", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetHours(), "Hours", "Hours",item.AppDateTime.Hour) },
-                                                                                                { "Minutes", new SelectList(StormWeb.Models.ModelHelper.TimeHelper.GetMinutes(), "Minutes", "Minutes",item.AppDateTime.Minute) }                                                                                                
-                                                                                            }
-                                                                                        )
-                                                                                    </div>
+                                                                 <a class='iframe2 btn btn-info' href="@Url.Action("Edit", new { id = item.Appointment_Id })" title="Reschedule Appointment">
+                                                                        <i class="white-icons phone_3"></i>Reschedule</a>             
                                                                                 <a class="color-icons cross_co tip-top"
                                                                         data-toggle="modal" href="#myModal1" data-original-title="Cancel Appointment">
                                                                 </a>
@@ -523,21 +488,7 @@
         </div>
     </div>
  }
-@*<div class="span6 ">
-    <div class="nonboxy-widget">
-        <div class="widget-head">
-            <h5>
-                <i class="black-icons day_calendar"></i>Calendar</h5>
-        </div>
-        <div class="widget-content">
-            <div class="widget-box">
-                <div id="calendar-widget" class="fc">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
+
 @if (StormWeb.Helper.CookieHelper.isStudent())
 {
                   
@@ -736,10 +687,10 @@
 
     $(function () {
         $('.if4').colorbox({ iframe: true, width: "45%", height: "65%" });
-        //$('.iframe3').colorbox({ iframe: true, width: "55%", height: "65%" });
-        //$('.iframe2').colorbox({ iframe: true, width: "55%", height: "65%" });
+        $('.iframe3').colorbox({ iframe: true, width: "55%", height: "65%" });
+        $('.iframe2').colorbox({ iframe: true, width: "55%", height: "65%" });
         $('.iframe1').colorbox({ iframe: true, width: "55%", height: "65%" });
-        //$('.iframe').colorbox({ iframe: true, width: "55%", height: "65%" });
+        $('.iframe').colorbox({ iframe: true, width: "55%", height: "65%" });
         $('.ifName').colorbox({ iframe: true, width: "50%", height: "75%" });
     });
 
@@ -780,26 +731,5 @@
 
         
     });
-
-    $(function () {
-        $("div[id*='confirmApp']").dialog({
-            modal: true,
-            autoOpen: false,
-            draggable: false,
-            resizable: false,
-            width: 500
-        });
-        
-
-        $("a[id*='showConfirmApp']").click(function() {            
-            var id = $(this).attr('id').match(/\d+/);
-            $("#confirmApp"+id).dialog('open');
-        });
-
-    });
-  
-  
-     
- 
 </script>
 

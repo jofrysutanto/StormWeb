@@ -51,7 +51,13 @@
                 email: true,
                 remote: {
                     url: '@Url.Action("IsEmailExist", "Client")',
-                    type: "post",                   
+                    type: "post",
+                    beforeSend: function() {
+                        $("#emailLoad").show();
+                    },
+                    complete: function() {
+                        $("#emailLoad").hide();
+                    }                   
                 }                
             },
             "ClientModel.ContactNumber": {
@@ -247,8 +253,9 @@
                                 <div class="control-group">
                                     @Html.Label("Email Address", null, new { @class = "control-label" })
                                     <div class="controls">
-                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })
+                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" }) <span style="display:none" id="emailLoad"><img src="../../Content/img/ajax-loader.gif" alt="Checking email"/></span>
                                         <p class="help-block">
+                                            
                                             @Html.ValidationMessageFor(model => model.ClientModel.Email)
                                         </p>
                                     </div>

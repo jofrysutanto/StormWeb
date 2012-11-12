@@ -534,7 +534,8 @@ namespace StormWeb.Controllers
         [Authorize(Roles = "Student,Counsellor")]
         public ActionResult Edit(Appointment appointment, FormCollection fc)
         {
-
+            int appId = Convert.ToInt16(fc["Appointment_Id"]);
+            appointment = db.Appointments.Single(x => x.Appointment_Id == appId);
             if (fc["listHours"] == "" && fc["listMinutes"] == "")
             {
                 ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours");
@@ -593,7 +594,7 @@ namespace StormWeb.Controllers
                         appointment.Case_Id = Convert.ToInt32(fc["Case_Id"]);
                     }
                     appointment.Comments = fc["Comments"];
-                    db.Appointments.Attach(appointment);
+                    //db.Appointments.Attach(appointment);
 
                     db.ObjectStateManager.ChangeObjectState(appointment, EntityState.Modified);
                     db.SaveChanges();
@@ -604,7 +605,8 @@ namespace StormWeb.Controllers
                     {
                         LogHelper.writeToStudentLog(new string[] { CookieHelper.Username },CookieHelper.Username +" Edited " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                     }
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
+                    return View("Refresh");
 
                 }
             }

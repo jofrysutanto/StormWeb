@@ -3,7 +3,7 @@
     Create New General Template</h2>
 @{
     ViewBag.Title = "CreateCaseTemp";
-    //Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
 }
 <script type="text/javascript">
 
@@ -32,19 +32,26 @@
 
 @using (Html.BeginForm("CreateCaseTemp", "Document", FormMethod.Post,  new { id = "upload", enctype = "multipart/form-data" }) )
 {
-    
+  @Html.ValidationSummary(true)  
     <label for="Name">
         Name:
     </label>
     <div class="editor-field">
-        <input id="name" name="Name" value="" />
+
+@*        <input id="name" name="Name" value="" />
+*@        
+        @Html.EditorFor(item => item.Name)
+        @Html.ValidationMessage("NameError")
+
     </div>
 
     <label for="comment">
         Comment:
     </label>
     <div class="editor-field">
-        <input id="comment" name="Comment" value="" />
+@*        <input id="comment" name="Comment" value="" />
+*@        
+        @Html.EditorFor(item => item.Comment)
     </div>
     
     <label for="downloadable">
@@ -62,6 +69,7 @@
                 Please choose a file :
             </label>
             <input id="file" type="file" name="file" />
+            
             <input  id="returnId" type="hidden" value="@ViewBag.clientId" name="returnId" />
             
         </div>
@@ -110,6 +118,7 @@
          if (valid) {
              $('#upload').submit();
          }
+         
          return false;
      });       
 </script>

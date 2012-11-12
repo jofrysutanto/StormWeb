@@ -6,6 +6,7 @@
 <script type="text/javascript">
 
     $(function () {
+        $(".iframe").colorbox({ iframe: true, width: "400px", height: "500px" });
         $("#dialog").dialog({
             autoOpen: false,
             modal: true,
@@ -26,15 +27,15 @@
 <h2>
     General Document Templates </h2>
 <p>
-@*<a  href="@Url.Action("CreateCaseTemp", new { returnId = ViewBag.clientId })" class='iframe color-icons application_add_co tip-top' data-original-title="Add New General Document Template"></a>
-  *@  
-  <a id="openCreateCaseTemp"><i class="color-icons application_add_co"></i>New Template</a>
+<a  href="@Url.Action("CreateCaseTemp", new { returnId = ViewBag.clientId })" class='iframe color-icons application_add_co tip-top' data-original-title="Add New General Document Template"></a>
+    
+@*  <a id="openCreateCaseTemp"><i class="color-icons application_add_co"></i>New Template</a>
 
 <div id="dialog" title="Basic dialog">
 	 @Html.Partial("CreateCaseTemp", new StormWeb.Models.CaseDoc_Template())
 </div>
 
-
+*@
 
 </p>
 @using (Html.BeginForm())

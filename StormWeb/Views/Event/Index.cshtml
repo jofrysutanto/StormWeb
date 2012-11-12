@@ -29,7 +29,7 @@
       </div>
 <div class="span2">&nbsp;</div>
 <div id="calEventDialog">
-    <form>
+    <form name="addEventForm">
         <fieldset>
         <label for="eventTitle">Title</label>
         <input type="text" name="eventTitle" id="eventTitle" /><br>
@@ -56,7 +56,7 @@
                   selectable: true,
                   selectHelper: true,
                   select: function (start, end, allDay) {
-                      
+
                       /*Using jquery date picker*/
                       //$('#eventStart').datepicker({ dateFormat: 'yy-mm-dd' }); // format to show
                       //$('#eventStart').datepicker({ gotoCurrent: true });
@@ -70,7 +70,6 @@
                   },
                   editable: true,
                   theme: true,
-                  editable: false,
                   buttonText: {
                       prev: 'Prev',
                       next: 'Next',
@@ -110,7 +109,7 @@
                   width: 400,
                   buttons: {
                       Save: function () {
-                         
+
                           if (title !== '') {
                               $calendar.fullCalendar('renderEvent', {
                                   title: title.val(),
@@ -121,19 +120,19 @@
                                   color: color
                               }, true // make the event "stick"
                             );
-                            
-                            var date = new Date(start);
 
-                            var NextMonth = date.getMonth() + 1; // Reason: it is bacause of month array it starts from 0
+                              var date = new Date(start);
 
-                            var dateString = (date.getDate()) + '/' + NextMonth + '/' + date.getFullYear();
+                              var NextMonth = date.getMonth() + 1; // Reason: it is bacause of month array it starts from 0
+
+                              var dateString = (date.getDate()) + '/' + NextMonth + '/' + date.getFullYear();
 
                               $.ajax({
-                                type:"GET",
-                                url: "/Event/Create",
-                                data:"title="+title
-                                });
-                            }
+                                  type: "POST",
+                                  url: "/Event/Create",
+                                  data: "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val()
+                              });
+                          }
                           $calendar.fullCalendar('unselect');
                           $(this).dialog('close');
                       },
