@@ -760,10 +760,6 @@
     <Content Include="Views\StudentCentre\AddWorkExperiance.cshtml" />
     <Content Include="Views\Document\ShowGeneralTemplates.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
-    <Content Include="Views\Event\Details.cshtml" />
-    <Content Include="Views\Event\Create.cshtml" />
-    <Content Include="Views\Event\Edit.cshtml" />
-    <Content Include="Views\Event\Delete.cshtml" />
     <Content Include="Views\Document\UploadOfferLetter.cshtml" />
     <Content Include="Views\Document\StudentDetailsCompleted.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
