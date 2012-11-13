@@ -34,11 +34,15 @@
         <label for="eventTitle">Title</label>
         <input type="text" name="eventTitle" id="eventTitle" /><br>
         <label for="eventStart">Start Date</label>
-        
-        @Html.TextBox("eventStart")
-        <!--<input type="text" name="eventStart" id="eventStart" />--><br>
+        @Html.TextBox("eventStart")<br>
         <label for="eventEnd">End Date</label>
         @Html.TextBox("eventEnd")<br>
+        <label for="startTime" id="startTime">Start Time</label>
+        @Html.TextBox("eventStartTime")<br>
+        <label for="endTime" id="endTime">End Time</label>
+        @Html.TextBox("eventEndTime")<br>
+        <label for="Venue id="Venue"">Venue</label>
+        @Html.TextArea("eventVenue")<br>
         <label for="eventComment">Comments</label>
         @Html.TextArea("eventComment")<br>
         </fieldset>
@@ -65,6 +69,21 @@
 
                       $('#eventStart').val(new Date(start).toLocaleDateString('dd/mm/yy'));
                       $('#eventEnd').val(new Date(end).toLocaleDateString('dd/mm/yy'));
+                      $('#eventStartTime').val(new Date(start).toLocaleTimeString('hh:mm:ss'));
+                      $('#eventEndTime').val(new Date(end).toLocaleTimeString('hh:mm:ss'));
+
+                      if ($('#eventStart').val() != $('#eventEnd').val()) {
+                          $('#startTime').hide();
+                          $('#eventStartTime').hide();
+                          $('#endTime').hide();
+                          $('#eventEndTime').hide();
+                      }
+                      else {
+                          $('#startTime').show();
+                          $('#eventStartTime').show();
+                          $('#endTime').show();
+                          $('#eventEndTime').show();
+                      }
                       $('#calEventDialog').dialog('open');
 
                   },
@@ -95,12 +114,14 @@
                   eventDrop: function (event, delta) {
                       alert(event.title + ' was moved ' + delta + ' days\n');
                   }
-
-
               });
               var title = $('#eventTitle');
               var start = $('#eventStart');
               var end = $('#eventEnd');
+              var startTime = $('#eventStartTime');
+              var endTime = $('#eventEndTime');
+              var venue = $('#eventVenue');
+              var comment = $('#eventComment');
               var eventClass, color;
               $('#calEventDialog').dialog({
                   resizable: false,
@@ -109,28 +130,41 @@
                   width: 400,
                   buttons: {
                       Save: function () {
-
                           if (title !== '') {
-                              $calendar.fullCalendar('renderEvent', {
-                                  title: title.val(),
-                                  start: start.val(),
-                                  end: end.val(),
-                                  allDay: true,
-                                  className: eventClass,
-                                  color: color
-                              }, true // make the event "stick"
-                            );
-
                               var date = new Date(start);
 
                               var NextMonth = date.getMonth() + 1; // Reason: it is bacause of month array it starts from 0
 
                               var dateString = (date.getDate()) + '/' + NextMonth + '/' + date.getFullYear();
 
+                              var queryString = null;
+
+                              if (startTime != '' && endTime != '') {
+                                  queryString = "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val() + "&eventStartTime=" + startTime.val() + "&eventEndTime=" + endTime.val() + "&eventVenue=" + venue.val() + "&eventComment=" + comment.val();
+                              }
+                              else {
+                                  queryString = "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val() + "&eventVenue=" + venue.val() + "&eventComment=" + comment.val();
+                              }
+
                               $.ajax({
                                   type: "POST",
                                   url: "/Event/Create",
-                                  data: "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val()
+                                  data: queryString,
+                                  success: function (result) {
+                                      if (result.success)
+                                          $("#addEventForm input").attr("value", ""); // clear all the input fields on success
+                                      $calendar.fullCalendar('renderEvent', {
+                                          title: title.val(),
+                                          start: start.val(),
+                                          end: end.val(),
+                                          allDay: true,
+                                          className: eventClass,
+                                          color: color
+                                      }, true // make the event "stick"
+                                        );
+                                  },
+                                  error: function (req, status, error) {
+                                  }
                               });
                           }
                           $calendar.fullCalendar('unselect');
@@ -138,6 +172,7 @@
                       },
                       Cancel: function () {
                           $(this).dialog('close');
+
                       }
                   }
               });

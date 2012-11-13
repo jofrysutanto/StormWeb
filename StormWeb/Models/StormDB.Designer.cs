@@ -7980,19 +7980,17 @@ namespace StormWeb.Models
         /// </summary>
         /// <param name="eventId">Initial value of the EventId property.</param>
         /// <param name="venue">Initial value of the Venue property.</param>
-        /// <param name="dateTime">Initial value of the DateTime property.</param>
-        /// <param name="comments">Initial value of the Comments property.</param>
+        /// <param name="startDate">Initial value of the StartDate property.</param>
+        /// <param name="endDate">Initial value of the EndDate property.</param>
         /// <param name="eventAddedBy">Initial value of the EventAddedBy property.</param>
-        /// <param name="audienceType">Initial value of the AudienceType property.</param>
-        public static Event CreateEvent(global::System.Int32 eventId, global::System.String venue, global::System.DateTime dateTime, global::System.String comments, global::System.String eventAddedBy, global::System.String audienceType)
+        public static Event CreateEvent(global::System.Int32 eventId, global::System.String venue, global::System.DateTime startDate, global::System.DateTime endDate, global::System.Int32 eventAddedBy)
         {
             Event @event = new Event();
             @event.EventId = eventId;
             @event.Venue = venue;
-            @event.DateTime = dateTime;
-            @event.Comments = comments;
+            @event.StartDate = startDate;
+            @event.EndDate = endDate;
             @event.EventAddedBy = eventAddedBy;
-            @event.AudienceType = audienceType;
             return @event;
         }
 
@@ -8055,55 +8053,103 @@ namespace StormWeb.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime DateTime
+        public global::System.DateTime StartDate
         {
             get
             {
-                return _DateTime;
+                return _StartDate;
             }
             set
             {
-                OnDateTimeChanging(value);
-                ReportPropertyChanging("DateTime");
-                _DateTime = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateTime");
-                OnDateTimeChanged();
+                OnStartDateChanging(value);
+                ReportPropertyChanging("StartDate");
+                _StartDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StartDate");
+                OnStartDateChanged();
             }
         }
-        private global::System.DateTime _DateTime;
-        partial void OnDateTimeChanging(global::System.DateTime value);
-        partial void OnDateTimeChanged();
+        private global::System.DateTime _StartDate;
+        partial void OnStartDateChanging(global::System.DateTime value);
+        partial void OnStartDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Comments
+        public global::System.DateTime EndDate
         {
             get
             {
-                return _Comments;
+                return _EndDate;
             }
             set
             {
-                OnCommentsChanging(value);
-                ReportPropertyChanging("Comments");
-                _Comments = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Comments");
-                OnCommentsChanged();
+                OnEndDateChanging(value);
+                ReportPropertyChanging("EndDate");
+                _EndDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EndDate");
+                OnEndDateChanged();
             }
         }
-        private global::System.String _Comments;
-        partial void OnCommentsChanging(global::System.String value);
-        partial void OnCommentsChanged();
+        private global::System.DateTime _EndDate;
+        partial void OnEndDateChanging(global::System.DateTime value);
+        partial void OnEndDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String StartTime
+        {
+            get
+            {
+                return _StartTime;
+            }
+            set
+            {
+                OnStartTimeChanging(value);
+                ReportPropertyChanging("StartTime");
+                _StartTime = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("StartTime");
+                OnStartTimeChanged();
+            }
+        }
+        private global::System.String _StartTime;
+        partial void OnStartTimeChanging(global::System.String value);
+        partial void OnStartTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String EndTime
+        {
+            get
+            {
+                return _EndTime;
+            }
+            set
+            {
+                OnEndTimeChanging(value);
+                ReportPropertyChanging("EndTime");
+                _EndTime = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("EndTime");
+                OnEndTimeChanged();
+            }
+        }
+        private global::System.String _EndTime;
+        partial void OnEndTimeChanging(global::System.String value);
+        partial void OnEndTimeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String EventAddedBy
+        public global::System.Int32 EventAddedBy
         {
             get
             {
@@ -8113,19 +8159,19 @@ namespace StormWeb.Models
             {
                 OnEventAddedByChanging(value);
                 ReportPropertyChanging("EventAddedBy");
-                _EventAddedBy = StructuralObject.SetValidValue(value, false);
+                _EventAddedBy = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("EventAddedBy");
                 OnEventAddedByChanged();
             }
         }
-        private global::System.String _EventAddedBy;
-        partial void OnEventAddedByChanging(global::System.String value);
+        private global::System.Int32 _EventAddedBy;
+        partial void OnEventAddedByChanging(global::System.Int32 value);
         partial void OnEventAddedByChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String AudienceType
         {
@@ -8137,7 +8183,7 @@ namespace StormWeb.Models
             {
                 OnAudienceTypeChanging(value);
                 ReportPropertyChanging("AudienceType");
-                _AudienceType = StructuralObject.SetValidValue(value, false);
+                _AudienceType = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("AudienceType");
                 OnAudienceTypeChanged();
             }
@@ -8145,6 +8191,30 @@ namespace StormWeb.Models
         private global::System.String _AudienceType;
         partial void OnAudienceTypeChanging(global::System.String value);
         partial void OnAudienceTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
 
         #endregion
     

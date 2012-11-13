@@ -1094,7 +1094,8 @@ namespace StormWeb.Controllers
             }
 
             TempData[SUCCESS_EDIT] = "true";
-            return RedirectToAction("Index", new { message = "Successfully Uploaded" });
+            //return RedirectToAction("Index", new { message = "Successfully Uploaded" });
+            return View("Refresh");
         }
 
 
@@ -1187,7 +1188,8 @@ namespace StormWeb.Controllers
 
 
             TempData[SUCCESS_EDIT] = "true";
-            return RedirectToAction("Index", new { message = "Successfully Uploaded" });
+            //return RedirectToAction("Index", new { message = "Successfully Uploaded" });
+            return View("Refresh");
 
             //    int Doc_Id =  Convert.ToInt32(fc["Doc_Id"]);
             //    int Template_Id = Convert.ToInt32(fc["Template_Id"]);

@@ -518,12 +518,15 @@
           <Key>
             <PropertyRef Name="EventId" />
           </Key>
-          <Property Name="EventId" Type="int" Nullable="false" />
+          <Property Name="EventId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Venue" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="DateTime" Type="datetime" Nullable="false" />
-          <Property Name="Comments" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="EventAddedBy" Type="varchar" Nullable="false" MaxLength="20" />
-          <Property Name="AudienceType" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="StartTime" Type="varchar" MaxLength="10" />
+          <Property Name="EndTime" Type="varchar" MaxLength="10" />
+          <Property Name="EventAddedBy" Type="int" Nullable="false" />
+          <Property Name="AudienceType" Type="varchar" MaxLength="10" />
+          <Property Name="Comment" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Faculty">
           <Key>
@@ -1276,6 +1279,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
@@ -1854,12 +1888,15 @@
           <Key>
             <PropertyRef Name="EventId" />
           </Key>
-          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Venue" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="DateTime" Type="DateTime" Nullable="false" />
-          <Property Name="Comments" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="EventAddedBy" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
-          <Property Name="AudienceType" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" />
+          <Property Name="StartTime" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="EndTime" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="EventAddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AudienceType" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Comment" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="Faculty">
           <Key>
@@ -2862,10 +2899,13 @@
           <EntitySetMapping Name="Events"><EntityTypeMapping TypeName="StormDBModel.Event"><MappingFragment StoreEntitySet="Event">
             <ScalarProperty Name="EventId" ColumnName="EventId" />
             <ScalarProperty Name="Venue" ColumnName="Venue" />
-            <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-            <ScalarProperty Name="Comments" ColumnName="Comments" />
+            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+            <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+            <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+            <ScalarProperty Name="EndTime" ColumnName="EndTime" />
             <ScalarProperty Name="EventAddedBy" ColumnName="EventAddedBy" />
             <ScalarProperty Name="AudienceType" ColumnName="AudienceType" />
+            <ScalarProperty Name="Comment" ColumnName="Comment" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Faculties"><EntityTypeMapping TypeName="StormDBModel.Faculty"><MappingFragment StoreEntitySet="Faculty">
             <ScalarProperty Name="Faculty_Id" ColumnName="Faculty_Id" />
@@ -3072,7 +3112,7 @@
         <EntityTypeShape EntityType="StormDBModel.Country" Width="1.5" PointX="0.75" PointY="34.5" Height="1.9802864583333388" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Course" Width="1.5" PointX="7.5" PointY="50.125" Height="3.326396484374996" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Course_Level" Width="1.5" PointX="5.25" PointY="53" Height="1.595683593749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Event" Width="1.5" PointX="2.75" PointY="4.75" Height="2.1725878906250102" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Event" Width="1.5" PointX="2.75" PointY="4.75" Height="2.7494921875000102" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Faculty" Width="1.5" PointX="5.25" PointY="49.75" Height="2.1725878906250102" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.General_Enquiry" Width="1.5" PointX="9.75" PointY="27.125" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Login" Width="1.5" PointX="4.75" PointY="4.75" Height="1.7879850260416674" IsExpanded="true" />
@@ -3089,8 +3129,8 @@
         <EntityTypeShape EntityType="StormDBModel.Staff_Dept" Width="1.5" PointX="3" PointY="28" Height="1.595683593749996" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Staff_Role" Width="1.5" PointX="10.5" PointY="23.875" Height="1.9802864583333388" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Student" Width="1.5" PointX="7.5" PointY="46.5" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Student_Log" Width="1.5" PointX="0.75" PointY="7.75" Height="2.5571907552083246" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.sysdiagram" Width="1.5" PointX="2.75" PointY="7.75" Height="1.9802864583333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Student_Log" Width="1.5" PointX="0.75" PointY="8.75" Height="2.5571907552083246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.sysdiagram" Width="1.5" PointX="2.75" PointY="8.75" Height="1.9802864583333246" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.System_Log" Width="1.5" PointX="8.75" PointY="3.75" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Template_Document" Width="1.5" PointX="9.75" PointY="50.375" Height="2.9417936197916674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.University" Width="1.5" PointX="3" PointY="49.625" Height="2.5571907552083246" IsExpanded="true" />

@@ -80,9 +80,31 @@ namespace StormWeb.Controllers
         }*/
 
         [HttpPost]
-        public JsonResult Create(string eventTitle, string eventStart, string eventEnd)
+        public JsonResult Create(string eventTitle, string eventStart, string eventEnd, string eventStartTime, string eventEndTime, string eventVenue, string eventComment)
         {
+            Event events = new Event();
+            if(CookieHelper.isStaff())
+            {
+                int staffId = Convert.ToInt32(CookieHelper.StaffId);
+                events.EventAddedBy = staffId;
+                events.StartDate = DateTime.ParseExact(eventStart, "d", null);
+                events.EndDate = DateTime.ParseExact(eventEnd, "d", null);
+                if (eventStartTime != "" && eventEndTime != "")
+                {
+                    events.StartTime = eventStartTime;
+                    events.EndTime = eventEndTime;
+                }
+                events.Venue = eventVenue;
+                events.Comment = eventComment;
 
+                if (ModelState.IsValid)
+                {
+                    db.Events.AddObject(events);
+                    db.SaveChanges();
+
+                }
+
+            }
             return Json(eventTitle);
         }
         //
@@ -162,7 +184,7 @@ namespace StormWeb.Controllers
                             id = p.Student_Id.ToString(),
                             title = "Appointment with "+p.FirstName,
                             start = p.AppDateTime.ToString(),
-                            end = p.AppDateTime.ToString(),
+                            end = p.AppDateTime.AddHours(1).ToString(),
                             url = "/Event/Details/" + p.Student_Id.ToString() +"/",
                             className = "stud"
                         });
@@ -199,6 +221,7 @@ namespace StormWeb.Controllers
                 var onCalls = (from p in db.Appointments
                       where p.Staff_Id == sId && p.Confirmation == AppointmentController.APP_CONFIRMED && p.AppDateTime > DateTime.Now
                       select new{p.AppDateTime,p.Staff.FirstName,p.Staff_Id,p.Case.Student.Client.GivenName,p.Appointment_Id});
+                var onCall = db.Events.Single(e => e.EventAddedBy == sId);
                 DateTime currStart;
                 DateTime currEnd;
                 foreach (var p in onCalls)
@@ -212,10 +235,12 @@ namespace StormWeb.Controllers
                                     from g in db.General_Enquiry
                                     where g.Appointment_Id == a.Appointment_Id && a.Appointment_Id == p.Appointment_Id
                                     select g.Client.GivenName).Single();
-                        
+
                     }
                     else
+                    {
                         studName = p.GivenName;
+                    }
                     var combStudStaff = p.Staff_Id.ToString() + "," + p.Appointment_Id;
                     events.Add(new CalendarEvent()
                     {
