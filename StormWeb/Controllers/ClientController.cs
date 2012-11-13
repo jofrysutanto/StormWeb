@@ -243,6 +243,15 @@ namespace StormWeb.Controllers
 
             Client c = db.Clients.SingleOrDefault(x => x.Client_Id == clientID);
 
+            // Check for existing user account for this client ID
+            Student s = db.Students.SingleOrDefault(x => x.Client_Id == clientID);
+
+            if (s == null)
+            {
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "You already have an account");
+                return RedirectToAction("LogOn", "Account");
+            }
+
             MembershipCreateStatus createStatus;
             Membership.CreateUser(username, password, c.Email, null, null, true, null, out createStatus);
             Roles.AddUserToRole(fc["Username"], "Student");

@@ -118,7 +118,7 @@ foreach (var item in Model)
                                         
                                             @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) >= 80)
                                             {
-                                                <a href=@Url.Action("DownloadOfferLetter", "Document",new { id = item.Application_Result.FirstOrDefault().Application_Id })><span class="badge badge-success">Available</span></a>
+                                                <a href=@Url.Action("DownloadOfferLetter", "Document", new { id = item.Application_Result.FirstOrDefault().Id })><span class="badge badge-success">Available</span></a>
 
                                             }
                                             else
@@ -132,7 +132,7 @@ foreach (var item in Model)
                                        
                                             @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) >= 90 && StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) <= 100)
                                             {
-                                            <a href=@Url.Action("DownloadCoE", "Document", new { id = item.Application_Result.FirstOrDefault().Application_Id })><span class="badge badge-success">Available</span></a>
+                                            <a href=@Url.Action("DownloadCoE", "Document", new { id = item.Application_Result.FirstOrDefault().Id })><span class="badge badge-success">Available</span></a>
 
                                             }
                                             else
