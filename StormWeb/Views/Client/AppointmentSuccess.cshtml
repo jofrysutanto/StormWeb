@@ -83,6 +83,7 @@
                             DateTime appDateTime = ViewBag.AppDateTime;
                             @:<strong>Your preferred date:</strong> @appDateTime.DayOfWeek, @appDateTime.Day-@appDateTime.Month-@appDateTime.Year
                         }
+                        
 					</p>
 				</div>
 				</div>
@@ -103,6 +104,10 @@
             </div>
 		</div>
 		<!--Right side sugestions end start here-->
+
+        <div class="span12" style="text-align:center">
+            <a class="btn btn-success" href="@Url.Action("LogOn", "Account")">Return to login page</a>
+        </div>
 	</div>
 </div>
   

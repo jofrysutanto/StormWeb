@@ -259,13 +259,14 @@ namespace StormWeb.Controllers
 
                 Case nCase = AddNewCase(c.Branch_Id, student);
                 AddDocumentTemplate(nCase);
+                db.SaveChanges();
                                 
                 return RedirectToAction("LogOn", "Account", new { message = "registration-success" });
             }
             else
             {
                 // Some error happened
-                ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                ModelState.AddModelError("", ErrorCodeToString(createStatus));                
             }
 
             NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error handling your request!");
