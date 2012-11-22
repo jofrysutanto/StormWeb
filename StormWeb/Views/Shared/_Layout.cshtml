@@ -8,10 +8,8 @@
     @{ Html.EnableClientValidation(); }
 
     @using StormWeb.Helper
-    @if (NotificationHandler.hasNotification())
+    @*@if (NotificationHandler.hasNotification())
     {
-        string[] noty = NotificationHandler.getNotification();
-        
         <script>
          $(function () {
                 $.pnotify({
@@ -21,8 +19,25 @@
                      history: false
                  });
                  });
-        </script>
-    }
+        </script>    
+    *@
+    @{
+        string[] noty = NotificationHandler.getNotification();
+        
+        string text = noty[2] + " " + noty[1] + " " + noty[0];
+        
+        <script>
+            $(function () {
+                $.pnotify({
+                    title: '@(text)',
+                    text: '@(text)',
+                    type: 'success',
+                    history: false
+                });
+            });
+        </script>  
+        }
+    @*}*@
 
 </head>
 <body>
