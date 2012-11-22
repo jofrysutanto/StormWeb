@@ -23,6 +23,12 @@
                 remote: {
                     url: '@Url.Action("IsUsernameExist", "Account")',
                     type: "post",
+                    beforeSend: function() {
+                        $("#usernameLoad").show();
+                    },
+                    complete: function() {
+                        $("#usernameLoad").hide();
+                    }  
                 }
             },
             Password: {
@@ -86,7 +92,7 @@
                         <input type="hidden" name="clientID" id="clientID" value="@Model.ClientModel.Client_Id"
                             style="display: none" />
                         @Html.HiddenFor(model => model.ClientModel.Services, "Study", "");
-                        
+                        <div class="alert alert-warning">* = Required</div>
                         <div class="widget-head">
                             <h5 style="vertical-align: bottom">
                                 <span class="dashboard-icons-colors user_sl"></span>Personal details
@@ -104,7 +110,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Last name", null, new { @class = "control-label" })
+                                    @Html.Label("Last name*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "Last Name" })
                                         <p class="help-block">
@@ -113,7 +119,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Nationality", null, new { @class = "control-label" })
+                                    @Html.Label("Nationality*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.Nationality, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "Nationality" })
                                         <p class="help-block">
@@ -130,7 +136,7 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Email Address", null, new { @class = "control-label" })
+                                    @Html.Label("Email Address*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip disabled", disabled="disabled", placeholder = "email@domain.com" })
                                         <p class="help-block">
@@ -139,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
+                                    @Html.Label("Primary Contact Number*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip disabled", disabled = "disabled", placeholder = "+XX XXX XXX XXX" })
                                         <p class="help-block">
@@ -166,16 +172,16 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Username", null, new { @class = "control-label" })
+                                    @Html.Label("Username*", null, new { @class = "control-label" })
                                     <div class="controls">
-                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })<span style="display:none" id="usernameLoad"><img src="../../Content/img/ajax-loader.gif" alt="Checking Username"/></span>
                                         <p class="help-block">
                                             @Html.ValidationMessageFor(model => model.Username)
                                         </p>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Password", null, new { @class = "control-label" })
+                                    @Html.Label("Password*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.PasswordFor(model => model.Password, new { @class = "input-xlarge text-tip", placeholder = "******" })
                                         <p class="help-block">
@@ -184,7 +190,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Confirm Password", null, new { @class = "control-label" })
+                                    @Html.Label("Confirm Password*", null, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.Password("Confirm", "", new { @class = "input-xlarge text-tip", placeholder = "******" })
                                     </div>

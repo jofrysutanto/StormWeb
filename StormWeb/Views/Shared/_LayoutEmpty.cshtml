@@ -121,5 +121,22 @@
     });
 
 </script>
+
+@using StormWeb.Helper
+    @if (NotificationHandler.hasNotification())
+    {
+        string[] noty = NotificationHandler.getNotification();
+        
+        <script>
+            $(function () {
+                $.pnotify({
+                    title: '@(noty[2])',
+                    text: '@(noty[1])',
+                    type: '@(noty[0])',
+                    history: false
+                });
+            });
+        </script>
+    }
 </html>
 

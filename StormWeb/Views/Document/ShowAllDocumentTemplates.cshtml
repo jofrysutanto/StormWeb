@@ -10,9 +10,7 @@
 $(function () {
     $('.my-data-tbl-boxy').dataTable({
         "sPaginationType": "full_numbers",
-        "aoColumnDefs": [
-						{ "bSortable": false, "aTargets": [ 1,2,3,4 ] }
-					],
+        "bSort": false,
         "iDisplayLength": 10,
         "oLanguage": {
             "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
@@ -57,12 +55,6 @@ $(function () {
                                     <i class="color-icons application_detail_co"></i>Form Name
                                 </th>
                                 <th>
-                                    <i class="color-icons folder_co"></i>Path
-                                </th>
-                                <th>
-                                    <i class="color-icons page_white_text_co"></i>FileName
-                                </th>
-                                <th>
                                     <i class="color-icons user_business_co"></i>UploadedBy
                                 </th>
                                 <th>
@@ -83,51 +75,32 @@ $(function () {
                                     <td>
                                         <ul>
                                             <li>@Html.DisplayFor(modelItem => item.Course_Name)
-                                                <a href="@Url.Action("UploadFileTemp", "Document", new { id = item.Course_Id , uni_Id = item.Faculty.University_Id})" class='myFrame black-icons upload tip-top' data-original-title="Upload New Form" title="Upload ">
-                                                </a></li>
+                                                </li>
                                             <li><i class="icon-small-black "></i>
                                                 @Html.DisplayFor(modelItem => item.Faculty.University.University_Name)
                                                 <text> , </text>
                                                 @Html.DisplayFor(modelItem => item.Faculty.University.Country.Country_Name)
                                             </li>
+                                            <li style="text-align:center">
+                                                @Html.Button_Add("Add more templates", @Url.Action("UploadFileTemp", "Document", new { id = item.Course_Id , uni_Id = item.Faculty.University_Id}), new {@class="myFrame btn btn-danger tip-top", data_original_title="Upload New Form", title="Upload "})
+                                            
+                                            
+                                                </li>
                                         </ul>
                                     </td>
                                     <td>
                                         <ul>
                                             @foreach (var appDoc in item.Template_Document)
                                             {
-                                                if (appDoc.FileName != null)
+                                                if (appDoc.FileName != "No File")
                                                 {
-                                                <li>@Html.DisplayFor(modelItem => appDoc.Form_Name)
-                                                <a href="@Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id })" class='black-icons download tip-top' data-original-title="Download Template">
-                                                                </a></li>
+                                                <li>
+                                                    <a href="@Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id })" target='_blank' class='tip-top' data-original-title="Download Template">
+                                                                <i class="color-icons doc_pdf_co"></i>@Html.DisplayFor(modelItem => appDoc.Form_Name)</a></li>
                                                 }
                                                 else
                                                 {
-                                                <li>&nbsp;</li>
-                                                }
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            @foreach (var appDoc in item.Template_Document)
-                                            {
-                                                <li>@Html.DisplayFor(modelItem => appDoc.Path)</li>
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            @foreach (var appDoc in item.Template_Document)
-                                            {
-                                                if (appDoc.FileName != null)
-                                                {
-                                                <li>@Html.DisplayFor(modelItem => appDoc.FileName)</li>
-                                                }
-                                                else
-                                                {
-                                                 <li>  &nbsp;</li> 
+                                                <li>@Html.DisplayFor(modelItem => appDoc.Form_Name)</li>
                                                 }
                                             }
                                         </ul>
@@ -145,7 +118,10 @@ $(function () {
                                         <ul>
                                             @foreach (var appDoc in item.Template_Document)
                                             {
-                                                <li>@Html.Encode(appDoc.UploadedOn.ToShortDateString())</li>
+                                                if (appDoc.UploadedOn != null)
+                                                {
+                                                    <li>@Html.Encode(((DateTime) appDoc.UploadedOn).ToShortDateString())</li>
+                                                }
                                             }
                                         </ul>
                                     </td>
@@ -199,8 +175,7 @@ $(function () {
                                             }
                                         </ul>
                                     </td>
-                                </tr>                                     
-                                                                 
+                                </tr>                            
                             }
                         </tbody>
                     </table>

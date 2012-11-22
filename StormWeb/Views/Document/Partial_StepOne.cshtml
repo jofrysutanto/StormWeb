@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="span12">
+        <h5>Please complete the following documents</h5>
+    </div>
+
+    <!-- Start of documents to complete -->
+    <div class="span6">
+        <h6>Application Form</h6>
+        <p> &mdash; This document must be completed in UPPERCASE letter</p>
+        <p>A file is supplied to you, if this document is a form you will need to download the form.</p>
+    </div>
+    <div class="span6">
+        @Html.Button_Add("Add Document", "http://");
+    </div>
+
+    <!-- End of documents to complete -->
+</div>

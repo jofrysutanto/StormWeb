@@ -4,7 +4,7 @@
     ViewBag.Title = "List";
 }
 
-<h2> Courses</h2>
+<h2> Courses <a class="btn btn-warning btn-mini" href="@Url.Action("Index", "University")"><< Back to University</a></h2>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-block">
@@ -107,9 +107,13 @@
    </div>
    </div>        
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+    <div class="row-fluid">
+    <div class="span12" style="text-align: center">
+        <p>
+            @Html.ActionLink("Create New", "Create", new {  }, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>
         
 
 

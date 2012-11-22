@@ -44,7 +44,7 @@ namespace StormWeb.Controllers
         
         // GET: /CaseTemp/
         // This will show all  Case Document Templates from student page to select from them
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ViewResult ShowGeneralTemplates()
         {
             return View(db.CaseDoc_Template.ToList());
@@ -55,7 +55,7 @@ namespace StormWeb.Controllers
 
 
         // This will show all  Case Document Templates from student page to select from them
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ViewResult ShowAllCaseTemplates(int id = 0 )
         {
             if (id != 0)
@@ -104,7 +104,7 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [HttpPost]
         public ActionResult ShowAllCaseTemplates(int id, FormCollection formCollection)
         {
@@ -175,7 +175,7 @@ namespace StormWeb.Controllers
 
         // GET: /CaseTemp/Create
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult CreateCaseTemp(int returnId=0)
         {
             ViewBag.clientId = returnId;
@@ -186,7 +186,7 @@ namespace StormWeb.Controllers
         // POST: /CaseTemp/Create
 
         [HttpPost]
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult CreateCaseTemp(CaseDoc_Template casedoc_template, HttpPostedFileBase file, int returnId = 0)
         {
 
@@ -201,15 +201,16 @@ namespace StormWeb.Controllers
                 {
                     string pathToCreate;
                     pathToCreate = TEMPLATE_GENERAL_PATH;
-                    string fileToCreate = pathToCreate + '/' + casedoc_template.FileName;
+                    string fileToCreate = pathToCreate + '/' + file.FileName;
                     casedoc_template.FileName = file.FileName;
                     casedoc_template.Path = pathToCreate;
-                    casedoc_template.UploadedOn = System.DateTime.Now;
-                    casedoc_template.UploadedBy = CookieHelper.Username;
+                    
 
                     uploadAWS(fileToCreate, file);
                 }
             // create / update folder 
+                casedoc_template.UploadedOn = System.DateTime.Now;
+                casedoc_template.UploadedBy = CookieHelper.Username;
                 db.CaseDoc_Template.AddObject(casedoc_template);
             if (ModelState.IsValid)
             {
@@ -241,7 +242,7 @@ namespace StormWeb.Controllers
         
 
         // GET: /CaseTemp/Edit/5
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult EditCaseTemp(int id, int returnId = 0)
         {
             ViewBag.clientId = returnId;
@@ -278,7 +279,7 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult DeleteCaseTemp(int id, int returnId=0)
         {
             CaseDocument found = (from e in db.CaseDocuments
@@ -408,7 +409,7 @@ namespace StormWeb.Controllers
 
         }
         // return all case documents for a selected student
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public List<CaseDocument> GetCaseItems(int id)
         {
             return db.CaseDocuments.Where(x => x.Case_Id == id).ToList();
@@ -416,7 +417,7 @@ namespace StormWeb.Controllers
 
 
         // The following method is used to display the list of students of the login staff
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ViewResult ShowAllStudents()
         {
             if (CookieHelper.isStaff())
@@ -478,12 +479,12 @@ namespace StormWeb.Controllers
                 // if all application documents are approved then application status will be "Documents Completed"
                 if (StormWeb.Models.ModelHelper.DocumentHelper.getUnApprovedDocs(app.Application_Id) == 0)
                 {
-                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, 40);
+                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, ApplicationStatusType.Documents_Completed);
                 }
                     // else return application status to "staff assigned"
                 else
                 {
-                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, 20);
+                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, ApplicationStatusType.Staff_Assigned);
 
                 }
             
@@ -496,7 +497,7 @@ namespace StormWeb.Controllers
 
         #region Template Documents
         // document templates 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ViewResult ShowAllDocumentTemplates()
         {
@@ -506,7 +507,7 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult EditDocTemp(int id)
         {
             Template_Document template_document = db.Template_Document.Single(t => t.TemplateDoc_Id == id);
@@ -518,7 +519,7 @@ namespace StormWeb.Controllers
         // POST: /Template/Edit/5
 
         [HttpPost]
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult EditDocTemp(Template_Document template_document)
         {
             if (ModelState.IsValid)
@@ -638,7 +639,7 @@ namespace StormWeb.Controllers
         }
 
         // GET: /DocTemp/Delete/5
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult DeleteDocTemp(int id)
         {
@@ -832,7 +833,15 @@ namespace StormWeb.Controllers
             request.Key = path;
             request.StorageClass = S3StorageClass.ReducedRedundancy; //set storage to reduced redundancy
             request.InputStream = file.InputStream;
-            client.PutObject(request);
+
+            try
+            {
+                S3Response uploadResponse = client.PutObject(request);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+            }
 
             return View("Refresh");
 
@@ -854,7 +863,7 @@ namespace StormWeb.Controllers
                 request.WithBucketName(bucketName)
                     .WithKey(keyName);
                 AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(RegionEndpoint.APSoutheast1);
-                client.DeleteObject(request);
+                DeleteObjectResponse response = client.DeleteObject(request);
 
                 //using (DeleteObjectResponse response = client.DeleteObject(request))
                 //{
@@ -878,6 +887,8 @@ namespace StormWeb.Controllers
                 {
                     Console.WriteLine("An error occurred with the message '{0}' when deleting an object", amazonS3Exception.Message);
                 }
+
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error removing the file from our File System, this file record is now removed");
             }
             return View("Refresh");
         }
@@ -965,26 +976,39 @@ namespace StormWeb.Controllers
             int UniId = Convert.ToInt32(fc["Uni_Id"]);
             string comment = (fc["comment"]);
             string formname = (fc["formname"]);
-            string pathToCreate;
             Template_Document appDoc = new Template_Document();
-            pathToCreate = TEMPLATE_APPLICATION_PATH + UniId + '_' + CourseId;
 
-            // create / update folder 
+            if (file != null)
+            {
+                string pathToCreate;
+
+                pathToCreate = TEMPLATE_APPLICATION_PATH + UniId + '_' + CourseId;
+
+                // create / update folder 
                 fileName = Path.GetFileName(file.FileName);
-                path = Path.Combine(Server.MapPath(pathToCreate), fileName);
-                file.SaveAs(path);
+                //path = Path.Combine(Server.MapPath(pathToCreate), fileName);
+                //file.SaveAs(path);
 
+
+                string fileToCreate = pathToCreate + '/' + file.FileName;
+                //appDoc.Path = Path.Combine(Server.MapPath(pathToCreate));
+                appDoc.Path = pathToCreate;
+                uploadAWS(fileToCreate, file);
+            }
+            else // Template with no downloadable form
+            {
+                fileName = "No File";
+            }
                 // Update object of application document file
                 appDoc.Course_Id = CourseId;
                 appDoc.Form_Name = formname;
-                appDoc.Path = Path.Combine(Server.MapPath(pathToCreate));
+                
                 appDoc.UploadedOn = System.DateTime.Now;
                 appDoc.FileName = fileName;
                 appDoc.UploadedBy = CookieHelper.Username;
                 appDoc.Comment = comment;
 
-                string fileToCreate = pathToCreate + '/' + appDoc.FileName;
-                uploadAWS(fileToCreate, file);
+                
 
             if (ModelState.IsValid)
             {
@@ -1282,10 +1306,18 @@ namespace StormWeb.Controllers
 
         #region Downloads
         // The following is used to download the previously uploaded Offer Letter 
+        // Type is used to determine to download from application ID or file ID
         [Authorize]
-        public void DownloadOfferLetter(int id)
+        public void DownloadOfferLetter(int id, string type = "id")
         {
-            Application_Result appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == "O");
+            Application_Result appDoc = null;
+            if (type == "id")
+                appDoc = db.Application_Result.SingleOrDefault(x => x.Id == id && x.Type == "O");
+            else if (type == "appId")
+                appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == id && x.Type == "O");
+
+            if (appDoc == null)
+                return;
             downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
             //string path = appDoc.Path;
             //string fileToDownload = appDoc.FileName;
@@ -1301,9 +1333,18 @@ namespace StormWeb.Controllers
             //return File(file, contentType, appDoc.FileName);
         }
         // The following is used to download the previously uploaded CoE
-        public void DownloadCoE(int id)
-        {
-            Application_Result appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "C");
+        // Type is used to determine to download from application ID or file ID
+        public void DownloadCoE(int id, string type = "id")
+        {   
+
+            Application_Result appDoc = null;
+            if (type == "id")
+                appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == "C");
+            else if (type == "appId")
+                appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "C");
+
+            if (appDoc == null)
+                return;
             downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
             //string path = appDoc.Path;
             //string fileToDownload = appDoc.FileName;
@@ -1414,9 +1455,63 @@ namespace StormWeb.Controllers
 
         #endregion Downloads
 
+        #region Helper Methods
+
+        public static bool isAllApplicationDocumentsUploaded(int applicationID)
+        {
+            StormDBEntities db = new StormDBEntities();
+            string appStatus = db.Applications.Single(a => a.Application_Id == applicationID).Status;
+            int progressValue = (int)Enum.Parse(typeof(StormWeb.Controllers.ApplicationController.ApplicationStatusType), appStatus);
+
+            if (progressValue >= ApplicationStatusType.Documents_Completed)
+                return true;
+
+            return false;
+        }
+
+        public static int getNumberOfDownloadable(int applicationID)
+        {
+
+
+            return 0;
+        }
+
+        public static bool isOfferLetterRead(int applicationID)
+        {
+            StormDBEntities db = new StormDBEntities();
+            Application_Result appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == applicationID && x.Type == "O");
+
+            if (appDoc == null)
+                return false;
+            return true;
+        }
+
+        public static bool isCOEReady(int applicationID)
+        {
+            StormDBEntities db = new StormDBEntities();
+            Application_Result appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == applicationID && x.Type == "C");
+            
+            if (appDoc == null)
+                return false;
+            return true;
+        }
+
+        public static bool isAllCaseDocumentsUploaded(int caseID)
+        {
+            StormDBEntities db = new StormDBEntities();
+
+            int count = db.CaseDocuments.Where(x => x.Case_Id == caseID && x.FileName != null).Count();
+
+            if (count <= 0)
+                return false;
+            return true;
+        }
+
+        #endregion
+
         #region Unused
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         public ActionResult CreateCourseSelection()
         {
 
@@ -1436,7 +1531,7 @@ namespace StormWeb.Controllers
 
 
         // POST: Course selection method
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [HttpPost]
         public void CreateCourseSelection(FormCollection fc)
         {
@@ -1476,7 +1571,7 @@ namespace StormWeb.Controllers
         }
 
         // Return the list of universities
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetUniversities(int countryID = -1)
         {
@@ -1495,7 +1590,7 @@ namespace StormWeb.Controllers
         }
 
         // Return the list of courses
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,Counsellor,Administrator")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetCourses(int universityID = -1)
         {

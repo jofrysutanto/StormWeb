@@ -7,8 +7,6 @@ namespace StormWeb.Models
 {
     public class StaffAppointmentListViewModel
     {
-        
-        
         public List<Appointment> caseStudentAppointments { get; set; }
         public List<Appointment> studentAppointments { get; set; }
         public List<Appointment> studentPreviousApp { get; set; }

@@ -62,7 +62,7 @@
                                     }
                                     else
                                     {
-                                        @item.Faculties.Count
+                                        <li><a id="popover@(item.University_Id)" data-content="No faculties" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count</a></li>
                                     }
                                 }                                    
                                 </ul>                                                               
@@ -84,7 +84,7 @@
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.ActionLink("View Courses", "List", "Course", new { id = item.University_Id }, null) |
+                                @Html.ActionLink("View Courses", "ViewCourses", "Course", new { id = item.University_Id }, null) |
                                 @Html.ActionLink("Edit", "Edit", new { id = item.University_Id }) |            
                                 @Html.ActionLink("Delete", "Delete", new { id = item.University_Id })
                             </td>

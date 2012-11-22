@@ -227,7 +227,7 @@ namespace StormWeb.Controllers
         #endregion
 
         #region Details 
-        [Authorize(Roles = "Counsellor")]
+        [Authorize(Roles = "Student")]
         public ViewResult Details(int id)
         {
             Appointment appointment = db.Appointments.Single(a => a.Appointment_Id == id);
@@ -572,7 +572,24 @@ namespace StormWeb.Controllers
 
             }
             DateTime dateSelected = new DateTime(dateTemp.Year, dateTemp.Month, dateTemp.Day, listHours, listMinutes, 00);
+            
+            /* *
+             * Checking if the appointment date has been booked out
+             * */
+            if (StormWeb.Helper.CookieHelper.isStaff())
+            {
+                staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
+                Appointment appnmnt = (from app in db.Appointments
+                                where app.AppDateTime == dateSelected && app.Confirmation == APP_CONFIRMED && app.Staff_Id == staffId
+                                select app).FirstOrDefault();
 
+                if (appnmnt != null)
+                {
+                    ModelState.AddModelError("AppBookedOut", "This appointment time has been taken. Please choose another time or date");
+                    return View(appointment);
+                }
+
+            }
             if (dateSelected < currentDate)
             {
                 ModelState.AddModelError("AppDateTime", "Please select a date above the current date");

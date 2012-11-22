@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<StormWeb.Models.Faculty>
-
 @{
     ViewBag.Title = "Faculties";
 }
@@ -44,11 +43,8 @@ $(function () {
                         });
        });
 </script>
-<h2>Faculties</h2>
-
-<p>
-    @Html.ActionLink("Create New", "CreateFaculty", new { id = ViewBag.UniversityId })
-</p>
+<h2>
+    Faculties <a class="btn btn-warning btn-mini" href="@Url.Action("Index")"><< Back to University</a></h2> 
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-block">
@@ -68,59 +64,72 @@ $(function () {
             <div class="widget-content">
                 <div class="widget-box">
                     <table class="mydata-tbl-inbox table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>
-                            Faculty Name
-                        </th>
-                        <th>
-                            Description
-                        </th>
-                        <th>
-                            University Name
-                            
-                        </th>
-                        <th>Action<a id="example" data-content="Delete - A Faculty can only be deleted if they have no courses listed under them " class="color-icons help_co pull-right" style="margin-right:5px;margin-top:5px" href="#" data-original-title="Appointment Status"></a></th>
-                    </tr>
-                    </thead>
-@foreach (var item in Model)
-{
-    <tbody>
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Faculty_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Faculty_Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.University.University_Name)
-            <text><b><br />Campus:</b></text> @Html.DisplayFor(modelItem => item.University.Campus)
-        </td>
-        <td>           
-            <div class="selectArea">
-                <a href="@Url.Action("EditFaculty", new { id = item.Faculty_Id })" type="button" class="btn btn-mini btn-info" value="@item.Faculty_Id" name="EditFaculty">Edit</a>
-            @if (item.Courses.Count() == 0)
-            {            
-                <button type="button" id="select@(item.Faculty_Id)" class="btn btn-mini btn-danger" value="@item.Faculty_Id" name="selectStudent">Delete</button>              
-            }
+                        <thead>
+                            <tr>
+                                <th>
+                                    Faculty Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    University Name
+                                </th>
+                                <th>
+                                    Action<a id="example" data-content="Delete - A Faculty can only be deleted if they have no courses listed under them "
+                                        class="color-icons help_co pull-right" style="margin-right: 5px; margin-top: 5px"
+                                        href="#" data-original-title="Appointment Status"></a>
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Faculty_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Faculty_Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.University.University_Name)
+                                        <text><b><br />Campus:</b></text>
+                                        @Html.DisplayFor(modelItem => item.University.Campus)
+                                    </td>
+                                    <td>
+                                        <div class="selectArea">
+                                            <a href="@Url.Action("EditFaculty", new { id = item.Faculty_Id })" type="button" class="btn btn-mini btn-info" value="@item.Faculty_Id" name="EditFaculty">
+                                                Edit</a>
+                                            @if (item.Courses.Count() == 0)
+                                            {            
+                                                <button type="button" id="select@(item.Faculty_Id)" class="btn btn-mini btn-danger" value="@item.Faculty_Id" name="selectStudent">
+                                                    Delete</button>              
+                                            }
+                                        </div>
+                                        @if (item.Courses.Count() == 0)
+                                        {
+                                            <div class="confirmArea" id="confirmArea@(item.Faculty_Id)" style="display:none">
+                                                <a href="@Url.Action("ConfirmDeleteFaculty", new { id = item.Faculty_Id })" type="button" id="confirmStudent@(item.Faculty_Id)" class="btn btn-mini btn-success" value="@item.Faculty_Id" name="deleteFaculty">
+                                                    Confirm</a>
+                                                <button type="button" id="cancel@(item.Faculty_Id)" class="btn btn-mini btn-warning" value="@item.Faculty_Id" name="cancel">
+                                                    Cancel</button>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
             </div>
-            @if(item.Courses.Count() == 0)
-            {
-            <div class="confirmArea" id="confirmArea@(item.Faculty_Id)" style="display:none">
-                <a href="@Url.Action("ConfirmDeleteFaculty", new { id = item.Faculty_Id })" type="button" id="confirmStudent@(item.Faculty_Id)" class="btn btn-mini btn-success" value="@item.Faculty_Id" name="deleteFaculty">Confirm</a>
-                <button type="button" id="cancel@(item.Faculty_Id)" class="btn btn-mini btn-warning" value="@item.Faculty_Id" name="cancel">Cancel</button>
-            </div>
-            }            
-        </td>
-    </tr>
-    </tbody>
-}
-
-</table>
+        </div>
+    </div>
 </div>
+<div class="row-fluid">
+    <div class="span12" style="text-align: center">
+        <p>
+            @Html.ActionLink("Create New", "CreateFaculty", new { id = ViewBag.UniversityId }, new { @class = "btn btn-primary" })
+        </p>
+    </div>
 </div>
-</div>
-</div>
-</div>
-

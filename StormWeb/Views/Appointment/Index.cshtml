@@ -1,4 +1,5 @@
-﻿@model StormWeb.Models.StaffAppointmentListViewModel
+﻿
+@model StormWeb.Models.StaffAppointmentListViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -34,7 +35,6 @@
                         <li class="active"><a href="#tab1" data-toggle="tab">
                             @if (Model.clientAppointments.Count() > 0)
                             {
-                             
                                 <text><span class="dropcapG">N</span>ew Student Appointment&nbsp;</text><span class="label label-important">@Model.clientAppointments.Count()</span>
                             }
                             else
@@ -194,7 +194,7 @@
                                                                     <td>
                                                                         @if (item.Case == null)
                                                                         {
-                                                                            <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.First().Client.Client_Id })" title="Student Details">
+                                                                            <a class='ifName' href="@Url.Action("StudentProfile", "StudentCentre", new { id = item.General_Enquiry.FirstOrDefault().Client.Client_Id })" title="Student Details">
                                                                                 @Html.DisplayFor(modelItem => item.General_Enquiry.First().Client.GivenName)</a>
                                                                         }
                                                                         else

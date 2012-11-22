@@ -25,14 +25,23 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ViewResult List()
         {
             var courses = db.Courses.Include("Course_Level").Include("Faculty");
             return View(courses.ToList());
         }
+        /*public ViewResult List(int id)
+        {
+            var courses = from c in db.Courses
+                          from fac in db.Faculties
+                          where fac.University_Id == id && fac.Faculty_Id == c.Faculty_Id
+                          select c;
+            return View(courses.ToList());
+        }*/
 
-        [Authorize(Roles = "Super,BranchManager")]
+
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ViewResult ViewCourses(int id)
         {
             //var courses = db.Courses.Include("Course_Level").Include("Faculty");
@@ -45,6 +54,8 @@ namespace StormWeb.Controllers
             return View();
         }
 
+
+        #region Index
         [Authorize(Roles = "Student,Counsellor")]
         public ActionResult Index(int id = -1)
         {
@@ -52,6 +63,7 @@ namespace StormWeb.Controllers
             if (id == -1)
             {
                 studentId = CookieHelper.getStudentId();
+                ViewBag.studentIdC = studentId;
             }
             else
             {
@@ -83,15 +95,17 @@ namespace StormWeb.Controllers
 
             return View(courses.Except(studentApplication).ToList());
         }
+        #endregion
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ViewResult Details(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
+
 
         #region CREATE
 
@@ -106,12 +120,13 @@ namespace StormWeb.Controllers
                                        Text = u.University_Name,
                                        Value = SqlFunctions.StringConvert((double)u.University_Id),
                                    };
+            
 
             return View();
 
         }
-
-        [Authorize(Roles = "Super,BranchManager")]
+        
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
 
         [HttpPost]
         public ActionResult Create(Course course, FormCollection fc)
@@ -119,7 +134,6 @@ namespace StormWeb.Controllers
 
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1");
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name");
-
             ViewBag.Universities = from u in db.Universities
                                    select new SelectListItem
                                    {
@@ -133,12 +147,13 @@ namespace StormWeb.Controllers
                 if (course.Commence_Date_Sem < DateTime.Now)
                 {
                     ModelState.AddModelError("DateError", "Please enter valid date");
-
+                    return View(course);
                 }
                 else
                 {
                     db.Courses.AddObject(course);
                     db.SaveChanges();
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Course has been successfully added");
                     return RedirectToAction("List");
                 }
             }
@@ -147,19 +162,23 @@ namespace StormWeb.Controllers
             if (fc["Course_Level_Id"] == "")
             {
                 ModelState.AddModelError("CourseLevelError", "Please select Course Level");
+                return View(course);
             }
             
             if (fc["Course_Name"] == "")
             {
                 ModelState.AddModelError("CourseNameError", "Please enter Course Name");
+                return View(course);
             }
             if (fc["Duration"] == "")
             {
                 ModelState.AddModelError("DurationError", "Please enter Duration");
+                return View(course);
             }
             if (fc["Fee"] == "")
             {
                 ModelState.AddModelError("FeeError", "Please enter Fee");
+                return View(course);
             }
             else
             {                
@@ -176,7 +195,7 @@ namespace StormWeb.Controllers
 
         #endregion
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetFaculties(int uniID = -1)
         {
@@ -194,55 +213,65 @@ namespace StormWeb.Controllers
             return Json(selectList);
         }
 
+
+
         #region EDIT
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ActionResult Edit(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+            ViewBag.UniversityId = course.Faculty.University_Id;
             return View(course);
         }
 
-        [Authorize(Roles = "Super,BranchManager")]
-        [HttpPost]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(Course course,FormCollection fc)
         {
-           
+            ViewBag.UniversityId = course.Faculty.University_Id;
             if (ModelState.IsValid)
             {
                 if (course.Commence_Date_Sem < DateTime.Now)
                 {
                     ModelState.AddModelError("DateError", "Please enter valid date");
+                    return View(course);
                 }
                 else
                 {
                     db.Courses.Attach(course);
                     db.ObjectStateManager.ChangeObjectState(course, EntityState.Modified);
                     db.SaveChanges();
-                    return RedirectToAction("List");
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Course has been successfully edited");
+                    return RedirectToAction("ViewCourses", "Course", new { id = course.Faculty.University_Id });
                 }
             }
             if (fc["Faculty_Select"] == "")
             {
                 ModelState.AddModelError("FacultyError", "Please select a faculty");
+                return View(course);
             }
             if (fc["Course_Level_Id"] == "")
             {
                 ModelState.AddModelError("CourseLevelError", "Please select Course Level");
+                return View(course);
             }            
             if (fc["Course_Name"] == "")
             {
                 ModelState.AddModelError("CourseNameError", "Please enter Course Name");
+                return View(course);
             }
             if (fc["Duration"] == "")
             {
                 ModelState.AddModelError("DurationError", "Please enter Duration");
+                return View(course);
             }
             if (fc["Fee"] == "")
             {
                 ModelState.AddModelError("FeeError", "Please enter Fee");
+                return View(course);
             }
             else
             {
@@ -263,14 +292,14 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ActionResult Delete(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
             return View(course);
         }
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,Administrator")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

@@ -17,7 +17,7 @@
             $.post('@Url.Action("GetFaculties")', { uniID: selectedUniID }, function (data) {
                 data = $.map(data, function (item, a) {
                     return "<option value=" + item.Value + ">" + item.Text + "</option>";
-            }, 'json');           
+            }, 'json');    
                 $("#Faculty_Select").html(data.join(""));
             });
         });
@@ -31,7 +31,7 @@
             changeMonth: true,
             changeYear: true,
             minDate: '0',
-            maxDate: '+3M'   
+            maxDate: '+24M'   
         });
     });
 </script>
@@ -98,7 +98,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Duration)
+            @Html.LabelFor(model => model.Duration, "Duration (in months)")
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Duration)
@@ -107,7 +107,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Fee)
+            @Html.LabelFor(model => model.Fee, "Total Course Fees ($AUD)")
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Fee)

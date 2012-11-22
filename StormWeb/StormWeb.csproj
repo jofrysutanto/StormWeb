@@ -127,6 +127,7 @@
     <Compile Include="Helper\SimpleHash.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\StormHTMLHelper.cs" />
     <Compile Include="Helper\StudentsHelper.cs" />
     <Compile Include="Helper\Utilities.cs">
       <SubType>Code</SubType>
@@ -176,6 +177,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\help_img\AppSummary_StartNew.png" />
+    <Content Include="Content\help_img\BookApp.png" />
+    <Content Include="Content\help_img\Confirm.png" />
+    <Content Include="Content\help_img\Documents.png" />
+    <Content Include="Content\help_img\Documents_App_Upload.png" />
+    <Content Include="Content\help_img\Documents_Upload.png" />
+    <Content Include="Content\help_img\DocUpload.png" />
+    <Content Include="Content\help_img\Forms.png" />
+    <Content Include="Content\help_img\MyApp_Documents.png" />
+    <Content Include="Content\help_img\NewApp.png" />
+    <Content Include="Content\help_img\NewApplication.png" />
+    <Content Include="Content\help_img\StartApp.png" />
+    <Content Include="Content\help_img\StartNewApp.png" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\img\calendar_btn.png" />
     <Content Include="Content\img\clock.png" />
@@ -398,6 +412,7 @@
     <Content Include="Scripts\jquery.colorbox-min.js" />
     <Content Include="Scripts\jquery.easing.1.3.js" />
     <Content Include="Scripts\jquery.jqplot.min.js" />
+    <Content Include="Scripts\jquery.jqprint-0.3.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.nicescroll.min.js" />
     <Content Include="Scripts\jquery.noty.js" />
@@ -781,6 +796,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Views\Document\Partial_StepOne.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -8,6 +8,23 @@
     <meta charset="utf-8"/>
     <title>@ViewBag.Title</title>
     @Html.Partial("_LoadHeaderWithScript");
+
+    @using StormWeb.Helper
+    @if (NotificationHandler.hasNotification())
+    {
+        string[] noty = NotificationHandler.getNotification();
+        
+        <script>
+            $(function () {
+                $.pnotify({
+                    title: '@(noty[2])',
+                    text: '@(noty[1])',
+                    type: '@(noty[0])',
+                    history: false
+                });
+            });
+        </script>
+    }
     @{ Html.EnableClientValidation(); }
 </head>
 <body>

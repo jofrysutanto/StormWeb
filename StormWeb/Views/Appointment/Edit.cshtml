@@ -18,6 +18,9 @@
             maxDate: '+3M',
             showAnim: "fold",
             gotoCurrent: true,
+            showOn: "button",
+            buttonImage: "/Content/img/calendar_btn.png",
+            buttonImageOnly: true,
             beforeShowDay: $.datepicker.noWeekends
         });
 
@@ -136,6 +139,7 @@
                          @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("MM/dd/yyyy") }) 
                             @Html.ValidationMessage("AppDateTime")
                             @Html.ValidationMessage("DateError")
+                            @Html.ValidationMessage("AppBookedOut")
                         </td>
                     </tr>
                     <tr style="height:10px"></tr>

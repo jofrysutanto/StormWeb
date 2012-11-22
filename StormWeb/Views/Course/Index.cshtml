@@ -1,9 +1,7 @@
 ﻿@model IEnumerable<StormWeb.Models.Course>
-
 @{
     ViewBag.Title = "Index";
 }
-
 <script type="text/javascript">
 $(function () {
         $('.my-data-tbl-boxy').dataTable({
@@ -53,7 +51,7 @@ $(function () {
 
     });
 </script>
-<div id="dialog" title="Confirm start application" style="display:none">
+<div id="dialog" title="Confirm start application" style="display: none">
     Start this application?
 </div>
 <div class="row-fluid">
@@ -75,108 +73,103 @@ $(function () {
             <div class="widget-content">
                 <div class="widget-box">
                     <table class="my-data-tbl-boxy table">
-                       <thead>
-                       <tr>
-                        <th>
-                            University Name
-                        </th>
-                        <th>
-                            Course Level 
-                        </th>
-                        <th>
-                            Course Name
-                        </th>  
-                        <th>
-                            Semester Commencement Date
-                        </th>
-                        <th>
-                            Duration
-                        </th>
-                        <th>
-                            Fee
-                        </th>
-                        <th>
-                            Description
-                        </th>
-                        <th>
-                            Action
-                        </th>
-                    </tr>
-			        </thead>
-			        <tbody>
-			        @foreach (var item in Model)
-                    {                                                                
-                        <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Faculty.University.University_Name)
-                            
-                            <ul>  
-                            <li class="post-date">                          
-                            Country: @Html.DisplayFor(modelItem => item.Faculty.University.Country.Country_Name)
-                            </li>
-                            </ul>                       
-                            
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Level.Course_Level1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Name)
-                        </td>
-                        <td>                                
-                                     
-                            @if (item.Commence_Date_Sem == null)
-                            {
-                                @Html.Display("_")
-                            }
-                            else
-                            {
-                                @Html.Encode(item.Commence_Date_Sem.Value.ToString("dd/MM/yyyy"))    
-                            }   
-                        </td>        
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Duration)
-                        </td>
-                            <td>
-                            @Html.DisplayFor(modelItem => item.Fee)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>       
-                        <td>
-                            @{
+                        <thead>
+                            <tr>
+                                <th>
+                                    University Name
+                                </th>
+                                <th>
+                                    Course Level
+                                </th>
+                                <th>
+                                    Course Name
+                                </th>
+                                <th>
+                                    Semester Commencement Date
+                                </th>
+                                <th>
+                                    Duration
+                                </th>
+                                <th>
+                                    Fee
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {                                                                
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Faculty.University.University_Name)
+                                        <ul>
+                                            <li class="post-date">Country: @Html.DisplayFor(modelItem => item.Faculty.University.Country.Country_Name)
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Course_Level.Course_Level1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Course_Name)
+                                    </td>
+                                    <td>
+                                        @if (item.Commence_Date_Sem == null)
+                                        {
+                                            @Html.Display("_")
+                                        }
+                                        else
+                                        {
+                                            @Html.Encode(item.Commence_Date_Sem.Value.ToString("dd/MM/yyyy"))    
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Duration)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fee)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @{
                                 
-                                // Get the student id to which the course is applied for
-                        if (ViewBag.CountApplication < 3)
-                        {
-                            int sid = -1;
-                            if (StormWeb.Helper.CookieHelper.isStaff())
-                            {
-                                sid = ViewBag.studentIdC;
-                            }
-                            else if (StormWeb.Helper.CookieHelper.isStudent())
-                            {
-                                sid = StormWeb.Helper.CookieHelper.getStudentId();
-                            }
-                                <a href="@Url.Action("Add", "Application", new { id = item.Course_Id, sid = sid })" class='startApp btn btn-info'  title="Start Application">Start Application</a>
-                        }
-                        else
-                        {
-                            <a href="#" class='btn btn-info btn disabled'  title="No new application allowed">Start Application</a>
-                        }
-                            }
-                        </td>
-                        </tr>
+                                        // Get the student id to which the course is applied for
+                                        if (ViewBag.CountApplication < 3)
+                                        {
+                                            int sid = -1;
+                                            if (StormWeb.Helper.CookieHelper.isStaff())
+                                            {
+                                                sid = ViewBag.studentIdC;
+                                            }
+                                            else if (StormWeb.Helper.CookieHelper.isStudent())
+                                            {
+                                                sid = StormWeb.Helper.CookieHelper.getStudentId();
+                                            }
+                                            <a href="@Url.Action("Add", "Application", new { id = item.Course_Id, sid = sid })" class='startApp btn btn-info'  title="Start Application">
+                                                Start Application</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class='btn btn-info btn disabled' title="No new application allowed">Start
+                                                Application</a>
+                                        }
+                                        }
+                                    </td>
+                                </tr>
                                   
-                    }														
-			        </tbody>
-			   </table>
-		</div>
-	</div>
-   </div> 
-   </div>
-   </div>        
-
-        
-
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

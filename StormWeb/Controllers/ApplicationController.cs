@@ -25,7 +25,7 @@ namespace StormWeb.Controllers
 
         //
         // GET: /Application/
-        [Authorize(Roles="Counsellor,Student")]
+        [Authorize(Roles="Counsellor,Administrator,Student")]
         public ActionResult Index(int id = -1)
         {
             // If accessing application without specifying the Student ID
@@ -58,7 +58,7 @@ namespace StormWeb.Controllers
 
         //
         // GET: /Application/Details/5
-        [Authorize(Roles="Counsellor,Student")]
+        [Authorize(Roles="Counsellor,Administrator,Student")]
         public ViewResult Details(int id)
         {
             Application application = db.Applications.Single(a => a.Application_Id == id);
@@ -330,5 +330,21 @@ namespace StormWeb.Controllers
         }
 
          
+    }
+
+    public static class ApplicationStatusType
+    {
+        public static int Initiated = 0;
+        public static int Staff_Assigned = 20;
+        public static int Documents_Completed = 40;
+        public static int  Application_Submitted = 60;
+        public static int Offer_Letter = 80;
+        public static int Payment_Received = 90;
+        public static int CoE = 100;
+
+        public static int[] Value = { 0, 20, 40, 60, 80, 90, 100 };
+        public static string[] Name = { "Inititiated", "Staff_Assigned", "Documents_Completed", "Offer_Letter", "Payment_Received", "CoE" };
+
+        
     }
 }

@@ -9,10 +9,10 @@
 
         $(".myFrame").colorbox({ iframe: true, width: "400px", height: "300px" });
 
-                $(document).bind('cbox_closed', function () {
+        $(document).bind('cbox_closed', function () {
                    
-                    parent.location.reload();
-                });
+            parent.location.reload();
+        });
                   
     });
 
@@ -35,19 +35,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <i class="color-icons flag_blue_co"></i>Country
-                                </th>
-                                <th>
-                                    <i class="color-icons book_open_co"></i>University
-                                </th>
-                                <th>
-                                    <i class="color-icons application_double_co"></i>Applications
-                                </th>
-                                <th>
-                                    <i class="color-icons envelope_co"></i>Offer Letter
-                                </th>
-                                <th>
-                                    <i class="color-icons email_open_image_co"></i>CoE
+                                    <i class="color-icons application_double_co"></i>Application Info
                                 </th>
                                 <th>
                                     <i class="color-icons application_cascade_co"></i>Forms
@@ -76,43 +64,11 @@
 
                                 <tr>
                                     <td>
-                                    
-                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Faculty.University.Country.Country_Name) </a>
-                                    
-                                    </td>
-
-                                    <td>
-                                    
-                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Faculty.University.University_Name) </a>
-                                    
-                                    </td>
-
-                                    <td>
-                                    
-                                        <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Course_Name) </a>
-                                        @{
-                                            if (ViewBag.DocumentViewModel != null)
-                                            {
-                                                float progress = @StormWeb.Models.ModelHelper.ProgressHelper.GetCountAppUploads(item.Course_Id, item.Student_Id);
-                                
-                                                        <div class="progress progress-striped active">
-							        	                <div class="bar" style="width: @progress%;">
-							        	                </div>
-							                            </div>
-                                           }
-                                        }
-                                    </td>
-@* Offer Letter*@                                       
-                                     <td>
-                                            
-                                               <ul>
-                                               @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) < 60)
-                                               {
-                                                     <p style=" color:red; ">Not Available</p>
-                                               }
-                                               
-                                                @* if application was submitted, upload offer letter will be shown *@
-                                                @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 60)
+                                    <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Course_Name) </a>  <br />                                                                     
+                                        @Html.DisplayFor(modelItem => item.Course.Faculty.University.Country.Country_Name)    <br />                            
+                                        @Html.DisplayFor(modelItem => item.Course.Faculty.University.University_Name)
+                                        <ul>
+                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 60)
                                                 {
                                                        
                                                     <li>
@@ -120,13 +76,12 @@
                                                     </a>
                                                     </li>                                                    
                                                 }
-                                                    @* if application status is  "Offer_Letter", upload offer letter will be shown *@
-                                                    @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
+                                                 @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
                                                     {
                                                     <li>
                                                         <div class="widget-content">
                                                             <div class="widget-box">
-                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='black-icons download tip-top' data-original-title="Download Offer Letter">
+                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download Offer Letter">
                                                                 </a>
                                                                 <a class="color-icons cross_co tip-top" data-original-title="Delete Offer Letter" data-toggle="modal"
                                                                          href="#myModal@(item.Application_Id)"></a>
@@ -155,12 +110,12 @@
 
                                                     </li>
                                                     }
-                                                    @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
+                                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
                                                     {
                                                     <li>
                                                         <div class="widget-content">
                                                             <div class="widget-box">
-                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Application_Id })" class='black-icons download tip-top' data-original-title="Download Offer Letter">
+                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Application_Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download Offer Letter">
                                                                 </a>
 
                                                             </div>
@@ -169,16 +124,7 @@
 
                                                     </li>
                                                     }
-
-                                               
-                                           </ul>
-                                        </td>
-@* CoE *@                                       
-
-                                        <td>
-                                            <ul>
-                                                    
-                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 90)
+                                                    @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 90)
                                             {
                                                 <li>
                                                 <a  href="@Url.Action("UploadOfferLetter", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload CoE">
@@ -221,24 +167,30 @@
                                             </li>
 
                                             }
-                                            else
-                                            {
-                                             <p style=" color:red; ">Not Available</p>
-                                            }
-                                           </ul>
-                                        </td>
+                                                
+                                                </ul>
+                                        
+                                    </td>
 
                                     <td>
                                     <ul>
                                     @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
-                                    {
+                                    {                                       
+                                        
+                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
 
-
-                                        StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
-                                       <li>@Html.DisplayFor(modelItem => x.Form_Name)                                      
-                                       <a href="@Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id })" class='black-icons download tip-top' data-original-title="Download">
-                                       </a>
-                                        </li>
+                                       if (x.FileName != "No File")
+                                           {
+                                           <li>
+                                            @Html.Link_DownloadFile(x.Form_Name, Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id }), new { @class="tip-top", data_original_title="Download Template" })
+                                            </li>  
+                                           
+                                            
+                                           }
+                                       else
+                                       {
+                                           <li>@Html.DisplayFor(modelItem => x.Form_Name) </li>
+                                       }
                                     }
 
                                    
@@ -299,7 +251,7 @@
                                        else
                                        {
                                         <li>@Html.DisplayFor(modelItem => appDoc.FileName)
-                                        <a href="@Url.Action("DownloadAppDoc", new { id = appDoc.ApplicationDoc_Id })" class='black-icons download tip-top' data-original-title="Download">
+                                        <a href="@Url.Action("DownloadAppDoc", new { id = appDoc.ApplicationDoc_Id })"  target="_blank" class='black-icons download tip-top' data-original-title="Download">
                                         </a></li>
                                        }
                                    }
@@ -382,30 +334,9 @@
     <div class="span12">        
         <div class="nonboxy-widget">
           <div class="widget-head">
-
- @{
-     List<StormWeb.Models.CaseDocument> caseDoc1 = (List<StormWeb.Models.CaseDocument>)ViewBag.casedocs;
-     if (caseDoc1 == null)
-     {
-         float progress1;
-         if (StormWeb.Helper.Utilities.countTotalCaseDocument(caseDoc1.FirstOrDefault().Case_Id) != 0)
-         {
-             progress1 = @StormWeb.Models.ModelHelper.ProgressHelper.GetCountCaseUploads(caseDoc1.FirstOrDefault().Case_Id);
-                                    <h5>
-                                        <i class="black-icons  documents"></i>General Documents ( @progress1% )
-                                    </h5>
-         }
-         else
-         {
-                                    <h5>
-                                        <i class="black-icons  documents"></i>General Documents ( 0%)
-                                    </h5>
-
-         }
-
-     }
-                                 
-             }    
+            <h5>General Documents</h5>
+          </div>
+ 
                   <div class="widget-content">
                     <div class="widget-box">
                         <table class="my-data-tbl-boxy table">
@@ -438,15 +369,15 @@
                                                 {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => items.CaseDoc_Template.Name)
+                                                
                                                         @if (items.CaseDoc_Template.Downloadable == false)
                                                         {
-
+                                                            @Html.DisplayFor(modelItem => items.CaseDoc_Template.Name)
                                                         }
                                                         else
                                                         {
-                                                         <a href="@Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id })" class='black-icons download tip-top' data-original-title="Download">
-                                                            </a>
+                                                            @Html.Link_DownloadFile(items.CaseDoc_Template.Name, Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id }), new { @class = "tip-top", data_original_title = "Download" })
+                                                         
                                                         }
                                             </td>
 
@@ -464,7 +395,7 @@
                                             @if (!(items.UploadedOn == null))
                                             {
                                                             @Html.DisplayFor(modelItem => items.FileName)
-                                                            <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })" class='black-icons download tip-top' data-original-title="Download">
+                                                            <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download">
                                                             </a>
                                             }
                                             else
@@ -490,7 +421,6 @@
                
             </div>
           </div>
-        </div>
     </div>
   </div>  
 </div>

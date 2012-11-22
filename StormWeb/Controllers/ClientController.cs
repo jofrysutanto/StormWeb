@@ -246,7 +246,7 @@ namespace StormWeb.Controllers
             // Check for existing user account for this client ID
             Student s = db.Students.SingleOrDefault(x => x.Client_Id == clientID);
 
-            if (s == null)
+            if (s != null)
             {
                 NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "You already have an account");
                 return RedirectToAction("LogOn", "Account");
@@ -308,7 +308,7 @@ namespace StormWeb.Controllers
             model.ClientModel.ContactNumber = fc["ClientModel.ContactNumber"];
             model.ClientModel.SecondaryContactNumber = fc["ClientModel.SecondaryContactNumber"];
             model.ClientModel.Address = new Address();
-            model.ClientModel.Address.Address_Name = Convert.ToInt32(fc["AddressModel.Apartment_Number"]) + ", " + fc["AddressModel.Street_Name"];
+            model.ClientModel.Address.Address_Name = fc["AddressModel.Address_Name"];
             model.ClientModel.Address.State = fc["AddressModel.State"];
             model.ClientModel.Address.City = fc["AddressModel.City"];
             model.ClientModel.Address.Country_Id = Convert.ToInt32(fc["AddressModel.Country_Id"]);
@@ -497,6 +497,12 @@ namespace StormWeb.Controllers
 
             Branch b = db.Branches.SingleOrDefault(x => x.Branch_Id == app.Branch_Id);
 
+            General_Enquiry g = db.General_Enquiry.SingleOrDefault(x => x.Appointment_Id == id);
+
+            ViewBag.clientId = g.Client_Id;
+
+            ViewBag.clientName = g.Client.GivenName;
+        
             ViewBag.AppDateTime = app.AppDateTime;
 
             return View(b);

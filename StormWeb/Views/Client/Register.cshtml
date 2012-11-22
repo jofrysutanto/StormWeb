@@ -51,6 +51,12 @@
                 remote: {
                     url: '@Url.Action("IsEmailExist", "Client")',
                     type: "post",
+                    beforeSend: function() {
+                        $("#emailLoad").show();
+                    },
+                    complete: function() {
+                        $("#emailLoad").hide();
+                    }  
                 }                
             },
             "ClientModel.ContactNumber": {
@@ -62,10 +68,6 @@
             },
             "AddressModel.Address_Name": {
                 required: true
-            },
-            "AddressModel.Apartment_Number": {
-                required: true,
-                digits: true
             },
             "AddressModel.City": {
                 required: true
@@ -85,6 +87,12 @@
                 remote: {
                     url: '@Url.Action("IsUsernameExist", "Account")',
                     type: "post",
+                    beforeSend: function() {
+                        $("#usernameLoad").show();
+                    },
+                    complete: function() {
+                        $("#usernameLoad").hide();
+                    }  
                 }
             },
             Password: {
@@ -180,6 +188,8 @@
                         <input type="hidden" name="isFullRegistration" id="isFullRegistration" value='yes'
                             style="display: none" />
                         @Html.HiddenFor(model => model.ClientModel.Services, "Study", "");
+                                                                                         
+                        <div class="alert alert-warning"><span class="form-required">&nbsp;</span> = Required</div>
                         
                         <div class="widget-head">
                             <h5 style="vertical-align: bottom">
@@ -189,7 +199,7 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Title", null, new { @class = "control-label" })
+                                    @Html.Label("Title", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         <select data-placeholder="Title" style="width: 100px" class="chzn-select" tabindex="13"
                                             id="ClientModel_Title" name="ClientModel.Title">
@@ -207,7 +217,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Given Name", null, new { @class = "control-label" })
+                                    @Html.Label("Given Name", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.GivenName, new { @class = "input-xlarge text-tip", placeholder = "Given Name" })
                                         <p class="help-block">
@@ -216,7 +226,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Last name", null, new { @class = "control-label" })
+                                    @Html.Label("Last name", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.LastName, new { @class = "input-xlarge text-tip", placeholder = "Last Name" })
                                         <p class="help-block">
@@ -226,7 +236,7 @@
                                 </div>
                                 <div class="input-append date dp" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
                                     <div class="control-group">
-                                        @Html.Label("Date of Birth", null, new { @class = "control-label" })
+                                        @Html.Label("Date of Birth", null, new { @class = "control-label form-required" })
                                         <div class="controls">
                                             <div class="input-append">
                                                 @Html.TextBoxFor(model => model.ClientModel.Dob, new { @readonly = "readonly", @class = "dp1" })
@@ -238,7 +248,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Nationality", null, new { @class = "control-label" })
+                                    @Html.Label("Nationality", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.DropDownListFor(model => model.ClientModel.Nationality, (IEnumerable<SelectListItem>)ViewBag.NationalityList, new { @class = "chzn-select" })
                                         <p class="help-block">
@@ -262,16 +272,16 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Email Address", null, new { @class = "control-label" })
+                                    @Html.Label("Email Address", null, new { @class = "control-label form-required" })
                                     <div class="controls">
-                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })
+                                        @Html.TextBoxFor(model => model.ClientModel.Email, new { @class = "input-xlarge text-tip", placeholder = "email@domain.com" })<span style="display:none" id="emailLoad"><img src="../../Content/img/ajax-loader.gif" alt="Checking email"/></span>
                                         <p class="help-block">
                                             @Html.ValidationMessageFor(model => model.ClientModel.Email)
                                         </p>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label" })
+                                    @Html.Label("Primary Contact Number", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.ClientModel.ContactNumber, new { @class = "input-xlarge text-tip", placeholder = "+XX XXX XXX XXX" })
                                         <p class="help-block">
@@ -305,14 +315,13 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Street Name and Number", null, new { @class = "control-label" })
+                                    @Html.Label("Street Name and Number", null, new { @class = "control-label form-required" })
                                     <div class="controls">
-                                        @Html.TextBox("AddressModel.Address_Name", "", new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "Street Name" })
-                                        @Html.TextBox("AddressModel.Apartment_Number", "", new { placeholder = "Street Number", @class = "input-small" })
+                                        @Html.TextBox("AddressModel.Address_Name", "", new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "Address 1" })
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("City", null, new { @class = "control-label" })
+                                    @Html.Label("City", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.AddressModel.City, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "City" })
                                         <p class="help-block">
@@ -321,7 +330,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("State", null, new { @class = "control-label" })
+                                    @Html.Label("State", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.AddressModel.State, new { @class = "input-xlarge text-tip", @onkeypress = "return alphanumeric_only(this);", placeholder = "State" })
                                         <p class="help-block">
@@ -330,7 +339,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Country", null, new { @class = "control-label" })
+                                    @Html.Label("Country", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.DropDownListFor(model => model.AddressModel.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
                                         <p class="help-block">
@@ -339,7 +348,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Zip Code", null, new { @class = "control-label" })
+                                    @Html.Label("Zip Code", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.TextBoxFor(model => model.AddressModel.Zipcode, new { @class = "input-xlarge text-tip" })
                                         <p class="help-block">
@@ -348,7 +357,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Country of Residence", null, new { @class = "control-label" })
+                                    @Html.Label("Country of Residence", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.DropDownListFor(model => model.AddressModel.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, new { @class = "chzn-select" })
                                         <p class="help-block">
@@ -376,13 +385,13 @@
                         </div>
                         <div class="widget-head">
                             <h5 style="vertical-align: bottom">
-                                <span class="dashboard-icons-colors milestone_sl"></span>Choose your service
+                                <span class="dashboard-icons-colors milestone_sl"></span>Choose country
                             </h5>
                         </div>
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Country of Destination", null, new { @class = "control-label" })
+                                    @Html.Label("Country of Destination", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.DropDownListFor(model => model.ClientModel.PreferredCountry, (IEnumerable<SelectListItem>)ViewBag.RepresentedCountry, new { @class = "chzn-select" })
                                         <p class="help-block">
@@ -407,16 +416,16 @@
                         <fieldset>
                             <span class="span8">
                                 <div class="control-group">
-                                    @Html.Label("Username", null, new { @class = "control-label" })
+                                    @Html.Label("Username", null, new { @class = "control-label form-required" })
                                     <div class="controls">
-                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Username" })<span style="display:none" id="usernameLoad"><img src="../../Content/img/ajax-loader.gif" alt="Checking Username"/></span>
                                         <p class="help-block">
                                             @Html.ValidationMessageFor(model => model.Username)
                                         </p>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Password", null, new { @class = "control-label" })
+                                    @Html.Label("Password", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.PasswordFor(model => model.Password, new { @class = "input-xlarge text-tip", placeholder = "******" })
                                         <p class="help-block">
@@ -425,7 +434,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    @Html.Label("Confirm Password", null, new { @class = "control-label" })
+                                    @Html.Label("Confirm Password", null, new { @class = "control-label form-required" })
                                     <div class="controls">
                                         @Html.Password("Confirm", "", new { @class = "input-xlarge text-tip", placeholder = "******" })
                                     </div>
@@ -460,7 +469,7 @@
         else if (event) keycode = event.keyCode;
         else if (e) keycode = e.which;
         else return true;
-        if ((keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32) {
+        if ((keycode >= 48 && keycode <= 57) || (keycode >= 65 && keycode <= 90) || (keycode >= 97 && keycode <= 122) || keycode == 32 || keycode == 44 || keycode == 45 || keycode == 47) {
             return true;
         }
         else {

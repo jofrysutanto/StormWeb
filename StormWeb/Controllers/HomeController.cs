@@ -8,7 +8,7 @@ namespace StormWeb.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize(Roles = "Counsellor,Student,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Student,Super,BranchManager,Administrator")]
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome to ASP.NET MVC!";
@@ -20,7 +20,7 @@ namespace StormWeb.Controllers
             else
                 return RedirectToAction("LogOn", "Account");
         }
-        [Authorize(Roles = "Counsellor,Student,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Student,Super,BranchManager,Administrator")]
         public ActionResult About()
         {
             return View();

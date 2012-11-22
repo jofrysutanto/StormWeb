@@ -101,6 +101,7 @@ table ul li
     display: list-item;
     text-align: -webkit-match-parent;
     margin-bottom: 10px;
+    height: 30px;
 }
 
 table .progress 
@@ -192,4 +193,17 @@ text-indent: -0.8em;
 .field-validation-error
 {
     color: Red;
+}
+
+.form-required
+{
+    background: url(../img/aserisk.gif) no-repeat top right;
+    padding-right: 8px;
+    -moz-background-size:5px 5px; /* Firefox 3.6 */
+    background-size:5px 5px;
+}
+
+.control-label 
+{
+    font-weight: bold;
 }

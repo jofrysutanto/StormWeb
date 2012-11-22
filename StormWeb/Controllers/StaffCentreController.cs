@@ -14,7 +14,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ViewResult Index()
         {
             int staffId = Convert.ToInt32(CookieHelper.StaffId);
@@ -32,14 +32,14 @@ namespace StormWeb.Controllers
             return View(s);
         }
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ViewResult Details(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
             return View(staff);
         }
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ActionResult Profile()
         {
             if (CookieHelper.isStaff())
@@ -55,7 +55,7 @@ namespace StormWeb.Controllers
 
         #region CREATE
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ActionResult Create()
         {
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name");
@@ -63,7 +63,7 @@ namespace StormWeb.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         [HttpPost]
         public ActionResult Create(Staff staff)
         {
@@ -83,7 +83,7 @@ namespace StormWeb.Controllers
 
         #region EDIT
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ActionResult Edit(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
@@ -92,7 +92,7 @@ namespace StormWeb.Controllers
             return View(staff);
         }
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         [HttpPost]
         public ActionResult Edit(Staff staff)
         {
@@ -112,14 +112,14 @@ namespace StormWeb.Controllers
 
         #region DELETE
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         public ActionResult Delete(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
             return View(staff);
         }
 
-        [Authorize(Roles = "Counsellor,Admission,Visa,Super,BranchManager")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

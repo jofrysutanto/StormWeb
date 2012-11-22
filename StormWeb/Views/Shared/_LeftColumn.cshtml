@@ -30,10 +30,32 @@
             <li><a href="@Url.Action("Index", "Log")"><span class="white-icons clock"></span>Log</a></li>
             <li><a href="@Url.Action("Index", "Help")"><span class="white-icons help"></span>Help / FAQ</a></li>
         }
-        else if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
+        else if (HttpContext.Current.User.Identity.IsAuthenticated)
         {
             <li><a href="@Url.Action("Index", "StaffCentre")"><span class="white-icons computer_imac">
             </span>Dashboard</a></li>
+            <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span>Messages
+            @{ 
+            int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+            if (inboxCount > 0)
+            {
+                                    <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
+            }
+                                    }</a> </li> 
+            <li><a href="@Url.Action("ShowLogs", "Log")"><span class="white-icons clock"></span>
+                Log</a></li>
+            <li><a href="#"><span class="white-icons book_large"></span>Universities</a>
+                <ul class="acitem">
+                    <li><a href="@Url.Action("Index", "University")"><span class="sidenav-icon"><span
+                        class="sidenav-link-color"></span></span>View all registered universities</a></li>
+                    <li><a href="@Url.Action("List", "Course")"><span class="sidenav-icon"><span class="sidenav-link-color">
+                    </span></span>Find and add courses</a></li>
+                </ul>
+            </li>
+        }
+        @if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
+        {
+            
             
                     <li><a href="#"><span class="white-icons users"></span>
                         Students</a>
@@ -56,16 +78,9 @@
                                 </a></li>
                         </ul>                    
                     </li>
-            <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span>Messages
-            @{ 
-                    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
-                    if (inboxCount > 0)
-                    {
-                                    <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
-                    }
-                                    }</a> </li> 
             
-                    //------------start Documents ----------//
+            
+                        //------------start Documents ----------//
             <li><a href="#"><span class="white-icons documents"></span>Documents</a>
                 <ul class="acitem">
                     <li><a href="@Url.Action("ShowAllStudents", "Document")">My Students </a></li>
@@ -76,29 +91,20 @@
                 </ul>
             </li>
 
-                   //------------end Documents ----------//
-                   
-                   //------------start Payment ----------//
+                        //------------end Documents ----------//
+
+                        //------------start Payment ----------//
             <li><a href="@Url.Action("Index", "Payment")"><span class="white-icons money"></span>Payments</a> </li>
 
-                    //------------end Payment ----------//
+                        //------------end Payment ----------//
           
-            <li><a href="#"><span class="white-icons book_large"></span>Universities</a>
-                <ul class="acitem">
-                    <li><a href="@Url.Action("Index", "University")"><span class="sidenav-icon"><span
-                        class="sidenav-link-color"></span></span>View all registered universities</a></li>
-                    <li><a href="@Url.Action("List", "Course")"><span class="sidenav-icon"><span class="sidenav-link-color">
-                    </span></span>Find and add courses</a></li>
-                </ul>
-            </li>
             <li><a href="@Url.Action("Index", "Appointment")"><span class="white-icons day_calendar">
             </span>Appointment</a></li>
-            <li><a href="@Url.Action("ShowLogs", "Log")"><span class="white-icons clock"></span>
-                Log</a></li>
+            
         }
         
             
-                @if (HttpContext.Current.User.IsInRole("Super"))
+                @if (HttpContext.Current.User.IsInRole("Super") || HttpContext.Current.User.IsInRole("Administrator"))
                 {
                     
             <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons graph"></span>
