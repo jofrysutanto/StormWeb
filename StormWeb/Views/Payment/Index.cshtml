@@ -155,9 +155,6 @@ $(function () {
                                                    <i class="color-icons zone_money_co"></i>Status
                                                 </th>
                                                 <th>
-                                                    <i class="color-icons comment_co"></i> Comment
-                                                </th>
-                                                <th>
                                                     <i class="color-icons calendar_2_co"></i> Date Of Payment
                                                 </th>
 
@@ -213,22 +210,6 @@ $(function () {
                                                          {  
                                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
                                                             }
-                                                        </ul>
-                                                    </td>
-                                                    <td>
-                                                        <ul>
-                                                        @foreach (var item in Model.paidApplications)
-                                                         {  
-                                                            if (item.Payments.Single().Comment != null)
-                                                            {
-                                                                <li>@Html.DisplayFor(modelItem => item.Payments.Single().Comment)</li>
-                                                            }
-                                                            else
-                                                            {
-                                                            
-                                                                <li>&nbsp;</li>
-                                                            } 
-                                                          }                                                       
                                                         </ul>
                                                     </td>
                                                     <td>
