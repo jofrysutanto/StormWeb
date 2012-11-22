@@ -147,6 +147,7 @@
     <Compile Include="Models\ModelHelper\DocumentHelper.cs" />
     <Compile Include="Models\ModelHelper\ProgressHelper.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
+    <Compile Include="Models\RefreshModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\ClientMD.cs" />
     <Compile Include="Models\ClientViewModel.cs" />

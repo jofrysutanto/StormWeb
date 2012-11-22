@@ -503,7 +503,7 @@ namespace StormWeb.Controllers
                     //return RedirectToAction("Create", new { message = "Booked Successfully" });
                     LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Appointment booked by "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
                     //return RedirectToAction("Index");
-                    return View("Refresh");
+                    return View("Refresh", new RefreshModel(Url.Action("Index")) );
                 }
             }
             ViewBag.Case_Id = new SelectList(db.Cases, "Case_Id", "CreatedBy", appointment.Case_Id);

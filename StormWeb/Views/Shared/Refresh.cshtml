@@ -1,4 +1,6 @@
-﻿@{
+﻿@model StormWeb.Models.RefreshModel
+
+@{
     ViewBag.Title = "Refresh";
     Layout = "";
 }
@@ -8,7 +10,14 @@
 <script>
     $(function () {
         parent.$.colorbox.resize(100, 100);
-        parent.location.reload();
+        @if (Model == null)
+        {
+            <text>parent.location.reload();</text>
+        }
+        else
+        {
+            <text>parent.location = @(Model.url);</text>
+        }
     });
 </script>
 Success! <br />
