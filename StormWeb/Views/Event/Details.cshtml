@@ -1,0 +1,37 @@
+﻿@model StormWeb.Models.EventAppointment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+<fieldset class = "table well span7">
+    <legend>Event</legend>
+    
+    <div class="display-label">Appointment with</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.client.GivenName)
+    </div>
+    <br />
+    <div class="display-label">Venue</div>
+    <div class="display-field">
+        @Html.TextAreaFor(model => model.add)
+    </div>
+     <br />
+    <div class="display-label">DateTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.appointment.AppDateTime)
+    </div>
+     <br />
+    <div class="display-label">Comments</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.appointment.Comments)
+    </div>
+
+</fieldset>
+<p>
+    
+    @Html.ActionLink("Back to List", "Index")
+</p>
