@@ -149,26 +149,8 @@ $(function () {
                                                     <div class="widget-content">
                                                         <div class="widget-box">
                                                             <a  href="@Url.Action("EditDocTemp", new { id = appDoc.TemplateDoc_Id })" class='iframe color-icons pencil_co tip-top' data-original-title="Edit Document Template">
-                                                            </a><a class=" color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
-                                                        href="#myModal@(appDoc.TemplateDoc_Id)"></a>
-                                                            <div class="modal hide fade" id="myModal@(appDoc.TemplateDoc_Id)" style="display: none;">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal">
-                                                                        ×</button>
-                                                                    <h3>
-                                                                        Confirm</h3>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p>
-                                                                        Confirm Delete?
-                                                                    </p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <a href="@Url.Action("DeleteDocTemp", new { id = appDoc.TemplateDoc_Id })" class="btn btn-mini btn-warning">
-                                                                        Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
-                                                                            Cancel</a>
-                                                                </div>
-                                                            </div>
+                                                            </a>
+                                                            @Html.Button_Delete("Delete", @Url.Action("DeleteDocTemp", new { id = appDoc.TemplateDoc_Id }))
                                                         </div>
                                                     </div>
                                                 </li>   

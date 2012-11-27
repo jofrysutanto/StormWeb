@@ -72,7 +72,7 @@
                                                 {
                                                        
                                                     <li>
-                                                    <a  href="@Url.Action("UploadOfferLetter", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload Offer Letter">
+                                                    <a  href="@Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload Offer Letter">
                                                     </a>
                                                     </li>                                                    
                                                 }
@@ -127,7 +127,7 @@
                                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 90)
                                             {
                                                 <li>
-                                                <a  href="@Url.Action("UploadOfferLetter", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload CoE">
+                                                <a  href="@Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload CoE">
                                                 </a>
 
                                                 </li>

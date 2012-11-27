@@ -115,9 +115,10 @@
             </div>
         </div>
     </div>
-</div>
-</fieldset>
+</div> 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Staff_Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Edit", "Client", new { id = Model.Staff_Id })" class="btn btn-info">
+        Edit</a>
+    @Html.Button_BackToList("Bact To List", "../Index")
 </p>
+  

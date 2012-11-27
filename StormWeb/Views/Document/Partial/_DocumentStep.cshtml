@@ -1,0 +1,249 @@
+﻿@model StormWeb.Models.ApplicationDocumentViewModel
+      
+      <div class="span10">
+        <div class="box-tab">
+          <div class="tabbable"> 
+            <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs" id="app@(Model.app.Application_Id)">
+              <li class="active"><a href="#app@(Model.app.Application_Id)Step1" data-toggle="tab"><strong>Step 1</strong> - Complete your documents</a></li>
+              @if (Model.step1Complete())
+              {
+                <li><a href="#app@(Model.app.Application_Id)Step2" data-toggle="tab"><strong>Step 2</strong> - Documents approval & submission</a></li>
+                if (Model.step2Complete())
+                {
+                  <li><a href="#app@(Model.app.Application_Id)Step3" data-toggle="tab"><strong>Step 3</strong> - Offer Letter & Acceptance</a></li>
+                    if (Model.step3Complete())
+                    {
+                        <li><a href="#app@(Model.app.Application_Id)Step4" data-toggle="tab"><strong>Step 4</strong> - Confirmation of Enrolment</a></li>
+                    }
+                }
+              }
+              
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="app@(Model.app.Application_Id)Step1">
+                <div class="row complete-documents" style="margin-left:20px;">
+                    <div class="alert alert-info">
+                        Some of following documents require you to download the form and upload them after you finished filling the forms. (Example: @Html.Link_DownloadFile("Sample file", "#"))
+                    </div>
+                    @if (!Model.step1Complete())
+                    {
+                        <h3>Documents to complete</h3>
+                    }
+                    
+                    @foreach (StormWeb.Models.Template_Document appDoc in Model.notCompleted)
+                    {
+                        <div class="document span9">
+                        <div class="span6 document-label">
+                            @if (appDoc.FileName != "No File")
+                            {
+                                @Html.Link_DownloadFile(appDoc.Form_Name, @Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id }))
+                            }
+                            else
+                            {
+                                <text>@appDoc.Form_Name</text>
+                            }
+                            <p>@appDoc.Comment</p>
+                        </div>
+                        <div class="span2">
+                            @Html.Button_Upload("Upload", @Url.Action("UploadCaseDoc", new { Doc_Id = Model.app.Application_Id, Template_Id = appDoc.TemplateDoc_Id, doctype = "ApplicationDocument", caseId = Model.app.Case_Id }))                            
+                        </div>
+                         </div>
+                    }
+                    
+                    @foreach (StormWeb.Models.CaseDocument caseDoc in Model.notCompletedGeneralDocs)
+                    {
+                        <div class="document span9">
+                        <div class="span6 document-label">
+                            @if (caseDoc.CaseDoc_Template.FileName != null)
+                            {
+                                @Html.Link_DownloadFile(caseDoc.CaseDoc_Template.Name, @Url.Action("DownloadCaseTemp", new { id = caseDoc.CaseDocTemplate_Id }))
+                            }
+                            else
+                            {
+                                <text>@caseDoc.CaseDoc_Template.Name</text>
+                            }
+                            <p>@caseDoc.CaseDoc_Template.Comment</p>
+                        </div>
+                        <div class="span2">
+                            @Html.Button_Upload("Upload", @Url.Action("UploadCaseDoc", new { Doc_Id = Model.app.Application_Id, Template_Id = caseDoc.CaseDocTemplate_Id, doctype = "CaseDocument", caseId = Model.app.Case_Id }))
+                           
+                        </div>
+                         </div>
+                    }
+
+                    <!-- Completed Documents begin -->
+                    
+                    <h3>Completed documents</h3>
+                     <div class="span9">
+                        <div class="span6 document-label">
+                            <h4>Required document</h4>
+                        </div>
+                        <div class="span2 document-label">
+                            <h4>Uploaded file</h4>
+                        </div>
+                    </div>
+                    @foreach (StormWeb.Models.Application_Document appDoc in Model.completed)
+                    {                        
+                        <div class="document span9">
+                        <div class="span6 document-label">
+                            @if (appDoc.Template_Document.FileName != "No File")
+                            {
+                                @Html.Link_DownloadFile(appDoc.Template_Document.Form_Name, @Url.Action("DownloadTempDoc", new { id = appDoc.TemplateDoc_Id }))
+                            }
+                            else
+                            {
+                                <text>@appDoc.Template_Document.Form_Name</text>
+                            }
+                            <p>@appDoc.Template_Document.Comment</p>
+                        </div>
+                        <div class="span2">
+                            @Html.Button_Download("Download", @Url.Action("DownloadAppDoc", new { id=appDoc.ApplicationDoc_Id }))
+                            @if ((bool) appDoc.Approved == false && !Model.step2Complete())
+                            {
+                                @Html.Button_Delete("Delete", @Url.Action("DeleteAppDoc", new { id = appDoc.ApplicationDoc_Id }))
+                            }
+                        </div>
+                         </div>
+                    }
+                    
+                    @foreach (StormWeb.Models.CaseDocument caseDoc in Model.completedGeneralDocs)
+                    {
+                        <div class="document span9">
+                        <div class="span6 document-label">
+                            @if (caseDoc.CaseDoc_Template.FileName != null)
+                            {
+                                @Html.Link_DownloadFile(caseDoc.CaseDoc_Template.Name, @Url.Action("DownloadCaseTemp", new { id = caseDoc.CaseDocTemplate_Id }))
+                            }
+                            else
+                            {
+                                <text>@caseDoc.CaseDoc_Template.Name</text>
+                            }
+                            <p>@caseDoc.CaseDoc_Template.Comment</p>
+                        </div>
+                        <div class="span2">
+                            @Html.Button_Download("Download", @Url.Action("DownloadCaseDoc", new { id = caseDoc.CaseDocTemplate_Id }))
+                            @if (!Model.step2Complete())
+                            {
+                                @Html.Button_Delete("Delete", @Url.Action("DeleteCaseDoc", new { id = caseDoc.CaseDocument_Id }))
+                            }
+                        </div>
+                         </div>                        
+                    }
+                    <!-- End of Completed Documents -->
+                   @if (StormWeb.Controllers.DocumentController.isAllApplicationDocumentsUploaded(Model.app.Application_Id) && StormWeb.Controllers.DocumentController.isAllApplicationDocumentsUploaded(Model.app.Case_Id))                    
+                        {
+                            <div class="span9">
+                            <div class="alert alert-success" style="text-align:center">All required documents have been uploaded</div>
+                            </div>
+                        }
+                </div>
+              </div>
+              <!-- Step Number 2 -->
+              <div class="tab-pane" id="app@(Model.app.Application_Id)Step2">
+                <div class="row document-approval well">
+                    
+                    @{
+                        int countUnapproved = StormWeb.Models.ModelHelper.DocumentHelper.getUnApprovedDocs(Model.app.Application_Id);
+                         <div class="span9 custom-well">
+                        @if (countUnapproved <= 0)
+                        {
+                            <strong>Documents approval status:
+                            <span class="badge badge-success"> Approved </span>
+                            </strong>
+                            
+                        }
+                        else
+                        {   <strong>Documents approval status:
+                            <span class="badge badge-warning"> Pending </span> </strong>
+                            <div class="alert alert-warning" style="margin:10px">Your documents are under counsellor assessment to ensure all your documents are ready for submission</div>
+                        } 
+                    </div>
+                        if (countUnapproved > 0)
+                        {
+                         <div class="span9 custom-well">
+                        <strong>Application submission status: <span class="badge badge-important"> Waiting for documents verification </span></strong>
+                    </div>
+                        }
+                        else if (StormWeb.Controllers.ApplicationController.getApplicationStatusTypeValue(Model.app.Status) >= StormWeb.Controllers.ApplicationController.getApplicationStatusTypeValue(StormWeb.Controllers.ApplicationController.ApplicationStatusType.Application_Submitted.ToString()))
+                        {
+                        <div class="span9 custom-well">
+                        <strong>Application submission status: <span class="badge badge-success"> Application Submitted </span></strong>
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="span9 custom-well">
+                        <strong>Application submission status: <span class="badge badge-warning"> Application Pending </span></strong>
+                        </div>   
+                        }                        
+                        
+                        }
+                </div>
+              </div>
+              <div class="tab-pane" id="app@(Model.app.Application_Id)Step3">
+                <div class="row document-approval well">
+                    @{
+                        if (Model.offer == null)
+                        {
+                    <div class="span9 custom-well">
+                        <strong style="color:#A00000">Your university of choice have not issued your offer letter yet</strong>
+                    </div>
+                        }
+                        else
+                        {
+                        <div class="span9 custom-well">
+                            <strong>Your offer letter is issued: </strong>
+                            <ul>
+                                <li>@Html.Link_DownloadFile("Offer Letter", @Url.Action("DownloadOfferLetter", new { id = Model.app.Application_Id, type = "appId" }))</li>
+                                <li>@Html.Link_DownloadFile("Acceptance Form", @Url.Action("DownloadAcceptance", new { id = Model.app.Application_Id, type = "appId" }))</li>
+                            </ul>                     
+
+                            <div class="alert alert-warning">
+                                Please <strong>sign</strong> and <strong>upload</strong> the Acceptance Form to confirm your enrolment for this course
+                            </div>
+                            @if (Model.completedAcceptance == null)
+                            {
+                            @Html.Button_Upload("Upload Acceptance", @Url.Action("UploadApplicationResult", new { Doc_Id = Model.app.Application_Id, case_Id = Model.app.Case_Id, doctype = "CompletedAcceptance" }), new { @class = "btn btn-primary btn-large iframe-small" })
+                            }
+                            else
+                            {
+                                <div class="alert alert-success">Your have uploaded Acceptance form @Html.Button_Download("Download", @Url.Action("DownloadCompletedAcceptance", new { id = Model.app.Application_Id, type = "appId" })) </div>
+                            }
+                            
+                        </div>
+                        }
+                    }
+                </div>
+              </div>
+              <div class="tab-pane" id="app@(Model.app.Application_Id)Step4">
+                <div class="row document-approval well">
+                    @if (Model.coe == null)
+                    {
+                    <div class="span9 custom-well">
+                        <strong style="color:#A00000">Your university of choice have not issued your Confirmation of Enrolment yet</strong>
+                    </div>
+                    }
+                    else
+                    {
+                    <div class="span9 custom-well">
+                        <strong>Your CoE is issued: </strong>
+                        @Html.Button_Download("Download Confirmation of Enrolment", @Url.Action("DownloadCoE", new { id = Model.app.Application_Id, type = "appId" }))
+                    </div>
+                    }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+
+          $(function () {
+              var countStep = $('a[href*="#app@(Model.app.Application_Id)Step"]').length;
+
+              $('#app@(Model.app.Application_Id) a[href="#app@(Model.app.Application_Id)Step' + countStep + '"]').tab('show'); // Select tab by name             
+          });
+
+      </script>

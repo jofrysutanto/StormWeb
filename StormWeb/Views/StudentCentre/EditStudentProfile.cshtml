@@ -61,8 +61,10 @@
                     DOB
                 </th>
                 <td>
+                 <div class="input-append">
                     @Html.TextBoxFor(modelItem => item.Student.Client.Dob, new { @class = "chooseDate", @readonly = "readonly" })
                     @Html.ValidationMessageFor(modelItem => item.Student.Client.Dob)
+                 </div>
                 </td>
             </tr>
             <tr>
@@ -205,7 +207,9 @@
                     Registered on
                 </th>
                 <td>
+                  <div class="input-append">
                     @Html.TextBoxFor(modelItem => item.Student.Client.Registered_On.Value, new { @class = "chooseDate", @readonly = "readonly" })
+                    </div>
                 </td>
                 <th>
                 </th>
@@ -261,8 +265,7 @@
             parent.$.fn.colorbox.close();
         });
     }); 
-
-
+ 
     $(function(){  
     
     @{
@@ -282,7 +285,10 @@
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '0'
+            maxDate: '0',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
 

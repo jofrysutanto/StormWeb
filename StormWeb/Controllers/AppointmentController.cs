@@ -180,7 +180,7 @@ namespace StormWeb.Controllers
                  * */
                 var previousAppointments = from app in db.Appointments
                                            where app.AppDateTime < current && app.Staff_Id == staffId
-                                           orderby app.AppDateTime ascending
+                                           orderby app.AppDateTime descending
                                            select app;
                 model.staffPreviousApp = previousAppointments.ToList();
 

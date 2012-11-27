@@ -207,3 +207,123 @@ text-indent: -0.8em;
 {
     font-weight: bold;
 }
+
+/* Documents */
+
+/* Step 1 */
+.complete-documents
+{
+    
+}
+
+.complete-documents h3
+{
+    border-bottom: 1px solid #D5D5D5;
+}
+
+
+.complete-documents .document
+{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border-bottom: solid 1px #E4E4E4;
+}
+
+.complete-documents .document-label h4
+{
+    border-bottom: 1px solid #8B8B8B;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
+
+.complete-documents .document .document-label
+{
+    line-height: 30px;
+    min-height: 60px;
+
+}
+
+.complete-documents p
+{
+    padding-left: 35px;
+    font-size: 0.8em;
+}
+
+.complete-documents .btn
+{
+    margin-top: 10px;
+}
+
+/* Step 2 */
+.document-approval
+{
+    text-align:center;
+}
+
+.document-approval > div
+{
+    line-height: 20px;
+}
+
+.custom-well
+{
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #FFFCEC;
+    border: 1px solid #EEE;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    font-size: 1.2em;
+}
+
+.custom-well .badge
+{
+    font-size: inherit;
+}
+
+.custom-well ul
+{
+    list-style: none;
+}
+
+.custom-well ul li
+{
+    padding-top: 5px;
+}
+
+
+/* Confirm Dialog */
+
+
+.question {
+	position: absolute;
+	display: inline;
+	text-align: center;
+	width: 174px;
+	height: 78px;
+	font-size: 13px;
+	line-height: 1.5em;
+	background: url('../img/confirm/bubble.png') left top no-repeat;
+	padding: 10px 0 0 0;
+	text-shadow: 0px 1px 0px #fff;
+	margin-left: -7em;
+	margin-top: -6em;
+	opacity: 0;
+}
+
+.yes, .cancel {
+	margin-top: .5em;
+	margin-right: .5em;
+	cursor: pointer;
+	display: inline-block;
+	width: 55px;
+	color: #fff;
+	text-shadow: 0px 1px 0px #000;
+}

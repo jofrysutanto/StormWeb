@@ -24,8 +24,9 @@
                 </div>
 
             <div class="widget-content">
-                <div class="widget-box">
-                    <table class="my-data-tbl-boxy table">
+                <div class="widget-box" style="padding: 15px;">
+                    <br />
+                      <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
                         <tr>
                             <th> <i class="black-icons user"></i>Country </th>
@@ -33,7 +34,7 @@
                             <th> Faculties </th>
                             <th> Number of Courses </th> 
                             <th> Email </th>
-                            <th> Action </th>
+                            <th> <i class="color-icons bullet_key_co"></i>Actions </th>
                         </tr>
                         </thead>
                     <tbody>
@@ -58,7 +59,7 @@
                                     }
                                     if (countFac > 0)
                                     {
-                                        <li><a id="popover@(item.University_Id)" data-content="@a" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count</a></li>
+                                        <li><a id="popover@(item.University_Id)" data-content="@a" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count Faculties</a></li>
                                     }
                                     else
                                     {
@@ -98,8 +99,6 @@
             </div>
          </div>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.Button_Add("Create New", "University/Create")
 </p>
-
-</div>
-</div>
+ 

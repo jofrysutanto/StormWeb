@@ -1,102 +1,74 @@
 ﻿@model StormWeb.Models.Course
-
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
-<div class="row-fluid">
-    <div class="page-header">
-     @*   <h1>
-           University</h1>*@
-    </div>
-</div>
-
-@*<h3>Are you sure you want to delete this?</h3>*@
-<div class = "row-fluid">
-<div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
-                @*<h5>
-                    University Details</h5>*@
-                    <h3>Are you sure you want to delete this?</h3>
-                     <div class="widget-control pull-right">
-                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-cog"></i>
-                        <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="icon-plus"></i>Add New</a></li>
-                        <li><a href="#"><i class="icon-ok"></i>Bulk Approved</a></li>
-                        <li><a href="#"><i class="icon-minus-sign"></i>Bulk Remove</a></li>
-                    </ul>
-                </div>
-            </div>
- <div class="widget-content">
-                <div class="widget-box">
-                    <table class="data-tbl-boxy table">
-<fieldset>
-    <legend>Course</legend>
-    <tr>
-    <td>
-    <div class="display-label"><b>Course Level</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Course_Level.Course_Level1)
-    </div>
-    </td>
-    
-    <td>
-    <div class="display-label"><b>Faculty</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Faculty.Faculty_Name)
-    </div>
-    </td>
-    <td>
-    <div class="display-label"><b>Semester Commencement Date</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Commence_Date_Sem)
-    </div>
-    </td>
-    <td>
-    <div class="display-label"><b>Course Name</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Course_Name)
-    </div>
-    </td>
-    <td>
-    <div class="display-label"><b>Duration</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Duration)
-    </div>
-    </td>
-    <td>
-    <div class="display-label"><b>Description</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
-    </div>
-    </td>
-    <td>
-    <div class="display-label"><b>Fee</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Fee)
-    </div>
-    </td>
-     <td>
-    @using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="Delete" />         
-    </p>        
+<div class="span6">
+    <h2>
+        Delete</h2>
+    <h3>
+        Are you sure you want to delete this?</h3>
+    <table class="data-tbl-simple table table-bordered dataTable ">
+        <tr>
+            <th>
+                Course Level
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Course_Level.Course_Level1)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Faculty
+            </th>
+            <td>@Html.DisplayFor(model => model.Faculty.Faculty_Name)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Semester Commencement Date
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Commence_Date_Sem)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Course Name
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Course_Name)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Duration
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Duration)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Fee
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Fee)
+            </td>
+        </tr>
+    </table>
+    @using (Html.BeginForm())
+    {    
+        <p>
+            <input type="submit" value="Delete" class="btn btn-danger"/>
+            @Html.Button_DeleteOrCancel("Cancel", "../List")
+        </p>
     }
-    </td>    
-</tr>
-</fieldset>
-@*@using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-}*@
-</table>
 </div>
-</div>
-</div>
-<tr><td>@Html.ActionLink("Back to List", "List")</td></tr>
-@*<div class="raw">@Html.ValidationSummary("coursedelete")</div>*@

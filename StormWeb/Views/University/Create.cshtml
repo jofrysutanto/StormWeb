@@ -51,11 +51,9 @@
 
         <p>
         @* <a class='btn btn-info'  title="Create">Create</a>*@
-            <input type="submit" value="Create" />
+            <input type="submit" value="Create" class="btn btn-primary"/>
+             @Html.Button_DeleteOrCancel("Cancel", "Index")
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+ 

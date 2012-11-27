@@ -24,7 +24,7 @@ namespace StormWeb.Controllers
 
         //
         // GET: /Message/
-        [Authorize(Roles="Student,Counsellor")]
+        [Authorize(Roles="Student,Counsellor,Super,BranchManager")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Index()
         {

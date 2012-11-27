@@ -64,7 +64,7 @@
                         @Html.Label("Choose Time(Hour:Minute)")
                     </th>
                     <td>
-                        @Html.DropDownList("listHours", ViewBag.Hours as SelectList,"Select Hour")&nbsp;&nbsp;:&nbsp;&nbsp;@Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList,"Select Minutes")
+                        @Html.DropDownList("listHours", ViewBag.Hours as SelectList, "Select Hour", new { @class = "input-medium"})&nbsp;&nbsp;:&nbsp;&nbsp;@Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, "Select Minutes", new { @class = "input-medium" })
                         @Html.ValidationMessage("HourMinuteError")
                     </td>
                 </tr>

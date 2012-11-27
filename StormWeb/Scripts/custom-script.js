@@ -9,6 +9,7 @@ $("#sidebar").niceScroll({
 });
 
 
+
 /**
  * DHTML phone number validation script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
  */
@@ -191,6 +192,12 @@ $(function () {
         });
 
 $(function () {
+
+    /*=============================
+    jQueryConfirm
+===============================*/
+$(".confirmMe").jConfirmAction();
+
 	/*=========
 	Mini Chart
 	===========*/
@@ -273,6 +280,7 @@ $(function () {
 	$(".ajax").colorbox();
 	$(".youtube").colorbox({iframe:true, innerWidth:425, innerHeight:344});
 	$(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
+    $(".iframe-small").colorbox({iframe:true, width:"450px", height:"400px"});
 	/*==Color Picker==*/
     $('.colorpicker').colorpicker();
 	/*==Date Picker==*/
@@ -340,10 +348,6 @@ $(function () {
 	/*======================
 	Tags Input
 	========================*/ 
-			$('#tags_1').tagsInput({
-				width:'99%',
-				'defaultText':'add a test tag'
-				});
 /*==JQUERY UNIFORM==*/
 	$(".checkbox-b,.rem_me,.radio-b,input[type='file']").uniform();
 	
@@ -366,6 +370,7 @@ $(function () {
 	$("#ssn").mask("999-99-9999");	
 
 $('#popover').popover();
+$('a[id*="popover"]').popover();
 
     $("#address").dynamicForm("#plus1", "#minus1", {
         limit: 5
@@ -546,64 +551,8 @@ $(function() {
 	});
 
 
-$(function () {
-
-    // Smart Wizard 	
-    var horizontalWizard = $('#horizontal-wizard').smartWizard({
-        enableFinishButton: false,
-        onFinish: onFinishCallback
-    });
-
-    function onFinishCallback() {
-        $('#horizontal-wizard').smartWizard('showMessage', 'Finish Clicked');
-        //alert('Finish Clicked');
-    }
-    $('#vertical-wizard').smartWizard();
 
 
-
-});
-
-
-$(function() {
-	$("#uploader").pluploadQueue({
-		// General settings
-		runtimes : 'gears,flash,silverlight,browserplus,html5',
-		url : 'upload.php',
-		max_file_size : '10mb',
-		chunk_size : '1mb',
-		unique_names : true,
-		// Resize images on clientside if we can
-		resize : {width : 320, height : 240, quality : 90},
-		// Specify what files to browse for
-		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"}
-		],
-		// Flash settings
-		flash_swf_url : 'js/plupupload/plupload.flash.swf',
-		// Silverlight settings
-		silverlight_xap_url : 'js/plupupload/plupload.silverlight.xap'
-	});
-	// Client side form validation
-	$('.upload-form').submit(function(e) {
-        var uploader = $('#uploader').pluploadQueue();
-        // Files in queue upload them first
-        if (uploader.files.length > 0) {
-            // When all files are uploaded submit form
-            uploader.bind('StateChanged', function() {
-                if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
-                    $('upload-form')[0].submit();
-                }
-
-            });
-            uploader.start();
-        } else {
-            alert('You must queue at least one file.');
-        }
-        return false;
-    });
-});
 
 $(function () {
     // validate signup form on keyup and submit

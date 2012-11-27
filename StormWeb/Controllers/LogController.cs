@@ -17,7 +17,7 @@ namespace StormWeb.Controllers
         //
         // GET: /Log/
         //This is for only Log students/
-        [Authorize(Roles="Student")]
+        [Authorize(Roles="Student,Super")]
         public ViewResult Index() //This is for Log/Index
         {
             int studentId=0;
@@ -34,7 +34,7 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Counsellor")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager")]
         public ViewResult ShowLogs()
         {
             int staffId = 0;

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
+using StormWeb.Controllers;
 using System.IO;
 using StormWeb.Helper;
 using System.Data.Objects.SqlClient;
@@ -479,13 +480,12 @@ namespace StormWeb.Controllers
                 // if all application documents are approved then application status will be "Documents Completed"
                 if (StormWeb.Models.ModelHelper.DocumentHelper.getUnApprovedDocs(app.Application_Id) == 0)
                 {
-                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, ApplicationStatusType.Documents_Completed);
+                    app.Status = ApplicationController.ApplicationStatusType.Documents_Completed.ToString();                    
                 }
                     // else return application status to "staff assigned"
                 else
                 {
-                    StormWeb.Controllers.ApplicationController.setStatus(app.Application_Id, ApplicationStatusType.Staff_Assigned);
-
+                    app.Status = ApplicationController.ApplicationStatusType.Staff_Assigned.ToString();
                 }
             
              }
@@ -542,32 +542,93 @@ namespace StormWeb.Controllers
 
         // The following method is used to display the list of documents for a specific user
         [AcceptVerbs(HttpVerbs.Get)]
-        [Authorize]
-        public ViewResult Index()
+        [Authorize(Roles="Student")]
+        public ViewResult Index(int go = -1, bool faq = false)
         {
+            // Determine which application to show on page load
+            if (go >= 0)
+                ViewBag.Go = go;
+
+            // Show FAQ
+            if (faq)
+            {
+                ViewBag.FAQ = true;
+            }
+
+            List<ApplicationDocumentViewModel> appViewModel = new List<ApplicationDocumentViewModel>();
             if ((string)TempData[SUCCESS_EDIT] == "true")
             {
                 ViewBag.SuccessEdit = true;
             }
 
-
-            if (CookieHelper.isStaff())
-            {
-                stid = Convert.ToInt32(CookieHelper.StaffId);
-            }
             if (CookieHelper.isStudent())
             {
                 stid = Convert.ToInt32(CookieHelper.StudentId);
                 //ViewBag.EditMessage = Request.QueryString["message"];
 
             }
-            ViewBag.Message = Request.QueryString["message"];
+            else
+            {
+                stid = -1;
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Invalid student!");
+                RedirectToAction("Index", "Home");
+            }
 
-            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid);
+            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid);            
 
-            //List<Template_Document> templates;
+            
+            List<CaseDocument> completedCaseDocs = new List<CaseDocument>();
+            List<CaseDocument> pendingCaseDocs = new List<CaseDocument>();
 
+            // Retrieve all Case Documents
             int caseId = db.Cases.Single(x => x.Student_Id == stid).Case_Id;
+            var caseDocs = db.CaseDocuments.Where(x => x.Case_Id == caseId);            
+            foreach (CaseDocument cd in caseDocs)
+            {
+                if (cd.FileName == null)
+                {
+                    pendingCaseDocs.Add(cd);
+                }
+                else
+                {
+                    completedCaseDocs.Add(cd);
+                }
+            }
+
+            // Retrieve all documents for this case
+            foreach (var item in applications)
+            {
+                List<Application_Document> appDocs = item.Application_Document.ToList();
+
+                ApplicationDocumentViewModel tempAppViewModel = new ApplicationDocumentViewModel();
+
+                tempAppViewModel.app = item;
+
+
+                foreach (Template_Document template in item.Course.Template_Document.ToList())
+                {
+                    Application_Document app = appDocs.SingleOrDefault(x => x.TemplateDoc_Id == template.TemplateDoc_Id);
+                    // If file already uploaded for this template
+                    if (appDocs.Where(x => x.TemplateDoc_Id == template.TemplateDoc_Id).Count() <= 0)
+                    {
+                        tempAppViewModel.notCompleted.Add(template);
+                    }
+                    else
+                    {
+                        tempAppViewModel.completed.Add(app);
+                    }
+                }
+
+                tempAppViewModel.offer = item.Application_Result.SingleOrDefault(x => x.Type == OFFER_LETTER_TYPE);
+                tempAppViewModel.coe = item.Application_Result.SingleOrDefault(x => x.Type == COE_TYPE);
+                tempAppViewModel.acceptance = item.Application_Result.SingleOrDefault(x => x.Type == ACCEPTANCE_TYPE);
+                tempAppViewModel.completedAcceptance = item.Application_Result.SingleOrDefault(x => x.Type == COMPLETED_ACCEPTANCE_TYPE);
+
+                tempAppViewModel.notCompletedGeneralDocs = pendingCaseDocs;
+                tempAppViewModel.completedGeneralDocs = completedCaseDocs;
+
+                appViewModel.Add(tempAppViewModel);
+            }
            
             List<DocumentIndexViewModel> documentsViewModel = new List<DocumentIndexViewModel>();
             
@@ -592,7 +653,7 @@ namespace StormWeb.Controllers
             ViewBag.casedocs = GetCaseItems(caseId);
 
             //ViewBag.casedocs = casedocs;
-            return View(applications);
+            return View(appViewModel);
 
         }
 
@@ -1027,7 +1088,7 @@ namespace StormWeb.Controllers
 
         // This will implement both case and application documents
         [Authorize]
-        public ViewResult UploadOfferLetter(int Doc_Id, int case_Id, string doctype, string studentName)
+        public ViewResult UploadApplicationResult(int Doc_Id, int case_Id, string doctype, string studentName = "Student")
         {
             if (TempData[SUCCESS_EDIT] != null)
             {
@@ -1043,13 +1104,16 @@ namespace StormWeb.Controllers
         // This will implement both case and application documents
         [HttpPost]
         [Authorize]
-        public ActionResult UploadOfferLetter(FormCollection fc, HttpPostedFileBase file)
+        public ActionResult UploadApplicationResult(FormCollection fc, HttpPostedFileBase file)
         {
             int Doc_Id = Convert.ToInt32(fc["Doc_Id"]);
             int case_Id = Convert.ToInt32(fc["case_Id"]);
             string Doc_Type = fc["doctype"];
             string studentName = fc["studentName"];
             string comment = (fc["comment"]);
+
+            string messageSubject = "";
+            string messageBody = "";
 
             if (file == null)
             {
@@ -1074,17 +1138,43 @@ namespace StormWeb.Controllers
             // Update object of application Result file for Offer Letter
             if (fc["doctype"] == "OfferLetter")
             {
-                appDoc.Type = "O";
+                appDoc.Type = DocumentController.OFFER_LETTER_TYPE;
                 appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Offer_Letter" + '_' + Doc_Id + Path.GetExtension(fileName);
-                app.Status = "Offer_Letter";
+                app.Status = ApplicationController.ApplicationStatusType.Offer_Letter.ToString();
                 ViewBag.doc = "Offer Letter" + Doc_Id;
+
+                messageSubject = "Offer Letter";
+                messageBody = "Your offer letter for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
+            }
+            else if (fc["doctype"] == "CoE")
+            {
+                appDoc.Type = DocumentController.COE_TYPE;
+                appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_CoE" + '_' + Doc_Id + Path.GetExtension(fileName);
+                app.Status = ApplicationController.ApplicationStatusType.CoE.ToString();
+                ViewBag.doc = "CoE" + Doc_Id;
+
+                messageSubject = "Confirmation of Enrolment";
+                messageBody = "Your confirmation of enrolment for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
+            }
+            else if (fc["doctype"] == "Acceptance")
+            {
+                appDoc.Type = DocumentController.ACCEPTANCE_TYPE;
+                appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Accept" + '_' + Doc_Id + Path.GetExtension(fileName);
+                app.Status = ApplicationController.ApplicationStatusType.Acceptance.ToString();
+                ViewBag.doc = "Accept" + Doc_Id;
+            }
+            else if (fc["doctype"] == "CompletedAcceptance")
+            {
+                appDoc.Type = DocumentController.COMPLETED_ACCEPTANCE_TYPE;
+                appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_CompletedAccept" + '_' + Doc_Id + Path.GetExtension(fileName);
+                app.Status = ApplicationController.ApplicationStatusType.Acceptance.ToString();
+                ViewBag.doc = "_CompletedAccept" + Doc_Id;
             }
             else
             {
-                appDoc.Type = "C";
-                appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_CoE" + '_' + Doc_Id + Path.GetExtension(fileName);
-                app.Status = "CoE";
-                ViewBag.doc = "CoE" + Doc_Id;
+                //Error
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Operation unsuccessful, please try again later.");
+                return View("Refresh");
             }
                 appDoc.Application_Id = Doc_Id;
                 appDoc.UploadedOn = System.DateTime.Now;
@@ -1109,10 +1199,10 @@ namespace StormWeb.Controllers
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
 
-                string sys_message = "Your offer letter for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
-
-                MessageController.sendSystemMessage(app.Student.UserName, "Offer Letter received", sys_message);
-
+                if (messageSubject != "")
+                {
+                    MessageController.sendSystemMessage(app.Student.UserName, messageSubject, messageBody);
+                }
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
             }
@@ -1312,9 +1402,9 @@ namespace StormWeb.Controllers
         {
             Application_Result appDoc = null;
             if (type == "id")
-                appDoc = db.Application_Result.SingleOrDefault(x => x.Id == id && x.Type == "O");
+                appDoc = db.Application_Result.SingleOrDefault(x => x.Id == id && x.Type == OFFER_LETTER_TYPE);
             else if (type == "appId")
-                appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == id && x.Type == "O");
+                appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == id && x.Type == OFFER_LETTER_TYPE);
 
             if (appDoc == null)
                 return;
@@ -1339,9 +1429,9 @@ namespace StormWeb.Controllers
 
             Application_Result appDoc = null;
             if (type == "id")
-                appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == "C");
+                appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == COE_TYPE);
             else if (type == "appId")
-                appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == "C");
+                appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == COE_TYPE);
 
             if (appDoc == null)
                 return;
@@ -1358,6 +1448,36 @@ namespace StormWeb.Controllers
             ////3. The parameter for the file save by the browser
 
             //return File(file, contentType, appDoc.FileName);
+        }
+
+        // The following is used to download the Acceptance Form
+        // Type is used to determine to download from application ID or file ID
+        public void DownloadAcceptance(int id, string type = "id")
+        {
+            Application_Result appDoc = null;
+            if (type == "id")
+                appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == ACCEPTANCE_TYPE);
+            else if (type == "appId")
+                appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == ACCEPTANCE_TYPE);
+
+            if (appDoc == null)
+                return;
+            downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
+        }
+
+        // The following is used to download the completed acceptance form
+        // Type is used to determine to download from application ID or file ID
+        public void DownloadCompletedAcceptance(int id, string type = "id")
+        {
+            Application_Result appDoc = null;
+            if (type == "id")
+                appDoc = db.Application_Result.Single(x => x.Id == id && x.Type == COMPLETED_ACCEPTANCE_TYPE);
+            else if (type == "appId")
+                appDoc = db.Application_Result.Single(x => x.Application_Id == id && x.Type == COMPLETED_ACCEPTANCE_TYPE);
+
+            if (appDoc == null)
+                return;
+            downloadAWS(appDoc.Id, appDoc.Path, appDoc.FileName);
         }
 
 
@@ -1463,7 +1583,7 @@ namespace StormWeb.Controllers
             string appStatus = db.Applications.Single(a => a.Application_Id == applicationID).Status;
             int progressValue = (int)Enum.Parse(typeof(StormWeb.Controllers.ApplicationController.ApplicationStatusType), appStatus);
 
-            if (progressValue >= ApplicationStatusType.Documents_Completed)
+            if (progressValue >= ApplicationController.getProgressValue(ApplicationController.ApplicationStatusType.Documents_Completed.ToString()))
                 return true;
 
             return false;
@@ -1670,6 +1790,12 @@ namespace StormWeb.Controllers
         public static string TEMPLATE_APPLICATION_PATH = "Templates/";
         public static string TEMPLATE_GENERAL_PATH = "Templates/General";
         public static string STUDENT_UPLOADS_PATH = "Student/Uploads/";
+        
+        public static string OFFER_LETTER_TYPE = "O";
+        public static string COE_TYPE = "C";
+        public static string ACCEPTANCE_TYPE = "A";
+        public static string COMPLETED_ACCEPTANCE_TYPE = "F";
+
         #endregion
     }
        

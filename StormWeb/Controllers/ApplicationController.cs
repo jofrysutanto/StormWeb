@@ -101,7 +101,7 @@ namespace StormWeb.Controllers
 
             TempData["message"] = "success";
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "You have successfully started an application");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Document", new { go=app.Application_Id, faq=true });
         }
 
         //
@@ -255,6 +255,18 @@ namespace StormWeb.Controllers
             return value;
         }
 
+        public static string getStaffName(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            var value = (from staff in db.Staffs
+                            from caseStaff in db.Case_Staff
+                            from applications in db.Applications
+                            where staff.Staff_Id == caseStaff.Staff_Id && caseStaff.Case_Id == applications.Case_Id
+                            select caseStaff).Single();
+            string staffName = value.Staff.FirstName + " " + value.Staff.LastName;
+            return staffName;
+        }
+
         public static string getProgressDescription(string status)
         {
             ApplicationStatusType type = (ApplicationStatusType) Enum.Parse(typeof(ApplicationStatusType), status);
@@ -325,10 +337,15 @@ namespace StormWeb.Controllers
             Documents_Completed = 40,
             Application_Submitted = 60,
             Offer_Letter = 80,
+            Acceptance = 85,
             Payment_Received = 90,
             CoE = 100
         }
 
+        public static int getApplicationStatusTypeValue(string status)
+        {
+            return (int)Enum.Parse(typeof(StormWeb.Controllers.ApplicationController.ApplicationStatusType), status);
+        }
          
     }
 
@@ -343,7 +360,7 @@ namespace StormWeb.Controllers
         public static int CoE = 100;
 
         public static int[] Value = { 0, 20, 40, 60, 80, 90, 100 };
-        public static string[] Name = { "Inititiated", "Staff_Assigned", "Documents_Completed", "Offer_Letter", "Payment_Received", "CoE" };
+        public static string[] Name = { "Initiated", "Staff_Assigned", "Documents_Completed", "Offer_Letter", "Payment_Received", "CoE" };
 
         
     }

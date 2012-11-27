@@ -63,7 +63,9 @@
                     DOB
                 </th>
                 <td>
+                  <div class="input-append"> 
                     @Html.TextBoxFor(model => model.Dob, new { @class = "chooseDate", @readonly = "readonly" })
+                  </div>
                 </td>
             </tr>
             <tr>
@@ -105,7 +107,10 @@
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '0'
+            maxDate: '0',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
      

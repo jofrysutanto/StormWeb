@@ -42,11 +42,12 @@ namespace StormWeb.Controllers
         public ActionResult Edit(int id)
         {
             Client client = db.Clients.Single(c => c.Client_Id == id);
-            ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", client.Address_Id);
+            // ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", client.Address_Id);
+            ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name", client.Address_Id);
             return View(client);
         }
 
-        
+
         [Authorize(Roles = "Super")]
         [HttpPost]
         public ActionResult Edit(Client client)
@@ -59,7 +60,7 @@ namespace StormWeb.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", client.Address_Id);
-            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the client Details " + client.GivenName +" " +client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the client Details " + client.GivenName + " " + client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return View(client);
         }
 
@@ -110,7 +111,7 @@ namespace StormWeb.Controllers
             ViewBag.Branch = branch;
         }
 
-        
+
         public JsonResult CheckPreviousRegistration(string id)
         {
             Client c;
@@ -147,14 +148,14 @@ namespace StormWeb.Controllers
                 }
             }
 
-                
-                // !! IMPORTANT !! 
-                // Should check if this client ID already have username
 
-                dict.Add("clientID", Convert.ToString(c.Client_Id));
-                dict.Add("result", "good");
+            // !! IMPORTANT !! 
+            // Should check if this client ID already have username
 
-                return Json(dict);
+            dict.Add("clientID", Convert.ToString(c.Client_Id));
+            dict.Add("result", "good");
+
+            return Json(dict);
         }
 
         private bool checkAllNumber(string str)
@@ -174,43 +175,49 @@ namespace StormWeb.Controllers
                 return false;
 
             // Use IdnMapping class to convert Unicode domain names. 
-            try {
+            try
+            {
                 strIn = Regex.Replace(strIn, @"(@)(.+)$", this.DomainMapper,
                                     RegexOptions.None);
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
             }
 
-            if (invalid) 
+            if (invalid)
                 return false;
 
             // Return true if strIn is in valid e-mail format. 
-            try {
-                return Regex.IsMatch(strIn, 
-                    @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + 
-                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$", 
+            try
+            {
+                return Regex.IsMatch(strIn,
+                    @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$",
                     RegexOptions.IgnoreCase);
-            }  
-            catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return false;
             }
         }
 
         private string DomainMapper(Match match)
-           {
-              // IdnMapping class with default property values.
-              IdnMapping idn = new IdnMapping();
+        {
+            // IdnMapping class with default property values.
+            IdnMapping idn = new IdnMapping();
 
-              string domainName = match.Groups[2].Value;
-              try {
-                 domainName = idn.GetAscii(domainName);
-              }
-              catch (ArgumentException) {
-                 invalid = true;      
-              }      
-              return match.Groups[1].Value + domainName;
-           }
+            string domainName = match.Groups[2].Value;
+            try
+            {
+                domainName = idn.GetAscii(domainName);
+            }
+            catch (ArgumentException)
+            {
+                invalid = true;
+            }
+            return match.Groups[1].Value + domainName;
+        }
 
 
         public ActionResult Register(int id = -1)
@@ -230,7 +237,7 @@ namespace StormWeb.Controllers
                 ClientViewModel cViewModel = new ClientViewModel();
                 cViewModel.ClientModel = c;
                 return View("RegisterContinue", cViewModel);
-            }            
+            }
         }
 
         [HttpPost]
@@ -269,13 +276,13 @@ namespace StormWeb.Controllers
                 Case nCase = AddNewCase(c.Branch_Id, student);
                 AddDocumentTemplate(nCase);
                 db.SaveChanges();
-                                
+
                 return RedirectToAction("LogOn", "Account", new { message = "registration-success" });
             }
             else
             {
                 // Some error happened
-                ModelState.AddModelError("", ErrorCodeToString(createStatus));                
+                ModelState.AddModelError("", ErrorCodeToString(createStatus));
             }
 
             NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error handling your request!");
@@ -347,7 +354,7 @@ namespace StormWeb.Controllers
                 {
                     //if (ModelState.IsValid)
                     if (TryValidateModel(model.ClientModel))
-                    {                        
+                    {
 
                         // Attempt to register the user
                         string username = fc["Username"];
@@ -502,7 +509,7 @@ namespace StormWeb.Controllers
             ViewBag.clientId = g.Client_Id;
 
             ViewBag.clientName = g.Client.GivenName;
-        
+
             ViewBag.AppDateTime = app.AppDateTime;
 
             return View(b);
@@ -514,12 +521,23 @@ namespace StormWeb.Controllers
         public ActionResult Delete(int id)
         {
             Client client = db.Clients.First(i => i.Client_Id == id);
+            return View(client);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Super,BranchManager")]
+        public ActionResult Delete(int id, Client client1)
+        {
+            Client client = db.Clients.First(i => i.Client_Id == id);
 
             // Delete addresses
             var addressToDelete = db.Addresses.Where(p => p.Address_Id.Equals(client.Client_Id));
 
             // Delete general enquiries
             var enquiriesToDelete = db.General_Enquiry.Where(p => p.Client_Id.Equals(client.Client_Id));
+
+            //Delete student 
+            var studentsToDelete = db.Students.Where(p => p.Client_Id.Equals(client.Client_Id));
 
             /** TODO
              * 
@@ -542,6 +560,12 @@ namespace StormWeb.Controllers
                 {
                     db.General_Enquiry.DeleteObject(generalEnquiry);
                 }
+            }
+
+            if (studentsToDelete.Count() > 0)
+            {
+                ModelState.AddModelError("", "Cannot Delete .The Client has Students assigned");
+                return View(client);
             }
 
             // Delete 

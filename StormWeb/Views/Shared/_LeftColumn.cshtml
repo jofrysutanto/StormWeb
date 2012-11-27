@@ -104,7 +104,7 @@
         }
         
             
-                @if (HttpContext.Current.User.IsInRole("Super") || HttpContext.Current.User.IsInRole("Administrator"))
+                @if (HttpContext.Current.User.IsInRole("Super") || HttpContext.Current.User.IsInRole("Administrator") || HttpContext.Current.User.IsInRole("BranchManager"))
                 {
                     
             <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons graph"></span>

@@ -63,7 +63,7 @@ $(function () {
                                 <th>
                                     <i class="color-icons user_business_boss_co"></i>Roles
                                 </th>
-                                <th>
+                                <th><i class="color-icons bullet_key_co"></i>Actions
                                 </th>
                             </tr>
                         </thead>
@@ -168,9 +168,8 @@ $(function () {
         </div>
     </div>
 </div>
-<div class="pull-left">@*iframe1cboxElement*@ <a class=" btn btn-info " href="@Url.Action("Create")">
-    Add new Staff</a>
-</div>
+ 
+@Html.Button_Add("Create New", "Staff/Create") 
 <br />
 <br />
 <br />

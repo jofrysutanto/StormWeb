@@ -3532,6 +3532,10 @@ a.label:hover, a.badge:hover {
 .label-inverse[href], .badge-inverse[href] {
 	background-color: #1a1a1a;
 }
+.label-reverse, .badge-reverse {
+	background-color: #E087BF;
+}
+
  @-webkit-keyframes progress-bar-stripes {
  from {
  background-position: 40px 0;

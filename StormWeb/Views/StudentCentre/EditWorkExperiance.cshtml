@@ -21,7 +21,9 @@ foreach (var item in Model.clientWorkExperience)
                     From Date
                 </th>
                 <td>
+                  <div class="input-append">
                     @Html.TextBoxFor(modelItem => item.From_Date, new { @class = "chooseDate", @readonly = "readonly" })
+                  </div>
                 </td>
             </tr>
             <tr>
@@ -29,7 +31,9 @@ foreach (var item in Model.clientWorkExperience)
                     To Date
                 </th>
                 <td>
+                  <div class="input-append">
                     @Html.TextBoxFor(modelItem => item.To_Date, new { @class = "chooseDate", @readonly = "readonly" })
+                  </div>
                 </td>
             </tr>
             <tr>
@@ -115,7 +119,10 @@ foreach (var item in Model.clientWorkExperience)
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '0'
+            maxDate: '0',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
  

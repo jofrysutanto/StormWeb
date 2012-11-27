@@ -1,7 +1,7 @@
 ﻿@model  StormWeb.Models.Staff 
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+   
 }
 <h2>
     Edit Staff Details</h2>
@@ -150,12 +150,13 @@
             </tr> 
            
         </table>
-        <div class="modal-footer">
+       <p>
             <input type="submit" class="btn btn-primary" value="Save Changes" />
-            <input type="button" id="closeModal" class="btn btn-danger cancelButton" value="Cancel" />
-        </div>
+             @Html.Button_DeleteOrCancel("Cancel","../Index")
+        </p> 
     </div> 
 }
+ 
 <script type="text/javascript">
     $(function () {
         $(".cancelButton").click(function () {

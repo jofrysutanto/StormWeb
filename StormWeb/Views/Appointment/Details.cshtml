@@ -2,54 +2,58 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<fieldset>
-    <legend>Appointment</legend>
-    <div class="box">
-        <div class="box-container">
-            <br />
-            
-                <table class="table">
-                    <thead>
-                           @Html.HiddenFor(model => model.Appointment_Id)
-                        <tr>
-                            <th>
-                                @Html.Label("Branch Name")
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Branch_Id)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                @Html.Label("Appointment Date and Time")
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.AppDateTime)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                @Html.Label("Status")
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Confirmation)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                @Html.Label("Comments")
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Comments)
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-           
-            <p>
-                @Html.ActionLink("Back to List", "Index")
-            </p>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h2>
+                    Appointment Details</h2>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <br />
+                    <table class="table">
+                        <thead>
+                            @Html.HiddenFor(model => model.Appointment_Id)
+                            <tr>
+                                <th>
+                                    @Html.Label("Branch Name")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Branch_Id)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    @Html.Label("Appointment Date and Time")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.AppDateTime)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    @Html.Label("Status")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Confirmation)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    @Html.Label("Comments")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Comments)
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</fieldset>
+</div>
+<p>
+    @Html.Button_BackToList("Bact To List", "../Index")
+</p>
