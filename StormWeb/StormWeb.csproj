@@ -179,15 +179,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\AWS.Extensions.dll" />
-    <Content Include="bin\AWSSDK.dll" />
-    <Content Include="bin\AWSSDK.xml" />
-    <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.xml" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\StormWeb.dll" />
-    <Content Include="bin\StormWeb.pdb" />
     <Content Include="Content\help_img\AppSummary_StartNew.png" />
     <Content Include="Content\help_img\BookApp.png" />
     <Content Include="Content\help_img\Confirm.png" />
