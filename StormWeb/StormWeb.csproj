@@ -856,7 +856,6 @@
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Document\Partial\_DocumentStep.cshtml" />
     <Content Include="Views\University\Description.cshtml" />
-    <Content Include="Views\StudentCentre\CounsellorContactDetails.cshtml" />
     <Content Include="Views\Advertisement\Index.cshtml" />
     <Content Include="Views\Advertisement\Details.cshtml" />
     <Content Include="Views\Advertisement\Create.cshtml" />
