@@ -26,7 +26,13 @@
  {
     <div class="row-fluid">
         <div class="span12">
-            <div class="box-tab">
+            <div class="box-tab"> 
+             <div class="page-header">
+                 <h1>
+                       &nbsp;&nbsp;Appointment
+                        
+                   </h1>
+                    </div>
                 <div class="tabbable">
                     <ul class="nav nav-tabs" id="myTab">
                         <a id="example" data-content="Request for Approval - Counselor has to call and confirm appointment with student"
@@ -490,16 +496,22 @@
 
 @if (StormWeb.Helper.CookieHelper.isStudent())
 {
-                  
-    <div class="row-fluid">
-        <div class="span12">
-            
-            <blockquote class="quote_blue">
+               <blockquote class="quote_blue">
 					<h2>Your counsellor: @ViewBag.StaffName</h2>
                         <b>Contact</b>: @ViewBag.StaffContactNumber | <b>Email</b>: @ViewBag.StaffEmail
                             | <b>Address</b>: @ViewBag.BranchAddress
                     
-				</blockquote>
+				</blockquote>   
+    <div class="row-fluid">
+        <div class="span12">
+             <div class="box-tab"> 
+             <div class="page-header">
+                 <h1>
+                       &nbsp;&nbsp;Appointment
+                        
+                   </h1>
+                    </div>
+            
                 <div class="box-tab">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
@@ -644,6 +656,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     foreach (var item in Model.studentAppointments)

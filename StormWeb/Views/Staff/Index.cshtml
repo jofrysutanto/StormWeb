@@ -27,11 +27,16 @@ $(function () {
 </script>
 <div class="row-fluid">
     <div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
+        @* <div class="widget-block">*@ @* <div class="widget-head">
                 <h5>
                     <i class="black-icons  documents"></i>Storm Staff
                 </h5>
+            </div>*@
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Staff List
+                </h1>
             </div>
             <div class="widget-content">
                 <div class="widget-box" style="padding: 15px;">
@@ -143,7 +148,7 @@ $(function () {
                                             {
                                                 if (s == "Super")
                                                 {
-                                                 <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu">
                                                     <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
                                                     </i>Details</a></li></ul>
                                                 }
@@ -166,7 +171,10 @@ $(function () {
                                                 </ul>
                                                 <div id="dialog" title="Activate Staff" style="display: none">
                                                     <p>
-                                                        Lint to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
+                                                        @{
+                                                                      string link = Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http");
+                                                        }
+                                                        Link to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
                                                     </p>
                                                 </div>
                                                 }
@@ -250,12 +258,28 @@ $(function () {
                                                 </i>Remove</a></li>
                                                 <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
                                                 </i>Manage Roles</a></li>
-                                                <li><a id="dialog_link@(item.Staff_Id)"
-                                href="#"><i class="color-icons user_business_boss_co"></i>Activate Staff</a> </li>
+                                                <li><a id="dialog_link@(item.Staff_Id)"href="#"><i class="color-icons user_business_boss_co">
+                                                </i>Activate Staff</a> </li>
                                             </ul>
                                             <div id="dialog" title="Activate Staff" style="display: none">
                                                 <p>
-                                                    Lint to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
+                                                    @{
+                                                                  string link = Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http");
+                                                                  if (link.Contains("localhost"))
+                                                                  {
+                                                        <span>Link to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a></span> 
+                                                      
+                                                                  }
+                                                                  else
+                                                                  { 
+                                                                      string[] arr = link.Split(':');
+                                                                      string[] arr1 = arr[2].Split('/');
+                                                                      string originallink = arr[0] + ":" + arr[1] + "/" + arr1[1] + "/" + arr1[2] + "/" + arr1[3];
+                                                    
+                                                        <span>Link to Activate Staff :<a href="#" class="">@originallink</a></span> 
+                                                        @*@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")*@
+                                                                  } 
+                                                    }
                                                 </p>
                                             </div>
                                         </div>

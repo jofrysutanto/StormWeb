@@ -101,7 +101,7 @@
             </span>Appointment</a></li>
             
         }
-        
+          
             
                 @if (HttpContext.Current.User.IsInRole("Super") || HttpContext.Current.User.IsInRole("Administrator") || HttpContext.Current.User.IsInRole("BranchManager"))
                 {
@@ -127,7 +127,7 @@
                 Branch</a></li>
            
                 }
-                
+               
             <li><a href="@Url.Action("Index", "Event")"><span class="color-icons weather_clouds_co"></span>
                 Events</a></li>
     </ul>    

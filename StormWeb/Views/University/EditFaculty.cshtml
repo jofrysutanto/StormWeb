@@ -1,18 +1,80 @@
 ﻿@model StormWeb.Models.Faculty
 @{
     ViewBag.Title = "EditFaculty";
-}
-<h2>
-    EditFaculty</h2>
+} 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new { @class = "form-horizontal well", id = "aapointmentForm" }))
+@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new {id = "aapointmentForm" }))
 {
     @Html.ValidationSummary(false) 
     @Html.HiddenFor(model => model.University_Id)
     @Html.HiddenFor(model => model.Faculty_Id)
 
-    <table style="text-align: left;">
+     <div class="form-horizontal well">
+        <fieldset>
+            <legend>
+                <h2> Edit Faculty</h2>
+            </legend>
+             <div class="control-group">
+                @Html.Label("Faculty Name", null, new { @class = "control-label form-required" })
+                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                <div class="controls"> 
+                      @Html.EditorFor(model => model.Faculty_Name, new { @class = "input-large text-tip", placeholder = "Title" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty_Name) 
+                    </p>
+                </div>
+            </div>
+              <div class="control-group">
+                @Html.Label("Faculty Description", null, new { @class = "control-label form-required" })
+                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                <div class="controls"> 
+                      @Html.TextBoxFor(model => model.Faculty_Description, new { @class = "input-large text-tip", placeholder = "Title" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty_Description) 
+                    </p>
+                </div>
+            </div>
+              <div class="control-group">
+                @Html.Label("University Name", null, new { @class = "control-label form-required" })
+                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                <div class="controls"> 
+                      @Html.TextBoxFor(model => model.University.University_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.University.University_Name) 
+                    </p>
+                </div>
+            </div>
+              <div class="control-group">
+                @Html.Label("Campus Name", null, new { @class = "control-label form-required" })
+                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                <div class="controls"> 
+                      @Html.TextBoxFor(model => model.University.Campus, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.University.Campus) 
+                    </p>
+                </div>
+            </div>
+             <div class="control-group">
+                @Html.Label("Country Name", null, new { @class = "control-label form-required" })
+                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                <div class="controls"> 
+                      @Html.TextBoxFor(model => model.University.Country.Country_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.University.Country.Country_Name) 
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+              <div class="controls"> 
+                <input type="submit" value="Save Changes" class="btn btn-primary" />        
+        @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
+              </div>
+            </div>
+            </fieldset>
+            </div>
+    
+   @* <table style="text-align: left;">
         <tr>
             <th>
                 @Html.Label("Faculty Name")
@@ -62,5 +124,5 @@
     <p>
         <input type="submit" value="Save Changes" class="btn btn-primary" />        
         @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
-    </p> 
+    </p> *@
 }

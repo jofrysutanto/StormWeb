@@ -101,6 +101,7 @@ namespace StormWeb.Controllers
             List<Country> c = new List<Country>();
             c.Add(branchmodel.branchTable.First().Address.Country);
             branchmodel.countryTable = c;
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", branches.First().Address.Country.Country_Id);
             return View(branchmodel);
         }
 

@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Create";
 }
-<h2>
-    Create</h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script type="text/javascript">
@@ -38,21 +36,108 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <fieldset>
-        
+
+    <div class="form-horizontal well">
+        <fieldset style="margin-left: 50px;">
+            <legend>
+                <h2>
+                    Add New Course</h2>
+            </legend>
+            <div class="control-group">
+                @Html.Label("University", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Faculty.University.University_Id, (IEnumerable<SelectListItem>)ViewBag.Universities, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty.University.University_Id)</p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Faculty", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Faculty.Faculty_Id, (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty.Faculty_Id)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Course", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Course_Id, (IEnumerable<SelectListItem>)ViewBag.Course_Level_Id, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty.Faculty_Id)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Semester Commencement Date", null, new { @class = "control-label form-required", style = "width:250px;margin-left: -110px;" })
+                <div class="controls">
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.Commence_Date_Sem, new { @class = "dp", @readonly = "readonly" })
+                    </div>
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Commence_Date_Sem)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Course Name", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Course_Name, new { @class = "input-xlarge text-tip", placeholder = "Course Name" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Course_Name)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Duration (in months)", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Duration, new { @class = "input-xlarge text-tip", placeholder = "Duration" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Duration)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Total Course Fees ($AUD)", null, new { @class = "control-label form-required" , style = "width:250px;margin-left: -110px;" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Fee, new { @class = "input-xlarge text-tip", placeholder = "Fees" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Fee)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Description", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Description, new { @class = "input-xlarge text-tip", placeholder = "Description" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    @Html.Button_DeleteOrCancel("Cancel", "List")
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    @*<fieldset>
         <div class="editor-label">
             @Html.Label("Select University")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("University_Select", (IEnumerable<SelectListItem>)ViewBag.Universities, "--Select--",new { @class = "chzn-select" })
+            @Html.DropDownList("University_Select", (IEnumerable<SelectListItem>)ViewBag.Universities, "--Select--", new { @class = "chzn-select" })
         </div>
         <div class="editor-label">
             @Html.Label("Select Faculty")
         </div>
         <div class="editor-field">
-        
             @Html.DropDownList("Faculty_Select", (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "--Select--", new { @class = "chzn-select" })
-            @*@Html.ValidationMessageFor(model => model.Faculty_Id)*@
+            
             @Html.ValidationMessage("FacultyError")
         </div>
         <div class="editor-label">
@@ -63,31 +148,18 @@
             @Html.ValidationMessageFor(model => model.Course_Level_Id)
             @Html.ValidationMessage("CourseLevelError")
         </div>
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.Faculty_Id, "Faculty")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("Faculty_Id", String.Empty)
-            @Html.ValidationMessageFor(model => model.Faculty_Id)
-        </div>*@
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.Commence_Date_Sem, "Semester Commencement Date")
         </div>
         <div class="editor-field">
             <div class="input-append">
                 @Html.TextBoxFor(model => model.Commence_Date_Sem, new { @readonly = "readonly", @class = "dp" })
-                @*   @Html.ValidationMessageFor(model => model.Course_Level_Id)*@
+                
                 @Html.ValidationMessage("DateError")
             </div>
         </div>
-        @* <div class="editor-field">
-        @Html.EditorFor(model => model.Commence_Date_Sem)
-           
-          
-                @Html.ValidationMessageFor(model => model.Commence_Date_Sem)
-                @Html.ValidationMessage("DateError")
-          
-        </div>*@
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.Course_Name, "Course Name")
         </div>
@@ -102,7 +174,7 @@
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Duration)
             @Html.ValidationMessageFor(model => model.Duration)
-            @*    @Html.ValidationMessage("DurationError")*@
+          
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.Fee, "Total Course Fees ($AUD)")
@@ -110,7 +182,7 @@
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Fee)
             @Html.ValidationMessageFor(model => model.Fee)
-            @*    @Html.ValidationMessage("FeeError")*@
+           
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.Description)
@@ -123,5 +195,5 @@
             <input type="submit" value="Create" class="btn btn-primary" />
             @Html.Button_DeleteOrCancel("Cancel", "List")
         </p>
-    </fieldset>
+    </fieldset>*@
 }

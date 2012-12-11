@@ -1,82 +1,71 @@
 ﻿@model StormWeb.Models.University
 @{
     ViewBag.Title = "Edit";
-}
-<h2>
-    Edit</h2>
+} 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.University_Id)
-    <table style="text-align: left;">
-        <tr>
-            <th>
-                Country
-            </th>
-            <td>
-                @Html.DropDownList("Country_Id", "-- Select One --")
-                @Html.ValidationMessageFor(model => model.Country_Id)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                University Name
-            </th>
-            <td>
-                @Html.TextBoxFor(model => model.University_Name)
-                @Html.ValidationMessageFor(model => model.University_Name)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Campus
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Campus)
-                @Html.ValidationMessageFor(model => model.Campus)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Email
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Email)
-                @Html.ValidationMessageFor(model => model.Email)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Description
-            </th>
-            <td>
-            </td>
-        </tr>
-        <tr>
-        <th></th>
-            <td>
-                <div class="control-group">
-                 
-                    <div class="controls">
-                        @Html.TextAreaFor(model => model.Description, new { @class = "span11", rows = "10", cols = "10", id = "inbox-editor" })
-                        @Html.ValidationMessageFor(model => model.Description)
-                    </div>
+  
+    <div class="form-horizontal well">
+        <fieldset style="margin-left: 50px;">
+            <legend>
+                <h2>
+                    Edit University Details</h2>
+            </legend>
+            <div class="control-group">
+                @Html.Label("Country", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Country_Id)</p>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <th>
-            </th>
-            <td>
-            </td>
-        </tr>
-    </table>
+            </div>
+            <div class="control-group">
+                @Html.Label("University Name", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.University_Name, new { @class = "input-xlarge text-tip", placeholder = "University Name" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.University_Name)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Campus", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Campus, new { @class = "input-xlarge text-tip", placeholder = "Campus" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Campus)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Email", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Email, new { @class = "input-xlarge text-tip", placeholder = "Email" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Description", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "span11", rows = "10", cols = "10", id = "inbox-editor" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    @Html.Button_DeleteOrCancel("Cancel", "../Index")
+                </div>
+            </div>
+        </fieldset>
+    </div>
+     
     
-    
-    <p>
-        <input type="submit" value="Save Changes" class="btn btn-primary" />
-        @Html.Button_DeleteOrCancel("Cancel", "../Index")
-    </p> 
+     
 }

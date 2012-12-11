@@ -247,6 +247,7 @@ namespace StormWeb.Controllers
                 }
                 else
                 {
+                   
                     if (fc["Course_Level_Id"] == "")
                     {
                         ModelState.AddModelError("CourseLevelError", "Please select Course Level");

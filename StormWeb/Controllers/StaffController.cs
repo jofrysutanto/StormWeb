@@ -227,6 +227,7 @@ namespace StormWeb.Controllers
             {
                 ViewBag.SelectedBranch = bs.Branch_Id;
             }
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", staff.Address.Country.Country_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
             BindTitle(staff.Title);
             return View(staff);
@@ -389,6 +390,7 @@ namespace StormWeb.Controllers
                 TempData[SUCCESS_EDIT] = true;
                 return RedirectToAction("Edit", "Staff", new { message = "Successfully Edited" });
             }
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", staff.Address.Country.Country_Id);
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", staff.Address_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the Details of the staff " + staff.FirstName + " " + staff.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
@@ -429,7 +431,8 @@ namespace StormWeb.Controllers
         private void BindTitle(string selectedValue)
         {
             var title = Enumclass.GetTitle();
-            ViewData["TitleValue"] = new SelectList(title, "Value", "Text", selectedValue.Trim());
+            //ViewData["TitleValue"] = new SelectList(title, "Value", "Text", selectedValue.Trim()); 
+            ViewBag.TitleValue = new SelectList(title, "Value", "Text", selectedValue.Trim());
         }
 
         protected override void Dispose(bool disposing)
