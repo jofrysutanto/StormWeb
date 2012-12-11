@@ -277,7 +277,6 @@
     <Content Include="Content\img\papers.png" />
     <Content Include="Content\img\papers_small.png" />
     <Content Include="ModelBinding\currency.xml" />
-    <Content Include="App_Data\Templates\General\th0.jpg" />
     <Content Include="Content\css\bootstrap-clean.css" />
     <Content Include="Content\css\bootstrap-responsive.css" />
     <Content Include="Content\css\bootstrap.css" />
@@ -687,7 +686,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Downloads\" />
+    <Folder Include="App_Data\" />
     <Folder Include="Content\img\confirm\" />
     <Folder Include="obj\Debug\edmxResourcesToEmbed\Models\" />
     <Folder Include="obj\Debug\TempPE\" />
@@ -710,26 +709,6 @@
     <Content Include="Views\Client\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Data\Templates\1_1\Form 101.pdf" />
-    <None Include="App_Data\Templates\2_2\Form 101.pdf" />
-    <None Include="App_Data\Templates\2_3\Form 101.pdf" />
-    <None Include="App_Data\Templates\General\Financial.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\Application Form_Application_32.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\CoE_CoE_32.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\Form 101_Application_32.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\IELTS_Case.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\Offer Letter_Offer_Letter_32.pdf" />
-    <None Include="App_Data\Uploads\24_George Clooney\Passport_Case.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\Application Form_Application_4.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\IELTS_Case.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\LinqToSql0.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps156.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps199.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps3.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps6.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps_CoE_6.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\MockUps_Offer_Letter_6.pdf" />
-    <None Include="App_Data\Uploads\2_Stewie Griffin\Passport_Case.pdf" />
     <Content Include="Views\Appointment\Index.cshtml" />
     <Content Include="Views\Appointment\Details.cshtml" />
     <Content Include="Views\Appointment\Create.cshtml" />
@@ -867,9 +846,6 @@
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\Create.cshtml" />
     <Content Include="Views\Payment\Edit.cshtml" />
-    <None Include="App_Data\Uploads\Form 101.pdf" />
-    <None Include="App_Data\Uploads\Getting Started0.pdf" />
-    <None Include="App_Data\Uploads\MockUps.pdf" />
     <Content Include="Views\Document\TestAWS.cshtml" />
     <Content Include="Views\Document\viewAWS.cshtml" />
     <Content Include="Views\Client\ChooseRegistration.cshtml" />
