@@ -46,12 +46,12 @@
                                                 <i class="color-icons mobile_phone_co"></i>@item.SecondaryContactNumber
                                             </li>
                                             <li>
-                                                <i class="color-icons email_co"></i>@item.Email
+                                                <i class="color-icons envelope_co"></i>@item.Email
                                             </li>
                                         </ul>
                                     </td>
                                     <td>
-                                        @item.Dob
+                                        @item.Dob.ToShortDateString()
                                     </td>
                                     <td>
                                         <i class="color-icons table_co"></i><a href="@Url.Action("Student","Log", new {id=item.Students.First().Student_Id})">View Log</a>

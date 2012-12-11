@@ -15,7 +15,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
-using StormWeb.Models.ModelHelper;                                                                                                                                               
+using StormWeb.Models.ModelHelper;
 using System.Diagnostics;
 using System.Web.Security;
 using System.Globalization;
@@ -53,9 +53,9 @@ namespace StormWeb.Controllers
                     return null;
 
                 var a = from appo in db.Appointments
-                               where appo.Case_Id == cases.Case_Id && appo.Confirmation == APP_CONFIRMED && appo.AppDateTime >= current
-                               orderby appo.AppDateTime ascending
-                               select appo;
+                        where appo.Case_Id == cases.Case_Id && appo.Confirmation == APP_CONFIRMED && appo.AppDateTime >= current
+                        orderby appo.AppDateTime ascending
+                        select appo;
                 if (a.Count() > 0)
                     appointment = a.First();
 
@@ -65,9 +65,9 @@ namespace StormWeb.Controllers
 
                 int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
                 var a = from app in db.Appointments
-                               where app.Confirmation == APP_CONFIRMED && app.Staff_Id == staffId && app.AppDateTime >= current
-                               orderby app.AppDateTime ascending
-                               select app;
+                        where app.Confirmation == APP_CONFIRMED && app.Staff_Id == staffId && app.AppDateTime >= current
+                        orderby app.AppDateTime ascending
+                        select app;
                 if (a.Count() > 0)
                     appointment = a.First();
 
@@ -77,9 +77,9 @@ namespace StormWeb.Controllers
         #endregion
 
         #region Index
-        [Authorize(Roles="Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor")]
         [AcceptVerbs(HttpVerbs.Get)]
-         public ViewResult Index()
+        public ViewResult Index()
         {
             StaffAppointmentListViewModel model = new StaffAppointmentListViewModel();
             var appointments = db.Appointments.Include("Case");
@@ -89,20 +89,38 @@ namespace StormWeb.Controllers
                 /* *
                  * Getting branch address
                  * */
-                String branchName = StormWeb.Helper.BranchHelper.getBranchListFromCookie().First().Branch_Name;
+                List<Branch> branch = StormWeb.Helper.BranchHelper.getBranchListFromCookie();
+                String branchName = "";
+                if (branch.Count() > 0)
+                    branchName = StormWeb.Helper.BranchHelper.getBranchListFromCookie().FirstOrDefault().Branch_Name;
                 Address add = (from addr in db.Addresses
-                              from br in db.Branches
-                              where br.Address_Id == addr.Address_Id && br.Branch_Name == branchName
-                              select addr).Single();
-                String address = add.Address_Name + "," + add.City + "\n" + add.State + "," + add.Country.Country_Name + "-" + add.Zipcode;
+                               from br in db.Branches
+                               where br.Address_Id == addr.Address_Id && br.Branch_Name == branchName
+                               select addr).SingleOrDefault();
+                String address;
+
+                if (add != null)
+                    address = add.Address_Name + "," + add.City + "\n" + add.State + "," + add.Country.Country_Name + "-" + add.Zipcode;
+                else
+                    address = "No address recorded";
+
                 ViewBag.BranchAddress = address;
                 /* *
                  * Gets the list of appointment made by the student who have a Case ID
                  * */
-                Case cases = db.Cases.Single(x => x.Student_Id == studentId);
+                Case cases = db.Cases.SingleOrDefault(y => y.Student_Id == studentId);
                 DateTime current = DateTime.Now;
-                var app = db.Appointments.ToList().Where(x => (x.Case_Id == cases.Case_Id) && (x.Confirmation == APP_CONFIRMED || x.Confirmation == APP_REQUEST_APPROVAL) && x.AppDateTime>DateTime.Now);
-                model.studentAppointments = app.ToList();
+
+                if (cases != null)
+                {
+
+                    var app = db.Appointments.ToList().Where(x => (x.Case_Id == cases.Case_Id) && (x.Confirmation == APP_CONFIRMED || x.Confirmation == APP_REQUEST_APPROVAL) && x.AppDateTime > DateTime.Now);
+                    model.studentAppointments = app.ToList();
+                }
+                else
+                {
+                    model.studentAppointments = new List<Appointment>();
+                }
 
                 /* *
                  * Get the previous appointments made by the student
@@ -163,7 +181,7 @@ namespace StormWeb.Controllers
                 /* *
                  * Gets the appointments where the client with a case id has requested for an appointment
                  * */
-                var myStudentApp = db.Appointments.ToList().Where(x => (x.Staff_Id == staffId) && (x.Confirmation.Equals(APP_REQUEST_APPROVAL))).OrderBy(x=>x.AppDateTime);
+                var myStudentApp = db.Appointments.ToList().Where(x => (x.Staff_Id == staffId) && (x.Confirmation.Equals(APP_REQUEST_APPROVAL))).OrderBy(x => x.AppDateTime);
                 model.myStudentAppointment = myStudentApp.ToList();
 
                 /* *
@@ -212,12 +230,12 @@ namespace StormWeb.Controllers
                 db.SaveChanges();
                 if (appointment.Case_Id == null)
                 {
-                               
-                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.General_Enquiry.SingleOrDefault().Client.GivenName+" to "+ appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
+
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed the appointment status of" + appointment.General_Enquiry.SingleOrDefault().Client.GivenName + " to " + appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
                 }
                 else
                 {
-                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed status of " + appointment.Case.Student.Client.GivenName + " to " + appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Changed the appointment status of " + appointment.Case.Student.Client.GivenName + " to " + appointment.Confirmation, LogHelper.LOG_UPDATE, LogHelper.SECTION_APPOINTMENT);
                 }
                 return RedirectToAction("Index");
 
@@ -226,18 +244,18 @@ namespace StormWeb.Controllers
         }
         #endregion
 
-        #region Details 
+        #region Details
         [Authorize(Roles = "Student")]
         public ViewResult Details(int id)
         {
             Appointment appointment = db.Appointments.Single(a => a.Appointment_Id == id);
             return View(appointment);
-            
+
         }
         #endregion
-        
+
         #region Book Appointment(Create)
-        [Authorize(Roles ="Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor")]
         public ActionResult Create()
         {
             if (TempData[NO_BOOK] != null)
@@ -246,46 +264,46 @@ namespace StormWeb.Controllers
             }
             if (TempData[SUCCESS_BOOK] != null)
             {
-                ViewBag.SuccessBook = true; 
+                ViewBag.SuccessBook = true;
             }
-            
+
             ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours");
             ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes", "Minutes");
 
             if (StormWeb.Helper.CookieHelper.isStaff())
             {
-               
+
 
                 /* *
                  * Gets the specific student via check appointment for whom the counsellor wants to book an appointment with
                  * */
-                    if (Request.QueryString["studentId"] != null)
-                    {
-                        int studentId = Convert.ToInt32(Request.QueryString["studentId"]);
+                if (Request.QueryString["studentId"] != null)
+                {
+                    int studentId = Convert.ToInt32(Request.QueryString["studentId"]);
 
-                        Client client = (from st in db.Students
-                                         from cl in db.Clients
-                                         where st.Student_Id == studentId && st.Client_Id == cl.Client_Id
-                                         select cl).Single();
+                    Client client = (from st in db.Students
+                                     from cl in db.Clients
+                                     where st.Student_Id == studentId && st.Client_Id == cl.Client_Id
+                                     select cl).Single();
 
-                        ViewBag.specificStudent = client.GivenName;
-                    }
-                    else
-                    {
-                        /* *
-                         * Retriving all students specific to a particular counselor
-                         * */
+                    ViewBag.specificStudent = client.GivenName;
+                }
+                else
+                {
+                    /* *
+                     * Retriving all students specific to a particular counselor
+                     * */
 
-                        int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
-                        var student = from caseStaff in db.Case_Staff
-                                      from cases in db.Cases
-                                      from stud in db.Students
-                                      where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
-                                      select stud.Client.GivenName;
-                        SelectList studs = new SelectList(student);
-                        ViewBag.staffSpecificStudent = studs.ToList();
-               
-                    }
+                    int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
+                    var student = from caseStaff in db.Case_Staff
+                                  from cases in db.Cases
+                                  from stud in db.Students
+                                  where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
+                                  select stud.Client.GivenName;
+                    SelectList studs = new SelectList(student);
+                    ViewBag.staffSpecificStudent = studs.ToList();
+
+                }
             }
             else
             {
@@ -309,16 +327,16 @@ namespace StormWeb.Controllers
         {
             #region Populating Drop down list for Hours,Minutes and Student
             string studentName = fc["staffSpecificStudent"];
-            
+
             if (studentName != "" || studentName != null)
             {
                 ViewBag.name = studentName;
             }
-            
+
             if (fc["listHours"] == "" && fc["listMinutes"] == "")
             {
-                ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours","Hours");
-                ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes","Minutes");
+                ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours");
+                ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes", "Minutes");
             }
             else
             {
@@ -351,14 +369,14 @@ namespace StormWeb.Controllers
             {
                 int stuId = Convert.ToInt32(CookieHelper.StudentId);
                 Client cl = (from st in db.Students
-                            from cli in db.Clients
-                            where st.Student_Id == stuId && st.Client_Id == cli.Client_Id
-                            select cli).Single();
-                studentName = cl.GivenName; 
+                             from cli in db.Clients
+                             where st.Student_Id == stuId && st.Client_Id == cli.Client_Id
+                             select cli).Single();
+                studentName = cl.GivenName;
             }
             #endregion
 
-            
+
 
             if (studentName == "" || studentName == null)
             {
@@ -435,22 +453,22 @@ namespace StormWeb.Controllers
                 {
                     studentName = (string)ViewBag.specificStudent;
                 }
-                
+
 
                 /* *
                  * Getting the student selected by the counselor and retrieving the caseId specific to the 
                  * student
                  * */
-                
+
                 Case c = (from s in db.Students
                           from cl in db.Clients
                           from cas in db.Cases
                           where cl.GivenName == studentName && cl.Client_Id == s.Client_Id && cas.Student_Id == s.Student_Id
                           select cas).Single();
-                
+
                 var appWithStudent = from app in db.Appointments
-                                   where app.Staff_Id == staffId && app.Case_Id == c.Case_Id && ((app.Confirmation == APP_CONFIRMED) || (app.Confirmation == APP_REQUEST_APPROVAL && app.AppDateTime > DateTime.Now))
-                                   select app;
+                                     where app.Staff_Id == staffId && app.Case_Id == c.Case_Id && ((app.Confirmation == APP_CONFIRMED) || (app.Confirmation == APP_REQUEST_APPROVAL && app.AppDateTime > DateTime.Now))
+                                     select app;
 
                 if (appWithStudent.Count() > 0)
                 {
@@ -475,7 +493,7 @@ namespace StormWeb.Controllers
                     TempData[SUCCESS_BOOK] = true;
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your Appointment was successfully booked");
                     //return RedirectToAction("Create", new { message = "Successfully Booked" });
-                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), appointment.Staff.FirstName +" booked an appointment for "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), appointment.Staff.FirstName + " booked an appointment for " + appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
                     //return RedirectToAction("Index");
                     return View("Refresh");
                 }
@@ -501,9 +519,9 @@ namespace StormWeb.Controllers
                     TempData[SUCCESS_BOOK] = true;
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your Appointment was successfully booked");
                     //return RedirectToAction("Create", new { message = "Booked Successfully" });
-                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Appointment booked by "+appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog(Convert.ToInt32(appointment.Case_Id), "Appointment booked by " + appointment.Case.Student.Client.GivenName, LogHelper.LOG_CREATE, LogHelper.SECTION_APPOINTMENT);
                     //return RedirectToAction("Index");
-                    return View("Refresh", new RefreshModel(Url.Action("Index")) );
+                    return View("Refresh", new RefreshModel(Url.Action("Index")));
                 }
             }
             ViewBag.Case_Id = new SelectList(db.Cases, "Case_Id", "CreatedBy", appointment.Case_Id);
@@ -511,7 +529,7 @@ namespace StormWeb.Controllers
             return View(appointment);
         }
         #endregion
-       
+
         #region Edit/Rescedule/Confirm Appointment
         [Authorize(Roles = "Student,Counsellor")]
         public ActionResult Edit(int id)
@@ -521,8 +539,8 @@ namespace StormWeb.Controllers
                 ViewBag.SuccessEdit = true;
             }
             Appointment appointment = db.Appointments.Single(a => a.Appointment_Id == id);
-            ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours",appointment.AppDateTime.Hour);
-            ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes", "Minutes",appointment.AppDateTime.Minute);
+            ViewBag.Hours = new SelectList(TimeHelper.GetHours(), "Hours", "Hours", appointment.AppDateTime.Hour);
+            ViewBag.Minutes = new SelectList(TimeHelper.GetMinutes(), "Minutes", "Minutes", appointment.AppDateTime.Minute);
             //ViewBag.Case_Id = new SelectList(db.Cases, "Case_Id", "CreatedBy", appointment.Case_Id);
             return View(appointment);
         }
@@ -553,7 +571,7 @@ namespace StormWeb.Controllers
             int listMinutes = Convert.ToInt32(fc["listMinutes"]);
             string timeFromForm = listHours + ":" + listMinutes + ":" + "00";
 
-            string s= fc["Appointment_Id"]; 
+            string s = fc["Appointment_Id"];
 
             if (fc["AppDateTime" + s] == null)
             {
@@ -572,7 +590,7 @@ namespace StormWeb.Controllers
 
             }
             DateTime dateSelected = new DateTime(dateTemp.Year, dateTemp.Month, dateTemp.Day, listHours, listMinutes, 00);
-            
+
             /* *
              * Checking if the appointment date has been booked out
              * */
@@ -580,8 +598,8 @@ namespace StormWeb.Controllers
             {
                 staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
                 Appointment appnmnt = (from app in db.Appointments
-                                where app.AppDateTime == dateSelected && app.Confirmation == APP_CONFIRMED && app.Staff_Id == staffId
-                                select app).FirstOrDefault();
+                                       where app.AppDateTime == dateSelected && app.Confirmation == APP_CONFIRMED && app.Staff_Id == staffId
+                                       select app).FirstOrDefault();
 
                 if (appnmnt != null)
                 {
@@ -620,7 +638,7 @@ namespace StormWeb.Controllers
                     //return RedirectToAction("Edit", new { mess = "EditSuccess" });
                     if (appointment.Case_Id != null)
                     {
-                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username },CookieHelper.Username +" Edited " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, CookieHelper.Username + " Edited " + appointment.Case.Student.Client.GivenName + "'s appointment", LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                     }
                     //return RedirectToAction("Index");
                     return View("Refresh");
@@ -631,28 +649,28 @@ namespace StormWeb.Controllers
             {
                 Debug.WriteLine("{0} First exception caught.", e);
                 Debug.WriteLine(e.InnerException);
-              //  LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, "Error:" + e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
+                //  LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, "Error:" + e.InnerException.ToString(), LogHelper.LOG_OTHER, LogHelper.SECTION_APPOINTMENT);
                 ModelState.AddModelError("", e);
             }
             return View(appointment);
         }
         #endregion
 
-        #region Delete 
-       
+        #region Delete
+
         public ActionResult Delete(int id)
         {
             Appointment appointment = db.Appointments.Single(a => a.Appointment_Id == id);
-            
+
             if (appointment.Case_Id == null)
             {
                 General_Enquiry genEnquiry = db.General_Enquiry.Single(g => g.Appointment_Id == id);
                 try
                 {
-                    LogHelper.writeToStudentLog((int)(appointment.Case_Id),appointment.Staff.FirstName + " Deleted " + genEnquiry.Client.GivenName + "'s General Enquiry appointment entry", LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
+                    LogHelper.writeToStudentLog((int)(appointment.Case_Id), appointment.Staff.FirstName + " Deleted " + genEnquiry.Client.GivenName + "'s General Enquiry appointment entry", LogHelper.LOG_DELETE, LogHelper.SECTION_APPOINTMENT);
                     db.General_Enquiry.DeleteObject(genEnquiry);
                     db.SaveChanges();
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -677,13 +695,13 @@ namespace StormWeb.Controllers
                 ViewBag.studentId = id;
                 int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
                 Case cases = db.Cases.Single(x => x.Student_Id == id);
-                DateTime current = DateTime.Now; 
+                DateTime current = DateTime.Now;
                 var a = (from appo in db.Appointments
-                               where appo.Case_Id == cases.Case_Id && (appo.Confirmation == APP_CONFIRMED || appo.Confirmation == APP_REQUEST_APPROVAL) && appo.AppDateTime >= current && appo.Staff_Id == staffId
-                               orderby appo.AppDateTime ascending
-                               select appo);
-                if(a.Count()>0)
-                appointment = a.First();
+                         where appo.Case_Id == cases.Case_Id && (appo.Confirmation == APP_CONFIRMED || appo.Confirmation == APP_REQUEST_APPROVAL) && appo.AppDateTime >= current && appo.Staff_Id == staffId
+                         orderby appo.AppDateTime ascending
+                         select appo);
+                if (a.Count() > 0)
+                    appointment = a.First();
             }
             return View(appointment);
         }

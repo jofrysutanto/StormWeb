@@ -15,7 +15,7 @@
 
         Branch:
         <div class="editor-field">
-            @Html.DropDownList("Branch_Id", "-- Select Branch --")
+            @Html.DropDownList("Branch_Id", "--Select--")
         </div>
         Date From :
         <div class="editor-field">
@@ -48,3 +48,18 @@
         </p>
     </fieldset>
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        // For DatePicker
+        $(".dp").datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: '0',
+            maxDate: '+24M',
+            showOn: "button",
+            buttonImage: "../Content/img/calendar_btn.png",
+            buttonImageOnly: true
+        });
+    });
+</script>

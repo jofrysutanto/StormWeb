@@ -70,7 +70,12 @@
     </div>
 </div> 
 <p>
-    <a href="@Url.Action("Edit", "Branch", new { id = Model.Branch_Id })" class="btn btn-info">
-        Edit</a>
-    @Html.Button_BackToList("Bact To List", "../Index")
+ @if (HttpContext.Current.User.IsInRole("BranchManager"))
+ {
+     if (StormWeb.Controllers.BranchController.getBranchId() == Model.Branch_Id)
+     {
+        <a href="@Url.Action("Edit", "Branch", new { id = Model.Branch_Id })" class="btn btn-info"> Edit</a>
+     }
+ }
+ @Html.Button_BackToList("Bact To List", "../Index")
 </p>

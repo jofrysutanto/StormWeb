@@ -129,6 +129,31 @@ namespace StormWeb.Controllers
 
         #endregion
 
+        public ActionResult CounsellorContactDetails()
+        {
+            int studentId = 0;
+            studentId = Convert.ToInt32(CookieHelper.StudentId);
+            var cases = db.Cases.ToList().Where(x => x.Student_Id == studentId);
+            String counsellorName = "";
+            foreach (var item in cases)
+            {
+                if (item.Case_Staff.Count != 0)
+                {
+                    var name = item.Case_Staff.Where(x => x.Role == "Counsellor").Where(x => x.Case_Id == item.Case_Id);
+                    //counsellorName = item.Case_Staff.First().Staff.FirstName + " " + item.Case_Staff.First().Staff.LastName;
+                    counsellorName = name.First().Staff.FirstName + " " + name.First().Staff.LastName;
+                    ViewBag.contact = item.Case_Staff.First().Staff.Mobile_Number;
+                    ViewBag.email = item.Case_Staff.First().Staff.Email;
+                    ViewBag.branch = item.Branch.Branch_Name;
+                }
+            }
+            if (counsellorName == "")
+                ViewBag.name = "You do not have a counsellor assigned";
+            else
+                ViewBag.name = counsellorName;
+            return View();
+        }
+
         #region List Student Profile
         [Authorize(Roles = "Super,student,Counsellor")]
         [AcceptVerbs(HttpVerbs.Get)]

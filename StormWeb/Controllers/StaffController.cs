@@ -12,7 +12,7 @@ using System.Web.Security;
 using System.Web.Helpers;
 
 namespace StormWeb.Controllers
-{ 
+{
     public class StaffController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
@@ -26,6 +26,7 @@ namespace StormWeb.Controllers
             ViewBag.message = Request.QueryString["message"];
             return View(staffs.ToList());
         }
+
 
         #endregion
 
@@ -43,7 +44,7 @@ namespace StormWeb.Controllers
 
             return View(roleModel);
         }
-      
+
         #endregion
 
         #region CHANGE ROLE
@@ -65,15 +66,15 @@ namespace StormWeb.Controllers
         #endregion
 
         #region Details
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,Counsellor,BranchManager")]
         public ViewResult Details(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
             return View(staff);
         }
 
-        #endregion 
-        
+        #endregion
+
         #region Create
 
         [Authorize(Roles = "Super,BranchManager")]
@@ -89,7 +90,7 @@ namespace StormWeb.Controllers
             s.Date_Of_Joining = DateTime.Now;
 
             return View(s);
-        }  
+        }
 
         [HttpPost]
         public ActionResult Create(Staff staff, FormCollection fc)
@@ -134,7 +135,7 @@ namespace StormWeb.Controllers
                 BindTitle(staff.Title);
                 return View(staff);
             }
-            if (staff.Address.Country_Id == 0 )
+            if (staff.Address.Country_Id == 0)
             {
                 ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName"); ViewBag.Branch = db.Branches.ToList();
                 ModelState.AddModelError("Country_Name", "Please Select Your Country Name");
@@ -166,18 +167,18 @@ namespace StormWeb.Controllers
                 BindTitle(staff.Title);
                 return View(staff);
             }
-            string username=fc["UserName"];
+            string username = fc["UserName"];
             var user = db.Staffs.Where(x => x.UserName == username).ToList();
-            if (user.Count()!=0)
-            { 
+            if (user.Count() != 0)
+            {
                 ModelState.AddModelError("UserName", "UserName already Exists");
                 ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName"); ViewBag.Branch = db.Branches.ToList();
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 BindTitle(staff.Title);
                 return View(staff);
             }
-            
-             Branch_Staff bs = new Branch_Staff();
+
+            Branch_Staff bs = new Branch_Staff();
 
             if (fc["selectedBranch"] == String.Empty)
             {
@@ -190,22 +191,22 @@ namespace StormWeb.Controllers
                 staff.Branch_Staff.Add(bs);
             }
 
-            
+
             if (ModelState.IsValid)
             {
                 db.Staffs.AddObject(staff);
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
-            BindTitle(staff.Title);  
+            BindTitle(staff.Title);
             ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName");
-            ViewBag.Branch = db.Branches.ToList(); 
+            ViewBag.Branch = db.Branches.ToList();
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", staff.Address_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
-            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Created a new staff" + staff.FirstName + " " + staff.LastName ), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Created a new staff" + staff.FirstName + " " + staff.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_PROFILE);
             return View(staff);
         }
-        
+
         #endregion
 
         #region Edit
@@ -217,16 +218,24 @@ namespace StormWeb.Controllers
                 ViewBag.successEdit = true;
             }
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
-            
+
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name", staff.Address_Id);
+            ViewBag.Branch = db.Branches.ToList();
+
+            Branch_Staff bs = staff.Branch_Staff.FirstOrDefault();
+            if (bs != null)
+            {
+                ViewBag.SelectedBranch = bs.Branch_Id;
+            }
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
             BindTitle(staff.Title);
             return View(staff);
         }
-         
+
         [HttpPost]
-        public ActionResult Edit(Staff staff)
+        public ActionResult Edit(Staff staff, FormCollection fc)
         {
+
             if (staff.Dept_Id == 0)
             {
                 ModelState.AddModelError("Dept_Id", "Please Select Your Department");
@@ -234,7 +243,7 @@ namespace StormWeb.Controllers
                 BindTitle(staff.Title);
                 return View();
             }
-            if (staff.Address.Address_Name == "" || staff.Address.Address_Name==null)
+            if (staff.Address.Address_Name == "" || staff.Address.Address_Name == null)
             {
                 ModelState.AddModelError("Address_Name", "Please Select Your Address");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
@@ -247,14 +256,14 @@ namespace StormWeb.Controllers
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 BindTitle(staff.Title);
                 return View();
-            } 
+            }
             if (staff.Address.State == "" || staff.Address.State == null)
             {
                 ModelState.AddModelError("State", "Please Select Your State");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 BindTitle(staff.Title);
                 return View();
-            } 
+            }
             if (staff.Address.Zipcode == 0)
             {
                 ModelState.AddModelError("Zipcode", "Please Select Your Zipcode");
@@ -262,7 +271,7 @@ namespace StormWeb.Controllers
                 BindTitle(staff.Title);
                 return View();
             }
-            if (staff.Address.Country.Country_Name == "" || staff.Address.Country.Country_Name==null)
+            if (staff.Address.Country.Country_Name == "" || staff.Address.Country.Country_Name == null)
             {
                 ModelState.AddModelError("Country_Name", "Please Select Your Country Name");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
@@ -305,56 +314,86 @@ namespace StormWeb.Controllers
                 ModelState.AddModelError("Mobile_Number", "Please Select Your Mobile Number");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 return View();
-            } 
+            }
             if (staff.Email == "")
             {
                 ModelState.AddModelError("Email", "Please Select Your Email");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 return View();
-            } 
+            }
             if (staff.UserName == "")
             {
                 ModelState.AddModelError("UserName", "Please Select Your UserName");
                 ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
                 return View();
             }
+
+            //Branch_Staff bs = new Branch_Staff();
+            Branch_Staff bs = db.Branch_Staff.SingleOrDefault(x => x.Staff_Id == staff.Staff_Id);
+            if (fc["selectedBranch"] == String.Empty)
+            {
+                ModelState.AddModelError("selectedBranch", "Select one branch");
+                BindTitle(staff.Title);
+            }
+            else
+            {
+                bs.Branch_Id = Convert.ToInt32(fc["selectedBranch"]);
+                //bs.Staff_Id = staff.Staff_Id;
+                //bs.BranchStaffId = staff.Branch_Staff.SingleOrDefault(x => x.Staff_Id == staff.Staff_Id).BranchStaffId;
+                staff.Branch_Staff.Add(bs);
+            }
+
             if (ModelState.IsValid)
             {
                 Address address = staff.Address;
                 address.Address_Id = staff.Address.Address_Id;
-                address.Address_Name = staff.Address.Address_Name; 
-                address.City=staff.Address.City;
-                address.State=staff.Address.State;
-                address.Zipcode=staff.Address.Zipcode;
-                address.Country.Country_Name=staff.Address.Country.Country_Name;
+                address.Address_Name = staff.Address.Address_Name;
+                address.City = staff.Address.City;
+                address.State = staff.Address.State;
+                address.Zipcode = staff.Address.Zipcode;
+                address.Country.Country_Name = staff.Address.Country.Country_Name;
                 address.Country_Id = address.Country.Country_Id;
-                
-                Country country=staff.Address.Country;
-                country.Country_Id=staff.Address.Country.Country_Id;
-                country.Country_Name=staff.Address.Country.Country_Name;
-                
-               
-                staff.Address.Country=country;
-                staff.Address = address; 
-                        
+
+                Country country = staff.Address.Country;
+                country.Country_Id = staff.Address.Country.Country_Id;
+                country.Country_Name = staff.Address.Country.Country_Name;
+
+                staff.Address.Country = country;
+                staff.Address = address;
+
                 staff.Address_Id = staff.Address.Address_Id;
-               
+
+
+                db.ObjectStateManager.ChangeObjectState(staff, System.Data.EntityState.Unchanged);
                 db.Staffs.Attach(staff);
+                db.ObjectStateManager.ChangeObjectState(staff, System.Data.EntityState.Modified);
+
+                db.ObjectStateManager.ChangeObjectState(bs, System.Data.EntityState.Unchanged);
+                db.Branch_Staff.Attach(bs);
+                db.ObjectStateManager.ChangeObjectState(bs, System.Data.EntityState.Modified);
+
+                db.ObjectStateManager.ChangeObjectState(address, System.Data.EntityState.Unchanged);
                 db.Addresses.Attach(address);
+                db.ObjectStateManager.ChangeObjectState(address, System.Data.EntityState.Modified);
+
+                db.ObjectStateManager.ChangeObjectState(country, System.Data.EntityState.Unchanged);
                 db.Countries.Attach(country);
-                db.ObjectStateManager.ChangeObjectState(staff, EntityState.Modified);
+                db.ObjectStateManager.ChangeObjectState(country, System.Data.EntityState.Modified);
+                 
+                db.ObjectStateManager.ChangeObjectState(staff, EntityState.Modified); 
+                db.ObjectStateManager.ChangeObjectState(bs, EntityState.Modified); 
                 db.ObjectStateManager.ChangeObjectState(address, EntityState.Modified);
                 db.ObjectStateManager.ChangeObjectState(country, EntityState.Modified);
                 db.SaveChanges();
                 BindTitle(staff.Title);
                 TempData[SUCCESS_EDIT] = true;
                 return RedirectToAction("Edit", "Staff", new { message = "Successfully Edited" });
-            }  
+            }
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", staff.Address_Id);
             ViewBag.Dept_Id = new SelectList(db.Staff_Dept, "Dept_Id", "Dept_Name", staff.Dept_Id);
-            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username +" Edited the Details of the staff " + staff.FirstName + " " + staff.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the Details of the staff " + staff.FirstName + " " + staff.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return View(staff);
-        } 
+        }
         #endregion
 
         #region Delete
@@ -366,40 +405,40 @@ namespace StormWeb.Controllers
             return View(staff);
         }
 
-        [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
             List<Branch_Staff> branch_staffs = db.Branch_Staff.Where(s => s.Staff_Id == staff.Staff_Id).ToList();
             foreach (Branch_Staff bs in branch_staffs) db.Branch_Staff.DeleteObject(bs);
             var casestaff = db.Case_Staff.ToList().Where(s => s.Staff_Id == id);
             int a = casestaff.Count();
-            if (casestaff.Count()!= 0)
+            if (casestaff.Count() != 0)
             {
                 ModelState.AddModelError("", "Cannot Delete .The Counsellor has cases assigned");
                 return View();
-            }  
+            }
             db.Staffs.DeleteObject(staff);
             db.SaveChanges();
-            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Deleted the Details of the Staff" + staff.FirstName + " " + staff.LastName ), LogHelper.LOG_DELETE, LogHelper.SECTION_PROFILE);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the Details of the Staff" + staff.FirstName + " " + staff.LastName), LogHelper.LOG_DELETE, LogHelper.SECTION_PROFILE);
             return RedirectToAction("Index");
         }
-       
+
         #endregion
 
         private void BindTitle(string selectedValue)
-        { 
+        {
             var title = Enumclass.GetTitle();
             ViewData["TitleValue"] = new SelectList(title, "Value", "Text", selectedValue.Trim());
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
             base.Dispose(disposing);
         }
-        
+
         public static string SUCCESS_EDIT = "SuccessfulEdit";
     }
-   
-}       
+
+}

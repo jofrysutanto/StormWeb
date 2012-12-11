@@ -18,7 +18,9 @@
                     From Date
                 </th>
                 <td>
+                    <div class="input-append"> 
                     @Html.TextBoxFor(model => model.From_Date, new { @class = "chooseDate", @readonly = "readonly" })
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -26,7 +28,9 @@
                     To Date
                 </th>
                 <td>
+                    <div class="input-append">
                     @Html.TextBoxFor(model => model.To_Date, new { @class = "chooseDate1", @readonly = "readonly" })
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -111,7 +115,10 @@
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '0'
+            maxDate: '0',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
 
@@ -121,7 +128,10 @@
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '100y'
+            maxDate: '100y',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
  

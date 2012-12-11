@@ -25,7 +25,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super,BranchManager,Administrator")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator")]
         public ViewResult List()
         {
             var courses = db.Courses.Include("Course_Level").Include("Faculty");
@@ -40,7 +40,7 @@ namespace StormWeb.Controllers
             return View(courses.ToList());
         }*/
 
-        [Authorize(Roles = "Super,BranchManager,Administrator")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator")]
         public ViewResult ViewCourses(int id)
         {
             //var courses = db.Courses.Include("Course_Level").Include("Faculty");
@@ -52,7 +52,7 @@ namespace StormWeb.Controllers
             }
             return View();
         }
-      
+
 
         #region Index
         [Authorize(Roles = "Student,Counsellor")]
@@ -96,7 +96,7 @@ namespace StormWeb.Controllers
         }
         #endregion
 
-        [Authorize(Roles = "Super,BranchManager,Administrator")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator")]
         public ViewResult Details(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
@@ -198,14 +198,18 @@ namespace StormWeb.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetFaculties(int uniID = -1)
         {
+            db.Courses.Where(x => x.Faculty.University.Country.Country_Name == "Australia").ToList();
+
+            db.Students.Where(x => x.Student_Id == 1001).ToList();
+
             if (uniID == -1)
-                return Json(Enumerable.Empty<SelectListItem>());           
+                return Json(Enumerable.Empty<SelectListItem>());
 
             IEnumerable<SelectListItem> selectList = from f in db.Faculties
                                                      where f.University_Id == uniID
                                                      select new SelectListItem
                                                      {
-                                                         Text = f.Faculty_Name,                                                         
+                                                         Text = f.Faculty_Name,
                                                          Value = SqlFunctions.StringConvert((double)f.Faculty_Id)
                                                      };
 
@@ -222,6 +226,7 @@ namespace StormWeb.Controllers
             Course course = db.Courses.Single(c => c.Course_Id == id);
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+            ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
             ViewBag.UniversityId = course.Faculty.University_Id;
             return View(course);
         }
@@ -323,6 +328,62 @@ namespace StormWeb.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
+            // Delete Template_Document
+            var templateDocumentToDelete = db.Template_Document.Where(x => x.Course_Id.Equals(course.Course_Id));
+
+            if (templateDocumentToDelete.Count() > 0)
+            {
+                foreach (Template_Document templateDocument in templateDocumentToDelete)
+                {
+                    db.Template_Document.DeleteObject(templateDocument);
+                }
+            }
+            var applicationDocuments = (from app in db.Application_Document
+                                from temp in db.Template_Document
+                                where temp.Course_Id == id && temp.TemplateDoc_Id == app.TemplateDoc_Id
+                                select app);
+            int appId = 0;
+            if (applicationDocuments.Count() > 0)
+            {
+                foreach (Application_Document application_Document in applicationDocuments)
+                {
+                    try
+                    {
+                        appId = application_Document.Application_Id;
+                        db.Application_Document.DeleteObject(application_Document);
+                        ApplicationController.deleteAllApplications(appId);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);        
+                        ModelState.AddModelError(String.Empty, "Cannot delete");
+                        return View(course);
+                    }
+                }
+            }
+
+            var applications = db.Applications.Where(x => x.Course_Id == id); 
+            int appsId = 0;
+            if (applications.Count() > 0)
+            {
+                foreach (Application application in applications)
+                {
+                    try
+                    {
+                        appsId = application.Application_Id;
+                        db.Applications.DeleteObject(application);
+                        ApplicationController.deleteAllApplications(appsId);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        ModelState.AddModelError(String.Empty, "Cannot delete");
+                        return View(course);
+                    }
+                }
+            }
+
+
             try
             {
                 db.Courses.DeleteObject(course);
@@ -344,11 +405,11 @@ namespace StormWeb.Controllers
         #region PRIVATE FUNCTION
 
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    db.Dispose();
+        //    base.Dispose(disposing);
+        //}
 
         #endregion
     }

@@ -1,4 +1,6 @@
 ﻿@model  StormWeb.Models.StudentCentreModel
+            
+             
 <div class="span3">
     <div class="widget-block">
         <div class="widget-head">
@@ -15,7 +17,8 @@
                         </th>
                         <td>
                             <small>
-                                @ViewBag.name<br />
+                   
+                              @ViewBag.name <br />
                                 @if (ViewBag.name != "You do not have a counsellor assigned")
                                 {
                                     <i class="color-icons mobile_phone_co"></i>@ViewBag.contact<br />
@@ -36,23 +39,23 @@
                     <div class="summary">
                         <ul>
                             @if (ViewBag.upcomingAppointment != null)
-                                {
+                            {
                                 <li><span class="summary-icon"><a class="dashboard-icons-colors calendar_sl" href="@Url.Action("Index", "Appointment")">
                                 </a></span><span class="count">@ViewBag.upcomingAppointment</span><span class="summary-title">
                                     Upcoming Appointments</span></li>
-                                }
+                            }
                              @{
-                                    if(ViewBag.count!=null)
-                                    {
-                                    int newInbox = ViewBag.count;
+                                 if (ViewBag.count != null)
+                                 {
+                                     int newInbox = ViewBag.count;
 
-                                    if (newInbox > 0)
-                                    {
+                                     if (newInbox > 0)
+                                     {
                                         @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
                                         @:</span><span class="count">@newInbox</span><span class="summary-title">New Message</span></li>                                     
                                     }
-                                    else
-                                    {
+                                     else
+                                     {
                                         @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
                                         @:</span><span class="count">@newInbox</span><span class="summary-title">No New Message</span></li>                                      
                                     }

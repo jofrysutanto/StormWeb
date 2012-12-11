@@ -32,6 +32,20 @@ namespace StormWeb.Helper
             return MvcHtmlString.Create(button.ToString());
         }
 
+        public static MvcHtmlString Button_Add_iframe_small(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
+        {
+            var button = new TagBuilder("a");
+
+            button = buildMyTag(htmlAttr, button);
+
+            button.MergeAttribute("class", "btn btn-info iframe-small");
+            button.MergeAttribute("href", url);
+
+            button.InnerHtml = innerHTML + " +";
+
+            return MvcHtmlString.Create(button.ToString());
+        }
+
         public static MvcHtmlString Button_DeleteOrCancel(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
         {
             var button = new TagBuilder("a");
@@ -67,7 +81,7 @@ namespace StormWeb.Helper
             button.MergeAttribute("class", "btn btn-info");
             button.MergeAttribute("href", url);
 
-            button.InnerHtml = innerHTML;
+            button.InnerHtml = "<i class=\"color-icons arrow_undo_co\"></i>" + innerHTML;
 
             return MvcHtmlString.Create(button.ToString());
         }
@@ -81,7 +95,20 @@ namespace StormWeb.Helper
             button.MergeAttribute("class", "btn btn-info");
             button.MergeAttribute("href", url);
 
-            button.InnerHtml = innerHTML + " +";
+            button.InnerHtml = "<i class=\"color-icons add_co\"></i>" + innerHTML;
+
+            return MvcHtmlString.Create(button.ToString());
+        }
+        public static MvcHtmlString Button_Edit(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
+        {
+            var button = new TagBuilder("a");
+
+            button = buildMyTag(htmlAttr, button);
+
+            button.MergeAttribute("class", "btn btn-info");
+            button.MergeAttribute("href", url);
+
+            button.InnerHtml = "<i class=\"color-icons pencil_co\"></i>" + innerHTML ;
 
             return MvcHtmlString.Create(button.ToString());
         }
@@ -132,9 +159,54 @@ namespace StormWeb.Helper
 
         }
 
+        public static MvcHtmlString Link_UploadFile(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
+        {
+            var link = new TagBuilder("a");
+
+            link = buildMyTag(htmlAttr, link);
+
+            link.MergeAttribute("class", "iframe-small");
+            link.MergeAttribute("href", url);
+
+            link.InnerHtml = "<i class=\"color-icons page_white_get_co\"></i>" + innerHTML;
+
+            return MvcHtmlString.Create(link.ToString());
+        }
+
+        public static MvcHtmlString Link_Edit(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
+        {
+            var link = new TagBuilder("a");
+
+            link = buildMyTag(htmlAttr, link);
+
+            link.MergeAttribute("href", url);
+
+            string icon = "<i class='color-icons page_white_edit_co'></i>";
+
+            link.InnerHtml = icon + innerHTML;
+
+            return MvcHtmlString.Create(link.ToString());
+        }
+
+        public static MvcHtmlString Link_Delete(this HtmlHelper helper, string innerHTML, string url, object htmlAttr = null)
+        {
+            var link = new TagBuilder("a");
+
+            link = buildMyTag(htmlAttr, link);
+
+            link.MergeAttribute("href", url);
+
+            string icon = "<i class='color-icons delete_co'></i>";
+
+            link.InnerHtml = icon + innerHTML;
+
+            return MvcHtmlString.Create(link.ToString());
+        }
+
         public static MvcHtmlString Button_Delete(this HtmlHelper helper, string innerHTML, string url, string customIconString = "")
         {
             var link = new TagBuilder("a");
+
                         
             link.MergeAttribute("href", url);
             link.MergeAttribute("class", "confirmMe btn btn-danger");
@@ -143,8 +215,36 @@ namespace StormWeb.Helper
 
             link.InnerHtml = icon + innerHTML;
 
-            //<a href="@Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id })" target='_blank' class='tip-top' data-original-title="Download Template">
-            //                                                  <i class="color-icons doc_pdf_co"></i>@Html.DisplayFor(modelItem => x.Form_Name)</a></li>
+            return MvcHtmlString.Create(link.ToString());
+        }
+
+        public static MvcHtmlString Button_Success_Disabled(this HtmlHelper helper, string innerHTML, string customIconString = "")
+        {
+            var link = new TagBuilder("a");
+
+
+            link.MergeAttribute("href", "#");
+            link.MergeAttribute("class", "btn btn-success disabled");
+            link.MergeAttribute("style", "color:white");
+            link.MergeAttribute("disabled", "disabled");
+
+            string icon = customIconString == "" ? "" : customIconString;
+
+            link.InnerHtml = icon + innerHTML;
+
+            return MvcHtmlString.Create(link.ToString());
+        }
+
+        public static MvcHtmlString Button_Success(this HtmlHelper helper, string innerHTML, string url, string customIconString = "")
+        {
+            var link = new TagBuilder("a");
+
+            link.MergeAttribute("href", url);
+            link.MergeAttribute("class", "btn btn-success");
+
+            string icon = customIconString == "" ? "" : customIconString;
+
+            link.InnerHtml = icon + innerHTML;
 
             return MvcHtmlString.Create(link.ToString());
         }

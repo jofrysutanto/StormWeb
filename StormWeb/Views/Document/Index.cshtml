@@ -24,44 +24,47 @@
     
 
 </script>
-
-    @if (ViewBag.FAQ != null)
-    {
-							<div class="modal hide fade" id="faqModal">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">×</button>
-									<h3>Quick Help</h3>
-								</div>
-								<div class="modal-body">
-                                    <i class="dashboard-icons-colors lightbulb_sl pull-right"></i>
-									<p style="font-weight:bolder">
-										Please follow step by step instruction to get your application going. <br />
-									</p>
-                                    <p>
-                                    Before your application can be started you will have to upload all the relevant documents and also fill in the forms (provided on this page as well).
-                                    </p>
-								</div>
-								<div class="modal-footer">
-									<a href="#" class="btn btn-warning" data-dismiss="modal">Close</a>
-								</div>
-							</div>
-    }
+@if (ViewBag.FAQ != null)
+{
+    <div class="modal hide fade" id="faqModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="window.location = window.location.pathname;">
+                ×</button>
+            <h3>
+                Quick Help</h3>
+        </div>
+        <div class="modal-body">
+            <i class="dashboard-icons-colors lightbulb_sl pull-right"></i>
+            <p style="font-weight: bolder">
+                Please follow step by step instruction to get your application going.
+                <br />
+            </p>
+            <p>
+                Before your application can be started you will have to upload all the relevant
+                documents and also fill in the forms (provided on this page as well).
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-warning" data-dismiss="modal" onclick="window.location = window.location.pathname;">Close</a>
+        </div>
+    </div>
+}
 <div class="row">
-    <div class="span12">
+    <div class="document-container">
         @if (Model.Count() <= 0)
         {
             <div class="alert alert-info">
                 You don't have any ongoing application
-             </div>
+            </div>
         }
         else
         {
-        <div class="alert alert-info">
-            You can find all your ongoing applications from the left hand side tabs
-        </div>
+            <div class="alert alert-info">
+                You can find all your ongoing applications from the left hand side tabs
+            </div>
         }
     </div>
-    <div class="span12" style="">
+    <div class="document-container" >
         <div class="box-tab">
             <div class="tabbable tabs-left">
                 <!-- Only required for left/right tabs -->
@@ -70,21 +73,32 @@
                     {
                         <li><a id="popover@(item.app.Application_Id)" data-content="@item.app.Course.Course_Name (@item.app.Course.Course_Level.Course_Level1)" data-original-title="@item.app.Course.Faculty.University.University_Name" href="#app@(item.app.Application_Id)" data-toggle="tab">@item.app.Course.Faculty.University.University_Name</a></li>
                     }
-                </ul>
-                <div class="tab-content">
-                    @foreach (StormWeb.Models.ApplicationDocumentViewModel item in Model)
+                    @if (Model.Count() < 3)
                     {
-                        <div class="tab-pane" id="app@(item.app.Application_Id)">
-                        @Html.Partial("~/Views/Document/Partial/_DocumentStep.cshtml", item)
-                        </div>
+                        <li><a href="@Url.Action("Index", "Course")" id="popover999" data-original-title="Start a new application" style="background-color:#6CC4E0">+ New application</a></li>
                     }
-                </div>
+                </ul>
+                @if (Model!=null)
+                {
+                    <div class="tab-content">
+                        @foreach (StormWeb.Models.ApplicationDocumentViewModel item in Model)
+                        {
+                            <div class="tab-pane" id="app@(item.app.Application_Id)">
+                                @Html.Partial("~/Views/Document/Partial/_DocumentStep.cshtml", item)
+                            </div>
+                        }
+                    </div> 
+                }
             </div>
         </div>
     </div>
+    <div class="text-align: center">
+        @if (Model.Count() < 3)
+        {
+            <a href="@Url.Action("Index", "Course")" class="btn btn-success">Start another application</a>
+        }
+    </div>
 </div>
-
-
 <script type="text/javascript">
 $(function(){
 

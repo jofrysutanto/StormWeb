@@ -49,9 +49,6 @@ $(function () {
                                     <i class="black-icons paperclip"></i>Username
                                 </th>
                                 <th>
-                                    <i class="color-icons house_co"></i>Address
-                                </th>
-                                <th>
                                     # of Students
                                 </th>
                                 <th>
@@ -63,13 +60,18 @@ $(function () {
                                 <th>
                                     <i class="color-icons user_business_boss_co"></i>Roles
                                 </th>
-                                <th><i class="color-icons bullet_key_co"></i>Actions
+                                <th>
+                                    <i class="color-icons bullet_key_co"></i>Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                if (HttpContext.Current.User.IsInRole("BranchManager"))
+                                {
+                                    if (StormWeb.Controllers.BranchController.getBranchName() == StormWeb.Helper.BranchHelper.getBranchNameList(item.Staff_Id))
+                                    {
                                 <tr>
                                     <td>
                                         <ul>
@@ -111,7 +113,8 @@ $(function () {
                                     <td>
                                         <ul>
                                             <li>@item.Address.Address_Name, @item.Address.City</li>
-                                            <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
+                                            <li class="post-date">@item.Address.State
+                                                @item.Address.Country.Country_Name @item.Address.Zipcode</li>
                                         </ul>
                                     </td>
                                     <td style="text-align: center">
@@ -136,9 +139,108 @@ $(function () {
                                             <button data-toggle="dropdown" class="btn dropdown-toggle">
                                                 <i class="icon-cog"></i><span class="caret"></span>
                                             </button>
+                                            @foreach (string s in Roles.GetRolesForUser(item.UserName))
+                                            {
+                                                if (s == "Super")
+                                                {
+                                                 <ul class="dropdown-menu">
+                                                    <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
+                                                    </i>Details</a></li></ul>
+                                                }
+                                                else
+                                                {
+                                                <ul class="dropdown-menu">
+                                                    @*     <li><a href="@Url.Action("Edit", new { id=item.Staff_Id })"><i class="color-icons application_edit_co"></i>Edit</a></li>  *@
+                                                    <li><a class='iframe1' href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
+                                                        class="color-icons application_edit_co"></i>Edit</a></li>
+                                                    @* <li><a href="#" onclick="jQuery('#divEdit').dialog('open');"><i class="color-icons application_edit_co">
+                                                </i>Edit</a></li>*@
+                                                    <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
+                                                    </i>Details</a></li>
+                                                    <li><a href="@Url.Action("Delete", new { id = item.Staff_Id })"><i class="color-icons application_delete_co">
+                                                    </i>Remove</a></li>
+                                                    <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
+                                                    </i>Manage Roles</a></li>
+                                                    <li><a id="dialog_link@(item.Staff_Id)"
+                                href="#"><i class="color-icons user_business_boss_co"></i>Activate Staff</a> </li>
+                                                </ul>
+                                                <div id="dialog" title="Activate Staff" style="display: none">
+                                                    <p>
+                                                        Lint to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
+                                                    </p>
+                                                </div>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                </tr> 
+                                    }
+                                }
+                                else
+                                {
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li><a class='tip-top' title="View profile" href="@Url.Action("Details", "Staff", new { id = @item.Staff_Id })">@item.FirstName
+                                                @item.LastName</a></li>
+                                            @{  
+                                           String @lastlogin1;
+                                           MembershipUser mu = Membership.GetUser(item.UserName);
+                                           if (mu != null)
+                                           {
+                                               StormWeb.Helper.CookieHelper.LastLogin = mu.LastLoginDate.ToString();
+                                               lastlogin1 = mu.LastLoginDate.ToString();
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@StormWeb.Helper.CookieHelper.LastLogin
+                                                </a></li>
+                                           }
+                                           else
+                                           {
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#"></a>
+                                                </li>
+                                           }
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @if (item.Email != null)
+                                            {
+                                                <li><i class="color-icons envelope_co"></i><a href="#">@item.Email</a></li>
+                                            }
+                                            @if (item.Mobile_Number != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.Mobile_Number</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @item.UserName
+                                    </td>
+                                    <td style="text-align: center">
+                                        @StormWeb.Helper.StudentsHelper.getStudentsList(item.Staff_Id).Count
+                                    </td>
+                                    <td>
+                                        @item.Staff_Dept.Dept_Name
+                                    </td>
+                                    <td>
+                                        @Html.Raw(StormWeb.Helper.BranchHelper.getBranchNameList(item.Staff_Id))
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @foreach (string s in Roles.GetRolesForUser(item.UserName))
+                                            {
+                                                <li>@s</li>       
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn dropdown-toggle">
+                                                <i class="icon-cog"></i><span class="caret"></span>
+                                            </button>
                                             <ul class="dropdown-menu">
                                                 @*     <li><a href="@Url.Action("Edit", new { id=item.Staff_Id })"><i class="color-icons application_edit_co"></i>Edit</a></li>  *@
-                                                <li><a class='iframe1'  href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
+                                                <li><a class='iframe1' href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
                                                     class="color-icons application_edit_co"></i>Edit</a></li>
                                                 @* <li><a href="#" onclick="jQuery('#divEdit').dialog('open');"><i class="color-icons application_edit_co">
                                                 </i>Edit</a></li>*@
@@ -148,8 +250,8 @@ $(function () {
                                                 </i>Remove</a></li>
                                                 <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
                                                 </i>Manage Roles</a></li>
-                                                <li><a id="dialog_link@(item.Staff_Id)" href="#"><i class="color-icons user_business_boss_co">
-                                                </i>Activate Staff</a> </li>
+                                                <li><a id="dialog_link@(item.Staff_Id)"
+                                href="#"><i class="color-icons user_business_boss_co"></i>Activate Staff</a> </li>
                                             </ul>
                                             <div id="dialog" title="Activate Staff" style="display: none">
                                                 <p>
@@ -158,8 +260,8 @@ $(function () {
                                             </div>
                                         </div>
                                     </td>
-                                </tr> 
-                                                  
+                                </tr>
+                                }
                             }
                         </tbody>
                     </table>
@@ -168,8 +270,7 @@ $(function () {
         </div>
     </div>
 </div>
- 
-@Html.Button_Add("Create New", "Staff/Create") 
+@Html.Button_Add("Create New", "../Staff/Create")
 <br />
 <br />
 <br />
@@ -183,7 +284,7 @@ $(function () {
     @:$(function () {
     @:$.pnotify({
             @:title:'Success',
-			@:layout : 'top',
+			@:layout : 'top', 
 			@:text: 'Your edit has been successful',
 			@:type:'success',
             @:history:false

@@ -32,8 +32,15 @@ namespace StormWeb.Controllers
         [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
         {
-            Client client = db.Clients.Single(c => c.Client_Id == id);
-            return View(client);
+            Client client = db.Clients.SingleOrDefault(c => c.Client_Id == id);
+            if (client != null)
+            {
+                return View(client);
+            }
+            else
+            {
+                return View(new Client());
+            }
         }
 
         #region EDIT
@@ -59,7 +66,7 @@ namespace StormWeb.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name", client.Address_Id);
+            ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name", client.Address_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the client Details " + client.GivenName + " " + client.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_PROFILE);
             return View(client);
         }
@@ -564,8 +571,9 @@ namespace StormWeb.Controllers
 
             if (studentsToDelete.Count() > 0)
             {
-                ModelState.AddModelError("", "Cannot Delete .The Client has Students assigned");
-                return View(client);
+                db.Clients.DeleteObject(client);
+                //ModelState.AddModelError("", "Cannot Delete .The Client has Students assigned");
+                //return View(client);
             }
 
             // Delete 

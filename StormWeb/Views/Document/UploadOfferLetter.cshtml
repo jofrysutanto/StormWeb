@@ -7,6 +7,13 @@
 
          $("#upload-files").click(function () {
              var valid = true;
+
+             $('#upload-files').attr("disabled", true);
+             $("#upload-files").addClass("disabled");
+             $("#upload-files").val("Loading...");
+
+             disableButton = true;
+
              if ($("#file").val() == '') {
                  valid = false;
                  alert("File is not selected");

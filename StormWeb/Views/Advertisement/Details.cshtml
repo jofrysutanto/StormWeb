@@ -1,0 +1,69 @@
+﻿@model StormWeb.Models.Advertisement
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h2>
+                    Advertisement Details</h2>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <br />
+                    <table class="table">
+                        <thead>
+                            @Html.HiddenFor(model => model.AdvertisementId)
+                            <tr>
+                                <th>
+                                    @Html.Label("Heading")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Heading)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    @Html.Label("Author")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.UploadedBy)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    @Html.Label("Date Uploaded")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.UploadedOn)
+                                </td>
+                            </tr>
+                           @* <tr>
+                                <th>
+                                    @Html.Label("Advertisment")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Advertisement_File.)
+                                </td>
+                            </tr>*@
+                            <tr>
+                                <th>
+                                    @Html.Label("Comments")
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(model => model.Comments)
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.Button_BackToList("Bact To List", "../Index")
+</p>

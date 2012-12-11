@@ -5,15 +5,158 @@
           
 }
 <script type="text/javascript">
+
+    function CheckDecimal(inputtxt) {
+
+        if (inputtxt == null)
+            return false;
+        var decimal = /^[0-9]+(\.[0-9]+)+$/;
+        if (inputtxt.value.match(decimal)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function revertButton(appID) {
+        $("#submitPayment" + appID).show();
+        $("#spinner" + appID).hide();
+    }
+
+    function getAmountPayable(appID) {
+        var reqData = "{'appID':'" + appID + "'}";
+
+        var originalInfo = $("#editPayment" + appID);
+
+        var editLink = $('<div>').append($("#editPayment" + appID).clone()).html();
+
+        $.ajax({
+            url: '/Application/getAmountPayable/',
+            data: reqData,
+            contentType: 'application/json, charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            success: function (result) {
+                $("#amountPayable" + appID).fadeOut('slow', new function () {
+                    var htmlString = "Amount payable by student: <strong>" + result.amount + " in " + result.currency + "</strong>" + editLink;
+
+                    $("#amountPayable" + appID).html(htmlString);
+                    $("#amountPayable" + appID).fadeIn('slow');
+                    $("#editPayment" + appID).fadeIn('slow');
+
+                    refreshEditDOM();
+                });
+            },
+            error: function (result) {
+                alert('Error retrieving paymentDetail');
+            }
+        });        
+    }
+
     $(function () {
 
         $(".myFrame").colorbox({ iframe: true, width: "400px", height: "300px" });
 
         $(document).bind('cbox_closed', function () {
-                   
+
             parent.location.reload();
         });
-                  
+
+        $("a[id*='submitPayment']").click(function (event) {
+            event.preventDefault();
+            var appID = $(this).attr("href");
+
+            $(this).hide();
+            $("#spinner" + appID).show();
+
+            var currency = $("#currency" + appID).val();
+            var amount = $("#amount" + appID).val();
+
+            if (currency.substring(0, 2) == "--" || amount == null) {
+                $.pnotify({
+                    title: 'Error',
+                    text: 'There are some error, please fix it',
+                    type: 'error',
+                    history: false
+                });
+                revertButton(appID);
+                return;
+            }
+
+            var numNum = +amount;
+            if (isNaN(numNum) || numNum == "") {
+                $.pnotify({
+                    title: 'Error',
+                    text: 'Please enter valid amount',
+                    type: 'error',
+                    history: false
+                });
+                revertButton(appID);
+                return;
+            }
+
+            var data = "currency=" + currency + "&amount=" + amount + "&appID=" + appID;
+
+            var reqData = "{'currency':'" + currency + "','amount':'" + amount + "','appID':'" + appID + "'}";
+
+            $.ajax({
+                url: '/Application/UpdatePayment/',
+                data: reqData,
+                contentType: 'application/json, charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                success: function (result) {
+                    $("#formHolder" + appID).fadeOut('slow');
+
+                    $.pnotify({
+                        title: 'Success',
+                        text: 'The student will be able to see their payment amount now',
+                        type: 'success',
+                        history: false
+                    });
+
+                    getAmountPayable(appID);
+                    revertButton(appID);
+                },
+                error: function (result) {
+                    alert('Error processing your request, please try again later');
+                    getAmountPayable(appID);
+                    revertButton(appID);
+                }
+
+            });
+        })
+
+        $("a[id*='approvePayment']").click(function (event) {
+            event.preventDefault();
+            var appID = $(this).attr("href");
+            var data = "{'appID':'" + appID + "'}";
+
+            $.ajax({
+                url: '/Document/ApprovePayment/',
+                data: data,
+                contentType: 'application/json, charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                success: function (result) {
+
+                    $.pnotify({
+                        title: 'Success',
+                        text: 'The student\'s payment have been approved',
+                        type: 'success',
+                        history: false
+                    });
+                    $(this).hide();
+                    location.reload();
+                },
+                error: function (result) {
+                    alert('Error processing your request, please try again later');
+                }
+
+            });
+        })
+
     });
 
 
@@ -27,7 +170,7 @@
     <div class="span12">        
         <div class="nonboxy-widget">
           <div class="widget-head">
-            <h5><i class="black-icons  user"></i> Applications Of : @ViewBag.studentName</h5>
+            <h5><i class="black-icons  user"></i> Applications Of : @ViewBag.studentName @Html.ActionLink("Contact details", "StudentProfile", "StudentCentre", new { id = ViewBag.clientId }, new { @class="ifName" })</h5>
           </div>
           <div class="widget-content">
             <div class="widget-box">
@@ -62,135 +205,240 @@
                             {
                                 StormWeb.Models.DocumentIndexViewModel documentModel = StormWeb.Controllers.DocumentController.getDocumentViewModelByCourseId((List<StormWeb.Models.DocumentIndexViewModel>)ViewBag.DocumentViewModel, item.Course_Id);
 
-                                <tr>
+                                var offer = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.OFFER_LETTER_TYPE);
+                                var coe = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.COE_TYPE);
+                                var accept = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.ACCEPTANCE_TYPE);
+                                var accept_complete = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.COMPLETED_ACCEPTANCE_TYPE);
+                                
+                                <tr class="document-table-notice">
+                                    <td colspan="7"><div class="alert alert-info">@StormWeb.Controllers.ApplicationController.getNextStepDescription(item.Status)</div></td>                                    
+                                </tr>
+                                if (item.Application_Cancel != null)
+                                {
+                                    <tr class="document-table-notice">
+                                        <td colspan="7"><div class="alert alert-warning">The student requested to cancel this application: @Html.Button_Delete("Confirm", @Url.Action("DeleteConfirmed", "Application", new { id = item.Application_Id }))</div></td>
+                                    </tr>
+                                }
+                                <tr class="document-table-row">
+                                    
                                     <td>
                                     <a class='tip-top' title="View course guide" href="#">@Html.DisplayFor(modelItem => item.Course.Course_Name) </a>  <br />                                                                     
                                         @Html.DisplayFor(modelItem => item.Course.Faculty.University.Country.Country_Name)    <br />                            
                                         @Html.DisplayFor(modelItem => item.Course.Faculty.University.University_Name)
                                         <ul>
-                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 60)
-                                                {
-                                                       
-                                                    <li>
-                                                    <a  href="@Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload Offer Letter">
-                                                    </a>
-                                                    </li>                                                    
-                                                }
-                                                 @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
-                                                    {
-                                                    <li>
-                                                        <div class="widget-content">
-                                                            <div class="widget-box">
-                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download Offer Letter">
-                                                                </a>
-                                                                <a class="color-icons cross_co tip-top" data-original-title="Delete Offer Letter" data-toggle="modal"
-                                                                         href="#myModal@(item.Application_Id)"></a>
-                                                                <div class="modal hide fade" id="myModal@(item.Application_Id)" style="display: none;">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal">
-                                                                            ×</button>
-                                                                        <h3>
-                                                                            Confirm</h3>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>
-                                                                            Confirm Delete?
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <a href="@Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "OfferLetter", returnId = ViewBag.clientId })" class="btn btn-mini btn-warning">
-                                                                            Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
-                                                                                Cancel</a>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                         
-
-                                                    </li>
-                                                    }
-                                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
-                                                    {
-                                                    <li>
-                                                        <div class="widget-content">
-                                                            <div class="widget-box">
-                                                                <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Application_Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download Offer Letter">
-                                                                </a>
-
-                                                            </div>
-                                                        </div>
-                                                         
-
-                                                    </li>
-                                                    }
-                                                    @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 90)
+                                        @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 40)
+                                        {
+                                            // Documents Completed
+                                            <td>
+                                                <a href="@Url.Action("changeStatus", "Application", new { id = item.Application_Id })" class="btn btn-info">
+                                                    Submit Application</a>
+                                            </td>
+                                        }
+                                        @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 60)
+                                        {
+                                            // Application submitted
+                                            if (!item.Interview_Storm)
                                             {
-                                                <li>
-                                                <a  href="@Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload CoE">
-                                                </a>
-
-                                                </li>
-                                                        
+                                                <li><a class="btn btn-success" href="@Url.Action("UpdateInterview", "Application", new { id = item.Application_Id, type = "storm", back = Url.Action("StudentDetails", "Document", new { id = Model.First().Student.Client_Id }) })">Set Storm Interview to Complete</a> </li>
                                             }
-                                                        
-                                            @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) > 80 && StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) <= 100)
+                                            else
                                             {
+                                                <li style="color:green">Storm interview completed</li>
+                                            }
+                                            if (!item.Interview_Institution)
+                                            {
+                                                <li><a class="btn btn-success" href="@Url.Action("UpdateInterview", "Application", new { id = item.Application_Id, type = "institution", back = Url.Action("StudentDetails", "Document", new { id = Model.First().Student.Client_Id }) })">Set Institution Interview to Complete</a> </li>
+                                            }
+                                            else
+                                            {
+                                                <li style="color:green">Institution interview completed</li>
+                                            }
+                                        }
+                                        
+                                     @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 70)
+                                     {
+                                         // Interview Completed           
+                                                    <li>
+                                                        @Html.Link_UploadFile("Upload Offer Letter", @Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName }))
+                                                    <!--<a  href="@Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "OfferLetter", studentName = ViewBag.studentName })" class='myFrame black-icons upload tip-top' data-original-title="Upload Offer Letter"></a>-->
+                                                    
+                                                    </li>                                                    
+                                     }
+                                     else if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 80)
+                                     {
+                                         // Offer Letter
+                                                    <li>
+                                                        <div class="widget-content">
+                                                            <div class="widget-box">
+                                                                @if (offer != null)
+                                                                {
+                                                                    @Html.Link_DownloadFile("Offer Letter", @Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id }));
+                                                                
+                                                                    <text>(</text>@Html.Link_Delete("Remove", @Url.Action("DeleteOfferLetter", new { id = offer.Id, doctype = "OfferLetter", returnId = ViewBag.clientId }))<text>)</text>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                         
+
+                                                    </li>
+                                                                if (item.Payments.Count > 0)
+                                                                {
+                                                             <li style="height:100px;" id="formHolder@(item.Application_Id)">
+                                                               <div class="widget-content">
+                                                                    <div class="widget-box well ">
+                                                                        Please update the amount payable by student:
+                                                                        <form action="@Url.Action("UpdatePayment", "Application")" method="post" class="form-inline">
+                                                                            @Html.DropDownList("currency" + item.Application_Id, (SelectList)ViewData["CurrencyValue"], new { @class = "input-small" })
+                                                                            <input type="text" id="amount@(item.Application_Id)" class="input-small" name="amount@(item.Application_Id)" placeholder="Amount here"/>
+                                                                            <input type="hidden" name="appID" value="@item.Application_Id" />
+                                                                            <a class="btn btn-small" href="@(item.Application_Id)" id="submitPayment@(item.Application_Id)">Go</a>
+                                                                            <span id="spinner@(item.Application_Id)" style="display:none">@Html.SpinnerImg("Loading..")</span>
+                                                                        </form>
+                                                                
+                                                                  </div>
+                                                                </div>
+                                                             </li>
+                                                                    var payment = item.Payments.First();
+                                                                    if (payment.Amount != null)
+                                                                    {
+                                                                        <script>
+                                                                            $(function () {
+                                                                                $("#formHolder@(item.Application_Id)").hide();
+                                                                            });
+                                                                        </script> 
+                                                             
+                                                                        <li id="amountPayable@(item.Application_Id)">Amount payable by student: <strong>@payment.Amount in @payment.Currency</strong> @Html.Link_Edit("Edit", Convert.ToString("#"), new { id = "editPayment" + item.Application_Id, value = item.Application_Id })</li>
+                                                                    }
+
+                                                                    if (payment.Date_Of_Payment != null)
+                                                                    {
+                                                                        <div class="widget-content">
+                                                                        <div class="widget-box well ">
+                                                                            The students have made the payment on @item.Payments.First().Date_Of_Payment <br />
+                                                                            Attached file: @Html.Link_DownloadFile("Attached proof of payment", @Url.Action("DownloadPaymentReceipt", new { id = StormWeb.Controllers.DocumentController.GetFileId(item.Application_Id) })) <br />
+                                                                            @if(payment.Approved_By == null)
+                                                                            {
+                                                                                <a class="btn btn-small" href="@(item.Application_Id)" id="approvePayment@(item.Application_Id)">Approve</a>                          
+                                                                                }
+                                                                            else
+                                                                            {
+                                                                                @Html.Button_Success_Disabled("Approved");
+                                                                            }
+                                                                        </div>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                     }
+                                     else if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 85)
+                                     {
+                                         // Payment Completed           
+                                         var acceptDoc = item.Application_Result.SingleOrDefault( x => x.Type == StormWeb.Controllers.DocumentController.ACCEPTANCE_TYPE);
+                                         if (acceptDoc == null)
+                                         {
+                                        <li>
+                                            @Html.Link_UploadFile("Upload Acceptance Form", @Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "Acceptance", studentName = ViewBag.studentName }))                                                    
+                                        </li> 
+                                         }
+                                         else
+                                         {
+                                            <li>
+                                                @Html.Link_DownloadFile("Unsigned Acceptance Form", @Url.Action("DownloadAcceptance", new { type="appId" })) 
+                                                <text>(</text>@Html.Link_Delete("Remove", @Url.Action("DeleteOfferLetter", new { id = acceptDoc.Id, doctype = "Acceptance", returnId = ViewBag.clientId, statusChange = false }))<text>)</text>
+                                            </li> 
+                                         }
+                                         
+
+                                         var signedAcceptDoc = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.COMPLETED_ACCEPTANCE_TYPE);
+
+                                         if (signedAcceptDoc != null)
+                                         {
+                                            <li>
+                                                @Html.Link_DownloadFile("Signed Acceptance Form", @Url.Action("DownloadCompletedAcceptance", new { type = "appId" })) 
+                                                <text>(</text>@Html.Link_Delete("Remove", @Url.Action("DeleteOfferLetter", new { id = signedAcceptDoc.Id, doctype = "Acceptance", returnId = ViewBag.clientId, statusChange = false }))<text>)</text>
+                                            </li> 
+                                            <li>
+                                                @Html.Link_UploadFile("Upload CoE", @Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName }))
+                                                </li>
+                                         }
+                                     }
+                                     else if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 90)
+                                     {
+                                         // Acceptance Completed                                                   
+                                         <li>
+                                            @Html.Link_DownloadFile("Signed Acceptance Form", @Url.Action("DownloadCompletedAcceptance", new { id=item.Application_Id, type = "appId" })) 
+                                            <text>(</text>@Html.Link_Delete("Remove", @Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "CompletedAcceptance", returnId = ViewBag.clientId, statusChange = false }))<text>)</text>
+                                        </li>
+                                         
+                                         if (coe == null)
+                                         {
                                                 <li>
+                                                @Html.Link_UploadFile("Upload CoE", @Url.Action("UploadApplicationResult", new { Doc_Id = item.Application_Id, case_Id = item.Case_Id, doctype = "CoE", studentName = ViewBag.studentName }))
+                                                </li>
+                                         }
+                                         else
+                                         {
+                                             <li>
+                                                @Html.Link_DownloadFile("CoE", @Url.Action("DownloadCoE", new { id = item.Application_Id, type = "appId" })) 
+                                                <text>(</text>@Html.Link_Delete("Remove", @Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "CoE", returnId = ViewBag.clientId, statusChange = false }))<text>)</text>
+                                            </li> 
+                                         }
+                                     }
+                                     else if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) == 100)
+                                     {
+                                         if (offer != null)
+                                         {
+                                        <li>
+                                            <div class="widget-content">
+                                                <div class="widget-box">
+                                                    @Html.Link_DownloadFile("Offer Letter", @Url.Action("DownloadOfferLetter", new { id = item.Application_Id, type = "appId" }))
+                                                    @Html.Link_DownloadFile("CoE", @Url.Action("DownloadCoE", new { id = item.Application_Id, type = "appId" }))                                                    
+                                                </div>
+                                            </div>
+                                            @if ((bool) item.Completed)
+                                            {
+                                            <div class="widget-content">
+                                                <div class="widget-box">
+                                                    @Html.Button_Success_Disabled("Completed")
+                                                </div>
+                                            </div>
+                                            }
+                                            else
+                                            {
                                                 <div class="widget-content">
                                                     <div class="widget-box">
-                                                        <a href="@Url.Action("DownloadOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id })" class='black-icons download tip-top' data-original-title="Download CoE">
-                                                        </a>
-                                                        <a class="color-icons cross_co tip-top" data-original-title="Delete" data-toggle="modal"
-                                                                    href="#myModal@(item.Application_Id)"></a>
-                                                        <div class="modal hide fade" id="myModal@(item.Application_Id)" style="display: none;">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal">
-                                                                    ×</button>
-                                                                <h3>
-                                                                    Confirm</h3>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>
-                                                                    Confirm Delete?
-                                                                </p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <a href="@Url.Action("DeleteOfferLetter", new { id = item.Application_Result.FirstOrDefault().Id, doctype = "CoE", returnId = ViewBag.clientId })" class="btn btn-mini btn-warning">
-                                                                    Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
-                                                                        Cancel</a>
-                                                            </div>
-                                                            </div>
-                                                        </div>
+                                                        @Html.Button_SaveOrUpdate("Mark as complete", @Url.Action("markStatusCompleted", "Application", new { id = item.Application_Id, back="s" }))
+                                                    </div>
                                                 </div>
-
-                                            </li>
-
                                             }
+                                        </li>
+                                         }
+                                     }
+                                                        
+                                            
                                                 
-                                                </ul>
+                                        </ul>
                                         
                                     </td>
 
                                     <td>
                                     <ul>
                                     @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
-                                    {                                       
-                                        
-                                       StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+                                    {
 
-                                       if (x.FileName != "No File")
-                                           {
+                                        StormWeb.Models.Application_Document appDoc = documentModel.getDocFromTemplate(x.TemplateDoc_Id);
+
+                                        if (x.FileName != "No File")
+                                        {
                                            <li>
-                                            @Html.Link_DownloadFile(x.Form_Name, Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id }), new { @class="tip-top", data_original_title="Download Template" })
+                                            @Html.Link_DownloadFile(x.Form_Name, Url.Action("DownloadTempDoc", new { id = x.TemplateDoc_Id }), new { @class = "tip-top", data_original_title = "Download Template" })
                                             </li>  
                                            
                                             
-                                           }
-                                       else
-                                       {
+                                        }
+                                        else
+                                        {
                                            <li>@Html.DisplayFor(modelItem => x.Form_Name) </li>
-                                       }
+                                        }
                                     }
 
                                    
@@ -216,7 +464,7 @@
                                    
                                     </ul>                                            
                                     </td>
-
+                                    <!-- Date Time -->
                                     <td>
                                     <ul>
                                    @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
@@ -226,7 +474,7 @@
                                        if (appDoc != null)
                                        {
                                  
-                                            <li>@Html.DisplayFor(modelItem => item.Application_Document.FirstOrDefault().UploadedOn, "ShortDateTime") @Html.DisplayFor(modelItem => appDoc.Application.Course_Id)</li>
+                                            <li>@Html.DisplayFor(modelItem => item.Application_Document.FirstOrDefault().UploadedOn, "ShortDateTime")</li>
                                   
                                        }
                                        else
@@ -236,7 +484,7 @@
                                    }
                                     </ul>
                                     </td>
-
+                                    <!-- Download documents uploaded by students -->
                                     <td>
                                     <ul>
                                    @foreach (StormWeb.Models.Template_Document x in documentModel.tempDoc)
@@ -246,13 +494,12 @@
                                        if (appDoc == null)
                                        {
                                  
-                                        <li> <a  class='btn btn-danger' href='#'  > Not Uploaded </a></li>                                  
+                                        <li> <a  class='alert alert-warning' href='#'  > Not Uploaded </a></li>                                  
                                        }
                                        else
                                        {
-                                        <li>@Html.DisplayFor(modelItem => appDoc.FileName)
-                                        <a href="@Url.Action("DownloadAppDoc", new { id = appDoc.ApplicationDoc_Id })"  target="_blank" class='black-icons download tip-top' data-original-title="Download">
-                                        </a></li>
+                                        <li> @Html.Link_DownloadFile(appDoc.FileName, @Url.Action("DownloadAppDoc", new { id = appDoc.ApplicationDoc_Id }))
+                                        </li>
                                        }
                                    }
 
@@ -291,13 +538,12 @@
                                            if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) < 60)
                                            {
                                                if (appDoc.Approved == false)
-                                               {
-                                                   
-                                                <li><a  class='color-icons accept_co tip-top' data-original-title='Approve' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'>  </a></li>
+                                               {                                                   
+                                                <li><i class='color-icons accept_co tip-top' ></i><a data-original-title='Approve' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'> Approve  </a></li>
                                                }
                                                else
                                                {
-                                                <li><a   class='color-icons cancel_co tip-top' data-original-title='Un Approve' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'> </a></li>
+                                                <li><i class='color-icons cancel_co tip-top' ></i><a data-original-title='Undo approval' href='@Url.Action("ApproveDocument", new { id = appDoc.ApplicationDoc_Id, returnId = ViewBag.clientId })'> Undo </a></li>
                                                }
 
                                            }
@@ -314,6 +560,7 @@
 
                                </tr>
                             }     
+                            
                                 
                         </tbody>
                     </table>             
@@ -394,13 +641,11 @@
                                             <td>
                                             @if (!(items.UploadedOn == null))
                                             {
-                                                            @Html.DisplayFor(modelItem => items.FileName)
-                                                            <a href="@Url.Action("DownloadCaseDoc", new { id = items.CaseDocument_Id })"  target="_blank"  class='black-icons download tip-top' data-original-title="Download">
-                                                            </a>
+                                                            @Html.Link_DownloadFile(items.FileName, Url.Action("DownloadCaseDocTemp", new { id = items.CaseDocTemplate_Id }))                                                         
                                             }
                                             else
                                             {
-                                                            <a  class='btn btn-danger' href='#'  > Not Uploaded </a>
+                                                            <li> <a  class='alert alert-warning' href='#'  > Not Uploaded </a></li>
                                             }
 
                                             </td>
@@ -425,31 +670,27 @@
   </div>  
 </div>
 
-<script type="text/javascript">
-@{
+<script>
 
-    if (ViewBag.Message != null)
-    {
-    @:$(function () {
-    @:var noty_id = noty({
-			@:layout : 'top',
-			@:text: "@ViewBag.Message",
-			@:type:'success',
-			
-			 @:});
-		  @:});
+    function refreshEditDOM() {
+        $("a[id*='editPayment']").click(function (event) {
+            event.preventDefault();
 
+            var appID = $(this).attr('value');
+
+            if (appID != null) {
+
+                $(this).fadeOut('slow', function () {
+                    $('#formHolder' + appID).fadeIn('slow');
+                });
+
+
+            }
+        });
     }
-}
 
-@*******************************************************************************@
+    $(function () {
+        refreshEditDOM();
+    });
 
-@*<script type="text/javascript">
-	$(document).ready(function () {
-		
-	    $('.progress').bar({ value: parseInt(@ViewBag.documents.Count() / @ViewBag.templates.Count() * 100) });
-        
-        alert ($(".bar").value() );
-		});
-	});
-</script>*@
+</script>

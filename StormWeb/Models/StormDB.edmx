@@ -7,6 +7,8 @@
       <Schema Namespace="StormDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="StormDBModelStoreContainer">
           <EntitySet Name="Address" EntityType="StormDBModel.Store.Address" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Advertisement" EntityType="StormDBModel.Store.Advertisement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Advertisement_File" EntityType="StormDBModel.Store.Advertisement_File" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application" EntityType="StormDBModel.Store.Application" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application_Cancel" EntityType="StormDBModel.Store.Application_Cancel" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application_Document" EntityType="StormDBModel.Store.Application_Document" store:Type="Tables" Schema="dbo" />
@@ -52,6 +54,7 @@
           <EntitySet Name="Notification" EntityType="StormDBModel.Store.Notification" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Password_Reset" EntityType="StormDBModel.Store.Password_Reset" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payment" EntityType="StormDBModel.Store.Payment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Receipt_File" EntityType="StormDBModel.Store.Receipt_File" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Role" EntityType="StormDBModel.Store.Role" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Side_Menu" EntityType="StormDBModel.Store.Side_Menu" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Staff" EntityType="StormDBModel.Store.Staff" store:Type="Tables" Schema="dbo" />
@@ -59,56 +62,61 @@
           <EntitySet Name="Staff_Role" EntityType="StormDBModel.Store.Staff_Role" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Student" EntityType="StormDBModel.Store.Student" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Student_Log" EntityType="StormDBModel.Store.Student_Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="StormDBModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="System_Log" EntityType="StormDBModel.Store.System_Log" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Template_Document" EntityType="StormDBModel.Store.Template_Document" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="University" EntityType="StormDBModel.Store.University" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK__aspnet_Me__Appli__59C55456" Association="StormDBModel.Store.FK__aspnet_Me__Appli__59C55456">
+          <AssociationSet Name="FK__aspnet_Me__Appli__2334397B" Association="StormDBModel.Store.FK__aspnet_Me__Appli__2334397B">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Me__UserI__5AB9788F" Association="StormDBModel.Store.FK__aspnet_Me__UserI__5AB9788F">
+          <AssociationSet Name="FK__aspnet_Me__UserI__24285DB4" Association="StormDBModel.Store.FK__aspnet_Me__UserI__24285DB4">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pa__Appli__4B7734FF" Association="StormDBModel.Store.FK__aspnet_Pa__Appli__4B7734FF">
+          <AssociationSet Name="FK__aspnet_Pa__Appli__5C6CB6D7" Association="StormDBModel.Store.FK__aspnet_Pa__Appli__5C6CB6D7">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__PathI__5BAD9CC8" Association="StormDBModel.Store.FK__aspnet_Pe__PathI__5BAD9CC8">
+          <AssociationSet Name="FK__aspnet_Pe__PathI__640DD89F" Association="StormDBModel.Store.FK__aspnet_Pe__PathI__640DD89F">
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
             <End Role="aspnet_PersonalizationAllUsers" EntitySet="aspnet_PersonalizationAllUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__PathI__5CA1C101" Association="StormDBModel.Store.FK__aspnet_Pe__PathI__5CA1C101">
+          <AssociationSet Name="FK__aspnet_Pe__PathI__69C6B1F5" Association="StormDBModel.Store.FK__aspnet_Pe__PathI__69C6B1F5">
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
             <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__UserI__5D95E53A" Association="StormDBModel.Store.FK__aspnet_Pe__UserI__5D95E53A">
+          <AssociationSet Name="FK__aspnet_Pe__UserI__6ABAD62E" Association="StormDBModel.Store.FK__aspnet_Pe__UserI__6ABAD62E">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pr__UserI__56E8E7AB" Association="StormDBModel.Store.FK__aspnet_Pr__UserI__56E8E7AB">
+          <AssociationSet Name="FK__aspnet_Pr__UserI__3A179ED3" Association="StormDBModel.Store.FK__aspnet_Pr__UserI__3A179ED3">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Profile" EntitySet="aspnet_Profile" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Ro__Appli__4C6B5938" Association="StormDBModel.Store.FK__aspnet_Ro__Appli__4C6B5938">
+          <AssociationSet Name="FK__aspnet_Ro__Appli__4589517F" Association="StormDBModel.Store.FK__aspnet_Ro__Appli__4589517F">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Us__Appli__4E53A1AA" Association="StormDBModel.Store.FK__aspnet_Us__Appli__4E53A1AA">
+          <AssociationSet Name="FK__aspnet_Us__Appli__0F2D40CE" Association="StormDBModel.Store.FK__aspnet_Us__Appli__0F2D40CE">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Us__RoleI__57DD0BE4" Association="StormDBModel.Store.FK__aspnet_Us__RoleI__57DD0BE4">
+          <AssociationSet Name="FK__aspnet_Us__RoleI__4C364F0E" Association="StormDBModel.Store.FK__aspnet_Us__RoleI__4C364F0E">
             <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
             <End Role="aspnet_UsersInRoles" EntitySet="aspnet_UsersInRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Us__UserI__58D1301D" Association="StormDBModel.Store.FK__aspnet_Us__UserI__58D1301D">
+          <AssociationSet Name="FK__aspnet_Us__UserI__4B422AD5" Association="StormDBModel.Store.FK__aspnet_Us__UserI__4B422AD5">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_UsersInRoles" EntitySet="aspnet_UsersInRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_Address_Country" Association="StormDBModel.Store.FK_Address_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Address" EntitySet="Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Advertisement_File_Advertisement" Association="StormDBModel.Store.FK_Advertisement_File_Advertisement">
+            <End Role="Advertisement" EntitySet="Advertisement" />
+            <End Role="Advertisement_File" EntitySet="Advertisement_File" />
           </AssociationSet>
           <AssociationSet Name="FK_Application_Cancel_Application" Association="StormDBModel.Store.FK_Application_Cancel_Application">
             <End Role="Application" EntitySet="Application" />
@@ -250,6 +258,10 @@
             <End Role="Application" EntitySet="Application" />
             <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
+          <AssociationSet Name="FK_Receipt_File_Payment" Association="StormDBModel.Store.FK_Receipt_File_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="Receipt_File" EntitySet="Receipt_File" />
+          </AssociationSet>
           <AssociationSet Name="FK_Side_Menu_Role" Association="StormDBModel.Store.FK_Side_Menu_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="Side_Menu" EntitySet="Side_Menu" />
@@ -290,6 +302,27 @@
           <Property Name="Zipcode" Type="int" Nullable="false" />
           <Property Name="Country_Id" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Advertisement">
+          <Key>
+            <PropertyRef Name="AdvertisementId" />
+          </Key>
+          <Property Name="AdvertisementId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Heading" Type="nvarchar" MaxLength="50" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="UploadedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UploadedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Advertisement_File">
+          <Key>
+            <PropertyRef Name="AdvertisementFileId" />
+          </Key>
+          <Property Name="AdvertisementFileId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdvertisementId" Type="int" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Path" Type="varchar" MaxLength="100" />
+          <Property Name="UploadedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UploadedOn" Type="datetime" />
+        </EntityType>
         <EntityType Name="Application">
           <Key>
             <PropertyRef Name="Application_Id" />
@@ -301,6 +334,8 @@
           <Property Name="Course_Id" Type="int" Nullable="false" />
           <Property Name="Status" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="Completed" Type="bit" />
+          <Property Name="Interview_Storm" Type="bit" Nullable="false" />
+          <Property Name="Interview_Institution" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Application_Cancel">
           <Key>
@@ -811,7 +846,18 @@
           <Property Name="Receipt_No" Type="varchar" MaxLength="50" />
           <Property Name="Payment_Method" Type="varchar" MaxLength="50" />
           <Property Name="Date_Of_Payment" Type="datetime" />
-          <Property Name="Approved_By" Type="int" />
+          <Property Name="Approved_By" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Receipt_File">
+          <Key>
+            <PropertyRef Name="File_Id" />
+          </Key>
+          <Property Name="File_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentId" Type="int" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Path" Type="varchar" MaxLength="100" />
+          <Property Name="UploadedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UploadedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -885,6 +931,16 @@
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="Author" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="System_Log">
           <Key>
             <PropertyRef Name="SystemLog_Id" />
@@ -920,8 +976,9 @@
           <Property Name="Campus" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="University_Url" Type="varchar" MaxLength="200" />
+          <Property Name="Description" Type="text" />
         </EntityType>
-        <Association Name="FK__aspnet_Me__Appli__59C55456">
+        <Association Name="FK__aspnet_Me__Appli__2334397B">
           <End Role="aspnet_Applications" Type="StormDBModel.Store.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Membership" Type="StormDBModel.Store.aspnet_Membership" Multiplicity="*" />
           <ReferentialConstraint>
@@ -933,7 +990,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Me__UserI__5AB9788F">
+        <Association Name="FK__aspnet_Me__UserI__24285DB4">
           <End Role="aspnet_Users" Type="StormDBModel.Store.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_Membership" Type="StormDBModel.Store.aspnet_Membership" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -945,7 +1002,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pa__Appli__4B7734FF">
+        <Association Name="FK__aspnet_Pa__Appli__5C6CB6D7">
           <End Role="aspnet_Applications" Type="StormDBModel.Store.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Paths" Type="StormDBModel.Store.aspnet_Paths" Multiplicity="*" />
           <ReferentialConstraint>
@@ -957,7 +1014,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__PathI__5BAD9CC8">
+        <Association Name="FK__aspnet_Pe__PathI__640DD89F">
           <End Role="aspnet_Paths" Type="StormDBModel.Store.aspnet_Paths" Multiplicity="1" />
           <End Role="aspnet_PersonalizationAllUsers" Type="StormDBModel.Store.aspnet_PersonalizationAllUsers" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -969,7 +1026,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__PathI__5CA1C101">
+        <Association Name="FK__aspnet_Pe__PathI__69C6B1F5">
           <End Role="aspnet_Paths" Type="StormDBModel.Store.aspnet_Paths" Multiplicity="0..1" />
           <End Role="aspnet_PersonalizationPerUser" Type="StormDBModel.Store.aspnet_PersonalizationPerUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -981,7 +1038,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__UserI__5D95E53A">
+        <Association Name="FK__aspnet_Pe__UserI__6ABAD62E">
           <End Role="aspnet_Users" Type="StormDBModel.Store.aspnet_Users" Multiplicity="0..1" />
           <End Role="aspnet_PersonalizationPerUser" Type="StormDBModel.Store.aspnet_PersonalizationPerUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -993,7 +1050,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pr__UserI__56E8E7AB">
+        <Association Name="FK__aspnet_Pr__UserI__3A179ED3">
           <End Role="aspnet_Users" Type="StormDBModel.Store.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_Profile" Type="StormDBModel.Store.aspnet_Profile" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1005,7 +1062,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Ro__Appli__4C6B5938">
+        <Association Name="FK__aspnet_Ro__Appli__4589517F">
           <End Role="aspnet_Applications" Type="StormDBModel.Store.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Roles" Type="StormDBModel.Store.aspnet_Roles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1017,7 +1074,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Us__Appli__4E53A1AA">
+        <Association Name="FK__aspnet_Us__Appli__0F2D40CE">
           <End Role="aspnet_Applications" Type="StormDBModel.Store.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Users" Type="StormDBModel.Store.aspnet_Users" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1029,7 +1086,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Us__RoleI__57DD0BE4">
+        <Association Name="FK__aspnet_Us__RoleI__4C364F0E">
           <End Role="aspnet_Roles" Type="StormDBModel.Store.aspnet_Roles" Multiplicity="1" />
           <End Role="aspnet_UsersInRoles" Type="StormDBModel.Store.aspnet_UsersInRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1041,7 +1098,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Us__UserI__58D1301D">
+        <Association Name="FK__aspnet_Us__UserI__4B422AD5">
           <End Role="aspnet_Users" Type="StormDBModel.Store.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_UsersInRoles" Type="StormDBModel.Store.aspnet_UsersInRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1062,6 +1119,18 @@
             </Principal>
             <Dependent Role="Address">
               <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Advertisement_File_Advertisement">
+          <End Role="Advertisement" Type="StormDBModel.Store.Advertisement" Multiplicity="0..1" />
+          <End Role="Advertisement_File" Type="StormDBModel.Store.Advertisement_File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="AdvertisementId" />
+            </Principal>
+            <Dependent Role="Advertisement_File">
+              <PropertyRef Name="AdvertisementId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1485,6 +1554,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Receipt_File_Payment">
+          <End Role="Payment" Type="StormDBModel.Store.Payment" Multiplicity="0..1" />
+          <End Role="Receipt_File" Type="StormDBModel.Store.Receipt_File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_File">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Side_Menu_Role">
           <End Role="Role" Type="StormDBModel.Store.Role" Multiplicity="1" />
           <End Role="Side_Menu" Type="StormDBModel.Store.Side_Menu" Multiplicity="*" />
@@ -1576,6 +1657,8 @@
       <Schema Namespace="StormDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="StormDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="StormDBModel.Address" />
+          <EntitySet Name="Advertisements" EntityType="StormDBModel.Advertisement" />
+          <EntitySet Name="Advertisement_File" EntityType="StormDBModel.Advertisement_File" />
           <EntitySet Name="Applications" EntityType="StormDBModel.Application" />
           <EntitySet Name="Application_Cancel" EntityType="StormDBModel.Application_Cancel" />
           <EntitySet Name="Application_Document" EntityType="StormDBModel.Application_Document" />
@@ -1620,6 +1703,7 @@
           <EntitySet Name="Notifications" EntityType="StormDBModel.Notification" />
           <EntitySet Name="Password_Reset" EntityType="StormDBModel.Password_Reset" />
           <EntitySet Name="Payments" EntityType="StormDBModel.Payment" />
+          <EntitySet Name="Receipt_File" EntityType="StormDBModel.Receipt_File" />
           <EntitySet Name="Roles" EntityType="StormDBModel.Role" />
           <EntitySet Name="Side_Menu" EntityType="StormDBModel.Side_Menu" />
           <EntitySet Name="Staffs" EntityType="StormDBModel.Staff" />
@@ -1627,6 +1711,7 @@
           <EntitySet Name="Staff_Role" EntityType="StormDBModel.Staff_Role" />
           <EntitySet Name="Students" EntityType="StormDBModel.Student" />
           <EntitySet Name="Student_Log" EntityType="StormDBModel.Student_Log" />
+          <EntitySet Name="sysdiagrams" EntityType="StormDBModel.sysdiagram" />
           <EntitySet Name="System_Log" EntityType="StormDBModel.System_Log" />
           <EntitySet Name="Template_Document" EntityType="StormDBModel.Template_Document" />
           <EntitySet Name="Universities" EntityType="StormDBModel.University" />
@@ -1645,6 +1730,10 @@
           <AssociationSet Name="FK_Staff_Address" Association="StormDBModel.FK_Staff_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Advertisement_File_Advertisement" Association="StormDBModel.FK_Advertisement_File_Advertisement">
+            <End Role="Advertisement" EntitySet="Advertisements" />
+            <End Role="Advertisement_File" EntitySet="Advertisement_File" />
           </AssociationSet>
           <AssociationSet Name="FK_Application_Cancel_Application" Association="StormDBModel.FK_Application_Cancel_Application">
             <End Role="Application" EntitySet="Applications" />
@@ -1694,39 +1783,39 @@
             <End Role="Appointment" EntitySet="Appointments" />
             <End Role="General_Enquiry" EntitySet="General_Enquiry" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Me__Appli__59C55456" Association="StormDBModel.FK__aspnet_Me__Appli__59C55456">
+          <AssociationSet Name="FK__aspnet_Me__Appli__2334397B" Association="StormDBModel.FK__aspnet_Me__Appli__2334397B">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pa__Appli__4B7734FF" Association="StormDBModel.FK__aspnet_Pa__Appli__4B7734FF">
+          <AssociationSet Name="FK__aspnet_Pa__Appli__5C6CB6D7" Association="StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Ro__Appli__4C6B5938" Association="StormDBModel.FK__aspnet_Ro__Appli__4C6B5938">
+          <AssociationSet Name="FK__aspnet_Ro__Appli__4589517F" Association="StormDBModel.FK__aspnet_Ro__Appli__4589517F">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Us__Appli__4E53A1AA" Association="StormDBModel.FK__aspnet_Us__Appli__4E53A1AA">
+          <AssociationSet Name="FK__aspnet_Us__Appli__0F2D40CE" Association="StormDBModel.FK__aspnet_Us__Appli__0F2D40CE">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Me__UserI__5AB9788F" Association="StormDBModel.FK__aspnet_Me__UserI__5AB9788F">
+          <AssociationSet Name="FK__aspnet_Me__UserI__24285DB4" Association="StormDBModel.FK__aspnet_Me__UserI__24285DB4">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__PathI__5BAD9CC8" Association="StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8">
+          <AssociationSet Name="FK__aspnet_Pe__PathI__640DD89F" Association="StormDBModel.FK__aspnet_Pe__PathI__640DD89F">
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
             <End Role="aspnet_PersonalizationAllUsers" EntitySet="aspnet_PersonalizationAllUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__PathI__5CA1C101" Association="StormDBModel.FK__aspnet_Pe__PathI__5CA1C101">
+          <AssociationSet Name="FK__aspnet_Pe__PathI__69C6B1F5" Association="StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5">
             <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
             <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pe__UserI__5D95E53A" Association="StormDBModel.FK__aspnet_Pe__UserI__5D95E53A">
+          <AssociationSet Name="FK__aspnet_Pe__UserI__6ABAD62E" Association="StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__aspnet_Pr__UserI__56E8E7AB" Association="StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB">
+          <AssociationSet Name="FK__aspnet_Pr__UserI__3A179ED3" Association="StormDBModel.FK__aspnet_Pr__UserI__3A179ED3">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Profile" EntitySet="aspnet_Profile" />
           </AssociationSet>
@@ -1822,6 +1911,10 @@
             <End Role="Message" EntitySet="Messages" />
             <End Role="Message_To" EntitySet="Message_To" />
           </AssociationSet>
+          <AssociationSet Name="FK_Receipt_File_Payment" Association="StormDBModel.FK_Receipt_File_Payment">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="Receipt_File" EntitySet="Receipt_File" />
+          </AssociationSet>
           <AssociationSet Name="FK_Side_Menu_Role" Association="StormDBModel.FK_Side_Menu_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="Side_Menu" EntitySet="Side_Menu" />
@@ -1858,6 +1951,29 @@
           <NavigationProperty Name="Clients" Relationship="StormDBModel.FK_Client_Address" FromRole="Address" ToRole="Client" />
           <NavigationProperty Name="Staffs" Relationship="StormDBModel.FK_Staff_Address" FromRole="Address" ToRole="Staff" />
         </EntityType>
+        <EntityType Name="Advertisement">
+          <Key>
+            <PropertyRef Name="AdvertisementId" />
+          </Key>
+          <Property Name="AdvertisementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Heading" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Comments" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UploadedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="UploadedOn" Type="DateTime" />
+          <NavigationProperty Name="Advertisement_File" Relationship="StormDBModel.FK_Advertisement_File_Advertisement" FromRole="Advertisement" ToRole="Advertisement_File" />
+        </EntityType>
+        <EntityType Name="Advertisement_File">
+          <Key>
+            <PropertyRef Name="AdvertisementFileId" />
+          </Key>
+          <Property Name="AdvertisementFileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdvertisementId" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Path" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="UploadedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="UploadedOn" Type="DateTime" />
+          <NavigationProperty Name="Advertisement" Relationship="StormDBModel.FK_Advertisement_File_Advertisement" FromRole="Advertisement_File" ToRole="Advertisement" />
+        </EntityType>
         <EntityType Name="Application">
           <Key>
             <PropertyRef Name="Application_Id" />
@@ -1869,6 +1985,8 @@
           <Property Name="Course_Id" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Completed" Type="Boolean" />
+          <Property Name="Interview_Storm" Type="Boolean" Nullable="false" />
+          <Property Name="Interview_Institution" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Application_Cancel" Relationship="StormDBModel.FK_Application_Cancel_Application" FromRole="Application" ToRole="Application_Cancel" />
           <NavigationProperty Name="Case" Relationship="StormDBModel.FK_Application_Cases" FromRole="Application" ToRole="Case" />
           <NavigationProperty Name="Course" Relationship="StormDBModel.FK_Application_Course" FromRole="Application" ToRole="Course" />
@@ -1949,10 +2067,10 @@
           <Property Name="LoweredApplicationName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
           <Property Name="ApplicationId" Type="Guid" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="aspnet_Membership" Relationship="StormDBModel.FK__aspnet_Me__Appli__59C55456" FromRole="aspnet_Applications" ToRole="aspnet_Membership" />
-          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pa__Appli__4B7734FF" FromRole="aspnet_Applications" ToRole="aspnet_Paths" />
-          <NavigationProperty Name="aspnet_Roles" Relationship="StormDBModel.FK__aspnet_Ro__Appli__4C6B5938" FromRole="aspnet_Applications" ToRole="aspnet_Roles" />
-          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Us__Appli__4E53A1AA" FromRole="aspnet_Applications" ToRole="aspnet_Users" />
+          <NavigationProperty Name="aspnet_Membership" Relationship="StormDBModel.FK__aspnet_Me__Appli__2334397B" FromRole="aspnet_Applications" ToRole="aspnet_Membership" />
+          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7" FromRole="aspnet_Applications" ToRole="aspnet_Paths" />
+          <NavigationProperty Name="aspnet_Roles" Relationship="StormDBModel.FK__aspnet_Ro__Appli__4589517F" FromRole="aspnet_Applications" ToRole="aspnet_Roles" />
+          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Us__Appli__0F2D40CE" FromRole="aspnet_Applications" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -1979,8 +2097,8 @@
           <Property Name="FailedPasswordAnswerAttemptCount" Type="Int32" Nullable="false" />
           <Property Name="FailedPasswordAnswerAttemptWindowStart" Type="DateTime" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Me__Appli__59C55456" FromRole="aspnet_Membership" ToRole="aspnet_Applications" />
-          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Me__UserI__5AB9788F" FromRole="aspnet_Membership" ToRole="aspnet_Users" />
+          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Me__Appli__2334397B" FromRole="aspnet_Membership" ToRole="aspnet_Applications" />
+          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Me__UserI__24285DB4" FromRole="aspnet_Membership" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="aspnet_Paths">
           <Key>
@@ -1990,9 +2108,9 @@
           <Property Name="PathId" Type="Guid" Nullable="false" />
           <Property Name="Path" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
           <Property Name="LoweredPath" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Pa__Appli__4B7734FF" FromRole="aspnet_Paths" ToRole="aspnet_Applications" />
-          <NavigationProperty Name="aspnet_PersonalizationAllUsers" Relationship="StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationAllUsers" />
-          <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="StormDBModel.FK__aspnet_Pe__PathI__5CA1C101" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationPerUser" />
+          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7" FromRole="aspnet_Paths" ToRole="aspnet_Applications" />
+          <NavigationProperty Name="aspnet_PersonalizationAllUsers" Relationship="StormDBModel.FK__aspnet_Pe__PathI__640DD89F" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationAllUsers" />
+          <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationPerUser" />
         </EntityType>
         <EntityType Name="aspnet_PersonalizationAllUsers">
           <Key>
@@ -2001,7 +2119,7 @@
           <Property Name="PathId" Type="Guid" Nullable="false" />
           <Property Name="PageSettings" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8" FromRole="aspnet_PersonalizationAllUsers" ToRole="aspnet_Paths" />
+          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pe__PathI__640DD89F" FromRole="aspnet_PersonalizationAllUsers" ToRole="aspnet_Paths" />
         </EntityType>
         <EntityType Name="aspnet_PersonalizationPerUser">
           <Key>
@@ -2012,8 +2130,8 @@
           <Property Name="UserId" Type="Guid" />
           <Property Name="PageSettings" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pe__PathI__5CA1C101" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Paths" />
-          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Pe__UserI__5D95E53A" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Users" />
+          <NavigationProperty Name="aspnet_Paths" Relationship="StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Paths" />
+          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="aspnet_Profile">
           <Key>
@@ -2024,7 +2142,7 @@
           <Property Name="PropertyValuesString" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="PropertyValuesBinary" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB" FromRole="aspnet_Profile" ToRole="aspnet_Users" />
+          <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.FK__aspnet_Pr__UserI__3A179ED3" FromRole="aspnet_Profile" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="aspnet_Roles">
           <Key>
@@ -2035,7 +2153,7 @@
           <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
           <Property Name="LoweredRoleName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Ro__Appli__4C6B5938" FromRole="aspnet_Roles" ToRole="aspnet_Applications" />
+          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Ro__Appli__4589517F" FromRole="aspnet_Roles" ToRole="aspnet_Applications" />
           <NavigationProperty Name="aspnet_Users" Relationship="StormDBModel.aspnet_UsersInRoles" FromRole="aspnet_Roles" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="aspnet_SchemaVersions">
@@ -2058,10 +2176,10 @@
           <Property Name="MobileAlias" Type="String" MaxLength="16" Unicode="true" FixedLength="false" />
           <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
           <Property Name="LastActivityDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Us__Appli__4E53A1AA" FromRole="aspnet_Users" ToRole="aspnet_Applications" />
-          <NavigationProperty Name="aspnet_Membership" Relationship="StormDBModel.FK__aspnet_Me__UserI__5AB9788F" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
-          <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="StormDBModel.FK__aspnet_Pe__UserI__5D95E53A" FromRole="aspnet_Users" ToRole="aspnet_PersonalizationPerUser" />
-          <NavigationProperty Name="aspnet_Profile" Relationship="StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB" FromRole="aspnet_Users" ToRole="aspnet_Profile" />
+          <NavigationProperty Name="aspnet_Applications" Relationship="StormDBModel.FK__aspnet_Us__Appli__0F2D40CE" FromRole="aspnet_Users" ToRole="aspnet_Applications" />
+          <NavigationProperty Name="aspnet_Membership" Relationship="StormDBModel.FK__aspnet_Me__UserI__24285DB4" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
+          <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E" FromRole="aspnet_Users" ToRole="aspnet_PersonalizationPerUser" />
+          <NavigationProperty Name="aspnet_Profile" Relationship="StormDBModel.FK__aspnet_Pr__UserI__3A179ED3" FromRole="aspnet_Users" ToRole="aspnet_Profile" />
           <NavigationProperty Name="aspnet_Roles" Relationship="StormDBModel.aspnet_UsersInRoles" FromRole="aspnet_Users" ToRole="aspnet_Roles" />
         </EntityType>
         <EntityType Name="aspnet_WebEvent_Events">
@@ -2453,8 +2571,21 @@
           <Property Name="Receipt_No" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Payment_Method" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Date_Of_Payment" Type="DateTime" />
-          <Property Name="Approved_By" Type="Int32" />
+          <Property Name="Approved_By" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Application" Relationship="StormDBModel.FK_Payment_Application" FromRole="Payment" ToRole="Application" />
+          <NavigationProperty Name="Receipt_File" Relationship="StormDBModel.FK_Receipt_File_Payment" FromRole="Payment" ToRole="Receipt_File" />
+        </EntityType>
+        <EntityType Name="Receipt_File">
+          <Key>
+            <PropertyRef Name="File_Id" />
+          </Key>
+          <Property Name="File_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentId" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Path" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="UploadedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="UploadedOn" Type="DateTime" />
+          <NavigationProperty Name="Payment" Relationship="StormDBModel.FK_Receipt_File_Payment" FromRole="Receipt_File" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -2543,6 +2674,16 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="Author" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="System_Log">
           <Key>
             <PropertyRef Name="SystemLog_Id" />
@@ -2580,6 +2721,7 @@
           <Property Name="Campus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="University_Url" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Country" Relationship="StormDBModel.FK_University_Country" FromRole="University" ToRole="Country" />
           <NavigationProperty Name="Faculties" Relationship="StormDBModel.FK_Faculty_University" FromRole="University" ToRole="Faculty" />
         </EntityType>
@@ -2628,6 +2770,18 @@
             </Principal>
             <Dependent Role="Staff">
               <PropertyRef Name="Address_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Advertisement_File_Advertisement">
+          <End Role="Advertisement" Type="StormDBModel.Advertisement" Multiplicity="0..1" />
+          <End Role="Advertisement_File" Type="StormDBModel.Advertisement_File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="AdvertisementId" />
+            </Principal>
+            <Dependent Role="Advertisement_File">
+              <PropertyRef Name="AdvertisementId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2775,7 +2929,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Me__Appli__59C55456">
+        <Association Name="FK__aspnet_Me__Appli__2334397B">
           <End Role="aspnet_Applications" Type="StormDBModel.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Membership" Type="StormDBModel.aspnet_Membership" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2787,7 +2941,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pa__Appli__4B7734FF">
+        <Association Name="FK__aspnet_Pa__Appli__5C6CB6D7">
           <End Role="aspnet_Applications" Type="StormDBModel.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Paths" Type="StormDBModel.aspnet_Paths" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2799,7 +2953,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Ro__Appli__4C6B5938">
+        <Association Name="FK__aspnet_Ro__Appli__4589517F">
           <End Role="aspnet_Applications" Type="StormDBModel.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Roles" Type="StormDBModel.aspnet_Roles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2811,7 +2965,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Us__Appli__4E53A1AA">
+        <Association Name="FK__aspnet_Us__Appli__0F2D40CE">
           <End Role="aspnet_Applications" Type="StormDBModel.aspnet_Applications" Multiplicity="1" />
           <End Role="aspnet_Users" Type="StormDBModel.aspnet_Users" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2823,7 +2977,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Me__UserI__5AB9788F">
+        <Association Name="FK__aspnet_Me__UserI__24285DB4">
           <End Role="aspnet_Users" Type="StormDBModel.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_Membership" Type="StormDBModel.aspnet_Membership" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2835,7 +2989,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__PathI__5BAD9CC8">
+        <Association Name="FK__aspnet_Pe__PathI__640DD89F">
           <End Role="aspnet_Paths" Type="StormDBModel.aspnet_Paths" Multiplicity="1" />
           <End Role="aspnet_PersonalizationAllUsers" Type="StormDBModel.aspnet_PersonalizationAllUsers" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2847,7 +3001,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__PathI__5CA1C101">
+        <Association Name="FK__aspnet_Pe__PathI__69C6B1F5">
           <End Role="aspnet_Paths" Type="StormDBModel.aspnet_Paths" Multiplicity="0..1" />
           <End Role="aspnet_PersonalizationPerUser" Type="StormDBModel.aspnet_PersonalizationPerUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2859,7 +3013,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pe__UserI__5D95E53A">
+        <Association Name="FK__aspnet_Pe__UserI__6ABAD62E">
           <End Role="aspnet_Users" Type="StormDBModel.aspnet_Users" Multiplicity="0..1" />
           <End Role="aspnet_PersonalizationPerUser" Type="StormDBModel.aspnet_PersonalizationPerUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2871,7 +3025,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__aspnet_Pr__UserI__56E8E7AB">
+        <Association Name="FK__aspnet_Pr__UserI__3A179ED3">
           <End Role="aspnet_Users" Type="StormDBModel.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_Profile" Type="StormDBModel.aspnet_Profile" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -3159,6 +3313,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Receipt_File_Payment">
+          <End Role="Payment" Type="StormDBModel.Payment" Multiplicity="0..1" />
+          <End Role="Receipt_File" Type="StormDBModel.Receipt_File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_File">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Side_Menu_Role">
           <End Role="Role" Type="StormDBModel.Role" Multiplicity="1" />
           <End Role="Side_Menu" Type="StormDBModel.Side_Menu" Multiplicity="*" />
@@ -3225,6 +3391,21 @@
             <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
             <ScalarProperty Name="Country_Id" ColumnName="Country_Id" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Advertisements"><EntityTypeMapping TypeName="StormDBModel.Advertisement"><MappingFragment StoreEntitySet="Advertisement">
+            <ScalarProperty Name="AdvertisementId" ColumnName="AdvertisementId" />
+            <ScalarProperty Name="Heading" ColumnName="Heading" />
+            <ScalarProperty Name="Comments" ColumnName="Comments" />
+            <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+            <ScalarProperty Name="UploadedOn" ColumnName="UploadedOn" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Advertisement_File"><EntityTypeMapping TypeName="StormDBModel.Advertisement_File"><MappingFragment StoreEntitySet="Advertisement_File">
+            <ScalarProperty Name="AdvertisementFileId" ColumnName="AdvertisementFileId" />
+            <ScalarProperty Name="AdvertisementId" ColumnName="AdvertisementId" />
+            <ScalarProperty Name="FileName" ColumnName="FileName" />
+            <ScalarProperty Name="Path" ColumnName="Path" />
+            <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+            <ScalarProperty Name="UploadedOn" ColumnName="UploadedOn" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Applications"><EntityTypeMapping TypeName="StormDBModel.Application"><MappingFragment StoreEntitySet="Application">
             <ScalarProperty Name="Application_Id" ColumnName="Application_Id" />
             <ScalarProperty Name="Case_Id" ColumnName="Case_Id" />
@@ -3233,6 +3414,8 @@
             <ScalarProperty Name="Course_Id" ColumnName="Course_Id" />
             <ScalarProperty Name="Status" ColumnName="Status" />
             <ScalarProperty Name="Completed" ColumnName="Completed" />
+            <ScalarProperty Name="Interview_Storm" ColumnName="Interview_Storm" />
+            <ScalarProperty Name="Interview_Institution" ColumnName="Interview_Institution" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Application_Cancel"><EntityTypeMapping TypeName="StormDBModel.Application_Cancel"><MappingFragment StoreEntitySet="Application_Cancel">
             <ScalarProperty Name="Application_Id" ColumnName="Application_Id" />
@@ -3607,6 +3790,14 @@
             <ScalarProperty Name="Date_Of_Payment" ColumnName="Date_Of_Payment" />
             <ScalarProperty Name="Approved_By" ColumnName="Approved_By" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Receipt_File"><EntityTypeMapping TypeName="StormDBModel.Receipt_File"><MappingFragment StoreEntitySet="Receipt_File">
+            <ScalarProperty Name="File_Id" ColumnName="File_Id" />
+            <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+            <ScalarProperty Name="FileName" ColumnName="FileName" />
+            <ScalarProperty Name="Path" ColumnName="Path" />
+            <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+            <ScalarProperty Name="UploadedOn" ColumnName="UploadedOn" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Roles"><EntityTypeMapping TypeName="StormDBModel.Role"><MappingFragment StoreEntitySet="Role">
             <ScalarProperty Name="Role_Id" ColumnName="Role_Id" />
             <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
@@ -3658,6 +3849,13 @@
             <ScalarProperty Name="Deleted" ColumnName="Deleted" />
             <ScalarProperty Name="Author" ColumnName="Author" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams"><EntityTypeMapping TypeName="StormDBModel.sysdiagram"><MappingFragment StoreEntitySet="sysdiagrams">
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+            <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+            <ScalarProperty Name="version" ColumnName="version" />
+            <ScalarProperty Name="definition" ColumnName="definition" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="System_Log"><EntityTypeMapping TypeName="StormDBModel.System_Log"><MappingFragment StoreEntitySet="System_Log">
             <ScalarProperty Name="SystemLog_Id" ColumnName="SystemLog_Id" />
             <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -3684,6 +3882,7 @@
             <ScalarProperty Name="Campus" ColumnName="Campus" />
             <ScalarProperty Name="Email" ColumnName="Email" />
             <ScalarProperty Name="University_Url" ColumnName="University_Url" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="aspnet_UsersInRoles" TypeName="StormDBModel.aspnet_UsersInRoles" StoreEntitySet="aspnet_UsersInRoles">
             <EndProperty Name="aspnet_Roles">
@@ -3715,26 +3914,28 @@
     <Diagrams>
       <Diagram Name="StormDB">
         <EntityTypeShape EntityType="StormDBModel.Address" Width="1.5" PointX="3" PointY="32" Height="2.9417936197916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Application" Width="1.5" PointX="12" PointY="40.625" Height="3.7109993489583388" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Application_Cancel" Width="1.5" PointX="14.25" PointY="38.125" Height="1.7879850260416674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Application_Document" Width="1.5" PointX="17.25" PointY="45.25" Height="3.1340950520833388" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Advertisement" Width="1.5" PointX="0.75" PointY="5" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Advertisement_File" Width="1.5" PointX="3" PointY="5" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Application" Width="1.5" PointX="12" PointY="40.5" Height="4.0956022135416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Application_Cancel" Width="1.5" PointX="14.25" PointY="38" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Application_Document" Width="1.5" PointX="17.25" PointY="44.25" Height="3.1340950520833388" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Application_Result" Width="1.5" PointX="14.25" PointY="44.5" Height="2.749492187499996" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Appointment" Width="1.5" PointX="7.5" PointY="17.375" Height="3.1340950520833317" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.aspnet_Application" Width="1.5" PointX="0.75" PointY="4.75" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.aspnet_Application" Width="1.5" PointX="5.75" PointY="0.75" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_Applications" Width="1.5" PointX="10.75" PointY="7.875" Height="2.5571907552083317" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.aspnet_Membership" Width="1.5" PointX="16" PointY="9.5" Height="5.4417122395833353" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.aspnet_Membership" Width="1.5" PointX="16" PointY="9.5" Height="5.4417122395833317" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_Paths" Width="1.5" PointX="13" PointY="6.375" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.aspnet_PersonalizationAllUsers" Width="1.5" PointX="15.25" PointY="6.75" Height="1.787985026041671" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.aspnet_PersonalizationAllUsers" Width="1.5" PointX="15.25" PointY="6.75" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_PersonalizationPerUser" Width="1.5" PointX="15.25" PointY="3.375" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_Profile" Width="1.5" PointX="20.5" PointY="11.875" Height="2.1725878906250031" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_Roles" Width="1.5" PointX="13" PointY="15.75" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.aspnet_SchemaVersions" Width="1.5" PointX="2.75" PointY="4.75" Height="1.5956835937500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.aspnet_SchemaVersions" Width="1.5" PointX="5.75" PointY="3.75" Height="1.5956835937500031" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.aspnet_Users" Width="1.5" PointX="18.25" PointY="11.375" Height="3.326396484374996" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.aspnet_WebEvent_Events" Width="1.5" PointX="4.75" PointY="4.75" Height="3.9033007812500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.aspnet_WebEvent_Events" Width="1.5" PointX="5.75" PointY="6.75" Height="3.9033007812500031" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Branch" Width="1.5" PointX="5.25" PointY="18.5" Height="2.9417936197916674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Branch_Staff" Width="1.5" PointX="10.5" PointY="19" Height="1.9802864583333388" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Case" Width="1.5" PointX="9.75" PointY="31.75" Height="3.5186979166666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Case_Staff" Width="1.5" PointX="12" PointY="29.625" Height="2.1725878906250031" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Case_Staff" Width="1.5" PointX="12" PointY="29.625" Height="2.1725878906250102" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.CaseDoc_Template" Width="1.5" PointX="9.75" PointY="36" Height="2.9417936197916674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.CaseDocument" Width="1.5" PointX="12" PointY="33" Height="2.9417936197916674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Client" Width="1.5" PointX="5.25" PointY="32.125" Height="6.4032194010416674" IsExpanded="true" />
@@ -3745,33 +3946,35 @@
         <EntityTypeShape EntityType="StormDBModel.Client_StudyServiceDetails" Width="1.5" PointX="7.5" PointY="34.875" Height="3.326396484374996" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Client_Work_Experience" Width="1.5" PointX="7.5" PointY="39" Height="3.1340950520833246" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Competitive_Skills" Width="1.5" PointX="7.5" PointY="42.875" Height="2.5571907552083246" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Country" Width="1.5" PointX="0.75" PointY="34.125" Height="1.9802864583333388" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Course" Width="1.5" PointX="7.5" PointY="49.875" Height="3.326396484374996" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Course_Level" Width="1.5" PointX="5.25" PointY="52.75" Height="1.595683593749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Event" Width="1.5" PointX="5.75" PointY="0.75" Height="2.7494921875000102" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Country" Width="1.5" PointX="0.75" PointY="34.25" Height="1.9802864583333388" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Course" Width="1.5" PointX="7.5" PointY="50" Height="3.326396484374996" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Course_Level" Width="1.5" PointX="5.25" PointY="52.875" Height="1.595683593749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Event" Width="1.5" PointX="7.75" PointY="0.75" Height="2.7494921875000102" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Faculty" Width="1.5" PointX="5.25" PointY="49.5" Height="2.1725878906250102" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.General_Enquiry" Width="1.5" PointX="9.75" PointY="26.75" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Login" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7879850260416674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Main_Menu" Width="1.5" PointX="7.75" PointY="0.75" Height="1.9802864583333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.General_Enquiry" Width="1.5" PointX="9.75" PointY="26.875" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Login" Width="1.5" PointX="7.75" PointY="4.75" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Main_Menu" Width="1.5" PointX="7.75" PointY="7.75" Height="1.9802864583333246" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Message" Width="1.5" PointX="0.75" PointY="1" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Message_To" Width="1.5" PointX="3" PointY="1" Height="2.172587890624996" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Next_Kin" Width="1.5" PointX="0.75" PointY="7.75" Height="2.1725878906250102" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Notification" Width="1.5" PointX="6.75" PointY="7.75" Height="2.1725878906250102" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Password_Reset" Width="1.5" PointX="8.75" PointY="3.75" Height="1.9802864583333246" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Payment" Width="1.5" PointX="14.25" PointY="48" Height="2.7494921874999818" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Message_To" Width="1.5" PointX="3" PointY="1" Height="2.1725878906250102" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Next_Kin" Width="1.5" PointX="0.75" PointY="8.75" Height="2.1725878906250102" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Notification" Width="1.5" PointX="2.75" PointY="8.75" Height="2.1725878906249818" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Password_Reset" Width="1.5" PointX="9.75" PointY="0.75" Height="1.9802864583333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Payment" Width="1.5" PointX="14.25" PointY="48" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Receipt_File" Width="1.5" PointX="16.5" PointY="48.25" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Role" Width="1.5" PointX="8.25" PointY="14.625" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Side_Menu" Width="1.5" PointX="10.5" PointY="14.375" Height="2.1725878906249818" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Staff" Width="1.5" PointX="5.25" PointY="26.125" Height="4.6725065104166674" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Staff_Dept" Width="1.5" PointX="3" PointY="27.75" Height="1.5956835937499818" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Staff_Role" Width="1.5" PointX="10.5" PointY="23.5" Height="1.9802864583333246" IsExpanded="true" />
         <EntityTypeShape EntityType="StormDBModel.Student" Width="1.5" PointX="7.5" PointY="46.125" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Student_Log" Width="1.5" PointX="2.75" PointY="9.75" Height="2.5571907552083246" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.System_Log" Width="1.5" PointX="10.75" PointY="0.75" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.Template_Document" Width="1.5" PointX="9.75" PointY="50" Height="2.9417936197916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="StormDBModel.University" Width="1.5" PointX="3" PointY="49.25" Height="2.5571907552083246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Student_Log" Width="1.5" PointX="9.75" PointY="3.75" Height="2.5571907552083246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.sysdiagram" Width="1.5" PointX="7.75" PointY="10.75" Height="1.9802864583333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.System_Log" Width="1.5" PointX="11.75" PointY="0.75" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.Template_Document" Width="1.5" PointX="9.75" PointY="50.125" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StormDBModel.University" Width="1.5" PointX="3" PointY="49.25" Height="2.7494921874999818" IsExpanded="true" />
         <AssociationConnector Association="StormDBModel.FK_Address_Country" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="34.533396809895834" />
-          <ConnectorPoint PointX="3" PointY="34.533396809895834" />
+          <ConnectorPoint PointX="2.25" PointY="34.595896809895834" />
+          <ConnectorPoint PointX="3" PointY="34.595896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Branch_Address" ManuallyRouted="false">
           <ConnectorPoint PointX="4.4757692307692318" PointY="32" />
@@ -3789,52 +3992,55 @@
           <ConnectorPoint PointX="5.03125" PointY="28.461253255208334" />
           <ConnectorPoint PointX="5.25" PointY="28.461253255208334" />
         </AssociationConnector>
+        <AssociationConnector Association="StormDBModel.FK_Advertisement_File_Advertisement" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="6.0862939453125" />
+          <ConnectorPoint PointX="3" PointY="6.0862939453125" />
+        </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Cancel_Application" ManuallyRouted="false">
-          <ConnectorPoint PointX="12.75" PointY="40.625" />
-          <ConnectorPoint PointX="12.75" PointY="39.018992513020834" />
-          <ConnectorPoint PointX="14.25" PointY="39.018992513020834" />
+          <ConnectorPoint PointX="12.75" PointY="40.5" />
+          <ConnectorPoint PointX="12.75" PointY="38.893992513020834" />
+          <ConnectorPoint PointX="14.25" PointY="38.893992513020834" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Cases" ManuallyRouted="false">
           <ConnectorPoint PointX="11.25" PointY="35.267543070512822" />
           <ConnectorPoint PointX="11.625" PointY="35.642543070512822" />
-          <ConnectorPoint PointX="11.625" PointY="42.480499674479169" />
-          <ConnectorPoint PointX="12" PointY="42.480499674479169" />
+          <ConnectorPoint PointX="11.625" PointY="42.547801106770834" />
+          <ConnectorPoint PointX="12" PointY="42.547801106770834" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Course" ManuallyRouted="false">
-          <ConnectorPoint PointX="9" PointY="53.102845052083332" />
-          <ConnectorPoint PointX="12.75" PointY="53.102845052083332" />
-          <ConnectorPoint PointX="12.75" PointY="44.335999348958339" />
+          <ConnectorPoint PointX="9" PointY="53.227845052083332" />
+          <ConnectorPoint PointX="12.75" PointY="53.227845052083332" />
+          <ConnectorPoint PointX="12.75" PointY="44.595602213541667" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Document_Application" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.1562525" PointY="44.335999348958339" />
-          <ConnectorPoint PointX="13.1562525" PointY="47.62474609375" />
-          <ConnectorPoint PointX="13.276045416666667" PointY="47.62474609375" />
-          <ConnectorPoint PointX="13.442712083333335" PointY="47.62474609375" />
-          <ConnectorPoint PointX="17.25" PointY="47.62474609375" />
+          <ConnectorPoint PointX="13.5" PointY="44.34375" />
+          <ConnectorPoint PointX="14.916666666666666" PointY="44.34375" />
+          <ConnectorPoint PointX="15.083333333333334" PointY="44.34375" />
+          <ConnectorPoint PointX="17.25" PointY="44.34375" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Result_Application" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.5" PointY="42.480499674479169" />
-          <ConnectorPoint PointX="15" PointY="42.480499674479169" />
+          <ConnectorPoint PointX="13.5" PointY="42.3906225" />
+          <ConnectorPoint PointX="15" PointY="42.3906225" />
           <ConnectorPoint PointX="15" PointY="44.5" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Student" ManuallyRouted="false">
-          <ConnectorPoint PointX="9" PointY="46.874873046874995" />
-          <ConnectorPoint PointX="12.3437475" PointY="46.874873046874995" />
-          <ConnectorPoint PointX="12.3437475" PointY="44.335999348958339" />
+          <ConnectorPoint PointX="9" PointY="47.307444661458334" />
+          <ConnectorPoint PointX="12.3437475" PointY="47.307444661458334" />
+          <ConnectorPoint PointX="12.3437475" PointY="44.595602213541667" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Payment_Application" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.359378750000001" PointY="44.335999348958339" />
-          <ConnectorPoint PointX="13.359378750000001" PointY="49.374746093749991" />
-          <ConnectorPoint PointX="14.25" PointY="49.374746093749991" />
+          <ConnectorPoint PointX="13.1562525" PointY="44.595602213541667" />
+          <ConnectorPoint PointX="13.1562525" PointY="49.470896809895834" />
+          <ConnectorPoint PointX="14.25" PointY="49.470896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Application_Document_Template_Document" ManuallyRouted="false">
-          <ConnectorPoint PointX="10.5" PointY="50" />
-          <ConnectorPoint PointX="10.5" PointY="47.812375546875" />
-          <ConnectorPoint PointX="12.666666666666666" PointY="47.812375546875" />
-          <ConnectorPoint PointX="12.833333333333334" PointY="47.812375546875" />
-          <ConnectorPoint PointX="13.276045416666667" PointY="47.812375546875" />
-          <ConnectorPoint PointX="13.442712083333335" PointY="47.812375546875" />
-          <ConnectorPoint PointX="17.25" PointY="47.812375546875" />
+          <ConnectorPoint PointX="10.5" PointY="50.125" />
+          <ConnectorPoint PointX="10.5" PointY="47.348043619791667" />
+          <ConnectorPoint PointX="12.666666666666666" PointY="47.348043619791667" />
+          <ConnectorPoint PointX="12.833333333333334" PointY="47.348043619791667" />
+          <ConnectorPoint PointX="13.072919166666667" PointY="47.348043619791667" />
+          <ConnectorPoint PointX="13.239585833333335" PointY="47.348043619791667" />
+          <ConnectorPoint PointX="17.25" PointY="47.348043619791667" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Appointment_Branch" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="19.504547526041666" />
@@ -3863,47 +4069,47 @@
           <ConnectorPoint PointX="9.1354166666666661" PointY="18.15625" />
           <ConnectorPoint PointX="9.3020833333333339" PointY="18.15625" />
           <ConnectorPoint PointX="10.09375" PointY="18.15625" />
-          <ConnectorPoint PointX="10.09375" PointY="26.75" />
+          <ConnectorPoint PointX="10.09375" PointY="26.875" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Me__Appli__59C55456" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Me__Appli__2334397B" ManuallyRouted="false">
           <ConnectorPoint PointX="12.25" PointY="9.9660953776041659" />
           <ConnectorPoint PointX="16" PointY="9.9660953776041659" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Pa__Appli__4B7734FF" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7" ManuallyRouted="false">
           <ConnectorPoint PointX="12.25" PointY="8.3074446614583337" />
           <ConnectorPoint PointX="13" PointY="8.3074446614583337" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Ro__Appli__4C6B5938" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Ro__Appli__4589517F" ManuallyRouted="false">
           <ConnectorPoint PointX="12.15625" PointY="10.432190755208332" />
           <ConnectorPoint PointX="12.15625" PointY="17.362488606770825" />
           <ConnectorPoint PointX="13" PointY="17.362488606770825" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Us__Appli__4E53A1AA" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Us__Appli__0F2D40CE" ManuallyRouted="false">
           <ConnectorPoint PointX="12.25" PointY="9.1199446614583337" />
           <ConnectorPoint PointX="18.510414166666667" PointY="9.1199446614583337" />
           <ConnectorPoint PointX="18.677080833333331" PointY="9.1199446614583337" />
           <ConnectorPoint PointX="19" PointY="9.1199446614583337" />
           <ConnectorPoint PointX="19" PointY="11.375" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Me__UserI__5AB9788F" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Me__UserI__24285DB4" ManuallyRouted="false">
           <ConnectorPoint PointX="18.25" PointY="13.038198242187498" />
           <ConnectorPoint PointX="17.5" PointY="13.038198242187498" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8" ManuallyRouted="false">
-          <ConnectorPoint PointX="14.5" PointY="7.6439925130208355" />
-          <ConnectorPoint PointX="15.25" PointY="7.6439925130208355" />
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__PathI__640DD89F" ManuallyRouted="false">
+          <ConnectorPoint PointX="14.5" PointY="7.6439925130208337" />
+          <ConnectorPoint PointX="15.25" PointY="7.6439925130208337" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__PathI__5CA1C101" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5" ManuallyRouted="false">
           <ConnectorPoint PointX="13.75" PointY="6.375" />
           <ConnectorPoint PointX="13.75" PointY="4.5574446614583337" />
           <ConnectorPoint PointX="15.25" PointY="4.5574446614583337" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__UserI__5D95E53A" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E" ManuallyRouted="false">
           <ConnectorPoint PointX="18.5937475" PointY="11.375" />
           <ConnectorPoint PointX="18.5937475" PointY="4.5574446614583337" />
           <ConnectorPoint PointX="16.75" PointY="4.5574446614583337" />
         </AssociationConnector>
-        <AssociationConnector Association="StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB" ManuallyRouted="false">
+        <AssociationConnector Association="StormDBModel.FK__aspnet_Pr__UserI__3A179ED3" ManuallyRouted="false">
           <ConnectorPoint PointX="19.75" PointY="12.961293945312502" />
           <ConnectorPoint PointX="20.5" PointY="12.961293945312502" />
         </AssociationConnector>
@@ -3976,11 +4182,11 @@
           <ConnectorPoint PointX="12" PointY="31.055003755208332" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_CaseDocument_CaseDoc_Template" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.25" PointY="37.470896809895834" />
-          <ConnectorPoint PointX="11.541666666666666" PointY="37.470896809895834" />
-          <ConnectorPoint PointX="11.708333333333334" PointY="37.470896809895834" />
-          <ConnectorPoint PointX="12.75" PointY="37.470896809895834" />
-          <ConnectorPoint PointX="12.75" PointY="35.941793619791667" />
+          <ConnectorPoint PointX="11.25" PointY="37.446996256510417" />
+          <ConnectorPoint PointX="11.541666666666666" PointY="37.446996256510417" />
+          <ConnectorPoint PointX="11.708333333333334" PointY="37.446996256510417" />
+          <ConnectorPoint PointX="12.375" PointY="37.446996256510417" />
+          <ConnectorPoint PointX="12.375" PointY="35.941793619791667" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Client_Children_Detail_Client" ManuallyRouted="false">
           <ConnectorPoint PointX="6.7130769230769234" PointY="32.125" />
@@ -4033,7 +4239,7 @@
           <ConnectorPoint PointX="9.625" PointY="34.625" />
           <ConnectorPoint PointX="9.625" PointY="31.5" />
           <ConnectorPoint PointX="10.146972653846152" PointY="31.5" />
-          <ConnectorPoint PointX="10.146972653846152" PointY="29.114889322916667" />
+          <ConnectorPoint PointX="10.146972653846152" PointY="29.239889322916667" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Student_Client" ManuallyRouted="false">
           <ConnectorPoint PointX="5.5937475" PointY="38.528219401041667" />
@@ -4041,29 +4247,33 @@
           <ConnectorPoint PointX="7.5" PointY="47.307444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_University_Country" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="36.105286458333339" />
-          <ConnectorPoint PointX="1.5" PointY="50.528595377604162" />
-          <ConnectorPoint PointX="3" PointY="50.528595377604162" />
+          <ConnectorPoint PointX="1.5" PointY="36.230286458333339" />
+          <ConnectorPoint PointX="1.5" PointY="50.624746093749991" />
+          <ConnectorPoint PointX="3" PointY="50.624746093749991" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Course_Course_Level" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="52.9756982421875" />
-          <ConnectorPoint PointX="7.5" PointY="52.9756982421875" />
+          <ConnectorPoint PointX="6.75" PointY="53.1006982421875" />
+          <ConnectorPoint PointX="7.5" PointY="53.1006982421875" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Course_Faculty1" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="50.773793945312505" />
-          <ConnectorPoint PointX="7.5" PointY="50.773793945312505" />
+          <ConnectorPoint PointX="6.75" PointY="50.836293945312505" />
+          <ConnectorPoint PointX="7.5" PointY="50.836293945312505" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Template_Document_Course" ManuallyRouted="false">
-          <ConnectorPoint PointX="9" PointY="51.470896809895834" />
-          <ConnectorPoint PointX="9.75" PointY="51.470896809895834" />
+          <ConnectorPoint PointX="9" PointY="51.595896809895834" />
+          <ConnectorPoint PointX="9.75" PointY="51.595896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Faculty_University" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="50.586293945312505" />
           <ConnectorPoint PointX="5.25" PointY="50.586293945312505" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Message_To_Message" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="2.086293945312498" />
-          <ConnectorPoint PointX="3" PointY="2.086293945312498" />
+          <ConnectorPoint PointX="2.25" PointY="2.0862939453125051" />
+          <ConnectorPoint PointX="3" PointY="2.0862939453125051" />
+        </AssociationConnector>
+        <AssociationConnector Association="StormDBModel.FK_Receipt_File_Payment" ManuallyRouted="false">
+          <ConnectorPoint PointX="15.75" PointY="49.432444661458334" />
+          <ConnectorPoint PointX="16.5" PointY="49.432444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="StormDBModel.FK_Side_Menu_Role" ManuallyRouted="false">
           <ConnectorPoint PointX="9.75" PointY="15.518992513020834" />

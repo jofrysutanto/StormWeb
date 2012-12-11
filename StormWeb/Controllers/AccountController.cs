@@ -28,7 +28,7 @@ namespace StormWeb.Controllers
         {
             // User was redirected here because of authorization section
             //if (User.Identity != null && User.Identity.IsAuthenticated)
-                //return RedirectToAction("Unauthorized");
+            //return RedirectToAction("Unauthorized");
 
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
@@ -44,7 +44,7 @@ namespace StormWeb.Controllers
                     ViewBag.NotifyRegistrationSuccess = true;
                 }
             }
-                     
+
             if (!string.IsNullOrEmpty((string)TempData["ResetPassword"]))
             {
                 ViewBag.NotifyPasswordReset = true;
@@ -61,7 +61,7 @@ namespace StormWeb.Controllers
             }
 
             return View();
-        } 
+        }
 
         //
         // POST: /Account/LogOn
@@ -93,13 +93,13 @@ namespace StormWeb.Controllers
                     foreach (string s in roles)
                         rolesString += s + "|";
 
-                    CookieHelper.Roles = rolesString;                    
+                    CookieHelper.Roles = rolesString;
 
                     // If it is student
                     if (rolesHelper.isStudent())
                     {
-                        StormDBEntities db = new StormDBEntities();   
-                        Student student = db.Students.Single(x => x.UserName == model.UserName);                              
+                        StormDBEntities db = new StormDBEntities();
+                        Student student = db.Students.Single(x => x.UserName == model.UserName);
 
                         // Add student id to the cookie                                      
                         CookieHelper.StudentId = Convert.ToString(student.Student_Id);
@@ -112,8 +112,9 @@ namespace StormWeb.Controllers
                         Branch branch = (from b in db.Branches
                                          from c in db.Clients
                                          where b.Branch_Id == c.Branch_Id && c.Client_Id == student.Client_Id
-                                         select b).Single();
-                        CookieHelper.AssignedBranch = Convert.ToString(branch.Branch_Id);
+                                         select b).SingleOrDefault();
+                        if (branch != null)
+                            CookieHelper.AssignedBranch = Convert.ToString(branch.Branch_Id);
                     }
                     else // If staff
                     {
@@ -125,10 +126,10 @@ namespace StormWeb.Controllers
 
                         // Also add branch where the staff belong                        
                         var branches = from b in db.Branches
-                                from bs in db.Branch_Staff
-                                from s in db.Staffs
-                                where s.Staff_Id == staff.Staff_Id && s.Staff_Id == bs.Staff_Id && b.Branch_Id == bs.Branch_Id
-                                select b;
+                                       from bs in db.Branch_Staff
+                                       from s in db.Staffs
+                                       where s.Staff_Id == staff.Staff_Id && s.Staff_Id == bs.Staff_Id && b.Branch_Id == bs.Branch_Id
+                                       select b;
 
                         if (CookieHelper.isInRole("Super"))
                         {
@@ -154,7 +155,7 @@ namespace StormWeb.Controllers
                             }
 
                             CookieHelper.AssignedBranch = combinedBranches;
-                        }                        
+                        }
                     }
 
                     if (!ModelState.IsValid)
@@ -243,7 +244,7 @@ namespace StormWeb.Controllers
         public ActionResult ResetPassword(FormCollection fc)
         {
             // Retrieve password from the form
-            ResetPasswordModel resetModel = new ResetPasswordModel(fc["tempPassword"], fc["username"], fc["secretCode"]);            
+            ResetPasswordModel resetModel = new ResetPasswordModel(fc["tempPassword"], fc["username"], fc["secretCode"]);
             resetModel.newPassword = fc["newPassword"];
 
             // Validate the username
@@ -432,7 +433,7 @@ namespace StormWeb.Controllers
                     Roles.AddUserToRole(Request.Form["Username"], "Counsellor");
 
                     if (createStatus == MembershipCreateStatus.Success)
-                    {                  
+                    {
                         return RedirectToAction("LogOn");
                     }
                     else

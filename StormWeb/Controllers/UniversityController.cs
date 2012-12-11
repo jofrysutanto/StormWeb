@@ -24,7 +24,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Super,BranchManager,Administrator")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator")]
         public ViewResult Index()
         {
             var universities = db.Universities.Include("Country");
@@ -36,6 +36,7 @@ namespace StormWeb.Controllers
         public ViewResult Details(int id)
         {
             University university = db.Universities.Single(u => u.University_Id == id);
+            
             return View(university);
         }
 
@@ -81,6 +82,7 @@ namespace StormWeb.Controllers
         [HttpPost]
         public ActionResult Edit(University university)
         {
+            //var uni = db.Universities.SingleOrDefault(x=>x.University_Id==university.University_Id);
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             if (ModelState.IsValid)
             {
@@ -91,6 +93,7 @@ namespace StormWeb.Controllers
             } 
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the details of the University" + university.University_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_UNIVERSITY);
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited the University" + university.University_Name);
             return View(university);
         }
 
@@ -114,7 +117,8 @@ namespace StormWeb.Controllers
             {
                 db.Universities.DeleteObject(university);
                 db.SaveChanges();
-                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the University" + university.University_Name), LogHelper.LOG_DELETE, LogHelper.SECTION_UNIVERSITY);
+                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the University " + university.University_Name), LogHelper.LOG_DELETE, LogHelper.SECTION_UNIVERSITY);
+                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Created a new branch" + university.University_Name);
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -192,6 +196,20 @@ namespace StormWeb.Controllers
                 return RedirectToAction("Faculties", new { id = universityid });
             }
             return View();
+        }
+
+        #endregion
+
+        #region DESCRIPTION
+
+        public ActionResult Description(int id)
+        {
+            University university = db.Universities.SingleOrDefault(u => u.University_Id == id);
+
+            if (university == null)
+                return View(new University());
+
+            return View(university);
         }
 
         #endregion

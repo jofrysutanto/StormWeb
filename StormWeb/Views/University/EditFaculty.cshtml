@@ -1,47 +1,66 @@
 ﻿@model StormWeb.Models.Faculty
-
 @{
     ViewBag.Title = "EditFaculty";
 }
-
-<h2>EditFaculty</h2>
-
+<h2>
+    EditFaculty</h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
-@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new { @class="form-horizontal well", id = "aapointmentForm"}))
+@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new { @class = "form-horizontal well", id = "aapointmentForm" }))
 {
-    @Html.ValidationSummary(false)
-    <fieldset>
-        <legend>Faculty</legend>
+    @Html.ValidationSummary(false) 
+    @Html.HiddenFor(model => model.University_Id)
+    @Html.HiddenFor(model => model.Faculty_Id)
 
-        @Html.HiddenFor(model => model.Faculty_Id)
-
-        <div class="editor-label">
-            @Html.Label("Faculty Name")
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Faculty_Name)
-            @Html.ValidationMessageFor(model => model.Faculty_Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.Label("Faculty Description")
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Faculty_Description)
-            @Html.ValidationMessageFor(model => model.Faculty_Description)
-        </div>
-
-
-
-        @Html.HiddenFor(model=>model.University_Id)
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+    <table style="text-align: left;">
+        <tr>
+            <th>
+                @Html.Label("Faculty Name")
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Faculty_Name)
+                @Html.ValidationMessageFor(model => model.Faculty_Name)
+            </td>
+        </tr>
+        <tr>
+            <th>@Html.Label("Faculty Description")
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.Faculty_Description)
+                @Html.ValidationMessageFor(model => model.Faculty_Description)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("University Name")
+            </th>
+            <td>
+                @Html.TextBox("University_Name", Model.University.University_Name, new { @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.University.University_Name)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("Campus Name")
+            </th>
+            <td>
+                @Html.TextBox("Campus", Model.University.Campus, new { @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.University.Campus)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("Country Name")
+            </th>
+            <td>
+                @Html.TextBox("Country", Model.University.Country.Country_Name, new { @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.University.Country.Country_Name)
+            </td>
+        </tr>
+    </table>
+    <br />
+    <p>
+        <input type="submit" value="Save Changes" class="btn btn-primary" />        
+        @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
+    </p> 
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2> Branch</h2>
+<h2>
+    Branch</h2>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-block">
@@ -24,7 +25,8 @@
                                 <th>
                                     <i class="color-icons book_addresses_co"></i>Contact
                                 </th>
-                                <th><i class="color-icons hammer_screwdriver_co"></i>Actions
+                                <th>
+                                    <i class="color-icons hammer_screwdriver_co"></i>Actions
                                 </th>
                             </tr>
                         </thead>
@@ -51,9 +53,18 @@
                                         <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a>
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.Branch_Id }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.Branch_Id }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.Branch_Id })
+                                        @if (HttpContext.Current.User.IsInRole("BranchManager") && StormWeb.Controllers.BranchController.getBranchId() != item.Branch_Id)
+                                        {  
+                                            @Html.ActionLink("Details", "Details", new { id = item.Branch_Id }) 
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.Branch_Id })  
+                                            <span>| </span>
+                                            @Html.ActionLink("Details", "Details", new { id = item.Branch_Id })
+                                            <span>| </span>  
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.Branch_Id })
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -64,6 +75,9 @@
         </div>
     </div>
 </div>
-<p> 
-    @Html.Button_Add("Create New", "Branch/Create")
-</p>
+@if (!HttpContext.Current.User.IsInRole("BranchManager"))
+{ 
+    <p>
+        @Html.Button_Add("Create New", "Branch/Create")
+    </p>
+}

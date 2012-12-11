@@ -13,6 +13,12 @@
         $("#upload-files").click(function () {
 
             var valid = true;
+
+            $('#upload-files').attr("disabled", true);
+            $("#upload-files").addClass("disabled");
+            $("#upload-files").val("Loading...");
+
+            disableButton = true;
             if ($("#Form_Name").val() == '') {
                 valid = false;
                 alert("Form Name is required");
@@ -54,7 +60,7 @@
     <input id="file" type="file" name="file" />
     
     <div style="text-align:center">
-    <input class="btn btn-primary" type='button' id='upload-files' value=' Upload Files ' />
+    <input class="btn btn-primary" type='button' id='upload-files' value=' Upload Files ' onclick="removeFocus()"/>
     </div>
     
     <div style="text-align:center; display:none" id="LoadUpload">

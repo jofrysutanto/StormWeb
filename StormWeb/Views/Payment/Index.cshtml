@@ -82,7 +82,7 @@ $(function () {
                                                         <ul>
                                                          @foreach (var item in Model.unpaidApplications)
                                                             { 
-                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id})">
                                                             @item.Student.Client.GivenName
                                                             @item.Student.Client.LastName</a>
                                                             </li>
@@ -184,7 +184,7 @@ $(function () {
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
                                                         {
-                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student_Id })">@item.Student.Client.GivenName
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id})">@item.Student.Client.GivenName
                                                                 @item.Student.Client.LastName</a></li>
                                                             }
                                                         </ul>
@@ -268,22 +268,59 @@ $(function () {
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
                                                          {  
-                                                            if (item.Payments.Single().Receipt_No != null)
+                                                          @*  if (item.Payments.Single().Receipt_No != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Receipt_No)</li>
+                                                            
                                                             }
                                                             else
                                                             {
                                                             
                                                                 <li>&nbsp;</li>
-                                                            } 
-                                                          }                                                       
+                                                            }*@
+                                                                if (StormWeb.Controllers.DocumentController.fileExists(item.Application_Id))
+                                                                 {  
+                                                                    string value = StormWeb.Controllers.DocumentController.GetFileName(item.Application_Id);
+                                                                    string[] filename=  value.Split('/');
+                                                                    
+                                                                   @Html.Link_DownloadFile(filename[2], @Url.Action("DownloadPaymentReceipt","Document", new { id = StormWeb.Controllers.DocumentController.GetFileId(item.Application_Id) }))
+                                                                   <a class='color-icons cross_co tip-top' data-original-title='Delete' data-toggle='modal' href='#myModal@(item.Application_Id)'></a>
+                                                                     
+                                                                    using (Html.BeginForm())
+                                                                     {   
+                                                                        <div class="modal hide fade" id="myModal@(item.Application_Id)">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                                    ×</button>
+                                                                                <h3>
+                                                                                    Delete Branch Details @item.Application_Id</h3>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>
+                                                                                    Are you sure you want to delete this File ?
+                                               
+                                                                                </p> 
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <a href="#" class="btn" data-dismiss="modal" id="dismissModal">No</a>
+                                                                              @*  <input type="submit" class="btn btn-modal" id="save" type="submit" value="Yes" />*@
+                                                                              @Html.ActionLink("Yes", "DeletePaymentFile", "Document", new { id = item.Application_Id, page = "payment" }, new { @class = "btn" }) 
+                                                                            </div>
+                                                                        </div>
+                                                                     }
+
+                                                                 }
+                                                                else
+                                                                {
+                                                                      <li>&nbsp;</li>
+                                                                }
+                                                         }                                                       
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {
                                                             if (item.Payments.Single().Amount != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Currency) @Html.DisplayFor(modelItem => item.Payments.Single().Amount) </li>
@@ -292,8 +329,8 @@ $(function () {
                                                             {
                                                             
                                                                 <li>&nbsp;</li>
-                                                            } 
-                                                          }                                                       
+                                                            }
+                                                        }                                                       
                                                         </ul>
                                                     </td>
 
@@ -323,7 +360,7 @@ $(function () {
                                                                             </p>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <a href="@Url.Action("Delete", new { id = item.Payments.FirstOrDefault().Id , appId = item.Application_Id })" class="btn btn-mini btn-warning">
+                                                                            <a href="@Url.Action("Delete", new { id = item.Payments.FirstOrDefault().Id, appId = item.Application_Id })" class="btn btn-mini btn-warning">
                                                                                 Delete</a> <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
                                                                                     Cancel</a>
                                                                         </div>

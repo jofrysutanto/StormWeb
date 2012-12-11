@@ -1,0 +1,52 @@
+﻿@model StormWeb.Models.Advertisement
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="span6">
+    <h2>
+        Delete</h2>
+    <h3>
+        Are you sure you want to delete this?</h3>
+    <table class="data-tbl-simple table table-bordered dataTable ">
+        <tr>
+            <th>
+                Heading
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Heading)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Author
+            </th>
+            <td>@Html.DisplayFor(model => model.UploadedBy)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Updated Date
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.UploadedOn)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Comments
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Comments)
+            </td>
+        </tr>
+    </table>
+<p>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+       @Html.Button_DeleteOrCancel("Cancel", "../List")
+</p>
+
+</div>
+

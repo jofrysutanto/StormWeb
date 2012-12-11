@@ -51,7 +51,7 @@ namespace StormWeb.Controllers
 
             TempData[AccountController.BAD_LINK] = true;
             return RedirectToAction("Logon", "Account");
-        }
+        } 
 
         #region CREATE
 

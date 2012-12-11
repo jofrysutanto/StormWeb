@@ -18,6 +18,12 @@
             $selectedBranch.html("Selected");
             $("#selectedBranch").val($selectedBranch.val());
         });
+
+
+        @if ( ViewBag.SelectedBranch != null)
+        {
+            @:$('button[value="@(ViewBag.SelectedBranch)"]').click();
+        }
     });
 
     function isBranchSelected() {

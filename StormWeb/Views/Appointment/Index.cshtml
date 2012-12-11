@@ -243,16 +243,11 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <div class="widget-content">
-                                        <div class="widget-box">
+                                        <div class="widget-box"><table class="mydata-tbl-inbox table table-bordered">
                                             @if (Model.myStudentAppointment.Count() <= 0)
                                             {
                                           
-                                                <b>No new client appointments</b>
-                                         
-                                            }
-                                            else
-                                            {
-                                                <table class="mydata-tbl-inbox table table-bordered">
+                                          
                                                     <thead>
                                                         <tr>
                                                             <th>
@@ -275,6 +270,10 @@
                                                             </th>
                                                         </tr>
                                                     </thead>
+                                            }
+                                            else
+                                            {
+                                               
                                                     <tbody>
                                                         @foreach (var item in Model.myStudentAppointment)
                                                         {
@@ -313,8 +312,8 @@
                                                             </tr>
                                                         }
                                                     </tbody>
-                                                </table>
-                                            }
+                                               
+                                            } </table>
                                         </div>
                                     </div>
                                 </div>

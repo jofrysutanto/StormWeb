@@ -17,7 +17,7 @@ namespace StormWeb.Helper
             Ms = 4,
             Others = 5
         }
-       
+
         public enum MaritalStatus
         {
             Single = 1,
@@ -25,11 +25,34 @@ namespace StormWeb.Helper
             Divorced = 3,
             Widowed = 4
         }
-        
+
         public enum Gender
         {
             Male = 'M',
             Female = 'F'
+        }
+
+        public enum Currency
+        {
+            INR = 0,
+            AUD = 1,
+            LKR =2,
+            USD =3,
+
+        }
+
+        public virtual IList<SelectListItem> GetCurrency()
+        {
+            var names = Enum.GetNames(typeof(Enumclass.Currency));
+            var values = Enum.GetNames(typeof(Enumclass.Currency));
+            var titleItems = new List<SelectListItem>();
+            for (var i = 0; i < names.Length; i++)
+            {
+                var val = values.GetValue(i);
+                titleItems.Add(new SelectListItem { Text = names[i], Value = val.ToString() });
+            }
+            titleItems.Insert(0, new SelectListItem { Text = "--Select--", Value = "--Select--" });
+            return titleItems;
         }
 
         public virtual IList<SelectListItem> GetTitle()
@@ -44,7 +67,7 @@ namespace StormWeb.Helper
             }
             titleItems.Insert(0, new SelectListItem { Text = "--Select--", Value = "--Select--" });
             return titleItems;
-        } 
+        }
 
         public virtual IList<SelectListItem> GetMaritalStatus()
         {

@@ -105,7 +105,7 @@ namespace StormWeb.Helper
         }
 
         public static List<Branch> getBranchListFromCookie()
-        {
+        {  
             return getBranchList(CookieHelper.AssignedBranch);
         }
 

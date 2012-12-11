@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "StudentHomePage";
 }
-
 <script>
     function getOfferLetter(id) {
         download("offer", id);
@@ -24,8 +23,8 @@
         $.ajax({
             url: url,
             data: data,
-            success: function(result) {
-                
+            success: function (result) {
+
             }
         });
     }
@@ -99,47 +98,89 @@
                                                 <div>@item.Course.Faculty.University.University_Name</div>
                                             </td>
                                             <td>
-                                            @{
+                                                @{
                                                 
                                                 bool showDocuments = true;
                                                 if (StormWeb.Controllers.DocumentController.isOfferLetterRead(item.Application_Id))
                                                 {
                                                     showDocuments = false;
                                                     <div>
-                                                        Your <a target="_blank" href="@Url.Action("DownloadOfferLetter", "Document", new { id = item.Application_Id, type = "appId" })"><span class="color-icons doc_pdf_co"></span>Offer Letter</a> is
-                                                        ready for download</div>
+                                                        Your <a target="_blank" href="@Url.Action("DownloadOfferLetter", "Document", new { id = item.Application_Id, type = "appId" })">
+                                                            <span class="color-icons doc_pdf_co"></span>Offer Letter</a> is ready for download</div>
                                                 }
                                                 if (StormWeb.Controllers.DocumentController.isCOEReady(item.Application_Id))
                                                 {
                                                     showDocuments = false;
                                                     <div>
-                                                        Your <a target="_blank" href="@Url.Action("DownloadCoE", "Document", new { id = item.Application_Id, type = "appId" })"><span class="color-icons doc_pdf_co"></span>CoE</a> is ready for
-                                                        download</div>
+                                                        Your <a target="_blank" href="@Url.Action("DownloadCoE", "Document", new { id = item.Application_Id, type = "appId" })">
+                                                            <span class="color-icons doc_pdf_co"></span>CoE</a> is ready for download</div>
                                                 }
-                                        if (showDocuments)
-                                        {
-                                            if (a > 0)
-                                            {
+                                                if (showDocuments)
+                                                {
+                                                    if (a > 0)
+                                                    {
                                                     <div style="padding-bottom: 10px">
-                                                        You have <span class="badge badge-important">@a</span> more documents to complete <a href="@Url.Action("Index", "Document")">
-                                                            Upload now &raquo;</a></div>
-                                            }
-                                        }
-                                            }
+                                                        You have <span class="badge badge-important">@a</span> more documents to complete
+                                                        <a href="@Url.Action("Index", "Document")">Upload now &raquo;</a></div>
+                                                    }
+                                                }
+                                                }
                                             </td>
                                             <td>
+                                                @{
+                                                 string status = ""; 
+                                                if (item.Status == "Initiated")
+                                                {
+                                                    status = "Your application proccess has been started";
+                                                }
+                                                else if (item.Status == "Staff_Assigned")
+                                                {
+                                                    status = "You have been assigned a counsellor " + StormWeb.Controllers.ApplicationController.getStaffName(item.Application_Id);
+                                                }
+                                                else if (item.Status == "Documents_Completed")
+                                                {
+                                                    status = "All the Documents have been uploaded";
+                                                }
+                                                else if (item.Status == "Application_Submitted")
+                                                {
+                                                    status = "All the Applications have been Submitted";
+                                                }
+                                                else if (item.Status == "Interview_Completed")
+                                                {
+                                                    status = "You have attended the interview";
+                                                }
+                                                else if (item.Status == "Offer_Letter")
+                                                {
+                                                    status = "Offer Letter is issued";
+                                                }
+                                                else if (item.Status == "Acceptance")
+                                                {
+                                                    status = "Your offer letter has been accepted";
+                                                }
+                                                else if (item.Status == "Payment_Received")
+                                                {
+                                                    status = "Payment is made";
+                                                }
+                                                else if (item.Status == "CoE")
+                                                {
+                                                    status = "CoE is issued";
+                                                }   
+                                                }
                                                 <div class="alert alert-success">
-                                                    asdasd</div>
+                                                  @status
+                                                </div>
                                             </td>
                                             @if (!StormWeb.Controllers.DocumentController.isCOEReady(item.Application_Id))
                                             {
                                                 <td>
-                                                    <a href="@Url.Action("Index", "Document")" class="btn btn-success">Continue &raquo</a>
+                                                    <a href="@Url.Action("Index", "Document", new { go=item.Application_Id })" class="btn btn-success">Continue &raquo</a>
                                                 </td>
                                             }
                                             else
                                             {
-                                                <td>&nbsp;</td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
                                             }
                                         </tr>
                                         

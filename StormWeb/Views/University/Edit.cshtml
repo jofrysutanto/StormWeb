@@ -49,6 +49,25 @@
         </tr>
         <tr>
             <th>
+                Description
+            </th>
+            <td>
+            </td>
+        </tr>
+        <tr>
+        <th></th>
+            <td>
+                <div class="control-group">
+                 
+                    <div class="controls">
+                        @Html.TextAreaFor(model => model.Description, new { @class = "span11", rows = "10", cols = "10", id = "inbox-editor" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
             </th>
             <td>
             </td>
@@ -57,7 +76,7 @@
     
     
     <p>
-        <input type="submit" value="Save" class="btn btn-primary" /> 
-       @Html.Button_DeleteOrCancel("Cancel","../Index")
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+        @Html.Button_DeleteOrCancel("Cancel", "../Index")
     </p> 
 }

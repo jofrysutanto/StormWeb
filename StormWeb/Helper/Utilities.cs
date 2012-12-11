@@ -125,16 +125,22 @@ namespace StormWeb.Helper
                 StormWeb.Models.Client client = (from c in db.Clients
                                                  from s in db.Students
                                                  where c.Client_Id == s.Client_Id && s.UserName == username
-                                                 select c).Single();
+                                                 select c).SingleOrDefault();
 
-                return client.GivenName + " " + client.LastName;
+                if (client != null)
+                    return client.GivenName + " " + client.LastName;
+                else
+                    return username + " is unrecognized";
 
             }
             else if (isStaff(username))
             {
-                StormWeb.Models.Staff staff = db.Staffs.Single(x => x.UserName == username);
+                StormWeb.Models.Staff staff = db.Staffs.SingleOrDefault(x => x.UserName == username);
 
-                return staff.FirstName + " " + staff.LastName;
+                if (staff != null)
+                    return staff.FirstName + " " + staff.LastName;
+                else
+                    return username + " is unrecognized";
             }
             else
             {

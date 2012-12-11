@@ -34,6 +34,7 @@ namespace StormWeb.Models
         public Application_Result acceptance { get; set; }
         public Application_Result completedAcceptance { get; set; }
         public Application_Result coe { get; set; }
+       
 
         public bool step1Complete()
         {
@@ -53,16 +54,25 @@ namespace StormWeb.Models
 
         public bool step3Complete()
         {
-            if (ApplicationController.getApplicationStatusTypeValue(app.Status) >= ApplicationController.getApplicationStatusTypeValue(ApplicationController.ApplicationStatusType.Acceptance.ToString()))
+            if (ApplicationController.getApplicationStatusTypeValue(app.Status) >= ApplicationController.getApplicationStatusTypeValue(ApplicationController.ApplicationStatusType.Offer_Letter.ToString()))
                 return true;
             return false;
         }
 
         public bool step4Complete()
+        { 
+            if (ApplicationController.getApplicationStatusTypeValue(app.Status) >= ApplicationController.getApplicationStatusTypeValue(ApplicationController.ApplicationStatusType.Payment_Received.ToString()))
+                return true;
+            return false;
+        }
+        public bool step5Complete()
         {
             if (ApplicationController.getApplicationStatusTypeValue(app.Status) >= ApplicationController.getApplicationStatusTypeValue(ApplicationController.ApplicationStatusType.CoE.ToString()))
                 return true;
             return false;
         }
+
+        public List<Payment> paymentTable { get; set; }
+       
     }
 }

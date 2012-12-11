@@ -20,22 +20,23 @@
         <table style="text-align: left;">
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Dept_Id, "Department")
+                    Department 
                 </th>
                 <td>
-                    @Html.DropDownList("Dept_Id", String.Empty)
+                    @Html.DropDownList("Dept_Id", "--Select--") 
+                    
                 </td>
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Address.Address_Name, "Address")
+                   Address 
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Address.Address_Name, "Address")
                 </td>
             </tr>
             <tr>
-                <th>@Html.LabelFor(model => model.Address.City, "City")
+                <th>City 
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Address.City)
@@ -43,7 +44,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Address.State, "State")
+                   State 
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Address.State)
@@ -51,7 +52,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Address.Zipcode, "Zipcode")
+                   Zipcode 
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Address.Zipcode)
@@ -59,7 +60,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Address.Country.Country_Name, "Country Name")
+                    Country 
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Address.Country.Country_Name)
@@ -67,18 +68,16 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Title, "Title")
+                    Title 
                 </th>
                 <td>  
                            @Html.EditorFor(model => model.Title) 
-                           @* @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["TitleValue"], new { @class = "chzn-select" })*@
-                       @*    @Html.DropDownListFor(model => model.Title, (SelectList)ViewData["TitleValue"], new { @class = "chzn-select" })*@
                      
                 </td>
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.FirstName, "First Name")
+                   Given Name 
                 </th>
                 <td>
                     @Html.EditorFor(model => model.FirstName)
@@ -86,7 +85,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.LastName, "Last Name")
+                   SurName 
                 </th>
                 <td>
                     @Html.EditorFor(model => model.LastName)
@@ -94,7 +93,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.DOB, "Birth Date")
+                  DOB
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly" })
@@ -102,7 +101,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Date_Of_Joining, "Joining Date")
+                   Date Of Joining
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly" })
@@ -110,7 +109,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Mobile_Number, "Mobile Number")
+                   Mobile Number  
                 </th>
                 <td>
                     @Html.EditorFor(model => model.Mobile_Number)
@@ -118,7 +117,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Email, "Email")
+                   Email 
                 </th>
                 <td>
                     @Html.EditorFor(model => model.Email)
@@ -126,7 +125,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Tax_Type, "Tax Type")
+                   Tax Type 
                 </th>
                 <td>
                     @Html.EditorFor(model => model.Tax_Type)
@@ -134,7 +133,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Tax_Number, "Tax Number")
+                   Tax Number 
                 </th>
                 <td>
                     @Html.EditorFor(model => model.Tax_Number)
@@ -142,19 +141,26 @@
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.UserName, "User Name")
+                   User Name  
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.UserName)
+                    @Html.EditorFor(model => model.UserName, new { @class = "text-tip" })
                 </td>
             </tr> 
-           
+             <tr>
+            <td colspan="2">
+                <div class="span6">
+                    @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
+                </div>
+            </td>
+        </tr>
         </table>
        <p>
             <input type="submit" class="btn btn-primary" value="Save Changes" />
-             @Html.Button_DeleteOrCancel("Cancel","../Index")
+             @Html.Button_DeleteOrCancel("Cancel","../../Staff/Index")
         </p> 
     </div> 
+    <br />
 }
  
 <script type="text/javascript">
@@ -197,3 +203,4 @@
 
 
 </script>
+ 

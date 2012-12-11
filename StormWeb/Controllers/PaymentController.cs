@@ -72,7 +72,7 @@ namespace StormWeb.Controllers
             if (ModelState.IsValid)
             {
                 payment.Application_Id = id;
-                payment.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
+                payment.Approved_By = StormWeb.Helper.CookieHelper.Username;
                 db.Payments.AddObject(payment);
                 
                 Application app = db.Applications.Single(a => a.Application_Id == id);
@@ -95,7 +95,7 @@ namespace StormWeb.Controllers
         public ActionResult Edit(int id)
         {
             Payment payment = db.Payments.Single(p => p.Id == id);
-            payment.Approved_By = StormWeb.Helper.CookieHelper.getStaffId();
+            payment.Approved_By = StormWeb.Helper.CookieHelper.Username;
             ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetType(), "MethodType", "MethodType");
             return View(payment);
         }

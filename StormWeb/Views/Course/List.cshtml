@@ -2,9 +2,7 @@
 
 @{
     ViewBag.Title = "List";
-}
-
-<h2> Courses</h2>
+} 
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-block">
@@ -14,8 +12,7 @@
                 
             </div>
             <div class="widget-content">
-               <div class="widget-box" style="padding: 15px;">
-                    <br />
+               <div class="widget-box" style="padding: 15px;"> 
                       <table class="data-tbl-simple table table-bordered dataTable">
                        <thead>
                        <tr>
@@ -35,7 +32,7 @@
                             Duration
                         </th>
                         <th>
-                            Fee
+                            Total Course Fee
                         </th>
                         <th>
                             Description
@@ -74,7 +71,7 @@
                             @Html.DisplayFor(modelItem => item.Duration)
                         </td>
                             <td>
-                            @Html.DisplayFor(modelItem => item.Fee)
+                            $(AUD)@Html.DisplayFor(modelItem => item.Fee)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)

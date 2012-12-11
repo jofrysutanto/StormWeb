@@ -4,26 +4,24 @@
         @if (HttpContext.Current.User.IsInRole("Student"))
         {
             <li><a href="@Url.Action("Student", "StudentCentre")"><span class="white-icons computer_imac">
-            </span>Dashboard</a></li>
+            </span>Home</a></li>
             <li><a href="#"><span class="white-icons archive"></span>Application</a>
                 <ul class="acitem">
-                    <li><a href="@Url.Action("Index", "Application")"><span class="sidenav-icon"><span
+                    <li><a href="@Url.Action("Index", "Document")"><span class="sidenav-icon"><span
                         class="sidenav-link-color"></span></span>View all existing applications</a></li>
                     <li><a href="@Url.Action("Index", "Course")"><span class="sidenav-icon"><span
                         class="sidenav-link-color"></span></span>Start new application</a></li>
                 </ul>
             </li>
             <li><a href="@Url.Action("Index", "Course")"><span class="white-icons mouse_wires"></span>
-                Course Finder</a></li>  
-            <li><a href="@Url.Action("Index", "Document")"><span class="white-icons documents"></span>
-                Documents</a></li>     
+                Course Finder</a></li>      
             <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span> Messages 
             @{ 
-                    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
-                    if (inboxCount > 0)
-                    {
+            int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+            if (inboxCount > 0)
+            {
                                     <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
-                    }
+            }
                                     }</a></li> 
             <li><a href="@Url.Action("Index", "Appointment")"><span class="white-icons day_calendar">
             </span>Appointment</a></li>
@@ -33,7 +31,7 @@
         else if (HttpContext.Current.User.Identity.IsAuthenticated)
         {
             <li><a href="@Url.Action("Index", "StaffCentre")"><span class="white-icons computer_imac">
-            </span>Dashboard</a></li>
+            </span>Home</a></li>
             <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span>Messages
             @{ 
             int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
@@ -56,6 +54,9 @@
         @if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
         {
             
+            <li><a href="@Url.Action("ShowAllStudents", "Document")"><span class="white-icons create_write"></span>
+                        Applications</a>                  
+            </li>
             
                     <li><a href="#"><span class="white-icons users"></span>
                         Students</a>
@@ -81,10 +82,8 @@
             
             
                         //------------start Documents ----------//
-            <li><a href="#"><span class="white-icons documents"></span>Documents</a>
+            <li><a href="#"><span class="white-icons documents"></span>Document Settings</a>
                 <ul class="acitem">
-                    <li><a href="@Url.Action("ShowAllStudents", "Document")">My Students </a></li>
-
                     <li><a  href='@Url.Action("ShowGeneralTemplates", "Document")'>General Templates</a></li>
 
                     <li><a  href='@Url.Action("ShowAllDocumentTemplates", "Document")'>Application Templates</a></li>
@@ -108,15 +107,25 @@
                 {
                     
             <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons graph"></span>
-                <span class="badge badge-important">X</span>Reports</a></li>
+                <span class="badge badge-important">X</span>Reports</a>
+                  <ul class="acitem">
+                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Marketing Report</a></li>
+                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Student FollowUp Report</a></li>  
+                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Student Enrollment</a></li>  
+                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Main Student Database</a></li>
+                     <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Tax Invoice Report</a></li>
+                      <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Associate Data</a></li>
+                       <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Associate Ranking</a></li>
+                        
+                  </ul>
+            </li>
             <li><a href="@Url.Action("Index", "Client")"><span class="white-icons users"></span>
                 Clients</a></li>
             <li><a href="@Url.Action("Index", "Staff")"><span class="white-icons user_2"></span>
                 Staffs</a></li>
             <li><a href="@Url.Action("Index", "Branch")"><span class="white-icons companies"></span>
                 Branch</a></li>
-            <li><a href="@Url.Action("Index", "Site")"><span class="white-icons joomla"></span><span class="badge badge-important">X</span>
-                Site</a></li>
+           
                 }
                 
             <li><a href="@Url.Action("Index", "Event")"><span class="color-icons weather_clouds_co"></span>

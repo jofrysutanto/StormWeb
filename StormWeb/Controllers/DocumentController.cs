@@ -25,6 +25,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using Amazon;
 using System.Net;
+using System.Text;
 
 namespace StormWeb.Controllers
 {
@@ -42,7 +43,7 @@ namespace StormWeb.Controllers
 
 
         #region Councelor  page
-        
+
         // GET: /CaseTemp/
         // This will show all  Case Document Templates from student page to select from them
         [Authorize(Roles = "Super,Counsellor,Administrator")]
@@ -57,7 +58,7 @@ namespace StormWeb.Controllers
 
         // This will show all  Case Document Templates from student page to select from them
         [Authorize(Roles = "Super,Counsellor,Administrator")]
-        public ViewResult ShowAllCaseTemplates(int id = 0 )
+        public ViewResult ShowAllCaseTemplates(int id = 0)
         {
             if (id != 0)
             {
@@ -67,10 +68,10 @@ namespace StormWeb.Controllers
                 // create a list of all not uploaded documents
                 ViewBag.listID = db.CaseDocuments.Where(x => x.Case_Id == caseId && x.UploadedOn == null).Select(x => x.CaseDocTemplate_Id).ToList();
                 ViewBag.listIdDisabled = db.CaseDocuments.Where(x => x.Case_Id == caseId && x.UploadedOn != null).Select(x => x.CaseDocTemplate_Id).ToList();
-      
-                return View(db.CaseDoc_Template.ToList());      
+
+                return View(db.CaseDoc_Template.ToList());
             }
-            
+
 
             return View(db.CaseDoc_Template.ToList());
             //return View();
@@ -109,20 +110,20 @@ namespace StormWeb.Controllers
         [HttpPost]
         public ActionResult ShowAllCaseTemplates(int id, FormCollection formCollection)
         {
-             int stid = db.Students.Single(x => x.Client_Id == id).Student_Id;
-             int caseId = db.Cases.Single(x => x.Student_Id == stid).Case_Id;
-            
-            
-             var oldCaseDoc = db.CaseDocuments.Where(x => x.Case_Id == caseId).ToList();
-             // create a list of all  case  old general documents ID's 
-             List<int?> oldlistID = db.CaseDocuments.Where(x => x.Case_Id == caseId).Select(x => x.CaseDocTemplate_Id).ToList();
-             // create a list of all  case  new general documents ID's 
-             List<int> newListID = new List<int>();
+            int stid = db.Students.Single(x => x.Client_Id == id).Student_Id;
+            int caseId = db.Cases.Single(x => x.Student_Id == stid).Case_Id;
+
+
+            var oldCaseDoc = db.CaseDocuments.Where(x => x.Case_Id == caseId).ToList();
+            // create a list of all  case  old general documents ID's 
+            List<int?> oldlistID = db.CaseDocuments.Where(x => x.Case_Id == caseId).Select(x => x.CaseDocTemplate_Id).ToList();
+            // create a list of all  case  new general documents ID's 
+            List<int> newListID = new List<int>();
 
             var fc = formCollection["listID"].Split(',');
             foreach (var input in fc)
             {
-  
+
                 newListID.Add(Int32.Parse(input));
             }
 
@@ -138,46 +139,46 @@ namespace StormWeb.Controllers
                     {
                         db.CaseDocuments.DeleteObject(casedoc);
                         db.SaveChanges();
-                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc.CaseDocTemplate_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                        LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (casedoc.CaseDocTemplate_Id + " Case Template is Deleted "), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
                     }
                 }
             }
-            
+
             if (ModelState.IsValid)
             {
-                
+
                 foreach (int item in newListID)
                 {
                     // Add the corresponding Template into the Case Docuemnt
-                   
-                    
-                     CaseDocument found = (from e in db.CaseDocuments
-                                     where e.CaseDocTemplate_Id == item && e.Case_Id == caseId
-                                     select e).DefaultIfEmpty(null).SingleOrDefault();
 
-                        // add a new record only if doesnt exist in the file                                       
-                        if (found == null)
-                        {
-                            CaseDocument doc = new CaseDocument();
-                    
-                            doc.CaseDocTemplate_Id = item;
-                            doc.Case_Id = caseId;
-                            db.CaseDocuments.AddObject(doc);
-                        }
-                    
+
+                    CaseDocument found = (from e in db.CaseDocuments
+                                          where e.CaseDocTemplate_Id == item && e.Case_Id == caseId
+                                          select e).DefaultIfEmpty(null).SingleOrDefault();
+
+                    // add a new record only if doesnt exist in the file                                       
+                    if (found == null)
+                    {
+                        CaseDocument doc = new CaseDocument();
+
+                        doc.CaseDocTemplate_Id = item;
+                        doc.Case_Id = caseId;
+                        db.CaseDocuments.AddObject(doc);
+                    }
+
                 }
                 db.SaveChanges();
 
             }
-            return RedirectToAction("StudentDetails", new { id=id});
-            
+            return RedirectToAction("StudentDetails", new { id = id });
+
         }
 
         // GET: /CaseTemp/Create
 
         [Authorize(Roles = "Super,Counsellor,Administrator")]
-        public ActionResult CreateCaseTemp(int returnId=0)
+        public ActionResult CreateCaseTemp(int returnId = 0)
         {
             ViewBag.clientId = returnId;
             return View();
@@ -192,33 +193,33 @@ namespace StormWeb.Controllers
         {
 
 
-                if (casedoc_template.Downloadable == true && file.FileName == null)
-                {
-                    ModelState.AddModelError("FileNameError", "Please select file!");
-                    return View();
-                }
+            if (casedoc_template.Downloadable == true && file.FileName == null)
+            {
+                ModelState.AddModelError("FileNameError", "Please select file!");
+                return View();
+            }
 
-                if (casedoc_template.Downloadable == true && file.FileName != null)
-                {
-                    string pathToCreate;
-                    pathToCreate = TEMPLATE_GENERAL_PATH;
-                    string fileToCreate = pathToCreate + '/' + file.FileName;
-                    casedoc_template.FileName = file.FileName;
-                    casedoc_template.Path = pathToCreate;
-                    
+            if (casedoc_template.Downloadable == true && file.FileName != null)
+            {
+                string pathToCreate;
+                pathToCreate = TEMPLATE_GENERAL_PATH;
+                string fileToCreate = pathToCreate + '/' + file.FileName;
+                casedoc_template.FileName = file.FileName;
+                casedoc_template.Path = pathToCreate;
 
-                    uploadAWS(fileToCreate, file);
-                }
+
+                uploadAWS(fileToCreate, file);
+            }
             // create / update folder 
-                casedoc_template.UploadedOn = System.DateTime.Now;
-                casedoc_template.UploadedBy = CookieHelper.Username;
-                db.CaseDoc_Template.AddObject(casedoc_template);
+            casedoc_template.UploadedOn = System.DateTime.Now;
+            casedoc_template.UploadedBy = CookieHelper.Username;
+            db.CaseDoc_Template.AddObject(casedoc_template);
             if (ModelState.IsValid)
             {
 
                 db.SaveChanges();
 
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Created Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (casedoc_template.CaseDocTemplate_Id + " Case Template is Created "), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Created Successfully!");
                 return View("Refresh");
@@ -231,16 +232,16 @@ namespace StormWeb.Controllers
             }
 
         }
-            //if (returnId != 0)
-            //{
-            //    return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
-            //}
-            //else
-            //{
-            //    return RedirectToAction("ShowGeneralTemplates");
-            //}
-            //return View(casedoc_template);
-        
+        //if (returnId != 0)
+        //{
+        //    return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+        //}
+        //else
+        //{
+        //    return RedirectToAction("ShowGeneralTemplates");
+        //}
+        //return View(casedoc_template);
+
 
         // GET: /CaseTemp/Edit/5
         [Authorize(Roles = "Super,Counsellor,Administrator")]
@@ -255,14 +256,14 @@ namespace StormWeb.Controllers
         // POST: /CaseTemp/Edit/5
 
         [HttpPost]
-        public ActionResult EditCaseTemp(CaseDoc_Template casedoc_template, int returnId = 0 )
+        public ActionResult EditCaseTemp(CaseDoc_Template casedoc_template, int returnId = 0)
         {
             if (ModelState.IsValid)
             {
                 db.CaseDoc_Template.Attach(casedoc_template);
                 db.ObjectStateManager.ChangeObjectState(casedoc_template, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Edit Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (casedoc_template.CaseDocTemplate_Id + " Case Template is edited "), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
             }
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Modified Successfully!");
@@ -274,57 +275,57 @@ namespace StormWeb.Controllers
             //}
             //else
             //{
-               // return RedirectToAction("ShowGeneralTemplates");
-                
+            // return RedirectToAction("ShowGeneralTemplates");
+
             //}
         }
 
 
         [Authorize(Roles = "Super,Counsellor,Administrator")]
-        public ActionResult DeleteCaseTemp(int id, int returnId=0)
+        public ActionResult DeleteCaseTemp(int id, int returnId = 0)
         {
             CaseDocument found = (from e in db.CaseDocuments
-                                  where e.CaseDocTemplate_Id == id 
+                                  where e.CaseDocTemplate_Id == id
                                   select e).DefaultIfEmpty(null).FirstOrDefault();
 
-            CaseDoc_Template casedoc_template = db.CaseDoc_Template.DefaultIfEmpty(null).SingleOrDefault(c => c.CaseDocTemplate_Id == id );
+            CaseDoc_Template casedoc_template = db.CaseDoc_Template.DefaultIfEmpty(null).SingleOrDefault(c => c.CaseDocTemplate_Id == id);
 
-                if ((casedoc_template != null && casedoc_template.Required == false) && (found == null))
+            if ((casedoc_template != null && casedoc_template.Required == false) && (found == null))
+            {
+
+                db.CaseDoc_Template.DeleteObject(casedoc_template);
+
+                if (casedoc_template.FileName != null)
                 {
-
-                    db.CaseDoc_Template.DeleteObject(casedoc_template);
-
-                    if (casedoc_template.FileName != null)
-                    {
-                        //System.IO.File.Delete(completFileName);
-                        DeletingAWS(casedoc_template.Path + '/' + casedoc_template.FileName);
-                    }
-                    db.SaveChanges();
-                    LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Template " + casedoc_template.CaseDocTemplate_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
-
-                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was deleted successfully!");
-                    
+                    //System.IO.File.Delete(completFileName);
+                    DeletingAWS(casedoc_template.Path + '/' + casedoc_template.FileName);
                 }
+                db.SaveChanges();
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (casedoc_template.CaseDocTemplate_Id + " Case Template is Deleted "), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
-                else
-                {
-                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Template cannot be deleted as it is either used in another application or it is required!");
-                   
-                }
+                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template was deleted successfully!");
+
+            }
+
+            else
+            {
+                NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Template cannot be deleted as it is either used in another application or it is required!");
+
+            }
 
 
-                if (returnId != 0)
-                {
-                    return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
-                }
-                else
-                {
-                    return RedirectToAction("ShowGeneralTemplates");
-                }
+            if (returnId != 0)
+            {
+                return RedirectToAction("ShowAllCaseTemplates", new { id = returnId });
+            }
+            else
+            {
+                return RedirectToAction("ShowGeneralTemplates");
+            }
         }
-                    
 
-    
+
+
 
         /////  StudentDetails    //////////////////////////////
         // 
@@ -373,14 +374,24 @@ namespace StormWeb.Controllers
         [Authorize]
         public ViewResult StudentDetails(int id)
         {
-            int stid = db.Students.Single(x => x.Client_Id == id).Student_Id;
+            var students = db.Students.Single(x => x.Client_Id == id);
+            int stid = 0;
+            if (students != null)
+                stid = students.Student_Id;
             int caseId = db.Cases.Single(x => x.Student_Id == stid).Case_Id;
             string name = db.Clients.Single(x => x.Client_Id == id).GivenName + " " + db.Clients.Single(x => x.Client_Id == id).LastName;
-            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid && (c.Completed == false || c.Completed == null));
+
+            // Getting all the applications with completed = false
+            //var applications = db.Applications.ToList().Where(c => c.Student_Id == stid && (c.Completed == false || c.Completed == null));
+
+            // Getting all the applications
+            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid);
+
             ViewBag.clientId = id;
             ViewBag.casedocs = GetCaseItems(caseId);
             ViewBag.studentName = name;
             ViewBag.caseId = caseId;
+            BindCurrency("-Select Currency-");
 
             List<DocumentIndexViewModel> documentsViewModel = new List<DocumentIndexViewModel>();
 
@@ -443,13 +454,14 @@ namespace StormWeb.Controllers
             return View(students);
         }
 
-        
+
         [Authorize]
         public ActionResult ApproveDocument(int id, int returnId)
         {
             Application_Document application_document = db.Application_Document.Single(t => t.ApplicationDoc_Id == id);
             Application app = db.Applications.Single(a => a.Application_Id == application_document.Application_Id);
             string appStatus = db.Applications.Single(a => a.Application_Id == application_document.Application_Id).Status;
+
 
             // if application status = submitted , councelor cant unapprove the document
             int progressValue = (int)Enum.Parse(typeof(StormWeb.Controllers.ApplicationController.ApplicationStatusType), appStatus);
@@ -466,8 +478,8 @@ namespace StormWeb.Controllers
                 // check all application documents for status update
 
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Approve Application " + app.Application_Id), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
-
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (app.Application_Id + " Application has been Approved "), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                MessageController.sendSystemMessage(app.Student.UserName, "Document approval", "Your document " + application_document.Template_Document.Form_Name + " have been approved.");
             }
             else
             {
@@ -480,20 +492,25 @@ namespace StormWeb.Controllers
                 // if all application documents are approved then application status will be "Documents Completed"
                 if (StormWeb.Models.ModelHelper.DocumentHelper.getUnApprovedDocs(app.Application_Id) == 0)
                 {
-                    app.Status = ApplicationController.ApplicationStatusType.Documents_Completed.ToString();                    
+                    app.Status = ApplicationController.ApplicationStatusType.Documents_Completed.ToString();
+                    //ApplicationController.statusUp(app.Application_Id);
+                    MessageController.sendSystemMessage(app.Student.UserName, "All documents have been approved", "All your documents are approved, your application are now  waiting for submission.");
                 }
-                    // else return application status to "staff assigned"
+                // else return application status to "staff assigned"
                 else
                 {
                     app.Status = ApplicationController.ApplicationStatusType.Staff_Assigned.ToString();
+                    //ApplicationController.statusDown(app.Application_Id);
                 }
-            
-             }
+
+            }
+
+            db.SaveChanges();
             return RedirectToAction("StudentDetails", new { id = returnId });
         }
 
 
-    #endregion
+        #endregion
 
         #region Template Documents
         // document templates 
@@ -501,7 +518,7 @@ namespace StormWeb.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ViewResult ShowAllDocumentTemplates()
         {
-           
+
             var docs = db.Courses.ToList();
             return View(docs);
         }
@@ -527,7 +544,7 @@ namespace StormWeb.Controllers
                 db.Template_Document.Attach(template_document);
                 db.ObjectStateManager.ChangeObjectState(template_document, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Edit Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (template_document.TemplateDoc_Id + " Template Document is Edited  "), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
             ViewBag.Course_Id = new SelectList(db.Courses, "Course_Id", "Course_Name", template_document.Course_Id);
@@ -542,9 +559,12 @@ namespace StormWeb.Controllers
 
         // The following method is used to display the list of documents for a specific user
         [AcceptVerbs(HttpVerbs.Get)]
-        [Authorize(Roles="Student")]
+        [Authorize(Roles = "Student")]
         public ViewResult Index(int go = -1, bool faq = false)
         {
+
+            BindCurrency("--Currency--");
+            PopulatePayment(-1);
             // Determine which application to show on page load
             if (go >= 0)
                 ViewBag.Go = go;
@@ -574,15 +594,15 @@ namespace StormWeb.Controllers
                 RedirectToAction("Index", "Home");
             }
 
-            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid);            
+            var applications = db.Applications.ToList().Where(c => c.Student_Id == stid);
 
-            
+
             List<CaseDocument> completedCaseDocs = new List<CaseDocument>();
             List<CaseDocument> pendingCaseDocs = new List<CaseDocument>();
 
             // Retrieve all Case Documents
             int caseId = db.Cases.Single(x => x.Student_Id == stid).Case_Id;
-            var caseDocs = db.CaseDocuments.Where(x => x.Case_Id == caseId);            
+            var caseDocs = db.CaseDocuments.Where(x => x.Case_Id == caseId);
             foreach (CaseDocument cd in caseDocs)
             {
                 if (cd.FileName == null)
@@ -629,27 +649,28 @@ namespace StormWeb.Controllers
 
                 appViewModel.Add(tempAppViewModel);
             }
-           
+
             List<DocumentIndexViewModel> documentsViewModel = new List<DocumentIndexViewModel>();
-            
+
             foreach (var item in applications)
             {
                 List<Template_Document> appDocTemplates = db.Template_Document.Where(c => c.Course_Id == item.Course_Id).ToList();
                 List<Application_Document> app = (from a in db.Applications
-                                             from t in db.Application_Document
-                                             where a.Student_Id == stid && a.Course_Id == item.Course_Id && a.Case_Id == caseId && t.Application_Id == a.Application_Id
-                                             select t).ToList();
+                                                  from t in db.Application_Document
+                                                  where a.Student_Id == stid && a.Course_Id == item.Course_Id && a.Case_Id == caseId && t.Application_Id == a.Application_Id
+                                                  select t).ToList();
                 DocumentIndexViewModel docVM = new DocumentIndexViewModel(item.Course_Id);
 
                 docVM.appDoc = app;
                 docVM.tempDoc = appDocTemplates;
                 docVM.courseId = item.Course_Id;
 
-                documentsViewModel.Add(docVM);                
+                documentsViewModel.Add(docVM);
+
             }
 
             ViewBag.DocumentViewModel = documentsViewModel;
-           
+
             ViewBag.casedocs = GetCaseItems(caseId);
 
             //ViewBag.casedocs = casedocs;
@@ -672,7 +693,7 @@ namespace StormWeb.Controllers
 
         #region Deletes
         [Authorize]
-        public ActionResult DeleteOfferLetter(int id, string doctype, int returnId)
+        public ActionResult DeleteOfferLetter(int id, string doctype, int returnId, bool statusChange = true)
         {
             if (ModelState.IsValid)
             {
@@ -683,16 +704,12 @@ namespace StormWeb.Controllers
                 //System.IO.File.Delete(completFileName);
                 DeletingAWS(application.Path + '/' + application.FileName);
                 db.Application_Result.DeleteObject(application);
-                if (doctype == "OfferLetter")
-                {
-                    app.Status = "Application_Submitted";
-                }
-                else if (doctype == "CoE")
-                {
-                    app.Status = "Offer_Letter";
-                }
+
+                if (statusChange)
+                    ApplicationController.statusDown(application.Application_Id);
+
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Application Result  " +"-" + application.Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Application Result  " + "-" + application.Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
 
@@ -706,35 +723,35 @@ namespace StormWeb.Controllers
         {
             Template_Document template_document = db.Template_Document.Single(t => t.TemplateDoc_Id == id);
 
-           if (getAppByTemplate(id)== null) 
-           {
-               //string completFileName = Server.MapPath(template_document.Path + '/' + template_document.FileName);
-               //System.IO.File.Delete(completFileName);
-               DeletingAWS(template_document.Path + '/' + template_document.FileName);
+            if (getAppByTemplate(id) == null)
+            {
+                //string completFileName = Server.MapPath(template_document.Path + '/' + template_document.FileName);
+                //System.IO.File.Delete(completFileName);
+                DeletingAWS(template_document.Path + '/' + template_document.FileName);
 
                 db.Template_Document.DeleteObject(template_document);
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Template Document  " + template_document.TemplateDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (template_document.TemplateDoc_Id + " Template Document is Delel  "), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Template Was Deleted Successfully!");
-                
+
             }
 
-           
+
             else
             {
                 NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Template Cannot be Deleted as it is used in other applications!");
-               
+
             }
 
-           return RedirectToAction("ShowAllDocumentTemplates");
+            return RedirectToAction("ShowAllDocumentTemplates");
         }
 
         public static Application_Document getAppByTemplate(int id)
         {
             StormDBEntities db = new StormDBEntities();
             foreach (Application_Document ad in db.Application_Document)
-                    {
+            {
                 if (ad.TemplateDoc_Id == id)
                 {
                     return ad;
@@ -754,12 +771,12 @@ namespace StormWeb.Controllers
                 string completFileName = Server.MapPath(application.Path + '/' + application.FileName);
                 //System.IO.File.Delete(completFileName);
 
-                DeletingAWS(application.Path + '/'+ application.FileName);
+                DeletingAWS(application.Path + '/' + application.FileName);
                 db.Application_Document.DeleteObject(application);
 
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Application Document  " + application.ApplicationDoc_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
-                
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (application.ApplicationDoc_Id + " Application Document has been Deleted  "), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+
             }
 
             return RedirectToAction("Index");
@@ -770,7 +787,7 @@ namespace StormWeb.Controllers
         public ActionResult DeleteCaseDoc(int id)
         {
 
-           if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 CaseDocument application = db.CaseDocuments.Single(a => a.CaseDocument_Id == id);
                 // delete file from student's folder
@@ -785,7 +802,7 @@ namespace StormWeb.Controllers
                 application.Comment = null;
 
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Delete Case Document  " + application.CaseDocument_Id), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (application.CaseDocument_Id + " Case Document is Deleted "), LogHelper.LOG_DELETE, LogHelper.SECTION_DOCUMENT);
 
             }
 
@@ -805,7 +822,7 @@ namespace StormWeb.Controllers
             }
             AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(RegionEndpoint.APSoutheast1);
 
-            ListObjectsRequest request = new  ListObjectsRequest();
+            ListObjectsRequest request = new ListObjectsRequest();
 
 
             request.BucketName = bucketName;
@@ -821,57 +838,57 @@ namespace StormWeb.Controllers
         }
 
 
-            //ViewBag.Result = result;
-            //return View();
+        //ViewBag.Result = result;
+        //return View();
 
 
-            //string result = "";
+        //string result = "";
 
-            //try
-            //{
+        //try
+        //{
 
-            //    ListObjectsRequest request = new ListObjectsRequest();
-            //    request.BucketName = bucketName;
+        //    ListObjectsRequest request = new ListObjectsRequest();
+        //    request.BucketName = bucketName;
 
-            //    PutObjectRequest uploadrequest = new PutObjectRequest();
-            //    uploadrequest.WithContentBody("this is a test")
-            //        .WithBucketName(bucketName)
-            //        .WithKey("testupload.pdf")
-            //        .WithContentType("applicaton/pdf")
+        //    PutObjectRequest uploadrequest = new PutObjectRequest();
+        //    uploadrequest.WithContentBody("this is a test")
+        //        .WithBucketName(bucketName)
+        //        .WithKey("testupload.pdf")
+        //        .WithContentType("applicaton/pdf")
 
-            //        //.WithFilePath("Upload/2_Stewie")
-            //        .WithInputStream(file.InputStream);
-
-
-            //    S3Response uploadResponse = client.PutObject(uploadrequest);
-            //    uploadResponse.Dispose();
-            //}
-            //catch (AmazonS3Exception amazonS3Exception)
-            //{
-            //    if (amazonS3Exception.ErrorCode != null && (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId") || amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
-            //    {
-            //        Console.WriteLine("Please check the provided AWS Credentials.");
-            //        Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("An error occurred with the message '{0}' when listing objects", amazonS3Exception.Message);
-            //    }
-            //}
-
-            //using (ListObjectsResponse response = client.ListObjects(request))
-            //{
-            //    foreach (S3Object entry in response.S3Objects)
-            //    {
-            //        result += "key = " + entry.Key + " size = " + entry.Size + "<br/>";
-            //    }
-            //}
-
-            // simple object put
+        //        //.WithFilePath("Upload/2_Stewie")
+        //        .WithInputStream(file.InputStream);
 
 
-            //ViewBag.Result = result;
-            //return View();
+        //    S3Response uploadResponse = client.PutObject(uploadrequest);
+        //    uploadResponse.Dispose();
+        //}
+        //catch (AmazonS3Exception amazonS3Exception)
+        //{
+        //    if (amazonS3Exception.ErrorCode != null && (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId") || amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
+        //    {
+        //        Console.WriteLine("Please check the provided AWS Credentials.");
+        //        Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("An error occurred with the message '{0}' when listing objects", amazonS3Exception.Message);
+        //    }
+        //}
+
+        //using (ListObjectsResponse response = client.ListObjects(request))
+        //{
+        //    foreach (S3Object entry in response.S3Objects)
+        //    {
+        //        result += "key = " + entry.Key + " size = " + entry.Size + "<br/>";
+        //    }
+        //}
+
+        // simple object put
+
+
+        //ViewBag.Result = result;
+        //return View();
 
 
 
@@ -899,7 +916,7 @@ namespace StormWeb.Controllers
             {
                 S3Response uploadResponse = client.PutObject(request);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.InnerException);
             }
@@ -913,13 +930,13 @@ namespace StormWeb.Controllers
         public ActionResult DeletingAWS(string keyName)
         {
             if (!checkRequiredFields())
-                {
-                    ViewBag.Result = "";
-                    return View();
-                }
+            {
+                ViewBag.Result = "";
+                return View();
+            }
             try
             {
-                
+
                 DeleteObjectRequest request = new DeleteObjectRequest();
                 request.WithBucketName(bucketName)
                     .WithKey(keyName);
@@ -962,22 +979,22 @@ namespace StormWeb.Controllers
             if (!checkRequiredFields())
             {
                 ViewBag.Result = "";
-                
+
             }
             AmazonS3 client;
             try
             {
-             using (client = Amazon.AWSClientFactory.CreateAmazonS3Client())
+                using (client = Amazon.AWSClientFactory.CreateAmazonS3Client())
                 {
                     GetObjectRequest request = new GetObjectRequest().WithBucketName(bucketName).WithKey(keyName);
-                
+
                     //string dest = ("C:\\user\\Downloads\\" + path + "\\" + filename);
 
-                    string dest = HttpContext.Server.MapPath("~/App_Data/Downloads/" + id + '-' + filename );
+                    string dest = HttpContext.Server.MapPath("~/App_Data/Downloads/" + id + '-' + filename);
                     using (GetObjectResponse response = client.GetObject(request))
                     {
-                        response.WriteResponseStreamToFile(dest , false);
-            
+                        response.WriteResponseStreamToFile(dest, false);
+
                         HttpContext.Response.Clear();
                         HttpContext.Response.AppendHeader("content-disposition", "attachment; filename=" + filename);
                         HttpContext.Response.ContentType = response.ContentType;
@@ -985,12 +1002,12 @@ namespace StormWeb.Controllers
                         HttpContext.Response.Flush();
                         HttpContext.Response.End();
                     }
-        
-        
-                     //Clean up temporary file.
+
+
+                    //Clean up temporary file.
                     //System.IO.File.Delete(dest);
-    
-                    }
+
+                }
             }
             catch (AmazonS3Exception amazonS3Exception)
             {
@@ -1006,9 +1023,9 @@ namespace StormWeb.Controllers
                     Console.WriteLine("An error occurred with the message '{0}' when reading an object", amazonS3Exception.Message);
                 }
 
-               
+
             }
-           
+
         }
         #endregion
 
@@ -1060,16 +1077,16 @@ namespace StormWeb.Controllers
             {
                 fileName = "No File";
             }
-                // Update object of application document file
-                appDoc.Course_Id = CourseId;
-                appDoc.Form_Name = formname;
-                
-                appDoc.UploadedOn = System.DateTime.Now;
-                appDoc.FileName = fileName;
-                appDoc.UploadedBy = CookieHelper.Username;
-                appDoc.Comment = comment;
+            // Update object of application document file
+            appDoc.Course_Id = CourseId;
+            appDoc.Form_Name = formname;
 
-                
+            appDoc.UploadedOn = System.DateTime.Now;
+            appDoc.FileName = fileName;
+            appDoc.UploadedBy = CookieHelper.Username;
+            appDoc.Comment = comment;
+
+
 
             if (ModelState.IsValid)
             {
@@ -1098,7 +1115,7 @@ namespace StormWeb.Controllers
             ViewBag.case_Id = case_Id;
             ViewBag.studentName = studentName;
             ViewBag.doctype = doctype;
-            
+
             return View();
         }
         // This will implement both case and application documents
@@ -1132,7 +1149,7 @@ namespace StormWeb.Controllers
             // select file name according to type
 
             pathToCreate = STUDENT_UPLOADS_PATH + case_Id + '_' + studentName;
-           
+
             Application_Result appDoc = new Application_Result();
             Application app = db.Applications.Single(a => a.Application_Id == Doc_Id);
             // Update object of application Result file for Offer Letter
@@ -1141,26 +1158,29 @@ namespace StormWeb.Controllers
                 appDoc.Type = DocumentController.OFFER_LETTER_TYPE;
                 appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Offer_Letter" + '_' + Doc_Id + Path.GetExtension(fileName);
                 app.Status = ApplicationController.ApplicationStatusType.Offer_Letter.ToString();
+                //ApplicationController.statusUp(app.Application_Id);
                 ViewBag.doc = "Offer Letter" + Doc_Id;
 
                 messageSubject = "Offer Letter";
-                messageBody = "Your offer letter for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
+                messageBody = "Your offer letter for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link.";
             }
             else if (fc["doctype"] == "CoE")
             {
                 appDoc.Type = DocumentController.COE_TYPE;
                 appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_CoE" + '_' + Doc_Id + Path.GetExtension(fileName);
                 app.Status = ApplicationController.ApplicationStatusType.CoE.ToString();
+                //ApplicationController.statusUp(app.Application_Id);
                 ViewBag.doc = "CoE" + Doc_Id;
 
                 messageSubject = "Confirmation of Enrolment";
-                messageBody = "Your confirmation of enrolment for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link."; 
+                messageBody = "Your confirmation of enrolment for " + app.Course.Course_Name + " at " + app.Course.Faculty.University.University_Name + " is now available. Please go to Documents and under your application (" + app.Course.Course_Name + ") where you can find the download link.";
             }
             else if (fc["doctype"] == "Acceptance")
             {
                 appDoc.Type = DocumentController.ACCEPTANCE_TYPE;
                 appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_Accept" + '_' + Doc_Id + Path.GetExtension(fileName);
-                app.Status = ApplicationController.ApplicationStatusType.Acceptance.ToString();
+                //app.Status = ApplicationController.ApplicationStatusType.Acceptance.ToString();
+                //ApplicationController.statusUp(app.Application_Id);
                 ViewBag.doc = "Accept" + Doc_Id;
             }
             else if (fc["doctype"] == "CompletedAcceptance")
@@ -1168,6 +1188,7 @@ namespace StormWeb.Controllers
                 appDoc.Type = DocumentController.COMPLETED_ACCEPTANCE_TYPE;
                 appDoc.FileName = Path.GetFileNameWithoutExtension(fileName) + "_CompletedAccept" + '_' + Doc_Id + Path.GetExtension(fileName);
                 app.Status = ApplicationController.ApplicationStatusType.Acceptance.ToString();
+                //ApplicationController.statusUp(app.Application_Id);
                 ViewBag.doc = "_CompletedAccept" + Doc_Id;
             }
             else
@@ -1176,20 +1197,20 @@ namespace StormWeb.Controllers
                 NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Operation unsuccessful, please try again later.");
                 return View("Refresh");
             }
-                appDoc.Application_Id = Doc_Id;
-                appDoc.UploadedOn = System.DateTime.Now;
-                appDoc.UploadedBy = CookieHelper.Username;
-                appDoc.Path = pathToCreate;
+            appDoc.Application_Id = Doc_Id;
+            appDoc.UploadedOn = System.DateTime.Now;
+            appDoc.UploadedBy = CookieHelper.Username;
+            appDoc.Path = pathToCreate;
 
             // to save file name with the application Id
-                path = Path.Combine(Server.MapPath(pathToCreate), appDoc.FileName);
+            path = Path.Combine(Server.MapPath(pathToCreate), appDoc.FileName);
 
-                appDoc.Comment = comment;
-                db.Application_Result.AddObject(appDoc);
+            appDoc.Comment = comment;
+            db.Application_Result.AddObject(appDoc);
 
-                string fileToCreate = pathToCreate + '/' + appDoc.FileName;
-                uploadAWS(fileToCreate, file);
-                //db.ObjectStateManager.ChangeObjectState(app, EntityState.Modified);
+            string fileToCreate = pathToCreate + '/' + appDoc.FileName;
+            uploadAWS(fileToCreate, file);
+            //db.ObjectStateManager.ChangeObjectState(app, EntityState.Modified);
 
             if (ModelState.IsValid)
             {
@@ -1199,11 +1220,23 @@ namespace StormWeb.Controllers
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
                 LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Updated file    " + ViewBag.doc), LogHelper.LOG_UPDATE, LogHelper.SECTION_DOCUMENT);
 
+                if (appDoc.Type == DocumentController.OFFER_LETTER_TYPE)
+                {
+                    Payment pay = new Payment();
+
+                    pay.Application_Id = appDoc.Application_Id;
+
+                    db.Payments.AddObject(pay);
+                    db.SaveChanges();
+                }
+
                 if (messageSubject != "")
                 {
                     MessageController.sendSystemMessage(app.Student.UserName, messageSubject, messageBody);
                 }
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
+
+                PopulatePayment(app.Application_Id);
 
             }
 
@@ -1276,7 +1309,7 @@ namespace StormWeb.Controllers
             else
                 if (fc["doctype"] == "CaseDocument")
                 {
-                    CaseDocument caseDoc = db.CaseDocuments.Single(x => x.Case_Id == Doc_Id && x.CaseDocTemplate_Id == Template_Id);
+                    CaseDocument caseDoc = db.CaseDocuments.Single(x => x.Case_Id == caseId && x.CaseDocTemplate_Id == Template_Id);
                     ViewBag.doc = "Case Document" + Doc_Id;
                     caseDoc.UploadedOn = System.DateTime.Now;
                     caseDoc.UploadedBy = CookieHelper.Username;
@@ -1294,10 +1327,16 @@ namespace StormWeb.Controllers
             if (ModelState.IsValid)
             {
                 db.SaveChanges();
-                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded file To   " + ViewBag.doc), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
+                LogHelper.writeToStudentLog(new string[] { CookieHelper.Username }, (" Uploaded new document"), LogHelper.LOG_CREATE, LogHelper.SECTION_DOCUMENT);
 
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
+                Case c = db.Cases.SingleOrDefault(x => x.Case_Id == caseId);
+
+                if (c != null)
+                {
+                    MessageController.sendSystemMessage(c.Case_Staff.FirstOrDefault().Staff.UserName, "New document", CookieHelper.Name + " uploaded new document to his/her application.");
+                }
             }
 
 
@@ -1320,14 +1359,14 @@ namespace StormWeb.Controllers
             //    // ****************************************************************
             //    // create a new folder if folder does not exist for that student  *
             //    // ****************************************************************
-                
+
             //    fileName = Path.GetFileName(file.FileName);
             //    string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
             //    string pathToCreate = STUDENT_UPLOADS_PATH + caseId + '_' + name;
-                
+
             //    if (Directory.Exists(Server.MapPath(pathToCreate)))
             //    {
-                        
+
             //    }
             //    else
             //    {
@@ -1368,7 +1407,7 @@ namespace StormWeb.Controllers
             //        path = Path.Combine(Server.MapPath(pathToCreate), caseDoc.FileName);
             //        caseDoc.Comment = comment;
             //        db.ObjectStateManager.ChangeObjectState(caseDoc, EntityState.Modified);
-                   
+
             //    }
 
             //    if (ModelState.IsValid)
@@ -1382,7 +1421,7 @@ namespace StormWeb.Controllers
 
             //    }
 
-            
+
             //TempData[SUCCESS_EDIT] = "true";
             //return RedirectToAction("Index", new { message = "Successfully Uploaded" });
         }
@@ -1425,7 +1464,7 @@ namespace StormWeb.Controllers
         // The following is used to download the previously uploaded CoE
         // Type is used to determine to download from application ID or file ID
         public void DownloadCoE(int id, string type = "id")
-        {   
+        {
 
             Application_Result appDoc = null;
             if (type == "id")
@@ -1490,18 +1529,18 @@ namespace StormWeb.Controllers
             //string contentType;
             //try
             //{
-                Template_Document temDoc = db.Template_Document.Single(x => x.TemplateDoc_Id == id);
-                downloadAWS(temDoc.TemplateDoc_Id, temDoc.Path, temDoc.FileName);
-                //path = temDoc.Path;
-                //fileToDownload = temDoc.FileName;
-                //file = Path.Combine(path, fileToDownload);
-                //contentType = "application/doc/pdf";
+            Template_Document temDoc = db.Template_Document.Single(x => x.TemplateDoc_Id == id);
+            downloadAWS(temDoc.TemplateDoc_Id, temDoc.Path, temDoc.FileName);
+            //path = temDoc.Path;
+            //fileToDownload = temDoc.FileName;
+            //file = Path.Combine(path, fileToDownload);
+            //contentType = "application/doc/pdf";
 
-                //Parameters to file are
-                //1. The File Path on the File Server
-                //2. The content type MIME type
-                //3. The parameter for the file save by the browser
-                //return File(file, contentType, fileToDownload);
+            //Parameters to file are
+            //1. The File Path on the File Server
+            //2. The content type MIME type
+            //3. The parameter for the file save by the browser
+            //return File(file, contentType, fileToDownload);
 
             //}
             //catch (Exception e)
@@ -1581,6 +1620,7 @@ namespace StormWeb.Controllers
         {
             StormDBEntities db = new StormDBEntities();
             string appStatus = db.Applications.Single(a => a.Application_Id == applicationID).Status;
+            //ApplicationController.statusUp(applicationID);
             int progressValue = (int)Enum.Parse(typeof(StormWeb.Controllers.ApplicationController.ApplicationStatusType), appStatus);
 
             if (progressValue >= ApplicationController.getProgressValue(ApplicationController.ApplicationStatusType.Documents_Completed.ToString()))
@@ -1610,7 +1650,7 @@ namespace StormWeb.Controllers
         {
             StormDBEntities db = new StormDBEntities();
             Application_Result appDoc = db.Application_Result.SingleOrDefault(x => x.Application_Id == applicationID && x.Type == "C");
-            
+
             if (appDoc == null)
                 return false;
             return true;
@@ -1790,15 +1830,242 @@ namespace StormWeb.Controllers
         public static string TEMPLATE_APPLICATION_PATH = "Templates/";
         public static string TEMPLATE_GENERAL_PATH = "Templates/General";
         public static string STUDENT_UPLOADS_PATH = "Student/Uploads/";
-        
+
         public static string OFFER_LETTER_TYPE = "O";
         public static string COE_TYPE = "C";
         public static string ACCEPTANCE_TYPE = "A";
         public static string COMPLETED_ACCEPTANCE_TYPE = "F";
 
         #endregion
-    }
-       
 
-         
+        private void BindCurrency(string selectedValue)
+        {
+            StormWeb.Helper.Enumclass Enumclass = new Enumclass();
+            var currency = Enumclass.GetCurrency();
+            ViewData["CurrencyValue"] = new SelectList(currency, "Value", "Text", selectedValue);
+        }
+
+
+
+        public void PopulatePayment(int applicationId)
+        {
+            ApplicationDocumentViewModel appsViewModel = new ApplicationDocumentViewModel();
+            int studentId = 0;
+            if (CookieHelper.isStudent())
+                studentId = CookieHelper.getStudentId();
+            var appls = db.Applications.Where(x => x.Student_Id == studentId);
+            foreach (var item in appls)
+            {
+                List<Payment> payments = db.Payments.Where(x => x.Application_Id == item.Application_Id).ToList();
+                appsViewModel.paymentTable = payments;
+                if (payments.Count() <= 0)
+                    BindCurrency("--Select--");
+                foreach (var item1 in payments)
+                {
+                    BindCurrency(item1.Currency);
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ApprovePayment(int appID)
+        {
+            Payment pay = db.Payments.SingleOrDefault(x => x.Application_Id == appID);
+
+            if (pay == null)
+                return Json(new { data = "false" });
+
+            pay.Approved_By = CookieHelper.Username;
+
+            MessageController.sendSystemMessage(pay.Application.Case.Student.UserName, "Payment updated", "The payment information for your application: " + pay.Application.Course.Course_Name + " have been approved.");
+
+            db.SaveChanges();
+
+            ApplicationController.statusUp(appID);
+
+            return Json(new { data = "true" });
+        }
+        
+        //public ActionResult SubmitPayment(int id, FormCollection Fc)
+        //{
+
+        //    Payment payment = db.Payments.SingleOrDefault(x => x.Application_Id == id);
+        //    payment.Payment_Method = Fc["Payment_Method"];
+        //    payment.Date_Of_Payment = DateTime.Now;
+
+        //    db.ObjectStateManager.ChangeObjectState(payment, EntityState.Modified);
+
+        //    db.SaveChanges();
+
+
+        //    return View();
+        //}
+        //[HttpPost]
+        //public JsonResult SubmitPayment(string PaymentMethod, string ReceiptNo, string DateOfPayment, int id,HttpPostedFileBase file)
+        //{
+
+        //    Payment payment = db.Payments.SingleOrDefault(x => x.Application_Id == id);
+        //    ReceiptFile receipt = new ReceiptFile();
+        //    if (payment != null)
+        //    {
+        //        payment.Payment_Method = PaymentMethod;
+        //        payment.Receipt_No = ReceiptNo;
+        //        payment.Date_Of_Payment =Convert.ToDateTime(DateOfPayment); 
+        //    }
+
+        //    uploadAWS(ReceiptNo, file);
+        //    //string file1= Path.GetFileNameWithoutExtension(ReceiptNo.Split('\\')[3]) + "_Application_" + payment.Application_Id + Path.GetExtension(file.FileName);
+        //    //receipt.FileName = Path.GetFileNameWithoutExtension(file.FileName) + "_Application_" + payment.Application_Id + Path.GetExtension(file.FileName);
+
+        //    db.ObjectStateManager.ChangeObjectState(payment, EntityState.Modified);
+
+        //    db.SaveChanges();
+        //    return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+
+        //}
+        public static string PAYMENT_UPLOADS_PATH = "Payments/";
+
+        //string pathToCreate;
+        //        pathToCreate = TEMPLATE_GENERAL_PATH;
+        //        string fileToCreate = pathToCreate + '/' + file.FileName;
+        //        casedoc_template.FileName = file.FileName;
+        //        casedoc_template.Path = pathToCreate;
+
+
+        //        uploadAWS(fileToCreate, file);
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Lists(FormCollection Fc, HttpPostedFileBase Receipt_No)
+        {
+            int id = Convert.ToInt32(Fc["Application_Id"]);
+            string PaymentMethod = Fc["Payment_Method"];
+            string Currency = Fc["Currency"];
+            string Amount = Fc["Amount"];
+            string DateOfPayment = Fc["Date_Of_Payment"];
+
+            Payment payment = db.Payments.SingleOrDefault(x => x.Application_Id == id);
+            Receipt_File receipt = new Receipt_File();
+            if (payment != null)
+            {
+                payment.Payment_Method = Fc["Payment_Method"];
+                payment.Date_Of_Payment = Convert.ToDateTime(DateOfPayment);
+            }
+            if (Receipt_No != null)
+            {
+                string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
+                string fileToCreate = PAYMENT_UPLOADS_PATH + CookieHelper.StudentId + "_" + name + '/' + Path.GetFileNameWithoutExtension(Receipt_No.FileName) + "_Payment_" + payment.Application_Id + Path.GetExtension(Receipt_No.FileName);
+
+                receipt.PaymentId = payment.Id;
+                receipt.FileName = Path.GetFileNameWithoutExtension(Receipt_No.FileName) + "_Payment_" + payment.Application_Id + Path.GetExtension(Receipt_No.FileName);
+                receipt.Path = PAYMENT_UPLOADS_PATH + CookieHelper.StudentId + "_" + name;
+                receipt.UploadedBy = CookieHelper.Username;
+                receipt.UploadedOn = DateTime.Now;
+                uploadAWS(fileToCreate, Receipt_No);
+                db.Receipt_File.AddObject(receipt);
+                db.SaveChanges();
+            }
+            db.ObjectStateManager.ChangeObjectState(payment, EntityState.Modified);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public static bool fileExists(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            var receipt = (from pay in db.Payments
+                           from rec in db.Receipt_File
+                           where pay.Application_Id == applicationId && rec.PaymentId == pay.Id
+                           select rec);
+
+            if (receipt.Count() > 0)
+                return true;
+            else
+                return false;
+
+        }
+        public static string GetFileName(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            string fileName = "";
+            var receipt = (from pay in db.Payments
+                           from rec in db.Receipt_File
+                           where pay.Application_Id == applicationId && rec.PaymentId == pay.Id
+                           select rec);
+            fileName = receipt.FirstOrDefault().Path + '/' + receipt.FirstOrDefault().FileName;
+
+            return fileName;
+        }
+        public static int GetFileId(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            int fileName = 0;
+            var receipt = (from pay in db.Payments
+                           from rec in db.Receipt_File
+                           where pay.Application_Id == applicationId && rec.PaymentId == pay.Id
+                           select rec);
+            fileName = receipt.FirstOrDefault().File_Id;
+            return fileName;
+        }
+        public void DownloadPaymentReceipt(int id)
+        {
+
+            Receipt_File receipt = db.Receipt_File.SingleOrDefault(x => x.File_Id == id);
+            if (receipt != null)
+                downloadAWS(receipt.File_Id, receipt.Path, receipt.FileName);
+        }
+
+        public ActionResult DeletePaymentFile(int id, string page)
+        {
+            Payment payment = db.Payments.SingleOrDefault(x => x.Application_Id == id);
+            Receipt_File receipt = db.Receipt_File.SingleOrDefault(x => x.PaymentId == payment.Id);
+            db.Receipt_File.DeleteObject(receipt);
+            db.SaveChanges();
+            DeletingAWS(receipt.Path + '/' + receipt.FileName);
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully deleted the File " + receipt.FileName);
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the Receipt File " + receipt.FileName), LogHelper.LOG_DELETE, LogHelper.SECTION_PAYMENT);
+            string redirectpage = "";
+            if (page == "document")
+                redirectpage = "../Document/Index";
+            else if (page == "payment")
+                redirectpage = "../Payment/Index";
+            return RedirectToAction(redirectpage);
+        }
+
+        public static string GetAcceptanceFileName(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            string fileName = "";
+            var result = (from app in db.Application_Result 
+                           where app.Application_Id == applicationId && app.Type == ACCEPTANCE_TYPE
+                           select app);
+            if(result!=null)
+                fileName = result.FirstOrDefault().Path + '/' + result.FirstOrDefault().FileName;
+
+            return fileName;
+        }
+        public static int GetAcceptanceFileId(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();
+            int fileName = 0;
+            var result = (from app in db.Application_Result
+                          where app.Application_Id == applicationId && app.Type == ACCEPTANCE_TYPE
+                          select app);
+            if (result != null)
+                fileName = result.FirstOrDefault().Id;
+            return fileName;
+        }
+        public void DownloadAcceptanceform(int id)
+        {
+
+            Application_Result result = db.Application_Result.SingleOrDefault(x => x.Id == id);
+            if (result != null)
+                downloadAWS(result.Id, result.Path, result.FileName);
+        }
+
+    }
+
+
+
+
 }

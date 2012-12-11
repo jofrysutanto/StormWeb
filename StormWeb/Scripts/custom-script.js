@@ -87,7 +87,7 @@ function loadNotifications(action)
     var reqData = "{'id':'"+pageCount+"'}";
     
     $.ajax({
-        url: '../Log/getLogs/',
+        url: '/Log/getLogs/',
         data: reqData,
         contentType: 'application/json, charset=utf-8',
         dataType: 'json',

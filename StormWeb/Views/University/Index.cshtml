@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<StormWeb.Models.University>
-
-
 @{
     ViewBag.Title = "Index";
 }
@@ -9,96 +7,120 @@
         $('a[id*="popover"]').popover();
     });
 </script>
-
 <div class="row-fluid">
-    <div class="page-header">
-        <h1>
-            All Universities</h1>
-    </div>
-</div>
-<div class="row-fluid">
-     <div class="span12">        
+    <div class="span12">
         <div class="widget-block">
-          <div class="widget-head">
-                <h5><i class="black-icons  documents"></i>University List</h5>
-                </div>
-
+            <div class="widget-head">
+                <h5>
+                    <i class="black-icons  documents"></i>University List</h5>
+            </div>
             <div class="widget-content">
-                <div class="widget-box" style="padding: 15px;">
-                    <br />
-                      <table class="data-tbl-simple table table-bordered dataTable">
+                <div class="widget-box" style="padding: 15px;"> 
+                    <table class="data-tbl-simple table table-bordered dataTable">
+                         @if (Model == null)
+                         {
+                            <tr>
+                                <td>
+                                    No Item To Display
+                                </td>
+                            </tr>
+                         }
+                         else
+                         {    
                         <thead>
-                        <tr>
-                            <th> <i class="black-icons user"></i>Country </th>
-                            <th> University Name </th>
-                            <th> Faculties </th>
-                            <th> Number of Courses </th> 
-                            <th> Email </th>
-                            <th> <i class="color-icons bullet_key_co"></i>Actions </th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <i class="black-icons user"></i>Country
+                                </th>
+                                <th>
+                                    University Name
+                                </th>
+                                <th>
+                                    Faculties
+                                </th>
+                                <th>
+                                    Number of Courses
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th> 
+                                     <i class="color-icons hammer_screwdriver_co"></i>Actions
+
+                                </th>
+                            </tr>
                         </thead>
-                    <tbody>
-                     
-                    @foreach (var item in Model)
-                    {
-                        <tr>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                         <tr>
                             <td> @Html.DisplayFor(modelItem => item.Country.Country_Name) </td>
                             <td>
-                                <a href = "@item.University_Url">@item.University_Name</a><br />
-                                <b>Campus:</b> @Html.DisplayFor(modelItem => item.Campus) 
+                                 <a class='iframe' href="@Url.Action("Description", new { id = item.University_Id })" >
+                                            @(item.University_Name)</a>
+                               <br /><b>Campus:</b> @Html.DisplayFor(modelItem => item.Campus) 
                             </td>
                             <td>   
                                 <ul>                                
                                 @{
-                                    string a = "";
-                                    int countFac = 0;
-                                    foreach (StormWeb.Models.Faculty fac in item.Faculties)
-                                    {
-                                        a = a + fac.Faculty_Name + "<br />";
-                                        countFac += 1;
-                                    }
-                                    if (countFac > 0)
-                                    {
-                                        <li><a id="popover@(item.University_Id)" data-content="@a" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count Faculties</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li><a id="popover@(item.University_Id)" data-content="No faculties" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count</a></li>
-                                    }
-                                }                                    
-                                </ul>                                                               
-                            </td>
-                            <td>
-                                <ul>
-                                @{
-                                    int courseCountForAllFaculties = 0;
-                                    foreach (StormWeb.Models.Faculty fac in item.Faculties)
-                                    {
-                                        courseCountForAllFaculties += fac.Courses.Count;
-                                    }
-                                    <li>@courseCountForAllFaculties</li>
-                                } 
-                                </ul>
-                            </td>
-                          
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.ActionLink("View Courses", "ViewCourses", "Course", new { id = item.University_Id }, null) |
-                                @Html.ActionLink("Edit", "Edit", new { id = item.University_Id }) |            
-                                @Html.ActionLink("Delete", "Delete", new { id = item.University_Id })
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                  </table>
+                                                  string a = "";
+                                                  int countFac = 0;
+                                                  foreach (StormWeb.Models.Faculty fac in item.Faculties)
+                                                  {
+                                                      a = a + fac.Faculty_Name + "<br />";
+                                                      countFac += 1;
+                                                  }
+                                                  if (countFac > 0)
+                                                  {
+                                                <li><a id="popover@(item.University_Id)" data-content="@a" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count
+                                                    Faculties</a></li>
+                                                  }
+                                                  else
+                                                  {
+                                                <li><a id="popover@(item.University_Id)" data-content="No faculties" href="@(Url.Action("Faculties", new { id = item.University_Id }))" data-original-title="Faculties">@item.Faculties.Count</a></li>
+                                                  }
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @{
+                                                  int courseCountForAllFaculties = 0;
+                                                  foreach (StormWeb.Models.Faculty fac in item.Faculties)
+                                                  {
+                                                      courseCountForAllFaculties += fac.Courses.Count;
+                                                  }
+                                                <li>@courseCountForAllFaculties</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("View Faculties", "Faculties", "University", new { id = item.University_Id}, null) |
+                                        @Html.ActionLink("View Courses", "ViewCourses", "Course", new { id = item.University_Id }, null)  |
+                                        <a class='iframe' href="@Url.Action("Description", new { id = item.University_Id })" >
+                                            Description</a>
+                                        @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
+                                        { <span> | </span>                                 
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.University_Id })  <span> | </span>             
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.University_Id })
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                         }
+                    </table>
                 </div>
-              </div>
-             </div>
             </div>
-         </div>
+        </div>
+    </div>
+</div>
 <p>
-    @Html.Button_Add("Create New", "University/Create")
+    @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
+    {
+        @Html.Button_Add("Create New", "../University/Create")
+    }
 </p>
- 

@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Student";
 }
-<div class="row-fluid">
+@*<div class="row-fluid">
     <div class="span12">
         <!-- Start of widget block -->
         <div class="nonboxy-widget">
@@ -17,22 +17,12 @@
                     <!-- JQuery UI and WIdget -->
                     <script src="@Url.Content("~/Scripts/jquery.widget.js")" type="text/javascript"></script>
                     <link href="@Url.Content("~/Content/css/ui-lightness/jquery-ui-1.8.22.custom.css")" rel="stylesheet" type="text/css" />
-
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="widget-block">
                                 <div class="widget-head">
                                     <h5>
-                                        Student Log</h5>
-                                    @*<div class="widget-control pull-right">
-                                        <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-cog"></i>
-                                            <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#"><i class="icon-plus"></i>Add New</a></li>
-                                            <li><a href="#"><i class="icon-ok"></i>Bulk Approved</a></li>
-                                            <li><a href="#"><i class="icon-minus-sign"></i>Bulk Remove</a></li>
-                                        </ul>
-                                    </div>*@
+                                        Student Log</h5> 
                                 </div>
                                 <div class="widget-content">
                                     <div class="widget-box">
@@ -86,4 +76,62 @@
             </div>
         </div>
     </div>
+</div>*@
+
+
+ <div class="row-fluid">
+    <div class="span12">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>
+                    Student Log</h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                    <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    DateTime
+                                </th>
+                                <th>
+                                    Comment
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Section
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                            
+                                                                                                      
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DateTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Comment)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Section)
+                                    </td>
+                                </tr>    
+                   
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+ 

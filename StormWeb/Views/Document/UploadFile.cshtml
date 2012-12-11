@@ -7,6 +7,11 @@
      $(document).ready(function () {
          alert("upload");
          $(".upload-files").click(function () {
+             $('#upload-files').attr("disabled", true);
+             $("#upload-files").addClass("disabled");
+             $("#upload-files").val("Loading...");
+
+             disableButton = true;
               parent.$.fn.colorbox.close();
 //            alert("inside upload");
 //             parent.reload(true);

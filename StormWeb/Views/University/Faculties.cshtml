@@ -42,9 +42,7 @@ $(function () {
                         trigger:'hover'
                         });
        });
-</script>
-<h2>
-    Faculties</h2>
+</script> 
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-block">
@@ -66,11 +64,14 @@ $(function () {
                                 <th>
                                     University Name
                                 </th>
-                                <th>
-                                    Action<a id="example" data-content="Delete - A Faculty can only be deleted if they have no courses listed under them "
-                                        class="color-icons help_co pull-right" style="margin-right: 5px; margin-top: 5px"
-                                        href="#" data-original-title="Appointment Status"></a>
-                                </th>
+                                @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
+                                { 
+                                    <th>
+                                        Action<a id="example" data-content="Delete - A Faculty can only be deleted if they have no courses listed under them "
+                                            class="color-icons help_co pull-right" style="margin-right: 5px; margin-top: 5px"
+                                            href="#" data-original-title="Appointment Status"></a>
+                                    </th>
+                                }
                             </tr>
                         </thead>
                         @foreach (var item in Model)
@@ -88,26 +89,30 @@ $(function () {
                                         <text><b><br />Campus:</b></text>
                                         @Html.DisplayFor(modelItem => item.University.Campus)
                                     </td>
-                                    <td>
-                                        <div class="selectArea">
-                                            <a href="@Url.Action("EditFaculty", new { id = item.Faculty_Id })" type="button" class="btn btn-info" value="@item.Faculty_Id" name="EditFaculty">
-                                                Edit</a>
-                                            @if (item.Courses.Count() == 0)
-                                            {            
-                                                <button type="button" id="select@(item.Faculty_Id)" class="btn btn-mini btn-danger" value="@item.Faculty_Id" name="selectStudent">
-                                                    Delete</button>              
-                                            }
-                                        </div>
-                                        @if (item.Courses.Count() == 0)
-                                        {
-                                            <div class="confirmArea" id="confirmArea@(item.Faculty_Id)" style="display:none">
-                                                <a href="@Url.Action("ConfirmDeleteFaculty", new { id = item.Faculty_Id })" type="button" id="confirmStudent@(item.Faculty_Id)" class="btn btn-mini btn-success" value="@item.Faculty_Id" name="deleteFaculty">
-                                                    Confirm</a>
-                                                <button type="button" id="cancel@(item.Faculty_Id)" class="btn btn-mini btn-warning" value="@item.Faculty_Id" name="cancel">
-                                                    Cancel</button>
+                                    @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
+                                    {
+                                        <td>
+                                            <div class="selectArea">
+                                                @*  <a href="@Url.Action("EditFaculty", new { id = item.Faculty_Id })" type="button" class="btn btn-info" value="@item.Faculty_Id" name="EditFaculty">
+                                                Edit</a> *@
+                                                @Html.Button_Edit("Edit", @Url.Action("EditFaculty", new { id = item.Faculty_Id }))
+                                                @if (item.Courses.Count() == 0)
+                                                {            
+                                                    <button type="button" id="select@(item.Faculty_Id)" class="btn btn-mini btn-danger" value="@item.Faculty_Id" name="selectStudent">
+                                                        Delete</button>              
+                                                }
                                             </div>
-                                        }
-                                    </td>
+                                            @if (item.Courses.Count() == 0)
+                                            {
+                                                <div class="confirmArea" id="confirmArea@(item.Faculty_Id)" style="display:none">
+                                                    <a href="@Url.Action("ConfirmDeleteFaculty", new { id = item.Faculty_Id })" type="button" id="confirmStudent@(item.Faculty_Id)" class="btn btn-mini btn-success" value="@item.Faculty_Id" name="deleteFaculty">
+                                                        Confirm</a>
+                                                    <button type="button" id="cancel@(item.Faculty_Id)" class="btn btn-mini btn-warning" value="@item.Faculty_Id" name="cancel">
+                                                        Cancel</button>
+                                                </div>
+                                            }
+                                        </td>
+                                    }
                                 </tr>
                             </tbody>
                         }
@@ -118,6 +123,10 @@ $(function () {
     </div>
 </div>
 <p>
-    @Html.ActionLink("Create New", "CreateFaculty", new { id = ViewBag.UniversityId }, new { @class = "btn btn-info" })
+    @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
+    {
+        @Html.Button_Add("Create New", @Url.Action("CreateFaculty", new { id = ViewBag.UniversityId }))
+    }
+@*@Html.ActionLink("Create New", "CreateFaculty", new { id = ViewBag.UniversityId }, new { @class = "btn btn-info" })*@
     @Html.Button_BackToList("Back to Universities", "../../University/Index")
 </p>

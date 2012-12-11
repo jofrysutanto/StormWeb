@@ -30,7 +30,7 @@ namespace StormWeb.Controllers
             //var logs = db.Logs.Include("Case");
              
             //Case studentCase = db.Cases.Single(x => x.Student_Id == studentId);
-            return View(db.Student_Log.Where(x => x.UserName == username).ToList());
+            return View(db.Student_Log.Where(x => x.UserName == username).ToList().OrderByDescending(x=>x.DateTime));
         }
 
 

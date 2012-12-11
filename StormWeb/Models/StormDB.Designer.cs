@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Address), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Advertisement), "Advertisement_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Advertisement_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Cancel", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Application_Cancel), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Case), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
@@ -34,15 +35,15 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Appointment_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Case), "Appointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Appointment), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Appointment_Staff", "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Staff), "Appointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Appointment), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_General_Enquiry_Appointment", "Appointment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Appointment), "General_Enquiry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.General_Enquiry), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Me__Appli__59C55456", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Membership", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Membership), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Paths), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Roles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Roles), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Users), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Users), "aspnet_Membership", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Membership), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Paths), "aspnet_PersonalizationAllUsers", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_PersonalizationAllUsers), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Paths), "aspnet_PersonalizationPerUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_PersonalizationPerUser), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Users), "aspnet_PersonalizationPerUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_PersonalizationPerUser), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Users), "aspnet_Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Profile), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Me__Appli__2334397B", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Membership", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Membership), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Paths), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Roles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Roles), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Applications), "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Users), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Me__UserI__24285DB4", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Users), "aspnet_Membership", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Membership), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Paths), "aspnet_PersonalizationAllUsers", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_PersonalizationAllUsers), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Paths), "aspnet_PersonalizationPerUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_PersonalizationPerUser), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Users), "aspnet_PersonalizationPerUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_PersonalizationPerUser), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.aspnet_Users), "aspnet_Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.aspnet_Profile), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Staff_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Branch_Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch_Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Cases_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Case), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Staff_Staff", "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff), "Branch_Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch_Staff), true)]
@@ -66,6 +67,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Template_Document_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Template_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Template_Document), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Faculty_University", "University", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.University), "Faculty", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Faculty), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Message_To_Message", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Message), "Message_To", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Message_To), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Receipt_File_Payment", "Payment", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Payment), "Receipt_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Receipt_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Side_Menu_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Side_Menu", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Side_Menu), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Role_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Staff_Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff_Role), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Employee_Emp_Dept", "Staff_Dept", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff_Dept), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
@@ -137,6 +139,38 @@ namespace StormWeb.Models
             }
         }
         private ObjectSet<Address> _Addresses;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Advertisement> Advertisements
+        {
+            get
+            {
+                if ((_Advertisements == null))
+                {
+                    _Advertisements = base.CreateObjectSet<Advertisement>("Advertisements");
+                }
+                return _Advertisements;
+            }
+        }
+        private ObjectSet<Advertisement> _Advertisements;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Advertisement_File> Advertisement_File
+        {
+            get
+            {
+                if ((_Advertisement_File == null))
+                {
+                    _Advertisement_File = base.CreateObjectSet<Advertisement_File>("Advertisement_File");
+                }
+                return _Advertisement_File;
+            }
+        }
+        private ObjectSet<Advertisement_File> _Advertisement_File;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -845,6 +879,22 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Receipt_File> Receipt_File
+        {
+            get
+            {
+                if ((_Receipt_File == null))
+                {
+                    _Receipt_File = base.CreateObjectSet<Receipt_File>("Receipt_File");
+                }
+                return _Receipt_File;
+            }
+        }
+        private ObjectSet<Receipt_File> _Receipt_File;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Role> Roles
         {
             get
@@ -957,6 +1007,22 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<sysdiagram> sysdiagrams
+        {
+            get
+            {
+                if ((_sysdiagrams == null))
+                {
+                    _sysdiagrams = base.CreateObjectSet<sysdiagram>("sysdiagrams");
+                }
+                return _sysdiagrams;
+            }
+        }
+        private ObjectSet<sysdiagram> _sysdiagrams;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<System_Log> System_Log
         {
             get
@@ -1011,6 +1077,22 @@ namespace StormWeb.Models
         public void AddToAddresses(Address address)
         {
             base.AddObject("Addresses", address);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Advertisements EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToAdvertisements(Advertisement advertisement)
+        {
+            base.AddObject("Advertisements", advertisement);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Advertisement_File EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToAdvertisement_File(Advertisement_File advertisement_File)
+        {
+            base.AddObject("Advertisement_File", advertisement_File);
         }
     
         /// <summary>
@@ -1366,6 +1448,14 @@ namespace StormWeb.Models
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Receipt_File EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToReceipt_File(Receipt_File receipt_File)
+        {
+            base.AddObject("Receipt_File", receipt_File);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Roles EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToRoles(Role role)
@@ -1419,6 +1509,14 @@ namespace StormWeb.Models
         public void AddToStudent_Log(Student_Log student_Log)
         {
             base.AddObject("Student_Log", student_Log);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the sysdiagrams EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTosysdiagrams(sysdiagram sysdiagram)
+        {
+            base.AddObject("sysdiagrams", sysdiagram);
         }
     
         /// <summary>
@@ -1748,6 +1846,398 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Advertisement")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Advertisement : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Advertisement object.
+        /// </summary>
+        /// <param name="advertisementId">Initial value of the AdvertisementId property.</param>
+        public static Advertisement CreateAdvertisement(global::System.Int32 advertisementId)
+        {
+            Advertisement advertisement = new Advertisement();
+            advertisement.AdvertisementId = advertisementId;
+            return advertisement;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 AdvertisementId
+        {
+            get
+            {
+                return _AdvertisementId;
+            }
+            set
+            {
+                if (_AdvertisementId != value)
+                {
+                    OnAdvertisementIdChanging(value);
+                    ReportPropertyChanging("AdvertisementId");
+                    _AdvertisementId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("AdvertisementId");
+                    OnAdvertisementIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _AdvertisementId;
+        partial void OnAdvertisementIdChanging(global::System.Int32 value);
+        partial void OnAdvertisementIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Heading
+        {
+            get
+            {
+                return _Heading;
+            }
+            set
+            {
+                OnHeadingChanging(value);
+                ReportPropertyChanging("Heading");
+                _Heading = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Heading");
+                OnHeadingChanged();
+            }
+        }
+        private global::System.String _Heading;
+        partial void OnHeadingChanging(global::System.String value);
+        partial void OnHeadingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comments
+        {
+            get
+            {
+                return _Comments;
+            }
+            set
+            {
+                OnCommentsChanging(value);
+                ReportPropertyChanging("Comments");
+                _Comments = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comments");
+                OnCommentsChanged();
+            }
+        }
+        private global::System.String _Comments;
+        partial void OnCommentsChanging(global::System.String value);
+        partial void OnCommentsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UploadedBy
+        {
+            get
+            {
+                return _UploadedBy;
+            }
+            set
+            {
+                OnUploadedByChanging(value);
+                ReportPropertyChanging("UploadedBy");
+                _UploadedBy = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UploadedBy");
+                OnUploadedByChanged();
+            }
+        }
+        private global::System.String _UploadedBy;
+        partial void OnUploadedByChanging(global::System.String value);
+        partial void OnUploadedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> UploadedOn
+        {
+            get
+            {
+                return _UploadedOn;
+            }
+            set
+            {
+                OnUploadedOnChanging(value);
+                ReportPropertyChanging("UploadedOn");
+                _UploadedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UploadedOn");
+                OnUploadedOnChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _UploadedOn;
+        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
+        partial void OnUploadedOnChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement_File")]
+        public EntityCollection<Advertisement_File> Advertisement_File
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Advertisement_File>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement_File");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Advertisement_File>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement_File", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Advertisement_File")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Advertisement_File : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Advertisement_File object.
+        /// </summary>
+        /// <param name="advertisementFileId">Initial value of the AdvertisementFileId property.</param>
+        public static Advertisement_File CreateAdvertisement_File(global::System.Int32 advertisementFileId)
+        {
+            Advertisement_File advertisement_File = new Advertisement_File();
+            advertisement_File.AdvertisementFileId = advertisementFileId;
+            return advertisement_File;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 AdvertisementFileId
+        {
+            get
+            {
+                return _AdvertisementFileId;
+            }
+            set
+            {
+                if (_AdvertisementFileId != value)
+                {
+                    OnAdvertisementFileIdChanging(value);
+                    ReportPropertyChanging("AdvertisementFileId");
+                    _AdvertisementFileId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("AdvertisementFileId");
+                    OnAdvertisementFileIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _AdvertisementFileId;
+        partial void OnAdvertisementFileIdChanging(global::System.Int32 value);
+        partial void OnAdvertisementFileIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> AdvertisementId
+        {
+            get
+            {
+                return _AdvertisementId;
+            }
+            set
+            {
+                OnAdvertisementIdChanging(value);
+                ReportPropertyChanging("AdvertisementId");
+                _AdvertisementId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AdvertisementId");
+                OnAdvertisementIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _AdvertisementId;
+        partial void OnAdvertisementIdChanging(Nullable<global::System.Int32> value);
+        partial void OnAdvertisementIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Path
+        {
+            get
+            {
+                return _Path;
+            }
+            set
+            {
+                OnPathChanging(value);
+                ReportPropertyChanging("Path");
+                _Path = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Path");
+                OnPathChanged();
+            }
+        }
+        private global::System.String _Path;
+        partial void OnPathChanging(global::System.String value);
+        partial void OnPathChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UploadedBy
+        {
+            get
+            {
+                return _UploadedBy;
+            }
+            set
+            {
+                OnUploadedByChanging(value);
+                ReportPropertyChanging("UploadedBy");
+                _UploadedBy = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UploadedBy");
+                OnUploadedByChanged();
+            }
+        }
+        private global::System.String _UploadedBy;
+        partial void OnUploadedByChanging(global::System.String value);
+        partial void OnUploadedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> UploadedOn
+        {
+            get
+            {
+                return _UploadedOn;
+            }
+            set
+            {
+                OnUploadedOnChanging(value);
+                ReportPropertyChanging("UploadedOn");
+                _UploadedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UploadedOn");
+                OnUploadedOnChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _UploadedOn;
+        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
+        partial void OnUploadedOnChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement")]
+        public Advertisement Advertisement
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Advertisement>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Advertisement>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Advertisement> AdvertisementReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Advertisement>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Advertisement>("StormDBModel.FK_Advertisement_File_Advertisement", "Advertisement", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Application")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -1764,7 +2254,9 @@ namespace StormWeb.Models
         /// <param name="date_Of_ApplicationStatus">Initial value of the Date_Of_ApplicationStatus property.</param>
         /// <param name="course_Id">Initial value of the Course_Id property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        public static Application CreateApplication(global::System.Int32 application_Id, global::System.Int32 case_Id, global::System.Int32 student_Id, global::System.DateTime date_Of_ApplicationStatus, global::System.Int32 course_Id, global::System.String status)
+        /// <param name="interview_Storm">Initial value of the Interview_Storm property.</param>
+        /// <param name="interview_Institution">Initial value of the Interview_Institution property.</param>
+        public static Application CreateApplication(global::System.Int32 application_Id, global::System.Int32 case_Id, global::System.Int32 student_Id, global::System.DateTime date_Of_ApplicationStatus, global::System.Int32 course_Id, global::System.String status, global::System.Boolean interview_Storm, global::System.Boolean interview_Institution)
         {
             Application application = new Application();
             application.Application_Id = application_Id;
@@ -1773,6 +2265,8 @@ namespace StormWeb.Models
             application.Date_Of_ApplicationStatus = date_Of_ApplicationStatus;
             application.Course_Id = course_Id;
             application.Status = status;
+            application.Interview_Storm = interview_Storm;
+            application.Interview_Institution = interview_Institution;
             return application;
         }
 
@@ -1949,6 +2443,54 @@ namespace StormWeb.Models
         private Nullable<global::System.Boolean> _Completed;
         partial void OnCompletedChanging(Nullable<global::System.Boolean> value);
         partial void OnCompletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Interview_Storm
+        {
+            get
+            {
+                return _Interview_Storm;
+            }
+            set
+            {
+                OnInterview_StormChanging(value);
+                ReportPropertyChanging("Interview_Storm");
+                _Interview_Storm = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Interview_Storm");
+                OnInterview_StormChanged();
+            }
+        }
+        private global::System.Boolean _Interview_Storm;
+        partial void OnInterview_StormChanging(global::System.Boolean value);
+        partial void OnInterview_StormChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Interview_Institution
+        {
+            get
+            {
+                return _Interview_Institution;
+            }
+            set
+            {
+                OnInterview_InstitutionChanging(value);
+                ReportPropertyChanging("Interview_Institution");
+                _Interview_Institution = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Interview_Institution");
+                OnInterview_InstitutionChanged();
+            }
+        }
+        private global::System.Boolean _Interview_Institution;
+        partial void OnInterview_InstitutionChanging(global::System.Boolean value);
+        partial void OnInterview_InstitutionChanged();
 
         #endregion
     
@@ -3529,18 +4071,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__Appli__59C55456", "aspnet_Membership")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__Appli__2334397B", "aspnet_Membership")]
         public EntityCollection<aspnet_Membership> aspnet_Membership
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Membership>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Membership");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Membership>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Membership");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Membership>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Membership", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Membership>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Membership", value);
                 }
             }
         }
@@ -3551,18 +4093,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Paths")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Paths")]
         public EntityCollection<aspnet_Paths> aspnet_Paths
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Paths>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Paths");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Paths>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Paths");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Paths>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Paths", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Paths>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Paths", value);
                 }
             }
         }
@@ -3573,18 +4115,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Roles")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4589517F", "aspnet_Roles")]
         public EntityCollection<aspnet_Roles> aspnet_Roles
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Roles>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Roles");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Roles>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Roles");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Roles>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Roles", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Roles>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Roles", value);
                 }
             }
         }
@@ -3595,18 +4137,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Users")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Users")]
         public EntityCollection<aspnet_Users> aspnet_Users
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Users>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Users");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_Users>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Users>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Users", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_Users>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Users", value);
                 }
             }
         }
@@ -4183,16 +4725,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__Appli__59C55456", "aspnet_Applications")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__Appli__2334397B", "aspnet_Applications")]
         public aspnet_Applications aspnet_Applications
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Applications").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Applications").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Applications").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Applications").Value = value;
             }
         }
         /// <summary>
@@ -4204,13 +4746,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Applications");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Applications");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__59C55456", "aspnet_Applications", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Me__Appli__2334397B", "aspnet_Applications", value);
                 }
             }
         }
@@ -4221,16 +4763,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__UserI__24285DB4", "aspnet_Users")]
         public aspnet_Users aspnet_Users
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Users").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Users").Value = value;
             }
         }
         /// <summary>
@@ -4242,13 +4784,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Users", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Users", value);
                 }
             }
         }
@@ -4395,16 +4937,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications")]
         public aspnet_Applications aspnet_Applications
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications").Value = value;
             }
         }
         /// <summary>
@@ -4416,13 +4958,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__4B7734FF", "aspnet_Applications", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Pa__Appli__5C6CB6D7", "aspnet_Applications", value);
                 }
             }
         }
@@ -4433,16 +4975,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_PersonalizationAllUsers")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__640DD89F", "aspnet_PersonalizationAllUsers")]
         public aspnet_PersonalizationAllUsers aspnet_PersonalizationAllUsers
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_PersonalizationAllUsers").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_PersonalizationAllUsers").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_PersonalizationAllUsers").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_PersonalizationAllUsers").Value = value;
             }
         }
         /// <summary>
@@ -4454,13 +4996,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_PersonalizationAllUsers");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_PersonalizationAllUsers");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_PersonalizationAllUsers", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_PersonalizationAllUsers>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_PersonalizationAllUsers", value);
                 }
             }
         }
@@ -4471,18 +5013,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5CA1C101", "aspnet_PersonalizationPerUser")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_PersonalizationPerUser")]
         public EntityCollection<aspnet_PersonalizationPerUser> aspnet_PersonalizationPerUser
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_PersonalizationPerUser");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_PersonalizationPerUser");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_PersonalizationPerUser", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_PersonalizationPerUser", value);
                 }
             }
         }
@@ -4603,16 +5145,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths")]
         public aspnet_Paths aspnet_Paths
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths").Value = value;
             }
         }
         /// <summary>
@@ -4624,13 +5166,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5BAD9CC8", "aspnet_Paths", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__640DD89F", "aspnet_Paths", value);
                 }
             }
         }
@@ -4799,16 +5341,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths")]
         public aspnet_Paths aspnet_Paths
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths").Value = value;
             }
         }
         /// <summary>
@@ -4820,13 +5362,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__5CA1C101", "aspnet_Paths", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Paths>("StormDBModel.FK__aspnet_Pe__PathI__69C6B1F5", "aspnet_Paths", value);
                 }
             }
         }
@@ -4837,16 +5379,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users")]
         public aspnet_Users aspnet_Users
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users").Value = value;
             }
         }
         /// <summary>
@@ -4858,13 +5400,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_Users", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_Users", value);
                 }
             }
         }
@@ -5037,16 +5579,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users")]
         public aspnet_Users aspnet_Users
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users").Value = value;
             }
         }
         /// <summary>
@@ -5058,13 +5600,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Users", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Users>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Users", value);
                 }
             }
         }
@@ -5235,16 +5777,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications")]
         public aspnet_Applications aspnet_Applications
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications").Value = value;
             }
         }
         /// <summary>
@@ -5256,13 +5798,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4C6B5938", "aspnet_Applications", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Ro__Appli__4589517F", "aspnet_Applications", value);
                 }
             }
         }
@@ -5617,16 +6159,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications")]
         public aspnet_Applications aspnet_Applications
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications").Value = value;
             }
         }
         /// <summary>
@@ -5638,13 +6180,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__4E53A1AA", "aspnet_Applications", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Applications>("StormDBModel.FK__aspnet_Us__Appli__0F2D40CE", "aspnet_Applications", value);
                 }
             }
         }
@@ -5655,16 +6197,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__UserI__5AB9788F", "aspnet_Membership")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Me__UserI__24285DB4", "aspnet_Membership")]
         public aspnet_Membership aspnet_Membership
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Membership").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Membership").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Membership").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Membership").Value = value;
             }
         }
         /// <summary>
@@ -5676,13 +6218,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Membership");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Membership");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__5AB9788F", "aspnet_Membership", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Membership>("StormDBModel.FK__aspnet_Me__UserI__24285DB4", "aspnet_Membership", value);
                 }
             }
         }
@@ -5693,18 +6235,18 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__UserI__5D95E53A", "aspnet_PersonalizationPerUser")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_PersonalizationPerUser")]
         public EntityCollection<aspnet_PersonalizationPerUser> aspnet_PersonalizationPerUser
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_PersonalizationPerUser");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_PersonalizationPerUser");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__UserI__5D95E53A", "aspnet_PersonalizationPerUser", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<aspnet_PersonalizationPerUser>("StormDBModel.FK__aspnet_Pe__UserI__6ABAD62E", "aspnet_PersonalizationPerUser", value);
                 }
             }
         }
@@ -5715,16 +6257,16 @@ namespace StormWeb.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Profile")]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Profile")]
         public aspnet_Profile aspnet_Profile
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Profile").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Profile").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Profile").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Profile").Value = value;
             }
         }
         /// <summary>
@@ -5736,13 +6278,13 @@ namespace StormWeb.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Profile");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Profile");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__56E8E7AB", "aspnet_Profile", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aspnet_Profile>("StormDBModel.FK__aspnet_Pr__UserI__3A179ED3", "aspnet_Profile", value);
                 }
             }
         }
@@ -13089,7 +13631,7 @@ namespace StormWeb.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> Approved_By
+        public global::System.String Approved_By
         {
             get
             {
@@ -13099,13 +13641,13 @@ namespace StormWeb.Models
             {
                 OnApproved_ByChanging(value);
                 ReportPropertyChanging("Approved_By");
-                _Approved_By = StructuralObject.SetValidValue(value);
+                _Approved_By = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Approved_By");
                 OnApproved_ByChanged();
             }
         }
-        private Nullable<global::System.Int32> _Approved_By;
-        partial void OnApproved_ByChanging(Nullable<global::System.Int32> value);
+        private global::System.String _Approved_By;
+        partial void OnApproved_ByChanging(global::System.String value);
         partial void OnApproved_ByChanged();
 
         #endregion
@@ -13146,6 +13688,244 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Application>("StormDBModel.FK_Payment_Application", "Application", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Receipt_File_Payment", "Receipt_File")]
+        public EntityCollection<Receipt_File> Receipt_File
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Receipt_File>("StormDBModel.FK_Receipt_File_Payment", "Receipt_File");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Receipt_File>("StormDBModel.FK_Receipt_File_Payment", "Receipt_File", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Receipt_File")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Receipt_File : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Receipt_File object.
+        /// </summary>
+        /// <param name="file_Id">Initial value of the File_Id property.</param>
+        public static Receipt_File CreateReceipt_File(global::System.Int32 file_Id)
+        {
+            Receipt_File receipt_File = new Receipt_File();
+            receipt_File.File_Id = file_Id;
+            return receipt_File;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 File_Id
+        {
+            get
+            {
+                return _File_Id;
+            }
+            set
+            {
+                if (_File_Id != value)
+                {
+                    OnFile_IdChanging(value);
+                    ReportPropertyChanging("File_Id");
+                    _File_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("File_Id");
+                    OnFile_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _File_Id;
+        partial void OnFile_IdChanging(global::System.Int32 value);
+        partial void OnFile_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PaymentId
+        {
+            get
+            {
+                return _PaymentId;
+            }
+            set
+            {
+                OnPaymentIdChanging(value);
+                ReportPropertyChanging("PaymentId");
+                _PaymentId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PaymentId");
+                OnPaymentIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PaymentId;
+        partial void OnPaymentIdChanging(Nullable<global::System.Int32> value);
+        partial void OnPaymentIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Path
+        {
+            get
+            {
+                return _Path;
+            }
+            set
+            {
+                OnPathChanging(value);
+                ReportPropertyChanging("Path");
+                _Path = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Path");
+                OnPathChanged();
+            }
+        }
+        private global::System.String _Path;
+        partial void OnPathChanging(global::System.String value);
+        partial void OnPathChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UploadedBy
+        {
+            get
+            {
+                return _UploadedBy;
+            }
+            set
+            {
+                OnUploadedByChanging(value);
+                ReportPropertyChanging("UploadedBy");
+                _UploadedBy = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UploadedBy");
+                OnUploadedByChanged();
+            }
+        }
+        private global::System.String _UploadedBy;
+        partial void OnUploadedByChanging(global::System.String value);
+        partial void OnUploadedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> UploadedOn
+        {
+            get
+            {
+                return _UploadedOn;
+            }
+            set
+            {
+                OnUploadedOnChanging(value);
+                ReportPropertyChanging("UploadedOn");
+                _UploadedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UploadedOn");
+                OnUploadedOnChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _UploadedOn;
+        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
+        partial void OnUploadedOnChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Receipt_File_Payment", "Payment")]
+        public Payment Payment
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Payment>("StormDBModel.FK_Receipt_File_Payment", "Payment").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Payment>("StormDBModel.FK_Receipt_File_Payment", "Payment").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Payment> PaymentReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Payment>("StormDBModel.FK_Receipt_File_Payment", "Payment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Payment>("StormDBModel.FK_Receipt_File_Payment", "Payment", value);
                 }
             }
         }
@@ -14757,6 +15537,161 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="sysdiagram")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class sysdiagram : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new sysdiagram object.
+        /// </summary>
+        /// <param name="name">Initial value of the name property.</param>
+        /// <param name="principal_id">Initial value of the principal_id property.</param>
+        /// <param name="diagram_id">Initial value of the diagram_id property.</param>
+        public static sysdiagram Createsysdiagram(global::System.String name, global::System.Int32 principal_id, global::System.Int32 diagram_id)
+        {
+            sysdiagram sysdiagram = new sysdiagram();
+            sysdiagram.name = name;
+            sysdiagram.principal_id = principal_id;
+            sysdiagram.diagram_id = diagram_id;
+            return sysdiagram;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                OnnameChanging(value);
+                ReportPropertyChanging("name");
+                _name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("name");
+                OnnameChanged();
+            }
+        }
+        private global::System.String _name;
+        partial void OnnameChanging(global::System.String value);
+        partial void OnnameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 principal_id
+        {
+            get
+            {
+                return _principal_id;
+            }
+            set
+            {
+                Onprincipal_idChanging(value);
+                ReportPropertyChanging("principal_id");
+                _principal_id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("principal_id");
+                Onprincipal_idChanged();
+            }
+        }
+        private global::System.Int32 _principal_id;
+        partial void Onprincipal_idChanging(global::System.Int32 value);
+        partial void Onprincipal_idChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 diagram_id
+        {
+            get
+            {
+                return _diagram_id;
+            }
+            set
+            {
+                if (_diagram_id != value)
+                {
+                    Ondiagram_idChanging(value);
+                    ReportPropertyChanging("diagram_id");
+                    _diagram_id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("diagram_id");
+                    Ondiagram_idChanged();
+                }
+            }
+        }
+        private global::System.Int32 _diagram_id;
+        partial void Ondiagram_idChanging(global::System.Int32 value);
+        partial void Ondiagram_idChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> version
+        {
+            get
+            {
+                return _version;
+            }
+            set
+            {
+                OnversionChanging(value);
+                ReportPropertyChanging("version");
+                _version = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("version");
+                OnversionChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _version;
+        partial void OnversionChanging(Nullable<global::System.Int32> value);
+        partial void OnversionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] definition
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_definition);
+            }
+            set
+            {
+                OndefinitionChanging(value);
+                ReportPropertyChanging("definition");
+                _definition = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("definition");
+                OndefinitionChanged();
+            }
+        }
+        private global::System.Byte[] _definition;
+        partial void OndefinitionChanging(global::System.Byte[] value);
+        partial void OndefinitionChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="System_Log")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -15433,6 +16368,30 @@ namespace StormWeb.Models
         private global::System.String _University_Url;
         partial void OnUniversity_UrlChanging(global::System.String value);
         partial void OnUniversity_UrlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
 
         #endregion
     

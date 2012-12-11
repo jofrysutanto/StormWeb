@@ -136,7 +136,7 @@
                         <td>
                         @{string id = "AppDateTime" + Model.Appointment_Id;}
 
-                         @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("MM/dd/yyyy") }) 
+                         @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("MM/dd/yyyy"), style = "width: 180px;" }) 
                             @Html.ValidationMessage("AppDateTime")
                             @Html.ValidationMessage("DateError")
                             @Html.ValidationMessage("AppBookedOut")
@@ -148,7 +148,11 @@
                             Choose Time(Hour:Minute)
                         </th>
                         <td>
-                            @Html.DropDownList("listHours", ViewBag.Hours as SelectList, new { @class = "input-small" })&nbsp;&nbsp;:&nbsp;&nbsp;@Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, new { @class = "input-small" })@Html.ValidationMessage("AppTime")
+                         @Html.DropDownList("listHours", ViewBag.Hours as SelectList, "--Select--", new { @class = "chzn-select" ,style = "width: 110px;" })
+                              @Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, "--Select--", new { @class = "chzn-select", style = "width: 110px;" }) 
+                           @* @Html.DropDownList("listHours", ViewBag.Hours as SelectList, new { @class = "input-small" })&nbsp;&nbsp;:&nbsp;&nbsp;
+                            @Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, new { @class = "input-small" })*@
+                            @Html.ValidationMessage("AppTime")
                         </td>
                     </tr>
                     <tr style="height:10px"></tr>

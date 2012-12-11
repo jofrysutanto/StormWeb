@@ -210,6 +210,12 @@ text-indent: -0.8em;
 
 /* Documents */
 
+.document-step .row
+{
+    margin-left: 0px;
+    padding-left: 40px;
+}
+
 /* Step 1 */
 .complete-documents
 {
@@ -228,6 +234,7 @@ text-indent: -0.8em;
     margin-bottom: 5px;
     margin-top: 5px;
     border-bottom: solid 1px #E4E4E4;
+    margin-left: 50px;
 }
 
 .complete-documents .document-label h4
@@ -235,13 +242,15 @@ text-indent: -0.8em;
     border-bottom: 1px solid #8B8B8B;
     margin-top: 10px;
     padding-bottom: 5px;
+    margin-right:40px;
+    text-indent: 50px;
 }
 
 .complete-documents .document .document-label
 {
     line-height: 30px;
     min-height: 60px;
-
+    width:60%;
 }
 
 .complete-documents p
@@ -326,4 +335,46 @@ text-indent: -0.8em;
 	width: 55px;
 	color: #fff;
 	text-shadow: 0px 1px 0px #000;
+}
+
+/* Document/Application Page */
+.document-container
+{
+    width: 95%;
+    margin-left: 50px;
+}
+
+.document-step
+{
+    width: 95%;
+}
+
+.document-action
+{
+    width:30%;
+    float:right;
+}
+
+a.tab-background-orange
+{
+    background-color: #FAD8B9 !important;
+}
+
+/** Document COunsellor View **/
+
+.document-table-row td
+{
+    border-top: 0px;
+}
+
+.document-table-notice .alert
+{
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+/** Payment Document Step **/
+.payment-step th
+{
+    padding-right: 20px;
 }

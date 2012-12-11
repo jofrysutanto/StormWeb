@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdvertisementController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Helper\RolesHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\RouteHelper.cs" />
     <Compile Include="Helper\ServiceConfiguration.cs" />
     <Compile Include="Helper\SimpleHash.cs">
       <SubType>Code</SubType>
@@ -133,49 +135,125 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\ValidationHelper.cs" />
-    <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ActivateAccountModel.cs" />
-    <Compile Include="Models\ApplicationDocumentViewModel.cs" />
-    <Compile Include="Models\AppointmentMD.cs" />
-    <Compile Include="Models\BranchModel.cs" />
-    <Compile Include="Models\CalendarEvent.cs" />
-    <Compile Include="Models\CaseDoc_TemplateMD.cs" />
-    <Compile Include="Models\DocumentIndexModel.cs" />
-    <Compile Include="Models\EventAppointment.cs" />
-    <Compile Include="Models\General_EnquiryMD.cs" />
-    <Compile Include="Models\ManageRoleModel.cs" />
-    <Compile Include="Models\ModelHelper\Currency.cs" />
-    <Compile Include="Models\ModelHelper\DocumentHelper.cs" />
-    <Compile Include="Models\ModelHelper\ProgressHelper.cs" />
-    <Compile Include="Models\PaymentViewModel.cs" />
-    <Compile Include="Models\RefreshModel.cs" />
-    <Compile Include="Models\ResetPasswordModel.cs" />
-    <Compile Include="Models\ClientMD.cs" />
-    <Compile Include="Models\ClientViewModel.cs" />
-    <Compile Include="Models\CountyList.cs" />
-    <Compile Include="Models\CourseMD.cs" />
-    <Compile Include="Models\InboxViewModel.cs" />
-    <Compile Include="Models\MessageMD.cs" />
-    <Compile Include="Models\ModelHelper\ContactHelper.cs" />
-    <Compile Include="Models\ModelHelper\CountryHelper.cs" />
-    <Compile Include="Models\ModelHelper\CourseLevelHelper.cs" />
-    <Compile Include="Models\ModelHelper\EmailAddress.cs" />
-    <Compile Include="Models\ModelHelper\NationalityHelper.cs" />
-    <Compile Include="Models\ModelHelper\ServiceHelper.cs" />
-    <Compile Include="Models\ModelHelper\StatusTypeHelper.cs" />
-    <Compile Include="Models\ModelHelper\TimeHelper.cs" />
-    <Compile Include="Models\OutboxViewModel.cs" />
-    <Compile Include="Models\StaffAppointmentListViewModel.cs" />
-    <Compile Include="Models\StaffMD.cs" />
+    <Compile Include="Models\AccountModels.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ActivateAccountModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ApplicationDocumentViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\AppointmentMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\BranchModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\CalendarEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\CaseDoc_TemplateMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ClientMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ClientViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\CountyList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\CourseMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\DocumentIndexModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\EventAppointment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\General_EnquiryMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\InboxViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ManageRoleModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\MessageMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\ContactHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\CountryHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\CourseLevelHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\Currency.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\DocumentHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\EmailAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\NationalityHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\ProgressHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\ServiceHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\StatusTypeHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ModelHelper\TimeHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\OutboxViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\PaymentViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\RefreshModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ResetPasswordModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StaffAppointmentListViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StaffMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\StormDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StormDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\StudentCentreModel.cs" />
-    <Compile Include="Models\StudentModel.cs" />
-    <Compile Include="Models\StudentStaffModel.cs" />
-    <Compile Include="Models\UniversityMD.cs" />
+    <Compile Include="Models\StudentCentreModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StudentModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StudentStaffModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\UniversityMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -797,14 +875,23 @@
     <Content Include="Views\Client\ChooseRegistration.cshtml" />
     <Content Include="Views\Client\RegisterContinue.cshtml" />
     <Content Include="Views\Client\Enquire.cshtml" />
-    <EntityDeploy Include="Models\StormDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Content Include="Views\Document\Partial_StepOne.cshtml" />
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Document\Partial\_DocumentStep.cshtml" />
+    <Content Include="Views\University\Description.cshtml" />
+    <Content Include="Views\StudentCentre\CounsellorContactDetails.cshtml" />
+    <Content Include="Views\Advertisement\Index.cshtml" />
+    <Content Include="Views\Advertisement\Details.cshtml" />
+    <Content Include="Views\Advertisement\Create.cshtml" />
+    <Content Include="Views\Advertisement\Edit.cshtml" />
+    <Content Include="Views\Advertisement\Delete.cshtml" />
+    <Content Include="Views\Client\Delete.cshtml" />
+    <Content Include="Views\Document\Partial\_DocumentStep.cshtml" />
+    <EntityDeploy Include="Models\StormDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

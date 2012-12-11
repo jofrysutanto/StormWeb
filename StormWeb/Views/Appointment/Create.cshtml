@@ -41,7 +41,7 @@
                         }
                         else
                         {
-                            @Html.DropDownList("staffSpecificStudent", ViewBag.staffSpecificStudent as SelectList, "Select Student")
+                            @Html.DropDownList("staffSpecificStudent", ViewBag.staffSpecificStudent as SelectList, "--Select--", new { @class = "chzn-select" })
                             @Html.ValidationMessage("StudentEmpty")
                         }
                         </td> 
@@ -53,8 +53,8 @@
                         @Html.Label("Branch Name")
                     </th>
                     <td>
-                        @{ 
-                           <text>@StormWeb.Helper.BranchHelper.getBranchListFromCookie().First().Branch_Name</text>
+                        @{  
+                                <text>@StormWeb.Helper.BranchHelper.getBranchListFromCookie().First().Branch_Name</text> 
                         }
                     </td>
                 </tr>
@@ -64,7 +64,9 @@
                         @Html.Label("Choose Time(Hour:Minute)")
                     </th>
                     <td>
-                        @Html.DropDownList("listHours", ViewBag.Hours as SelectList, "Select Hour", new { @class = "input-medium"})&nbsp;&nbsp;:&nbsp;&nbsp;@Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, "Select Minutes", new { @class = "input-medium" })
+                        @Html.DropDownList("listHours", ViewBag.Hours as SelectList, "--Select--", new { @class = "chzn-select", style = "width: 100px;" })
+                        &nbsp;&nbsp;:&nbsp;&nbsp;
+                        @Html.DropDownList("listMinutes", ViewBag.Minutes as SelectList, "--Select--", new { @class = "chzn-select", style = "width: 100px;" }) 
                         @Html.ValidationMessage("HourMinuteError")
                     </td>
                 </tr>
@@ -74,7 +76,7 @@
                         @Html.Label("Select Date")
                     </th>
                     <td>
-                        @Html.TextBoxFor(model => model.AppDateTime, new { @class = "chooseDate", @readonly = "readonly" })
+                        @Html.TextBoxFor(model => model.AppDateTime, new { @class = "chooseDate", @readonly = "readonly", style = "width: 180px;" })
                         @Html.ValidationMessage("AppDateTime")
                         @Html.ValidationMessage("DateEmpty")
                         @Html.ValidationMessage("DateSelection")
@@ -93,8 +95,8 @@
                 <tr style="height:10px"></tr>
                 <tr>
                     <th></th>
-                    <td align="center">
-                        <input id="create" type="submit" value="Create" />
+                    <td>
+                        <input id="create" type="submit" value="Create" class="btn btn-info"/>
                     </td>
                 </tr>
             </thead>
