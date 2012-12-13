@@ -263,7 +263,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\AWS.Extensions.dll" />
     <Content Include="Report\ReportType.xml" />
     <Content Include="Content\help_img\AppSummary_StartNew.png" />
     <Content Include="Content\help_img\BookApp.png" />
