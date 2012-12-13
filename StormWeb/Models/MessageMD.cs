@@ -18,5 +18,11 @@ namespace StormWeb.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM yyyy, H:mm:ss}")]
         public DateTime TimeStamp { get; set; }
+
+        [Required]
+        public string Subject { get; set; }
+
+        [Required]
+        public string MessageContent { get; set; }
     }
 }

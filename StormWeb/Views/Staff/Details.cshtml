@@ -125,13 +125,13 @@
     </div>
 </div>
 <p>
-    @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("BranchManager"))
+    @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
     {
         foreach (string s in Roles.GetRolesForUser(Model.UserName))
         {
             if (s != "Super")
             {
-        <a href="@Url.Action("Edit", "Client", new { id = Model.Staff_Id })" class="btn btn-info">
+        <a href="@Url.Action("Edit", "Staff", new { id = Model.Staff_Id })" class="btn btn-info">
             Edit</a>
             }
         }
@@ -139,6 +139,6 @@
     @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
     {
       
-        @Html.Button_BackToList("Bact To List", "../Index")
+        @Html.Button_BackToList("Bact To List", "../../Staff")
     }
 </p>

@@ -10,6 +10,7 @@ using StormWeb.Models.ModelHelper;
 using StormWeb.Helper;
 using System.Web.Security;
 using System.Web.Helpers;
+using System.Text;
 
 namespace StormWeb.Controllers
 {
@@ -428,10 +429,31 @@ namespace StormWeb.Controllers
 
         #endregion
 
+
+        public JsonResult ActivateStaff(int id)
+        {  
+            StringBuilder sbhtml = new StringBuilder();
+            sbhtml.Append("<p>"); 
+            string link = Url.Action("ActivateStaff", "Account", new { id = id }, "http");
+            if (link.Contains("localhost"))
+            {
+                sbhtml.Append("<span>Link to Activate Staff : <a href='#'>" + link + "</a></span>");
+            }
+            else
+            {
+                string[] arr = link.Split(':');
+                string[] arr1 = arr[2].Split('/');
+                string originallink = arr[0] + ":" + arr[1] + "/" + arr1[1] + "/" + arr1[2] + "/" + arr1[3];
+                sbhtml.Append("<span>Link to Activate Staff : <a href='#'>"+originallink+"</a></span>"); 
+            }
+            sbhtml.Append("</p>"); 
+            return Json(sbhtml.ToString(), JsonRequestBehavior.AllowGet);
+        }
+
         private void BindTitle(string selectedValue)
         {
             var title = Enumclass.GetTitle();
-            //ViewData["TitleValue"] = new SelectList(title, "Value", "Text", selectedValue.Trim()); 
+            ViewData["TitleValue"] = new SelectList(title, "Value", "Text", selectedValue.Trim()); 
             ViewBag.TitleValue = new SelectList(title, "Value", "Text", selectedValue.Trim());
         }
 

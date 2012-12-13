@@ -101,23 +101,13 @@
             </span>Appointment</a></li>
             
         }
-          
+            
             
                 @if (HttpContext.Current.User.IsInRole("Super") || HttpContext.Current.User.IsInRole("Administrator") || HttpContext.Current.User.IsInRole("BranchManager"))
                 {
                     
             <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons graph"></span>
-                <span class="badge badge-important">X</span>Reports</a>
-                  <ul class="acitem">
-                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Marketing Report</a></li>
-                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Student FollowUp Report</a></li>  
-                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Student Enrollment</a></li>  
-                    <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Main Student Database</a></li>
-                     <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Tax Invoice Report</a></li>
-                      <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Associate Data</a></li>
-                       <li><a href="@Url.Action("RunReport", "Report")"><span class="sidenav-icon"><span class="sidenav-link-color"></span></span>Associate Ranking</a></li>
-                        
-                  </ul>
+                Reports</a>
             </li>
             <li><a href="@Url.Action("Index", "Client")"><span class="white-icons users"></span>
                 Clients</a></li>
@@ -127,7 +117,10 @@
                 Branch</a></li>
            
                 }
-               
+            @if (HttpContext.Current.User.IsInRole("Super") )
+              {
+               <li><a href="@Url.Action("Index", "Associate")"><span class="white-icons companies"></span>Associates</a></li>
+              }   
             <li><a href="@Url.Action("Index", "Event")"><span class="color-icons weather_clouds_co"></span>
                 Events</a></li>
     </ul>    

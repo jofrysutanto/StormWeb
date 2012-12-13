@@ -163,9 +163,9 @@
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("UserName", null, new { @class = "control-label form-required" })
+                @Html.Label("UserName", null, new { @class = "control-label" })
                 <div class="controls">
-                    @Html.TextBoxFor(model => model.UserName, new { @class = "input-large text-tip", placeholder = "UserName" })
+                    @Html.DisplayFor(model => model.UserName)
                     <p class="help-block">
                         @Html.ValidationMessageFor(model => model.UserName)
                     </p>
@@ -179,154 +179,11 @@
             <div class="control-group">
                 <div class="controls">
                    <input type="submit" class="btn btn-primary" value="Save Changes" />
-             @Html.Button_DeleteOrCancel("Cancel", "../../Staff/Index")
+             @Html.Button_DeleteOrCancel("Cancel", "../../Staff")
                 </div>
             </div>
         </fieldset>
-     </div> 
-      @*  <table style="text-align: left;">
-            <tr>
-                <th>
-                    Department 
-                </th>
-                <td>
-                    @Html.DropDownList("Dept_Id", "--Select--") 
-                    
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Address 
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Address.Address_Name, "Address")
-                </td>
-            </tr>
-            <tr>
-                <th>City 
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Address.City)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   State 
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Address.State)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Zipcode 
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Address.Zipcode)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Country 
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Address.Country.Country_Name)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Title 
-                </th>
-                <td>  
-                           @Html.EditorFor(model => model.Title) 
-                     
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Given Name 
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.FirstName)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   SurName 
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.LastName)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                  DOB
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly" })
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Date Of Joining
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly" })
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Mobile Number  
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Mobile_Number)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Email 
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Email)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Tax Type 
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Tax_Type)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   Tax Number 
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Tax_Number)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                   User Name  
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.UserName, new { @class = "text-tip" })
-                </td>
-            </tr> 
-             <tr>
-            <td colspan="2">
-                <div class="span6">
-                    @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
-                </div>
-            </td>
-        </tr>
-        </table>
-       <p>
-            <input type="submit" class="btn btn-primary" value="Save Changes" />
-             @Html.Button_DeleteOrCancel("Cancel","../../Staff/Index")
-        </p> 
-    </div> *@
+     </div>  
     <br />
 }
  
@@ -355,7 +212,10 @@
             changeMonth: true,
             changeYear: true,
             minDate: '-100Y',
-            maxDate: '0'
+            maxDate: '0',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
      $(document).ready(function () { 
@@ -364,10 +224,13 @@
             changeMonth: true,
             changeYear: true,
             minDate: '0',
-            maxDate: '+10Y'
+            maxDate: '+10Y',
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true
         });
     });
 
 
 </script>
- 
+  

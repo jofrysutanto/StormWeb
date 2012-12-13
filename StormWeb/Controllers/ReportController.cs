@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using StormWeb.Models;
+using StormWeb.Models.Report;
 
 namespace StormWeb.Controllers
 {
@@ -29,6 +30,9 @@ namespace StormWeb.Controllers
 
             return View();
         }
+
+        
+
         [HttpGet]
         public ViewResult RunReport()
         {
@@ -36,159 +40,93 @@ namespace StormWeb.Controllers
             //ViewBag.staffWithCases = staff.ToList();
 
             ViewBag.Branch_Id = new SelectList(db.Branches, "Branch_Id", "Branch_Name");
-            return View();
+
+            ReportViewModel viewModel = new ReportViewModel();
+
+            viewModel.allTime = true;
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public FileResult RunReport(FormCollection fc)
+        public void RunReport(ReportViewModel viewModel)
         {
-            int branchId = Convert.ToInt32(fc["Branch_Id"]);
-            DateTime datefrom = DateTime.ParseExact(fc["Date_From"], "d", null);
-            DateTime dateto = DateTime.ParseExact(fc["Date_To"], "d", null);
-           
-            if (fc["report"] == "Option1")
+
+            Client c = new Client();
+
+            Student s = new Student();
+
+            if (!viewModel.allTime)
             {
-            List<Branch_Staff> staffs = db.Branch_Staff.Where(x => x.Branch_Id == branchId && x.Staff.Date_Of_Joining >= datefrom  && x.Staff.Date_Of_Joining <= dateto).ToList();
-            return ExportStaffsCSV(staffs);
-            }
-            else
-            {
-                List<Client> clients = db.Clients.Where(x => x.Branch_Id == branchId && datefrom <= x.Dob && x.Dob <= dateto).ToList();
-                return ExportClientsCSV(clients);
+                if (viewModel.dateTimeStart > viewModel.dateTimeEnd)
+                {
+                    ModelState.AddModelError("DateRangeError", new Exception("Starting date can not be greater than end date"));
+                }
             }
 
-        }
-
-        public  FileResult ExportStaffsCSV(IEnumerable<Branch_Staff> bstaffs)
-        {
-            
-            MemoryStream output = new MemoryStream();
-            StreamWriter writer = new StreamWriter(output, System.Text.Encoding.UTF8);
-            writer.WriteLine("Username,Date_Of_Joining,DOB,Email");
-            foreach (Branch_Staff bstaff in bstaffs)
+            if (ModelState.IsValid)
             {
-                writer.WriteLine(
-                            "\"" + bstaff.Staff.FirstName + " " + bstaff.Staff.LastName
-                    + "\",\"" + bstaff.Staff.Date_Of_Joining
-                    + "\",\"" + bstaff.Staff.DOB
-                    + "\",\"" + bstaff.Staff.Email
-                     + "\""
-                );
-            }
-            writer.Flush();
-            output.Seek(0, SeekOrigin.Begin);
-            //string file = Path.Combine(pathToCreate, "Students_" + DateTime.Now.ToShortDateString().Replace('/', '-'));
-            return File(output, "text/csv", "Staffs_" + DateTime.Now.ToShortDateString().Replace('/', '-') + ".csv");
-        }
+                string reportType = viewModel.reportType;
 
-        public FileResult ExportClientsCSV(IEnumerable<Client> clients)
-        {
-            MemoryStream output = new MemoryStream();
-            StreamWriter writer = new StreamWriter(output, System.Text.Encoding.UTF8);
-            writer.WriteLine("Title,Username,email,nationality, D.O.B");
-            foreach (Client client in clients)
-            {
-                writer.WriteLine(
-                        "\"" + client.Title
-                    + "\",\""  + client.GivenName + ' ' + client.LastName
-                    + "\",\"" + client.Email
-                    + "\",\"" + client.Nationality
-                    + "\",\"" + client.Dob.ToShortDateString()
-                     + "\""
-                );
-            }
-            writer.Flush();
-            output.Seek(0, SeekOrigin.Begin);
-            
-            return File(output, "text/csv", "Students_" + DateTime.Now.ToShortDateString().Replace('/', '-') + ".csv");
-        }
-
-        //
-        // GET: /Report/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /Report/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
-
-        //
-        // POST: /Report/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Report/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Report/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                if (reportType == "Sample Report")
+                {
+                    ReportSample();
+                }
+                else if (reportType == "Tax Invoice")
+                {
+                    ErrorReport();
+                }
+                else
+                {
+                    ErrorReport();
+                }
             }
         }
 
-        //
-        // GET: /Report/Delete/5
- 
-        public ActionResult Delete(int id)
+        public void ReportSample()
         {
-            return View();
+            DateTime lastYear = DateTime.Now.AddYears(-1);
+            List<Application> apps = db.Applications.Where(x => x.Date_Of_ApplicationStatus >= lastYear).ToList();
+
+            string[] reportHeader = { "Id", "Surname", "First Name", "Course", "Course Intake", "Student Payment" };
+
+            ReportModel rm = new ReportModel(reportHeader);
+
+            foreach (Application app in apps)
+            {
+                string s1 = Convert.ToString(app.Application_Id);
+                string s2 = app.Case.Student.Client.LastName;
+                string s3 = app.Case.Student.Client.GivenName;
+                string s4 = app.Course.Course_Name;
+                string s5 = Convert.ToString(app.Course.Commence_Date_Sem);
+                string s6 = app.Payments.Count > 0 ? Convert.ToString(app.Payments.LastOrDefault().Amount) : "";
+
+                string[] data = {
+                    Convert.ToString(app.Application_Id),
+                    app.Case.Student.Client.LastName,
+                    app.Case.Student.Client.GivenName,
+                    app.Course.Course_Name,
+                    Convert.ToString(app.Course.Commence_Date_Sem),
+                    app.Payments.Count > 0 ? Convert.ToString(app.Payments.LastOrDefault().Amount) : ""
+                };
+
+                rm.addData(data);
+            }
+
+            Response.BinaryWrite(rm.makeReport());
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=Report.xlsx");
         }
 
-        //
-        // POST: /Report/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public void ErrorReport()
         {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            ReportModel rm = new ReportModel(new string [] { "Error creating the report" });
+
+            rm.addData(new string [] {"Please re-check your report parameter"});
+
+            Response.BinaryWrite(rm.makeReport());
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=Report.xlsx");
         }
-
-
-
     }
 }

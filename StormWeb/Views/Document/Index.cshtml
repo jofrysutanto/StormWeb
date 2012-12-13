@@ -74,7 +74,7 @@
                 <ul class="nav nav-tabs" id="applicationsTab">
                     @foreach (StormWeb.Models.ApplicationDocumentViewModel item in Model)
                     {
-                        <li><a id="popover@(item.app.Application_Id)" data-content="@item.app.Course.Course_Name (@item.app.Course.Course_Level.Course_Level1)" data-original-title="@item.app.Course.Faculty.University.University_Name" href="#app@(item.app.Application_Id)" data-toggle="tab">@item.app.Course.Faculty.University.University_Name</a></li>
+                        <li><a id="popover@(item.app.Application_Id)" data-content="@item.app.Course.Course_Name (@item.app.Course.Course_Level.Course_Level_Name)" data-original-title="@item.app.Course.Faculty.University.University_Name" href="#app@(item.app.Application_Id)" data-toggle="tab">@item.app.Course.Faculty.University.University_Name</a></li>
                     }
                     @if (Model.Count() < 3)
                     {

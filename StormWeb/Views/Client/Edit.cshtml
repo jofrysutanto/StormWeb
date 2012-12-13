@@ -23,6 +23,7 @@
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Client_Id)
+    @Html.HiddenFor(model=>model.Branch_Id)
     <div class="form-horizontal well">
         <fieldset style="margin-left:50px;">
             <legend>
@@ -97,7 +98,7 @@
                   <div class="control-group">
                     @Html.Label("Address", null, new { @class = "control-label form-required" })
                     <div class="controls">
-                      @Html.DropDownListFor(model => model.Address.Address_Id, (IEnumerable<SelectListItem>)ViewBag.Address_Id,"--Select--", new { @class = "chzn-select" })
+                      @Html.DropDownListFor(model => model.Address_Id, (IEnumerable<SelectListItem>)ViewBag.Address_Id,"--Select--", new { @class = "chzn-select" })
                         <p class="help-block">
                             @Html.ValidationMessageFor(model => model.Address_Id)
                         </p>
@@ -180,7 +181,7 @@
                    <div class="control-group">
                      <div class="controls">
                  <input type="submit" value="Save Changes" class="btn btn-primary" />
-                        @Html.Button_DeleteOrCancel("Cancel", "../Index")
+                        @Html.Button_DeleteOrCancel("Cancel", "../../Client")
            </div></div>
             @*<table style="text-align: left;">
                 <tr>

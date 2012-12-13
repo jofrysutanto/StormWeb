@@ -4,10 +4,10 @@
 }
 <div class="row-fluid">
     <div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
-                <h2>
-                    Client Details</h2>
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Client Details</h1>
             </div>
             <div class="widget-content">
                 <div class="widget-box">
@@ -147,8 +147,6 @@
     </div>
 </div>
 <p>
-    <a href="@Url.Action("Edit", "Client", new { id = Model.Client_Id })" class="btn btn-info">
-        Edit</a>
-
-    @Html.Button_BackToList("Bact To List", "../Index")
+    
+    @Html.Button_BackToList("Bact To List", "../../Client")
 </p> 

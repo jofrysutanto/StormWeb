@@ -54,6 +54,9 @@ $(function () {
                                     <i class="black-icons paperclip"></i>Username
                                 </th>
                                 <th>
+                                    Address
+                                </th>
+                                <th>
                                     # of Students
                                 </th>
                                 <th>
@@ -166,7 +169,11 @@ $(function () {
                                                     </i>Remove</a></li>
                                                     <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
                                                     </i>Manage Roles</a></li>
-                                                    <li><a id="dialog_link@(item.Staff_Id)"
+                                                    
+                                                   <li><a href="#" onclick="ActivateLink('@item.Staff_Id');"><i class="color-icons user_business_boss_co">
+                                                </i>Activate Staff</a> </li>
+                                                </ul>
+                                                  @*  <li><a id="dialog_link@(item.Staff_Id)"
                                 href="#"><i class="color-icons user_business_boss_co"></i>Activate Staff</a> </li>
                                                 </ul>
                                                 <div id="dialog" title="Activate Staff" style="display: none">
@@ -176,7 +183,7 @@ $(function () {
                                                         }
                                                         Link to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
                                                     </p>
-                                                </div>
+                                                </div>*@
                                                 }
                                             }
                                         </div>
@@ -224,6 +231,13 @@ $(function () {
                                     <td>
                                         @item.UserName
                                     </td>
+                                    <td>
+                                        <ul>
+                                            <li>@item.Address.Address_Name, @item.Address.City</li>
+                                            <li class="post-date">@item.Address.State
+                                                @item.Address.Country.Country_Name @item.Address.Zipcode</li>
+                                        </ul>
+                                    </td>
                                     <td style="text-align: center">
                                         @StormWeb.Helper.StudentsHelper.getStudentsList(item.Staff_Id).Count
                                     </td>
@@ -258,10 +272,13 @@ $(function () {
                                                 </i>Remove</a></li>
                                                 <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
                                                 </i>Manage Roles</a></li>
-                                                <li><a id="dialog_link@(item.Staff_Id)"href="#"><i class="color-icons user_business_boss_co">
+                                              @*  <li><a id="dialog_link@(item.Staff_Id)"href="#"><i class="color-icons user_business_boss_co">
+                                                </i>Activate Staff</a> </li>
+*@
+                                                   <li><a href="#" onclick="ActivateLink('@item.Staff_Id');"><i class="color-icons user_business_boss_co">
                                                 </i>Activate Staff</a> </li>
                                             </ul>
-                                            <div id="dialog" title="Activate Staff" style="display: none">
+                                            @*<div id="dialog" title="Activate Staff" style="display: none">
                                                 <p>
                                                     @{
                                                                   string link = Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http");
@@ -277,11 +294,12 @@ $(function () {
                                                                       string originallink = arr[0] + ":" + arr[1] + "/" + arr1[1] + "/" + arr1[2] + "/" + arr1[3];
                                                     
                                                         <span>Link to Activate Staff :<a href="#" class="">@originallink</a></span> 
-                                                        @*@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")*@
+                                                     
                                                                   } 
                                                     }
                                                 </p>
                                             </div>
+                                           *@
                                         </div>
                                     </td>
                                 </tr>
@@ -294,6 +312,7 @@ $(function () {
         </div>
     </div>
 </div>
+<div id="divActivateStaff"></div>
 @Html.Button_Add("Create New", "../Staff/Create")
 <br />
 <br />
@@ -319,11 +338,19 @@ $(function () {
     } 
 }
 
-$(document).ready(function() {  
-     $("a[id*='dialog_link']").click(function() {
-        $('#dialog').dialog();
-        return false;
-    });
-});
+//$(document).ready(function() {  
+//     $("a[id*='dialog_link']").click(function() {
+//        $('#dialog').dialog();
+//        return false;
+//    });
+//});
    
+    function ActivateLink(val) {
+            $.ajaxSetup({ cache: false });
+            $.getJSON("/Staff/ActivateStaff", { id: val },
+       function (data1) { 
+             $('#divActivateStaff').html(data1).dialog();
+       });
+        }
+
 </script>

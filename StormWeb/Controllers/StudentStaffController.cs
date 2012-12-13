@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
 using StormWeb.Helper;
+using System.Web.Security;
 
 namespace StormWeb.Controllers
 {
@@ -201,21 +202,24 @@ namespace StormWeb.Controllers
                     ViewBag.studentId = id;
                     int staffId = Convert.ToInt32(CookieHelper.StaffId);
                     int branchId = db.Students.SingleOrDefault( x=> x.Student_Id == id).Client.Branch_Id;
-
+                     
                     var staffName = from branchStaff in db.Branch_Staff
                                     from s in db.Staffs
                                     where s.Staff_Id == branchStaff.Staff_Id && branchStaff.Branch_Id == branchId
-                                    select (s.FirstName + " " + s.LastName);
-                                    
-                  
-                    //var cases = (from casestaff in db.Case_Staff
-                    //             join sts in db.Staffs on casestaff.Staff_Id equals sts.Staff_Id
-                    //             where casestaff.Staff_Id == sts.Staff_Id && casestaff.Role == "Counsellor"
-                    //             select sts.FirstName).Distinct();
-                    SelectList staff = new SelectList(staffName);
-                    ViewBag.staffWithCases = staff.ToList();
+                                    select s;
 
-                    //Update case staff table where staff id= new staff id
+                    List<string> myList = new List<string>();
+                    foreach (var a in staffName)
+                    {
+                        string[] roles=Roles.GetRolesForUser(a.UserName);
+                         if (roles.Contains("Counsellor") && a.UserName != CookieHelper.Username)
+                         {  
+                             myList.Add(a.FirstName+" "+a.LastName);
+                         }
+                         
+                    }  
+                     SelectList staff = new SelectList(myList); 
+                    ViewBag.staffWithCases = staff.ToList(); 
                     StudentStaffModel ssModel = new StudentStaffModel(); 
                 }
                 /*    var doc = db.Application_Document.ToList().Where(d => d.Application_Id == id);

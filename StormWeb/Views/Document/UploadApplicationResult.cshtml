@@ -13,10 +13,16 @@
              $("#upload-files").val("Loading...");
 
              disableButton = true;
+             if ($("#file").val().length >= 50) {
+                 valid = false;
+                 alert("File name must be less than 50 characters!");
+             }
+
              if ($("#file").val() == '') {
                  valid = false;
                  alert("File is not selected");
              }
+
              var ext = $('#file').val().split('.').pop().toLowerCase();
              if ($.inArray(ext, ['pdf']) == -1) {
                  valid = false;
@@ -24,7 +30,13 @@
              }
 
              if (valid) {
-                 $('#upload').submit();         
+                 $('#upload').submit();
+             }
+             else {
+                     $("#upload-files").removeClass('disabled');
+                     $("#upload-files").val('Upload Documents');
+                     $('#upload-files').attr("disabled", false);
+                 }
              }
 
          });

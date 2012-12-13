@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<reports>
+  <report>
+    <name>Sample Report</name>
+    <code>sample</code>
+  </report>
+  <report>
+    <name>Tax Invoice</name>
+    <code>tax</code>
+  </report>
+</reports>

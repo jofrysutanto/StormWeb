@@ -82,13 +82,15 @@ $(function () {
                     <div class="well white-box">
                         <div class="summary">
                             <ul>
-                                @if (ViewBag.CountAppointment != null)
+                                @if(HttpContext.Current.User.IsInRole("Counsellor"))
+                                {
+                                if (ViewBag.CountAppointment != null)
                                 {
                                     <li><span class="summary-icon"><a class="dashboard-icons-colors calendar_sl" href="@Url.Action("Index", "Appointment")"></a>
                                     </span><span class="count">@ViewBag.CountAppointment</span><span class="summary-title">
                                         Upcoming Appointments</span></li>
                                 }
-                                @if (ViewBag.CountNewEnquiries != null)
+                                if (ViewBag.CountNewEnquiries != null)
                                 {
                                     <li>
                                                                         
@@ -96,12 +98,13 @@ $(function () {
                                     </span><span class="count">@ViewBag.CountNewEnquiries</span><span class="summary-title">
                                         New Enquiries </span></li>
                                 }
-                                @if (ViewBag.CountNewStudents != null)
+                                if (ViewBag.CountNewStudents != null)
                                 {
                                     <li><span class="summary-icon"><a class="dashboard-icons-colors special_offer_sl" href="@Url.Action("NewStudent", "StudentStaff")"></a>
                                     </span><span class="count">@ViewBag.CountNewStudents</span><span class="summary-title">
                                         New Students </span></li>
                                 }
+                                    }
                                 @{
                                     int newInbox = StormWeb.Helper.Utilities.countNewInbox();
 

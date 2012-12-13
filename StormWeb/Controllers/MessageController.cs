@@ -59,13 +59,15 @@ namespace StormWeb.Controllers
             return View();
         }
 
-         [Authorize(Roles = "Student,Counsellor")]
+         [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Compose()
         {
             string UserName;
 
             string UserTo = Request.QueryString["to"];
+            string Layout = Request.QueryString["layout"];
+            string closeBox = Request.QueryString["closeBox"];
 
             if (CookieHelper.isStudent())
             {
@@ -88,11 +90,13 @@ namespace StormWeb.Controllers
 
             ViewBag.FromUsername = UserName;
             ViewBag.UserTo = UserTo;
+            ViewBag.Layout = Layout;
+            ViewBag.CloseBox = closeBox;
 
             return View(new Message());
         }
 
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Compose(Message m, FormCollection fc)
@@ -101,32 +105,53 @@ namespace StormWeb.Controllers
             m.TimeStamp = DateTime.Now;
             m.Deleted = false;
 
+ 
+
             if (ModelState.IsValid)
             {
-                db.Messages.AddObject(m);
-                db.SaveChanges();
+                if (fc["UserTo"] != "")
+                {
+                    db.Messages.AddObject(m);
+                    db.SaveChanges();
 
-                int msgId = m.Id;
+                    int msgId = m.Id;
 
-                Message_To mt = new Message_To();
-                mt.Message_Id = msgId;
-                mt.UserTo = fc["UserTo"];
-                mt.HasRead = false;
-                mt.Deleted = false;
+                    Message_To mt = new Message_To();
+                    mt.Message_Id = msgId;
+                    mt.UserTo = fc["UserTo"];
+                    mt.HasRead = false;
+                    mt.Deleted = false;
 
-                db.Message_To.AddObject(mt);
-                db.SaveChanges();
+                    db.Message_To.AddObject(mt);
+                    db.SaveChanges();
 
-                //TempData["MessageCompose"] = Compose_MessageSuccess;
-                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your message has been sent!");
+                    //TempData["MessageCompose"] = Compose_MessageSuccess;
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your message has been sent!");
 
-                return RedirectToAction("Index");
+                    if (fc["Refresh"] != null)
+                    {
+                        return View("Refresh", new RefreshModel(Url.Action("Index", "Message")));
+                    }
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error processing your message");
+
+                    if (fc["Refresh"] != null)
+                    {
+                        return View("Refresh", new RefreshModel(Url.Action("Index", "Message")));
+                    }
+
+                    return RedirectToAction("Index");
+                }
             }
 
             return View("Index", m);
         }
 
-       [Authorize(Roles = "Student,Counsellor")]
+       [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public ActionResult Inbox()
         {
             return View();
@@ -153,8 +178,7 @@ namespace StormWeb.Controllers
             return View(m);
         }
 
-       [Authorize(Roles = "Student,Counsellor")]
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult DeleteSent(int id)
         {
@@ -167,7 +191,7 @@ namespace StormWeb.Controllers
             return PartialView("~/Views/Message/Sent.cshtml", getOutBoxMessages(CookieHelper.Username));
         }
 
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public ActionResult DeleteInbox(int id)
         {
             ViewBag.ContactList = getContactList();
@@ -215,8 +239,7 @@ namespace StormWeb.Controllers
         }
 
         // Return the list of contacts for the particular user based on their role and their id
-      [Authorize(Roles = "Student,Counsellor")]
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public SelectList getContactList()
         {
             if (CookieHelper.isStudent())
@@ -224,9 +247,9 @@ namespace StormWeb.Controllers
                 return new SelectList(ContactHelper.GetContacts(true, Convert.ToInt32(CookieHelper.StudentId)), "Username", "Name");
             }
             else
-                return new SelectList(ContactHelper.GetContacts(true, Convert.ToInt32(CookieHelper.StaffId)), "Username", "Name");
+                return new SelectList(ContactHelper.GetContacts(false, Convert.ToInt32(CookieHelper.StaffId)), "Username", "Name");
         }
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public IEnumerable<InboxViewModel> getInboxMessages(string username)
         {
             // ---- Retrieve Message List
@@ -249,7 +272,7 @@ namespace StormWeb.Controllers
             }
             return inboxVMList;
         }
-        [Authorize(Roles = "Student,Counsellor")]
+        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public IEnumerable<OutboxViewModel> getOutBoxMessages(string username)
         {
             List<OutboxViewModel> outboxVM = new List<OutboxViewModel>();

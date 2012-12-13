@@ -45,7 +45,7 @@ namespace StormWeb.Controllers
 
         #region EDIT
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         public ActionResult Edit(int id)
         {
             Client client = db.Clients.Single(c => c.Client_Id == id);
@@ -55,12 +55,13 @@ namespace StormWeb.Controllers
         }
 
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super,BranchManager")]
         [HttpPost]
         public ActionResult Edit(Client client)
         {
             if (ModelState.IsValid)
             {
+
                 db.Clients.Attach(client);
                 db.ObjectStateManager.ChangeObjectState(client, EntityState.Modified);
                 db.SaveChanges();
@@ -546,12 +547,24 @@ namespace StormWeb.Controllers
             //Delete student 
             var studentsToDelete = db.Students.Where(p => p.Client_Id.Equals(client.Client_Id));
 
-            /** TODO
-             * 
-             *  Delete from Student, Client_* tables
-             * 
-             * 
-             * */
+            //Delete Cases
+            var caseToDelete = db.Cases.Where(p => p.Student_Id.Equals(studentsToDelete.FirstOrDefault().Student_Id));
+
+            //Delete Cases_Staff
+            var caseStaffToDelete = db.Case_Staff.Where(p => p.Case_Id.Equals(caseToDelete.FirstOrDefault().Case_Id));
+
+            //Delete CasesDocument
+            var caseDocToDelete = db.CaseDocuments.Where(p => p.Case_Id.Equals(caseToDelete.FirstOrDefault().Case_Id));
+            
+          
+
+            //Delete All Applications
+            var applicationsToDelete = db.Applications.Where(p => p.Case_Id.Equals(caseToDelete.FirstOrDefault().Case_Id));
+            if (applicationsToDelete.Count() > 0)
+                ApplicationController.deleteAllApplications(applicationsToDelete.FirstOrDefault().Application_Id);
+
+            //Delete All Log
+            var logToDelete = db.Student_Log.Where(p => p.UserName.Equals(studentsToDelete.FirstOrDefault().UserName));
 
             if (addressToDelete.Count() > 0)
             {
@@ -571,11 +584,43 @@ namespace StormWeb.Controllers
 
             if (studentsToDelete.Count() > 0)
             {
-                db.Clients.DeleteObject(client);
-                //ModelState.AddModelError("", "Cannot Delete .The Client has Students assigned");
-                //return View(client);
+                foreach (Student student in studentsToDelete)
+                {
+                    db.Students.DeleteObject(student);
+                }
             }
 
+            if (caseToDelete.Count() > 0)
+            {
+                foreach (Case cases in caseToDelete)
+                {
+                    db.Cases.DeleteObject(cases);
+                }
+            }
+
+            if (caseStaffToDelete.Count() > 0)
+            {
+                foreach (Case_Staff cases in caseStaffToDelete)
+                {
+                    db.Case_Staff.DeleteObject(cases);
+                }
+            }
+            if (caseDocToDelete.Count() > 0)
+            {
+                foreach (CaseDocument cases in caseDocToDelete)
+                {
+                    db.CaseDocuments.DeleteObject(cases);
+                }
+            } 
+                
+
+            if (logToDelete.Count() > 0)
+            {
+                foreach (Student_Log studentLog in logToDelete)
+                {
+                    db.Student_Log.DeleteObject(studentLog);
+                }
+            } 
             // Delete 
             try
             {

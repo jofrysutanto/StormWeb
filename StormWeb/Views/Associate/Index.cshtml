@@ -1,23 +1,28 @@
-﻿@model IEnumerable<StormWeb.Models.Branch>
+﻿@model IEnumerable<StormWeb.Models.Associate>
 @{
     ViewBag.Title = "Index";
-} 
+}
 <div class="row-fluid">
-    <div class="span12"> 
-               <div class="box-tab">
-                <div class="page-header">
-                 <h1> &nbsp;&nbsp;Branch List </h1>
-                   </div>
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Associate List
+                </h1>
+            </div>
             <div class="widget-content">
                 <div class="widget-box" style="padding: 15px;">
                     <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
                             <tr>
                                 <th>
-                                    <i class="color-icons arrow_branch_co"></i>Branch Name
+                                    <i class="color-icons arrow_branch_co"></i>AssociateName
                                 </th>
                                 <th>
                                     <i class="color-icons house_co"></i>Address
+                                </th>
+                                <th>
+                                    <i class="color-icons user_co"></i>Contact Person
                                 </th>
                                 <th>
                                     <i class="color-icons book_addresses_co"></i>Contact
@@ -32,13 +37,20 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Branch_Name)
+                                        @Html.DisplayFor(modelItem => item.AssociateName)
                                     </td>
+                                    
                                     <td>
                                         <ul>
-                                            <li>@item.Address.Address_Name , @item.Address.City</li>
-                                            <li class="post-date">@item.Address.State , @item.Address.Country.Country_Name , @item.Address.Zipcode</li>
+                                            @if (item.Address != null)
+                                            {
+                                                <li>@item.Address.Address_Name , @item.Address.City</li>
+                                                <li class="post-date">@item.Address.State , @item.Address.Country.Country_Name , @item.Address.Zipcode</li>
+                                            }
                                         </ul>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ContactPerson)
                                     </td>
                                     <td>
                                         <i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a>
@@ -50,18 +62,9 @@
                                         <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a>
                                     </td>
                                     <td>
-                                        @if (HttpContext.Current.User.IsInRole("BranchManager") && StormWeb.Controllers.BranchController.getBranchId() != item.Branch_Id)
-                                        {  
-                                            @Html.ActionLink("Details", "Details", new { id = item.Branch_Id }) 
-                                        }
-                                        else
-                                        {
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Branch_Id })  
-                                            <span>| </span>
-                                            @Html.ActionLink("Details", "Details", new { id = item.Branch_Id })
-                                            <span>| </span>  
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Branch_Id })
-                                        }
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.AssociateId }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.AssociateId }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.AssociateId })
                                     </td>
                                 </tr>
                             }
@@ -71,10 +74,6 @@
             </div>
         </div>
     </div>
-</div>
-@if (!HttpContext.Current.User.IsInRole("BranchManager"))
-{ 
     <p>
-        @Html.Button_Add("Create New", "Branch/Create")
+        @Html.Button_Add("Create New", "Associate/Create")
     </p>
-}

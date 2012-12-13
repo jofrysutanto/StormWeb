@@ -1,19 +1,39 @@
 ﻿@model StormWeb.Models.Message
+           
+@if (ViewBag.Layout != null)
+{
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<script>
+
+</script>
 
 @using (Html.BeginForm("Compose", "Message", FormMethod.Post, new { id="composeForm" }))
 {
 	<fieldset>
         @Html.Hidden("UserFrom", (string)ViewBag.FromUsername)
+        @if (ViewBag.CloseBox != null)
+        {
+            @Html.Hidden("Refresh", true);
+        }
 		<div class="control-group">
+            @if (((IEnumerable<SelectListItem>)ViewBag.ContactList).Count() <= 1)
+            {
+                <div class="alert alert-warning">No contact list, please wait until a counsellor is assigned to you</div>
+            }
 			<label class="control-label" for="typehead">To</label>
 			<div class="controls">
                 @if (ViewBag.UserTo != null)
                 {
-                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList, new { @class = "chzn-select", data_placeholder=@ViewBag.UserTo })
+                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList,"--Select--", new { @class = "chzn-select", data_placeholder=@ViewBag.UserTo })
                 }
                 else
                 {
-                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList, new { @class = "chzn-select" })
+                    
+                    
+                    @Html.DropDownList("UserTo", (IEnumerable<SelectListItem>)ViewBag.ContactList, "--Select--", new { @class = "chzn-select" })
+                    
                 }
             </div>
 		</div>
@@ -27,10 +47,13 @@
                 </p>
 		</div>
 		<div class="control-group">
-			<label class="control-label">Email</label>
+			<label class="control-label">Content</label>
 			<div class="controls">
                 @Html.TextAreaFor(model => model.MessageContent, new { @class = "span11", rows = "10", cols = "10", id = "inbox-editor" })												
-			</div>                                            
+			</div>   
+                        <p class="help-block">
+                    @Html.ValidationMessageFor(model => model.Subject)
+                </p>                                         
 		</div>
 		<div>
 			<button type="submit" class="btn btn-info"><i class="icon-retweet icon-white"></i> Send</button>

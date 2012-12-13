@@ -2,53 +2,55 @@
 @{
     ViewBag.Title = "Delete";
 }
-@*<h2>Delete</h2>*@
+<h3>
+    Are you sure you want to delete this?</h3>
+<br />
 <div class="row-fluid">
     <div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
-                <h3>
-                    Are you sure you want to delete this?</h3>
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;University Details</h1>
             </div>
             <div class="widget-content">
                 <div class="widget-box">
                     <table class="data-tbl-boxy table">
                         <tr>
-                            <td>
+                            <th>
                                 Country
-                            </td>
+                            </th>
                             <td>
                                 @Html.DisplayFor(model => model.Country.Country_Name)
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 University
-                            </td>
+                            </th>
                             <td>
                                 @Html.DisplayFor(model => model.University_Name)
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 Campus
-                            </td>
+                            </th>
                             <td>
                                 @Html.DisplayFor(model => model.Campus)
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 Email
-                            </td>
+                            </th>
                             <td>
                                 @Html.DisplayFor(model => model.Email)
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 Description
-                            </td>
+                            </th>
                             <td>
                                 @Html.DisplayFor(model => model.Description)
                             </td>
@@ -62,9 +64,9 @@
 @using (Html.BeginForm())
 {
     <p>
-        <input type="submit" value="Delete" class="btn btn-danger"/>
+        <input type="submit" value="Delete" class="btn btn-danger" />
         @*  @Html.Button_Delete("Delete", @Url.Action("Delete", "University", new { id = Model.University_Id }))*@
-        @Html.Button_BackToList("Back to List", "../../University/Index")
+        @Html.Button_BackToList("Back to List", "../../University")
     </p>        
 }
 <div class="raw">@Html.ValidationSummary(true)</div>

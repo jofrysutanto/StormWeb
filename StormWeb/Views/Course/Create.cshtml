@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("Course", null, new { @class = "control-label form-required" })
+                @Html.Label("Course Level", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Course_Id, (IEnumerable<SelectListItem>)ViewBag.Course_Level_Id, "--Select--", new { @class = "chzn-select" })
                     <p class="help-block">
@@ -119,7 +119,7 @@
             <div class="control-group">
                 <div class="controls">
                     <input type="submit" value="Create" class="btn btn-primary" />
-                    @Html.Button_DeleteOrCancel("Cancel", "List")
+                    @Html.Button_DeleteOrCancel("Cancel", "../../Course/List")
                 </div>
             </div>
         </fieldset>

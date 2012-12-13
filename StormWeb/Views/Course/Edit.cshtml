@@ -21,20 +21,20 @@
 </script>
 @using (Html.BeginForm("Edit", "Course", FormMethod.Post))
 {
-    @Html.ValidationSummary(true, "Edit was unsuccessful. Please correct errors and try again")
-    @Html.HiddenFor(model => model.Course_Id)
+    @Html.ValidationSummary(false, "Edit was unsuccessful. Please correct errors and try again")
+    @Html.HiddenFor(model => model.Course_Id) 
     <div class="form-horizontal well">
         <fieldset style="margin-left:50px;">
             <legend>
                 <h2>
-                    Add New University</h2>
+                    Edit Course</h2>
             </legend>
             <div class="control-group">
                 @Html.Label("University", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Faculty.University.University_Id, (IEnumerable<SelectListItem>)ViewBag.Universityddl, "--Select--", new { @class = "chzn-select" })
                     @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
-                    @Html.ValidationMessage("FacultyError")
+                    @Html.ValidationMessageFor(model => model.Faculty.University.University_Id)
                 </div>
             </div>
             <div class="control-group">
@@ -42,7 +42,7 @@
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Faculty.Faculty_Id, (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "--Select--", new { @class = "chzn-select" })
                     @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
-                    @Html.ValidationMessage("FacultyError")
+                    @Html.ValidationMessageFor(model => model.Faculty.Faculty_Id)
                 </div>
             </div>
             <div class="control-group">
@@ -50,7 +50,7 @@
                 <div class="controls">
                     @Html.DropDownListFor(model => model.Course_Level.Course_Level_Id, (IEnumerable<SelectListItem>)ViewBag.Course_Level_Id, "--Select--", new { @class = "chzn-select" })
                     @*  @Html.DropDownList("Course_Level_Id", "--Select--") *@
-                    @Html.ValidationMessage("CourseLevelError")
+                    @Html.ValidationMessageFor(model => model.Course_Level.Course_Level_Id)
                 </div>
             </div>
             <div class="control-group">
@@ -58,8 +58,7 @@
                 <div class="controls">
                     <div class="input-append">
                         @Html.TextBoxFor(model => model.Commence_Date_Sem, new { @readonly = "readonly", @class = "dp" })
-                        @Html.ValidationMessageFor(model => model.Commence_Date_Sem)
-                        @Html.ValidationMessage("DateError")
+                        @Html.ValidationMessageFor(model => model.Commence_Date_Sem) 
                     </div>
                 </div>
             </div>
@@ -67,23 +66,21 @@
                 @Html.Label("Course Name", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.EditorFor(model => model.Course_Name)
-                    @Html.ValidationMessage("CourseNameError")
+                    @Html.ValidationMessageFor(model => model.Course_Name)
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("Duration", null, new { @class = "control-label form-required" })
+                @Html.Label("Duration (in months)", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.EditorFor(model => model.Duration)
-                    @Html.ValidationMessageFor(model => model.Duration)
-                    @Html.ValidationMessage("DurationError")
+                    @Html.ValidationMessageFor(model => model.Duration) 
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("Total Course Fee", null, new { @class = "control-label form-required" })
+                @Html.Label("Total Course Fees ($AUD)", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.EditorFor(model => model.Fee)
-                    @Html.ValidationMessageFor(model => model.Fee)
-                    @Html.ValidationMessage("FeeError")
+                    @Html.ValidationMessageFor(model => model.Fee) 
                 </div>
             </div>
             <div class="control-group">

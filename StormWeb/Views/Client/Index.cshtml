@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Index";
 }
-
 <script>
 
 $(function () {
@@ -26,157 +25,168 @@ $(function () {
 
 });
 </script>
-
 <div class="row-fluid">
-     <div class="span12"> 
-    @*  <div class="widget-block">       *@
-         <div class="box-tab">
-         <div class="page-header">
-                 <h1> &nbsp;&nbsp;Client List </h1>
-                   </div>
-         @* <div class="widget-head">
+    <div class="span12">
+        @*  <div class="widget-block">       *@
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Client List
+                </h1>
+            </div>
+            @* <div class="widget-head">
             <h5><i class="black-icons  documents"></i>Client List</h5>
           </div>*@
-        <div class="widget-content">
-             <div class="widget-box" style="padding: 15px;">
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
                     <br />
-                      <table class="data-tbl-simple table table-bordered dataTable">
-                    <thead>
-                        <tr>
-                            <th>
-                               <i class="color-icons user_co"></i> Client
-                            </th>
-                            <th>
-                                <i class="color-icons book_addresses_co"></i> Contact
-                            </th>
-                            <th>
-                                <i class="color-icons house_co"></i> Address
-                            </th>
-                            <th>
-                                Branch
-                            </th>
-                            <th>
-                                Service
-                            </th>
-                            <th>
-                                Nationality
-                            </th>                            
-                            <th><i class="color-icons hammer_screwdriver_co"></i>Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            if (HttpContext.Current.User.IsInRole("BranchManager"))
-                            {
-                                if (StormWeb.Controllers.BranchController.getBranchId() == item.Branch_Id)
-                                {
-                                    <tr>
-                                <td>
-                                    <ul>
-                                        <li>@{ string name = item.Title + " " + item.GivenName + " " + item.LastName; }
-                                        <text>@name</text></li>
-                                        <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Date of birth:
-                                                <a href="#"> @item.Dob.ToShortDateString() </a></li>
-                                         <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Registered on:
-                                                <a href="#"> @item.Registered_On </a></li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        @if (item.Email != null)
-                                        {
-                                            <li><i class="black-icons mail"></i> <a href="#">@item.Email</a></li>
-                                        }
-                                        @if (item.ContactNumber != null)
-                                        {
-                                            <li><i class="black-icons phone_hook"></i> <a href="#">@item.ContactNumber</a></li>
-                                        }
-                                        @if (item.SecondaryContactNumber != null)
-                                        {
-                                            <li><i class="black-icons phone_hook"></i> <a href="#">@item.SecondaryContactNumber</a></li>
-                                        }
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li> @item.Address.Address_Name, @item.Address.City</li>
-                                        <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                     @Html.DisplayFor(modelItem => item.Branch_Id)
-                                </td>
-                                <td>
-                                   @Html.DisplayFor(modelItem => item.Services)
-                                </td>
-                                <td>
-                                     @Html.DisplayFor(modelItem => item.Nationality)
-                                </td>                                
-                                <td>
-                                    <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit"> <span class="color-icons page_white_paintbrush_co"></span>  </a> |
-                                    <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details"> <span class="color-icons magnifier_co"></span> </a> |
-                                    <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete"> <span class="color-icons delete_co"></span> </a>
-                                </td>
+                    <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons user_co"></i>Client
+                                </th>
+                                <th>
+                                    <i class="color-icons book_addresses_co"></i>Contact
+                                </th>
+                                <th>
+                                    <i class="color-icons house_co"></i>Address
+                                </th>
+                                <th>
+                                    Branch
+                                </th>
+                                <th>
+                                    Service
+                                </th>
+                                <th>
+                                    Nationality
+                                </th>
+                                <th>
+                                    <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                </th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if (HttpContext.Current.User.IsInRole("BranchManager"))
+                                {
+                                    if (StormWeb.Controllers.BranchController.getBranchId() == item.Branch_Id)
+                                    {
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li>
+                                                @{ string name = item.Title + " " + item.GivenName + " " + item.LastName; }
+                                                <text>@name</text>
+                                            </li>
+                                            <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Date of birth:
+                                                <a href="#">@item.Dob.ToShortDateString() </a></li>
+                                            <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Registered on:
+                                                <a href="#">@item.Registered_On </a></li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @if (item.Email != null)
+                                            {
+                                                <li><i class="black-icons mail"></i><a href="#">@item.Email</a></li>
+                                            }
+                                            @if (item.ContactNumber != null)
+                                            {
+                                                <li><i class="black-icons phone_hook"></i><a href="#">@item.ContactNumber</a></li>
+                                            }
+                                            @if (item.SecondaryContactNumber != null)
+                                            {
+                                                <li><i class="black-icons phone_hook"></i><a href="#">@item.SecondaryContactNumber</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @if (item.Address != null)
+                                        {
+                                            <ul>
+                                                <li>@item.Address.Address_Name, @item.Address.City</li>
+                                                <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
+                                            </ul>}
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Branch_Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Services)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nationality)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit">
+                                            <span class="color-icons page_white_paintbrush_co"></span></a>| <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details">
+                                                <span class="color-icons magnifier_co"></span></a>| <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete">
+                                                    <span class="color-icons delete_co"></span></a>
+                                    </td>
+                                </tr>
+                                    }
+                                }
+                                else
+                                {
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li>
+                                                @{ string name = item.Title + " " + item.GivenName + " " + item.LastName; }
+                                                <text>@name</text>
+                                            </li>
+                                            <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Date of birth:
+                                                <a href="#">@item.Dob.ToShortDateString() </a></li>
+                                            <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Registered on:
+                                                <a href="#">@item.Registered_On </a></li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            @if (item.Email != null)
+                                            {
+                                                <li><i class="color-icons envelope_co"></i><a href="#">@item.Email</a></li>
+                                            }
+                                            @if (item.ContactNumber != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.ContactNumber</a></li>
+                                            }
+                                            @if (item.SecondaryContactNumber != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.SecondaryContactNumber</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td> @if (item.Address != null)
+                                        {
+                                        <ul>
+                                            <li>@item.Address.Address_Name, @item.Address.City</li>
+                                            <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
+                                        </ul>}
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Branch_Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Services)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nationality)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit">
+                                            <span class="color-icons page_white_paintbrush_co"></span></a>| <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details">
+                                                <span class="color-icons magnifier_co"></span></a>| <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete">
+                                                    <span class="color-icons delete_co"></span></a>
+                                    </td>
+                                </tr>
                                 }
                             }
-                            else
-                            {
-                                <tr>
-                                <td>
-                                    <ul>
-                                        <li>@{ string name = item.Title + " " + item.GivenName + " " + item.LastName; }
-                                        <text>@name</text></li>
-                                        <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Date of birth:
-                                                <a href="#"> @item.Dob.ToShortDateString() </a></li>
-                                         <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i>Registered on:
-                                                <a href="#"> @item.Registered_On </a></li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        @if (item.Email != null)
-                                        {
-                                            <li><i class="color-icons envelope_co"></i> <a href="#">@item.Email</a></li>
-                                        }
-                                        @if (item.ContactNumber != null)
-                                        {
-                                            <li><i class="color-icons mobile_phone_co"></i> <a href="#">@item.ContactNumber</a></li>
-                                        }
-                                        @if (item.SecondaryContactNumber != null)
-                                        {
-                                            <li><i class="color-icons mobile_phone_co"></i> <a href="#">@item.SecondaryContactNumber</a></li>
-                                        }
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li> @item.Address.Address_Name, @item.Address.City</li>
-                                        <li class="post-date">@item.Address.State @item.Address.Country.Country_Name @item.Address.Zipcode</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                     @Html.DisplayFor(modelItem => item.Branch_Id)
-                                </td>
-                                <td>
-                                   @Html.DisplayFor(modelItem => item.Services)
-                                </td>
-                                <td>
-                                     @Html.DisplayFor(modelItem => item.Nationality)
-                                </td>                                
-                                <td>
-                                    <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit"> <span class="color-icons page_white_paintbrush_co"></span>  </a> |
-                                    <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details"> <span class="color-icons magnifier_co"></span> </a> |
-                                    <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete"> <span class="color-icons delete_co"></span> </a>
-                                </td>
-                            </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>

@@ -22,7 +22,13 @@
             if ($("#Form_Name").val() == '') {
                 valid = false;
                 alert("Form Name is required");
-            } if ($("#file").val() != '') {
+            }
+            if ($("#file").val().length >= 50) {
+                valid = false;
+                alert("File name must be less than 50 characters!");
+            }
+            
+            if ($("#file").val() != '') {
                 var ext = $('#file').val().split('.').pop().toLowerCase();
                 if ($.inArray(ext, ['doc', 'gif', 'png', 'jpg', 'jpeg', 'pdf']) == -1) {
                     valid = false;
@@ -33,6 +39,11 @@
                 $("#LoadUpload").show();
                 $('#upload').submit();
 
+            }
+            else {
+                $("#upload-files").removeClass('disabled');
+                $("#upload-files").val('Upload Documents');
+                $('#upload-files').attr("disabled", false);
             }
 
         });

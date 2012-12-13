@@ -224,7 +224,7 @@ namespace StormWeb.Controllers
         public ActionResult Edit(int id)
         {
             Course course = db.Courses.Single(c => c.Course_Id == id);
-            ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+            ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level_Name", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
             ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
             ViewBag.UniversityId = course.Faculty.University_Id;
@@ -238,68 +238,100 @@ namespace StormWeb.Controllers
             if (course.Faculty != null)
                 ViewBag.UniversityId = course.Faculty.University_Id;
 
+            int facId = Convert.ToInt32(fc["Faculty.Faculty_Id"]);
+            int courseLevelId = Convert.ToInt32(fc["Course_Level.Course_Level_Id"]);
+
+            Faculty fac = course.Faculty;
+            Course_Level cou = course.Course_Level;
+            course.Faculty = db.Faculties.Single(x => x.Faculty_Id == facId);
+            course.Course_Level = db.Course_Level.Single(x => x.Course_Level_Id == courseLevelId);
+             
             if (ModelState.IsValid)
             {
                 if (course.Commence_Date_Sem < DateTime.Now)
                 {
                     ModelState.AddModelError("DateError", "Please enter valid date");
+                    ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level_Name", course.Course_Level_Id);
+                    ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                    ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
                     return View(course);
                 }
                 else
                 {
-                   
-                    if (fc["Course_Level_Id"] == "")
-                    {
-                        ModelState.AddModelError("CourseLevelError", "Please select Course Level");
-                        ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
-                        ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
-                        return View(course);
-                    }
-                    else
-                    {
-                        course.Course_Level_Id = Convert.ToInt32(fc["Course_Level_Id"]);
-                    }
-                    if (fc["Faculty_Id"] == "" || fc["Faculty_Id"] == null)
-                    {
-                        ModelState.AddModelError("FacultyError", "Please select a faculty");
-                        ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
-                        ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
-                        return View(course);
-                    }
-                    else
-                    {
-                        course.Faculty_Id = Convert.ToInt32(fc["Faculty_Id"]);
-                    }
 
-                    if (fc["Course_Name"] == "")
-                    {
-                        ModelState.AddModelError("CourseNameError", "Please enter Course Name");
-                        ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
-                        ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
-                        return View(course);
-                    }
-                    if (fc["Duration"] == "")
-                    {
-                        ModelState.AddModelError("DurationError", "Please enter Duration");
-                        ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
-                        ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
-                        return View(course);
-                    }
-                    if (fc["Fee"] == "")
-                    {
-                        ModelState.AddModelError("FeeError", "Please enter Fee");
-                        ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
-                        ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
-                        return View(course);
-                    }
-                    else
-                    {
-                        course.Course_Name = Convert.ToString(fc["Course_Name"]);
-                        course.Duration = Convert.ToInt32(fc["Duration"]);
-                        course.Fee = Convert.ToInt32(fc["Fee"]);
-                    }
-                    db.Courses.Attach(course);
-                    db.ObjectStateManager.ChangeObjectState(course, EntityState.Modified);
+                   // if (fc["Faculty.University.University_Id"] == "")
+                   // {
+                   //     ModelState.AddModelError("UniversityLevelError", "Please select the University");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // else
+                   // {
+                   //     //course.Faculty.University_Id = Convert.ToInt32(fc["Faculty.University.University_Id"]);
+                   // }
+                   // if (fc["Course_Level.Course_Level_Id"] == "")
+                   // {
+                   //     ModelState.AddModelError("CourseLevelError", "Please select Course Level");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // else
+                   // {
+                   //     //course.Course_Level_Id = Convert.ToInt32(fc["Course_Level.Course_Level_Id"]);
+                   // }
+                   // if (fc["Faculty.Faculty_Id"] == "" || fc["Faculty.Faculty_Id"] == null)
+                   // {
+                   //     ModelState.AddModelError("FacultyError", "Please select a faculty");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // else
+                   // {
+                   //     //course.Faculty_Id = Convert.ToInt32(fc["Faculty.Faculty_Id"]);
+                   // }
+
+                   // if (fc["Course_Name"] == "")
+                   // {
+                   //     ModelState.AddModelError("CourseNameError", "Please enter Course Name");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // if (fc["Duration"] == "")
+                   // {
+                   //     ModelState.AddModelError("DurationError", "Please enter Duration");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // if (fc["Fee"] == "")
+                   // {
+                   //     ModelState.AddModelError("FeeError", "Please enter Fee");
+                   //     ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
+                   //     ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+                   //     ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
+                   //     return View(course);
+                   // }
+                   // else
+                   // {
+                   //     course.Course_Name = Convert.ToString(fc["Course_Name"]);
+                   //     course.Duration = Convert.ToInt32(fc["Duration"]);
+                   //     course.Fee = Convert.ToInt32(fc["Fee"]);
+                   //     course.Description = fc["Description"];
+                   //     course.Commence_Date_Sem = Convert.ToDateTime(fc["Commence_Date_Sem"]);
+                   // }
+                   //// db.Courses.Attach(course);  
+                   //// db.ObjectStateManager.ChangeObjectState(course, EntityState.Modified);
+                    db.ObjectStateManager.ChangeObjectState(fac, EntityState.Modified);
+                    db.ObjectStateManager.ChangeObjectState(cou, EntityState.Modified);
                     db.SaveChanges();
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Course has been successfully edited");
                     return RedirectToAction("ViewCourses", "Course", new { id = course.Faculty.University_Id });
@@ -309,6 +341,7 @@ namespace StormWeb.Controllers
 
             ViewBag.Course_Level_Id = new SelectList(db.Course_Level, "Course_Level_Id", "Course_Level1", course.Course_Level_Id);
             ViewBag.Faculty_Id = new SelectList(db.Faculties, "Faculty_Id", "Faculty_Name", course.Faculty_Id);
+            ViewBag.Universityddl = new SelectList(db.Universities, "University_Id", "University_Name", course.Faculty.University.University_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the new Course " + course.Course_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_COURSE);
             return View(course);
         }
@@ -340,9 +373,9 @@ namespace StormWeb.Controllers
                 }
             }
             var applicationDocuments = (from app in db.Application_Document
-                                from temp in db.Template_Document
-                                where temp.Course_Id == id && temp.TemplateDoc_Id == app.TemplateDoc_Id
-                                select app);
+                                        from temp in db.Template_Document
+                                        where temp.Course_Id == id && temp.TemplateDoc_Id == app.TemplateDoc_Id
+                                        select app);
             int appId = 0;
             if (applicationDocuments.Count() > 0)
             {
@@ -356,14 +389,14 @@ namespace StormWeb.Controllers
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);        
+                        Debug.WriteLine(e.Message);
                         ModelState.AddModelError(String.Empty, "Cannot delete");
                         return View(course);
                     }
                 }
             }
 
-            var applications = db.Applications.Where(x => x.Course_Id == id); 
+            var applications = db.Applications.Where(x => x.Course_Id == id);
             int appsId = 0;
             if (applications.Count() > 0)
             {

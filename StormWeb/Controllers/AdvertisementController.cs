@@ -43,12 +43,32 @@ namespace StormWeb.Controllers
         //
         // POST: /Advertisement/Create
         public static string MARKETING_UPLOADS_PATH = "Marketing/";
+        
 
         [HttpPost]
-        public ActionResult Create(Advertisement advertisement,HttpPostedFile file)
+        public ActionResult Create(Advertisement advertisement, HttpPostedFileBase filename)
         {
-            string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
-            string fileToCreate = MARKETING_UPLOADS_PATH + CookieHelper.StudentId + "_" + name + '/' + Path.GetFileNameWithoutExtension(file.FileName) + "_Marketing_" + advertisement.AdvertisementId + Path.GetExtension(file.FileName);
+            Advertisement adds = new Advertisement();
+            Advertisement_File advert = new Advertisement_File();
+            string Heading = advertisement.Heading;
+            string fileToCreate = MARKETING_UPLOADS_PATH + Path.GetFileNameWithoutExtension(filename.FileName) + "_Marketing_" + advertisement.AdvertisementId + Path.GetExtension(filename.FileName);
+
+            //string name = StormWeb.Helper.Utilities.getName(CookieHelper.Username);
+            //string fileToCreate = PAYMENT_UPLOADS_PATH + CookieHelper.StudentId + "_" + name + '/' + Path.GetFileNameWithoutExtension(Receipt_No.FileName) + "_Payment_" + payment.Application_Id + Path.GetExtension(Receipt_No.FileName);
+
+            advert.AdvertisementId = advertisement.AdvertisementId;
+            advert.FileName = Path.GetFileNameWithoutExtension(filename.FileName) + "_Marketing_" + advertisement.AdvertisementId + Path.GetExtension(filename.FileName);
+            advert.Path = MARKETING_UPLOADS_PATH + advertisement.AdvertisementId + "_" + Heading;
+            advert.UploadedBy = advertisement.UploadedBy;
+            advert.UploadedOn = advertisement.UploadedOn;
+
+            db.Advertisements.AddObject(adds);
+            db.SaveChanges();
+
+            //uploadAWS(fileToCreate, file);
+            db.Advertisement_File.AddObject(advert);
+            db.SaveChanges();
+            
             if (ModelState.IsValid)
             {
                 db.Advertisements.AddObject(advertisement);
@@ -58,6 +78,8 @@ namespace StormWeb.Controllers
 
             return View(advertisement);
         }
+
+       
         
         //
         // GET: /Advertisement/Edit/5

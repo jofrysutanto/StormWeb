@@ -103,7 +103,7 @@ foreach (var item in Model.branchTable)
             <div class="control-group">
                 <div class="controls">
                     <input type="submit" class="btn btn-primary" value="Save Changes" />
-                    <a href="@Url.Action("Index", "Branch")" class="btn btn-danger">Cancel</a>
+                      @Html.Button_DeleteOrCancel("Cancel", "../../Branch") 
                 </div>
             </div>
         </fieldset>

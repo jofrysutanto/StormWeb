@@ -41,6 +41,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>lib\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,6 +79,7 @@
     <Compile Include="Controllers\AdvertisementController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
+    <Compile Include="Controllers\AssociateController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
@@ -228,6 +232,8 @@
     <Compile Include="Models\RefreshModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ReportViewModel.cs" />
+    <Compile Include="Models\Report\Report.cs" />
     <Compile Include="Models\ResetPasswordModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -257,6 +263,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\AWS.Extensions.dll" />
+    <Content Include="Report\ReportType.xml" />
     <Content Include="Content\help_img\AppSummary_StartNew.png" />
     <Content Include="Content\help_img\BookApp.png" />
     <Content Include="Content\help_img\Confirm.png" />
@@ -667,9 +675,11 @@
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
@@ -690,9 +700,7 @@
     <Folder Include="Content\img\confirm\" />
     <Folder Include="obj\Debug\edmxResourcesToEmbed\Models\" />
     <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="Reports\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -863,11 +871,17 @@
     <Content Include="Views\Advertisement\Delete.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
     <Content Include="Views\Document\Partial\_DocumentStep.cshtml" />
+    <Content Include="Views\Associate\Index.cshtml" />
+    <Content Include="Views\Associate\Details.cshtml" />
+    <Content Include="Views\Associate\Create.cshtml" />
+    <Content Include="Views\Associate\Edit.cshtml" />
+    <Content Include="Views\Associate\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <EntityDeploy Include="Models\StormDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StormDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -886,7 +900,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2370</DevelopmentServerPort>
+          <DevelopmentServerPort>3790</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

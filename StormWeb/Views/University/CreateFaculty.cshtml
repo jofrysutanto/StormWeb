@@ -61,8 +61,8 @@
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                        @Html.Button_DeleteOrCancel("Cancel", "Index")
+                        <input type="submit" value="Create" class="btn btn-primary" /> 
+                          @Html.Button_DeleteOrCancel("Cancel", @Url.Action("../University/Faculties", new { id =@i}))
                     </div>
                 </div>
             </div>

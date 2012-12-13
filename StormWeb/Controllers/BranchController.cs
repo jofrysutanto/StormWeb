@@ -64,7 +64,7 @@ namespace StormWeb.Controllers
         [HttpPost]
         public ActionResult Create(Branch branch, FormCollection fc)
         {
-            branch.Address.Country_Id = Convert.ToInt32(fc["Country_Id"]);
+            branch.Address.Country_Id = Convert.ToInt32(fc["Address.Country_Id"]);
 
             if (ModelState.IsValid)
             {

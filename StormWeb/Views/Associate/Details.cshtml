@@ -1,13 +1,13 @@
-﻿@model StormWeb.Models.Branch
+﻿@model StormWeb.Models.Associate
 @{
     ViewBag.Title = "Details";
 }
 <div class="row-fluid">
     <div class="span12">
-         <div class="box-tab">
+       <div class="box-tab">
             <div class="page-header">
                 <h1>
-                    &nbsp;&nbsp;Branch Details</h1>
+                    &nbsp;&nbsp;Associate Details</h1>
             </div>
             <div class="widget-content">
                 <div class="widget-box">
@@ -15,12 +15,12 @@
                     <table class="table">
                         <tr>
                             <th>
-                                Branch Name
+                                Associate Name
                             </th>
                             <td>
                             </td>
                             <td>
-                                @Html.DisplayFor(model => model.Branch_Name)
+                                @Html.DisplayFor(model => model.AssociateName)
                             </td>
                         </tr>
                         <tr>
@@ -30,11 +30,21 @@
                             <td>
                             </td>
                             <td>
-                                @Html.DisplayFor(model => model.Address.Address_Name) ,
+                               @Html.DisplayFor(model => model.Address.Address_Name) ,
                                 @Html.DisplayFor(model => model.Address.City) <br />
                                  @Html.DisplayFor(model => model.Address.State) ,
                                   @Html.DisplayFor(model => model.Address.Zipcode) <br />
                                    @Html.DisplayFor(model => model.Address.Country.Country_Name) ,
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Contact Person
+                            </th>
+                            <td>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.ContactPerson)
                             </td>
                         </tr>
                         <tr>
@@ -72,14 +82,9 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 <p>
- @if (HttpContext.Current.User.IsInRole("BranchManager"))
- {
-     if (StormWeb.Controllers.BranchController.getBranchId() == Model.Branch_Id)
-     {
-        <a href="@Url.Action("Edit", "Branch", new { id = Model.Branch_Id })" class="btn btn-info"> Edit</a>
-     }
- }
- @Html.Button_BackToList("Bact To List", "../../Branch")
+    <a href="@Url.Action("Edit", "Associate", new { id = Model.AssociateId })" class="btn btn-info">
+        Edit</a>
+    @Html.Button_BackToList("Bact To List", "../../Associate")
 </p>
