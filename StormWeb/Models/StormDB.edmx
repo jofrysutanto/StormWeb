@@ -755,7 +755,7 @@
             <PropertyRef Name="Course_Level_Id" />
           </Key>
           <Property Name="Course_Level_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Course_Level" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Course_Level_Name" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -881,7 +881,7 @@
           </Key>
           <Property Name="File_Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PaymentId" Type="int" />
-          <Property Name="FileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
           <Property Name="Path" Type="varchar" MaxLength="100" />
           <Property Name="UploadedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="UploadedOn" Type="datetime" />
@@ -2514,7 +2514,7 @@
             <PropertyRef Name="Course_Level_Id" />
           </Key>
           <Property Name="Course_Level_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Course_Level1" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Course_Level_Name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Courses" Relationship="StormDBModel.FK_Course_Course_Level" FromRole="Course_Level" ToRole="Course" />
         </EntityType>
         <EntityType Name="Event">
@@ -2649,7 +2649,7 @@
           </Key>
           <Property Name="File_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PaymentId" Type="Int32" />
-          <Property Name="FileName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FileName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Path" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="UploadedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="UploadedOn" Type="DateTime" />
@@ -3798,7 +3798,7 @@
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Course_Level"><EntityTypeMapping TypeName="StormDBModel.Course_Level"><MappingFragment StoreEntitySet="Course_Level">
             <ScalarProperty Name="Course_Level_Id" ColumnName="Course_Level_Id" />
-            <ScalarProperty Name="Course_Level1" ColumnName="Course_Level" />
+            <ScalarProperty Name="Course_Level_Name" ColumnName="Course_Level_Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Events"><EntityTypeMapping TypeName="StormDBModel.Event"><MappingFragment StoreEntitySet="Event">
             <ScalarProperty Name="EventId" ColumnName="EventId" />

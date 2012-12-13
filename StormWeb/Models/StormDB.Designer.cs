@@ -11871,12 +11871,12 @@ namespace StormWeb.Models
         /// Create a new Course_Level object.
         /// </summary>
         /// <param name="course_Level_Id">Initial value of the Course_Level_Id property.</param>
-        /// <param name="course_Level1">Initial value of the Course_Level1 property.</param>
-        public static Course_Level CreateCourse_Level(global::System.Int32 course_Level_Id, global::System.String course_Level1)
+        /// <param name="course_Level_Name">Initial value of the Course_Level_Name property.</param>
+        public static Course_Level CreateCourse_Level(global::System.Int32 course_Level_Id, global::System.String course_Level_Name)
         {
             Course_Level course_Level = new Course_Level();
             course_Level.Course_Level_Id = course_Level_Id;
-            course_Level.Course_Level1 = course_Level1;
+            course_Level.Course_Level_Name = course_Level_Name;
             return course_Level;
         }
 
@@ -11915,24 +11915,24 @@ namespace StormWeb.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Course_Level1
+        public global::System.String Course_Level_Name
         {
             get
             {
-                return _Course_Level1;
+                return _Course_Level_Name;
             }
             set
             {
-                OnCourse_Level1Changing(value);
-                ReportPropertyChanging("Course_Level1");
-                _Course_Level1 = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Course_Level1");
-                OnCourse_Level1Changed();
+                OnCourse_Level_NameChanging(value);
+                ReportPropertyChanging("Course_Level_Name");
+                _Course_Level_Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Course_Level_Name");
+                OnCourse_Level_NameChanged();
             }
         }
-        private global::System.String _Course_Level1;
-        partial void OnCourse_Level1Changing(global::System.String value);
-        partial void OnCourse_Level1Changed();
+        private global::System.String _Course_Level_Name;
+        partial void OnCourse_Level_NameChanging(global::System.String value);
+        partial void OnCourse_Level_NameChanged();
 
         #endregion
     
