@@ -1,4 +1,12 @@
-﻿@if (Request.IsAuthenticated)
+﻿<li><a href="http://www.stormedu.com.au" target="_blank"><i class="white-icons bended_arrow_right"></i>Global site <i class="white-icons globe"></i></a></li>
+
+@* Show number of students online*@
+@if (!(HttpContext.Current.User.IsInRole("Student")))
+{
+    <li><a href="#">Students online: @StormWeb.Controllers.AccountController.getNumberOfStudentsOnline()</a></li>
+}
+
+@if (Request.IsAuthenticated)
 {
     <li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">@StormWeb.Helper.CookieHelper.Name @{ 
     int totalCount = StormWeb.Helper.Utilities.countNewInbox();
@@ -15,7 +23,10 @@
     {
                                     <text><span class='alert-noty'> @inboxCount </span> </text>
     }
-                                    }</a></li>
+                                    }</a></li>                                    
+                                    <li>
+                                        <a href="@Url.Action("ChangePassword","Account")"><i class="icon-lock"></i>Change password</a>
+                                    </li>
                      
                             @if (HttpContext.Current.User.IsInRole("Student"))
                             {                              

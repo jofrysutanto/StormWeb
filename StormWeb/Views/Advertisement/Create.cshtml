@@ -1,4 +1,4 @@
-﻿@model StormWeb.Models.Advertisement
+﻿@model StormWeb.Models.AdvertisementViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -15,64 +15,97 @@
             changeMonth: true,
             changeYear: true,
             showOn: "button",
-            buttonImage: "../Content/img/calendar_btn.png",
-            buttonImageOnly: true
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true,
+            minDate: new Date()
+            
         });
 
-    });  </script>
-
-<h2>Create</h2>
+    }); </script>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
  @using (Html.BeginForm("Create", "Advertisement", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                              {
-@*@using (Html.BeginForm()) {*@
+ {
+    
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Advertisement</legend>
-
+    <div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Create new Advertising / Promotions</h1>
+               
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                       
+                       
+    
          <div class="editor-label">
-            @Html.LabelFor(model => model.Heading)
+            @Html.LabelFor(model => model.adv.Heading)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Heading)
-            @Html.ValidationMessageFor(model => model.Heading)
+            @Html.EditorFor(model => model.adv.Heading)
+            @Html.ValidationMessageFor(model => model.adv.Heading)
         </div>
 
         <div class="editor-label">
             @Html.Label("Author")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UploadedBy)
-            @Html.ValidationMessageFor(model => model.UploadedBy)
+             @Html.TextBox("Author", @CookieHelper.Name, new { disabled="disabled" } )
+             @Html.HiddenFor(x => x.adv_file.UploadedBy, CookieHelper.Name, null)
         </div>
-
+        <br />
         <div class="editor-label">
-            @Html.Label("Uploaded Date")
+            @Html.Label("Audience")
+        </div>
+        <div class="editor-field"> 
+             
+             @Html.RadioButtonFor(x => x.adv.Audience, "student", new { @checked = "checked" })
+             Student &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             @Html.RadioButtonFor(x => x.adv.Audience,"staff")
+             Staff
+        </div>
+        <br />
+        <div class="editor-label">
+            @Html.Label("Expiry Date")
         </div>
         <div class="editor-field">
-         <div class="input-append">
-            @Html.TextBoxFor(model => model.UploadedOn, new { @readonly = "readonly", @class = "dp1" })                            
-            @*@Html.EditorFor(model => model.UploadedOn)*@
-            @Html.ValidationMessageFor(model => model.UploadedOn)
-        </div>
+            <div class="controls">
+              <div class="input-append">
+                 @Html.TextBoxFor(model => model.adv.ExpiryDate, new { @readonly = "readonly", @class = "dp1" })
+              </div><p class="help-block">
+                  @Html.ValidationMessageFor(model => model.adv.ExpiryDate)
+                  </p></div>
         </div>
         <div class="editor-label">
-           @Html.Label(" Advertisement")
+            @Html.Label("Content")
+        </div>
+        <div class="editor-field">
+           @Html.TextAreaFor(model => model.adv.Comments, new { @class = "span11", rows = "8", cols = "8", id = "inbox-editor" })
+            @Html.ValidationMessageFor(model => model.adv.Comments)
+        </div>
+        <br />
+        <div class="editor-label">
+           @Html.Label("Attachment")
            </div>
          <div class="editor-field">                         
             
               <input type="file" id="file" name="filename"  />
                
            
-         </div>                          
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
-}
+         </div> <br />                  
+         <input type="submit" class="btn btn-primary" value="Submit" name="Submit"/><space> @Html.Button_BackToList("Back to List", "Index") </space> 
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+                          }
+
+

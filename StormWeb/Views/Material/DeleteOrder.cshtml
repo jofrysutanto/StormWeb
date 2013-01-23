@@ -1,0 +1,43 @@
+﻿@model StormWeb.Models.Material_Order
+
+@{
+    ViewBag.Title = "DeleteOrder";
+}
+
+<h2>DeleteOrder</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Material_Order</legend>
+
+    <div class="display-label">Quantity</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">RequestedBy</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestedBy)
+    </div>
+
+    <div class="display-label">Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Type)
+    </div>
+
+    <div class="display-label">RequestedOn</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestedOn)
+    </div>
+
+    <div class="display-label">Material_ID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Material_ID)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

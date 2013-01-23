@@ -78,32 +78,7 @@ namespace StormWeb.Controllers
         }
 
 
-        public bool checkRequiredFields()
-        {
-            ServiceConfiguration config = new ServiceConfiguration();
-
-            accessKey = config.AWSAccessKey;
-            secretKey = config.AWSSecretKey;
-            bucketName = config.BucketName;
-
-            if (string.IsNullOrEmpty(accessKey))
-            {
-                Console.WriteLine("AWSAccessKey was not set in the App.config file.");
-                return false;
-            }
-            if (string.IsNullOrEmpty(secretKey))
-            {
-                Console.WriteLine("AWSSecretKey was not set in the App.config file.");
-                return false;
-            }
-            if (string.IsNullOrEmpty(bucketName))
-            {
-                Console.WriteLine("The variable bucketName is not set.");
-                return false;
-            }
-
-            return true;
-        }
+        
 
 
         [Authorize(Roles = "Super,Counsellor,Administrator")]
@@ -564,7 +539,7 @@ namespace StormWeb.Controllers
         {
 
             BindCurrency("--Currency--");
-            PopulatePayment(-1);
+            PopulatePayment(-1); 
             // Determine which application to show on page load
             if (go >= 0)
                 ViewBag.Go = go;
@@ -812,6 +787,33 @@ namespace StormWeb.Controllers
         #endregion
 
         #region AWS
+        public bool checkRequiredFields()
+        {
+            ServiceConfiguration config = new ServiceConfiguration();
+
+            accessKey = config.AWSAccessKey;
+            secretKey = config.AWSSecretKey;
+            bucketName = config.BucketName;
+
+            if (string.IsNullOrEmpty(accessKey))
+            {
+                Console.WriteLine("AWSAccessKey was not set in the App.config file.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                Console.WriteLine("AWSSecretKey was not set in the App.config file.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(bucketName))
+            {
+                Console.WriteLine("The variable bucketName is not set.");
+                return false;
+            }
+
+            return true;
+        }
+
         public ViewResult viewAWS()
         {
             string result = "";
@@ -1236,8 +1238,7 @@ namespace StormWeb.Controllers
                 }
                 NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Document Was Uploaded Successfully!");
 
-                PopulatePayment(app.Application_Id);
-
+                PopulatePayment(app.Application_Id); 
             }
 
             TempData[SUCCESS_EDIT] = "true";
@@ -1335,7 +1336,8 @@ namespace StormWeb.Controllers
 
                 if (c != null)
                 {
-                    MessageController.sendSystemMessage(c.Case_Staff.FirstOrDefault().Staff.UserName, "New document", CookieHelper.Name + " uploaded new document to his/her application.");
+                    if (c.Case_Staff.FirstOrDefault() != null)
+                        MessageController.sendSystemMessage(c.Case_Staff.FirstOrDefault().Staff.UserName, "New document", CookieHelper.Name + " uploaded new document to his/her application.");
                 }
             }
 
@@ -1865,6 +1867,13 @@ namespace StormWeb.Controllers
                     BindCurrency(item1.Currency);
                 }
             }
+        }
+
+        public static PaymentDetail PopulatePaymentDetails(int applicationId)
+        {
+            StormDBEntities db = new StormDBEntities();  
+                 PaymentDetail paymentsDetails = db.PaymentDetails.Single(x => x.Application_Id == applicationId);
+                return paymentsDetails; 
         }
 
         [HttpPost]

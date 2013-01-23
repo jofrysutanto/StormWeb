@@ -321,12 +321,11 @@
                                   if (Model.app.Payments.Count() <= 0 || Model.app.Payments.FirstOrDefault().Amount == 0 || Model.app.Payments.FirstOrDefault().Amount == null)
                                   { 
                                        <div class="alert alert-warning">
-                                    Please <strong>wait</strong> for  your counsellor to update the payment information.
-                                </div>
+                                            Please <strong>wait</strong> for  your counsellor to update the payment information.
+                                        </div>
                                   }
                                   else
-                                  {
-
+                                  { 
                                       string paymentId = Model.app.Application_Id + "Payment_Method";
                                       string currencyId = Model.app.Application_Id + "Currency";
                                       string amountId = Model.app.Application_Id + "Amount";
@@ -336,12 +335,43 @@
                                       string amou = Model.app.Payments.FirstOrDefault().Amount.ToString();
                                       string dat = Model.app.Payments.FirstOrDefault().Date_Of_Payment.ToString();
 
-                                      string receiptId = Model.app.Application_Id + "Receipt_No";
-                                        
+                                      string receiptId = Model.app.Application_Id + "Receipt_No"; 
                                       
                                  @Html.HiddenFor(x => x.app.Payments.FirstOrDefault().Application_Id)
                             <div class="well pull-right" style="width: 50%;">
                                 You <strong>HAVE</strong> to provide the scanned/electronic receipt as proof of payment. Note that it will take some time for our staff to confirm your payment.
+                            </div>
+                                  <div class="pull-right" style="width: 50%;">
+                                  <div class="box-tab">
+                                    <div class="page-header">
+                                        <h1>
+                                            &nbsp; &nbsp;Payment Details</h1>
+                                    </div>
+                            @{StormWeb.Models.PaymentDetail paymentDetail= StormWeb.Controllers.DocumentController.PopulatePaymentDetails(Model.app.Application_Id);}
+
+                                    <div class="widget-content">
+                                        <div class="widget-box">
+                                            <br /> 
+                                            <table class="table"> 
+                                                <tr>
+                                                    <th>Bank Name :</th> 
+                                                    <td>@paymentDetail.BankName </td> 
+                                                </tr> 
+                                                <tr>
+                                                    <th>Account Name :</th>
+                                                    <td>@paymentDetail.AccountName</td>
+                                                </tr>
+                                                 <tr>
+                                                    <th>BSB :</th>
+                                                    <td>@paymentDetail.BSB</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Account Number :</th>
+                                                    <td>@paymentDetail.AccountNumber</td>
+                                                </tr>
+                                            </table></div></div></div>
+                                 
+                                 
                             </div>
                             <table style="text-align: left;">
                                 <tr>
@@ -383,10 +413,10 @@
                                          string value = StormWeb.Controllers.DocumentController.GetFileName(Model.app.Application_Id);
                                          string[] filename = value.Split('/');
                                        @Html.Link_DownloadFile(filename[2], @Url.Action("DownloadPaymentReceipt", new { id = StormWeb.Controllers.DocumentController.GetFileId(Model.app.Application_Id) }))
-                                    //if(!Model.step4Complete()){
+                                  //if(!Model.step4Complete()){
                                             <a class='color-icons cross_co tip-top' data-original-title='Delete' data-toggle='modal' href='#myModal@(Model.app.Application_Id)'></a>
-                                        // }
-                                     
+                                         // }
+
                                      } 
                                     </td>
                                 </tr>
@@ -551,6 +581,10 @@
                                     <strong>Your CoE is issued: </strong>
                                     @Html.Button_Download("Download Confirmation of Enrolment", @Url.Action("DownloadCoE", new { id = Model.app.Application_Id, type = "appId" }))
                                 </div>
+                                <div class="custom-well">
+                                    <strong>Reminder:</strong>
+                                    There may be still some further steps required to complete your application to this course, in which case our counsellor will be in immediate contact with you.
+                                </div>
                             }
                         </div>
                    
@@ -586,4 +620,5 @@
         });
     });
      
+
 </script>

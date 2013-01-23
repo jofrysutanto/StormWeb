@@ -58,6 +58,15 @@
                 </div>
             </div>
             <div class="control-group">
+                @Html.Label("Comission Rate", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Comission_Rate, new { @class = "input-small text-tip", placeholder = "Rate (%)" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Comission_Rate)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <input type="submit" value="Save Changes" class="btn btn-primary" />
                     @Html.Button_DeleteOrCancel("Cancel", "../../University")

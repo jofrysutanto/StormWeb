@@ -1,0 +1,163 @@
+﻿@model StormWeb.Models.MaterialViewModel
+          
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Advertising / Promotions</h1>
+               
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                <h2>Materials</h2>
+                      <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Instore
+                                </th>
+                                <th>
+                                    File
+                                </th>
+                                <th>
+                                   <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+@foreach (var item in Model.material)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Instore)
+        </td>
+         <td>
+            @if (item.Material_File.SingleOrDefault() != null)
+            {
+               @Html.Link_DownloadFile(@item.Material_File.SingleOrDefault().Filename, @Url.Action("MaterialFile", new { id = item.Material_File.SingleOrDefault().ID }))}
+            else
+            { @("No file attached")}
+               @* @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().FileName)*@
+        </td>
+        <td>
+            @if (HttpContext.Current.User.IsInRole("Marketing"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) @:|
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            }
+            else
+            {
+                if (item.Material_Order.Where(x => x.Branch == BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0]).Count() > 0)
+                {
+                    @Html.Button_Add("Place Order", "#", new { disabled = "disabled" })
+                }
+                else
+                {
+                   @Html.Button_Add("Place Order", Url.Action("CreateOrder", "Material", new { id = item.ID }))
+                }
+
+
+            }
+                                    </td>
+                                    
+                                </tr>   
+}
+                        </tbody>
+                    </table>
+                    <p> @if (HttpContext.Current.User.IsInRole("Marketing"))
+                        {
+        @Html.Button_Add("Create New", Url.Action("Create", "Material"))
+                        }
+    </p>
+
+<hr />
+                 <h2>Orders</h2>
+                   @* new table for order*@
+
+
+                     <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                   <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+@foreach (var item in Model.placeOrder)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Material.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+         <td>
+           @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+          
+           
+                @Html.ActionLink("DeleteOrder", "DeleteOrder", new { id = item.ID }) |
+                @Html.ActionLink("EditOrder", "EditOrder", new { id = item.ID }) |
+                 @if (HttpContext.Current.User.IsInRole("Marketing"))
+                 {
+                    if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_PENDING))
+                    {
+                       @Html.ActionLink("Approve","ApproveOrder", new { id = item.ID })
+                    }
+                    else if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_APPROVED))
+                    {
+                        @Html.Button_Add("Complete","ApproveOrder", new { id = item.ID })
+                    }
+            }
+                                    </td>
+                                    
+                                </tr>   
+}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

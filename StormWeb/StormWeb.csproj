@@ -14,7 +14,7 @@
     <AssemblyName>StormWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>true</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +45,9 @@
       <HintPath>lib\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Schema, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.Data.Schema.UnitTesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -89,7 +92,9 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\MaterialController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\AWS.cs" />
     <Compile Include="Helper\BranchHelper.cs" />
     <Compile Include="Helper\CookieHelper.cs">
       <SubType>Code</SubType>
@@ -145,6 +151,8 @@
     <Compile Include="Models\ActivateAccountModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\AdvertisementMD.cs" />
+    <Compile Include="Models\AdvertisementViewModel.cs" />
     <Compile Include="Models\ApplicationDocumentViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -172,6 +180,10 @@
     <Compile Include="Models\CourseMD.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\DatabaseSetup.cs" />
+    <Compile Include="Models\DatabaseUnitTest1.cs">
+      <SubType>Designer</SubType>
+    </Compile>
     <Compile Include="Models\DocumentIndexModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,6 +199,7 @@
     <Compile Include="Models\ManageRoleModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\MaterialViewModel.cs" />
     <Compile Include="Models\MessageMD.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -263,7 +276,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Report\ReportType.xml" />
+    <Content Include="Content\css\flexslider.css" />
+    <Content Include="Content\css\images\bg_direction_nav.png" />
+    <Content Include="Report\ReportType.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\help_img\AppSummary_StartNew.png" />
     <Content Include="Content\help_img\BookApp.png" />
     <Content Include="Content\help_img\Confirm.png" />
@@ -498,6 +515,7 @@
     <Content Include="Scripts\jquery.cleditor.min.js" />
     <Content Include="Scripts\jquery.colorbox-min.js" />
     <Content Include="Scripts\jquery.easing.1.3.js" />
+    <Content Include="Scripts\jquery.flexslider-min.js" />
     <Content Include="Scripts\jquery.jqplot.min.js" />
     <Content Include="Scripts\jquery.jqprint-0.3.js" />
     <Content Include="Scripts\jquery.js" />
@@ -869,12 +887,50 @@
     <Content Include="Views\Advertisement\Edit.cshtml" />
     <Content Include="Views\Advertisement\Delete.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
-    <Content Include="Views\Document\Partial\_DocumentStep.cshtml" />
     <Content Include="Views\Associate\Index.cshtml" />
     <Content Include="Views\Associate\Details.cshtml" />
     <Content Include="Views\Associate\Create.cshtml" />
     <Content Include="Views\Associate\Edit.cshtml" />
     <Content Include="Views\Associate\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Advertisement\Partial\_ScrollingMarketing.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Advertisement\Partial\_ScrollingMarketing.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\HR\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\HR\ActivityLog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\CreateOrder.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\EditOrder.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Material\DeleteOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\StormDB.edmx">
@@ -901,8 +957,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3790</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:1158/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

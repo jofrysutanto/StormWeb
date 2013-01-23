@@ -24,7 +24,7 @@ namespace StormWeb.Controllers
 
         //
         // GET: /Message/
-        [Authorize(Roles="Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Index()
         {
@@ -59,7 +59,7 @@ namespace StormWeb.Controllers
             return View();
         }
 
-         [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+         [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Compose()
         {
@@ -96,7 +96,7 @@ namespace StormWeb.Controllers
             return View(new Message());
         }
 
-        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Compose(Message m, FormCollection fc)
@@ -151,7 +151,7 @@ namespace StormWeb.Controllers
             return View("Index", m);
         }
 
-       [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+       [Authorize]
         public ActionResult Inbox()
         {
             return View();
@@ -178,7 +178,7 @@ namespace StormWeb.Controllers
             return View(m);
         }
 
-        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult DeleteSent(int id)
         {
@@ -239,7 +239,7 @@ namespace StormWeb.Controllers
         }
 
         // Return the list of contacts for the particular user based on their role and their id
-        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         public SelectList getContactList()
         {
             if (CookieHelper.isStudent())
@@ -249,7 +249,7 @@ namespace StormWeb.Controllers
             else
                 return new SelectList(ContactHelper.GetContacts(false, Convert.ToInt32(CookieHelper.StaffId)), "Username", "Name");
         }
-        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         public IEnumerable<InboxViewModel> getInboxMessages(string username)
         {
             // ---- Retrieve Message List
@@ -272,7 +272,7 @@ namespace StormWeb.Controllers
             }
             return inboxVMList;
         }
-        [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
+        [Authorize]
         public IEnumerable<OutboxViewModel> getOutBoxMessages(string username)
         {
             List<OutboxViewModel> outboxVM = new List<OutboxViewModel>();

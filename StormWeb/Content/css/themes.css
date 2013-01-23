@@ -1,6 +1,7 @@
 #sidebar {
 	background:#fff;
 	border-right:#E0E0E0 1px solid;
+	background-image: url(../img/textured_stripes.png)
 }
 .navbar-inner {
 	min-height: 40px;

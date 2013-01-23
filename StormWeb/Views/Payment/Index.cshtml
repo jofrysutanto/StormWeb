@@ -63,75 +63,57 @@ $(function () {
                                                     <i class="color-icons user_business_co"></i>Student Name
                                                 </th>
                                                 <th>
-                                                    <i class="color-icons day_calendar"></i> Date Of Application Status
-                                                </th>
-                                                <th>
                                                    <i class="color-icons book_open_co"></i>Course Name
                                                 </th>
                                                 <th>
-                                                   <i class="color-icons zone_money_co"></i>Status
+                                                   <i class="color-icons zone_money_co"></i>Application Status
                                                 </th>
                                                 <th>
-                                                    <i class="color-icons money_co"></i> Payment
+                                                    <i class="color-icons money_co"></i> Amount payable
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           
+                                            @foreach (var item in Model.unpaidApplications)
+                                            {
+                                                var pay = item.Payments.SingleOrDefault();
                                                 <tr>
+                                                   
+                                                        
                                                     <td>
                                                         <ul>
-                                                         @foreach (var item in Model.unpaidApplications)
-                                                            { 
-                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id})">
+                                                         
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id })">
                                                             @item.Student.Client.GivenName
                                                             @item.Student.Client.LastName</a>
                                                             </li>
-                                                             }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
-                                                        @foreach (var item in Model.unpaidApplications)
-                                                            {
-                                                            <li>
-                                                                @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
-                                                            </li>
-                                                            }
-                                                        </ul>
-                                                    </td>
-                                                    <td>
-                                                        <ul>
-                                                        @foreach (var item in Model.unpaidApplications)
-                                                            {
                                                             <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
-                                                            }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
-                                                        @foreach (var item in Model.unpaidApplications)
-                                                            {
                                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
-                                                            }
                                                         </ul>
                                                     </td>
-                                                    
-                                                    
-
                                                     <td>
                                                         <ul>
-                                                        @foreach (var item in Model.unpaidApplications)
+                                                            @if (pay.Amount == null)
                                                             {
-                                                            <li><a class='tip-top ifName' href=@Url.Action("Create", "Payment", new { id = item.Application_Id })><i class='color-icons add_co tip-top'
-                                                                data-original-title="Add Payment"></i></a>
-                                                            </li>
+                                                                @: Not yet specified by the counsellor
+                                                            }
+                                                            else
+                                                            {
+                                                                @: @pay.Amount (in @pay.Currency )
                                                             }
                                                         </ul>
                                                     </td>
-
+                                                   
                                                 </tr>
-                                            
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -145,9 +127,6 @@ $(function () {
                                             <tr>
                                                 <th>
                                                     <i class="color-icons user_business_co"></i>Student Name
-                                                </th>
-                                                <th>
-                                                    <i class="color-icons day_calendar"></i> Date Of Application Status
                                                 </th>
                                                 <th>
                                                    <i class="color-icons book_open_co"></i>Course Name
@@ -185,41 +164,31 @@ $(function () {
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
                                                         {
-                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id})">@item.Student.Client.GivenName
+                                                            <li><a class='tip-top ifName' title="View profile" href="@Url.Action("StudentProfile", "StudentCentre", new { id = @item.Student.Client_Id })">@item.Student.Client.GivenName
                                                                 @item.Student.Client.LastName</a></li>
-                                                            }
+                                                        }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {
-                                                            <li>
-                                                                @Html.Encode(item.Date_Of_ApplicationStatus.ToShortDateString())
-                                                            </li>
-                                                            }
-                                                        </ul>
-                                                    </td>
-                                                    <td>
-                                                        <ul>
-                                                        @foreach (var item in Model.paidApplications)
-                                                         {       
+                                                        {       
                                                             <li>@Html.DisplayFor(modelItem => item.Course.Course_Name)</li>
-                                                            }
+                                                        }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {  
                                                             <li>@Html.DisplayFor(modelItem => item.Status)</li>
-                                                            }
+                                                        }
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {  
                                                            @* if (item.Payments.Single().Comment != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Comment)</li>
@@ -229,13 +198,13 @@ $(function () {
                                                             
                                                                 <li>&nbsp;</li>
                                                             } *@
-                                                          }                                                       
+                                                        }                                                       
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {
                                                             if (item.Payments.Single().Date_Of_Payment != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Date_Of_Payment)</li>
@@ -244,14 +213,14 @@ $(function () {
                                                             {
                                                             
                                                                 <li>&nbsp;</li>
-                                                            } 
-                                                          }                                                       
+                                                            }
+                                                        }                                                       
                                                         </ul>
                                                     </td>
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {
                                                             if (item.Payments.Single().Payment_Method != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Payment_Method)</li>
@@ -260,15 +229,15 @@ $(function () {
                                                             {
                                                             
                                                                 <li>&nbsp;</li>
-                                                            } 
-                                                          }                                                       
+                                                            }
+                                                        }                                                       
                                                         </ul>
                                                     </td>
 
                                                     <td>
                                                         <ul>
                                                         @foreach (var item in Model.paidApplications)
-                                                         {  
+                                                        {  
                                                           @*  if (item.Payments.Single().Receipt_No != null)
                                                             {
                                                                 <li>@Html.DisplayFor(modelItem => item.Payments.Single().Receipt_No)</li>
@@ -279,16 +248,18 @@ $(function () {
                                                             
                                                                 <li>&nbsp;</li>
                                                             }*@
-                                                                if (StormWeb.Controllers.DocumentController.fileExists(item.Application_Id))
-                                                                 {  
-                                                                    string value = StormWeb.Controllers.DocumentController.GetFileName(item.Application_Id);
-                                                                    string[] filename=  value.Split('/');
-                                                                    
-                                                                   @Html.Link_DownloadFile(filename[2], @Url.Action("DownloadPaymentReceipt","Document", new { id = StormWeb.Controllers.DocumentController.GetFileId(item.Application_Id) }))
+                                                            <ul>
+                                                            @if (StormWeb.Controllers.DocumentController.fileExists(item.Application_Id))
+                                                            {
+                                                                string value = StormWeb.Controllers.DocumentController.GetFileName(item.Application_Id);
+                                                                string[] filename = value.Split('/');
+                                                                    <li>
+                                                                   @Html.Link_DownloadFile(filename[2], @Url.Action("DownloadPaymentReceipt", "Document", new { id = StormWeb.Controllers.DocumentController.GetFileId(item.Application_Id) }))
+                                                                   
                                                                    <a class='color-icons cross_co tip-top' data-original-title='Delete' data-toggle='modal' href='#myModal@(item.Application_Id)'></a>
                                                                      
-                                                                    using (Html.BeginForm())
-                                                                     {   
+                                                                        @using (Html.BeginForm())
+                                                                        {   
                                                                         <div class="modal hide fade" id="myModal@(item.Application_Id)">
                                                                             <div class="modal-header">
                                                                                 <button type="button" class="close" data-dismiss="modal">
@@ -308,14 +279,16 @@ $(function () {
                                                                               @Html.ActionLink("Yes", "DeletePaymentFile", "Document", new { id = item.Application_Id, page = "payment" }, new { @class = "btn" }) 
                                                                             </div>
                                                                         </div>
-                                                                     }
-
-                                                                 }
-                                                                else
-                                                                {
+                                                                  
+                                                                        }
+                                                                        </li> 
+                                                            }
+                                                            else
+                                                            {
                                                                       <li>&nbsp;</li>
-                                                                }
-                                                         }                                                       
+                                                            }
+                                                            </ul>
+                                                        }                                                       
                                                         </ul>
                                                     </td>
                                                     <td>
@@ -370,7 +343,7 @@ $(function () {
                                                             </div>
                                                         </div>
                                                         </li>
-                                                        }            
+                                                        }
                                                     }
                                                     </ul>
                                                     </td>

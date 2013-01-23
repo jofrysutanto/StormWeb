@@ -14,6 +14,7 @@ using System.Web;
 using StormWeb.Models;
 using System.Diagnostics;
 
+using System.Web;
 
 namespace StormWeb.Helper
 {
@@ -109,6 +110,31 @@ namespace StormWeb.Helper
             return saveSystemLog(log);
         }
 
+        public static bool writeToStaffLog(string username, string comment, string type, string section)
+        {
+            Staff_Log sl = new Staff_Log();
+
+            sl.DateTime = DateTime.Now;
+            sl.Type = type;
+            sl.Section = section;
+            sl.UserName = username;
+            sl.Comment = comment;
+
+            try
+            {
+
+                db.Staff_Log.AddObject(sl);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool saveStudentLog(Student_Log log)
         {
             try
@@ -183,6 +209,31 @@ namespace StormWeb.Helper
         {
             string username = CookieHelper.Username;
             return db.Student_Log.Where(x => x.UserName == username && x.Deleted == false).ToList();
+        }
+
+        public static string getIPAddress(HttpRequest request)
+        {
+            string ip;
+            try
+            {
+                ip = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    if (ip.IndexOf(",") > 0)
+                    {
+                        string[] ipRange = ip.Split(',');
+                        int le = ipRange.Length - 1;
+                        ip = ipRange[le];
+                    }
+                }
+                else
+                {
+                    ip = request.UserHostAddress;
+                }
+            }
+            catch { ip = null; }
+
+            return ip; 
         }
 
         #region LOG_TYPE

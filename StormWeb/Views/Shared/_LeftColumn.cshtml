@@ -49,6 +49,36 @@
                     <li><a href="@Url.Action("List", "Course")"><span class="sidenav-icon"><span class="sidenav-link-color">
                     </span></span>Find and add courses</a></li>
                 </ul>
+            </li>            
+            <li>
+                <a href="@Url.Action("Index", "Material")"><span class="white-icons create_write"></span>
+                        Materials</a>                  
+            </li>
+        }
+        @if (HttpContext.Current.User.IsInRole("Marketing"))
+        {
+            <li><a href="@Url.Action("Index", "Advertisement")"><span class="white-icons create_write"></span>
+                        Advertisement</a>                  
+            </li>
+        }
+        @if (HttpContext.Current.User.IsInRole("Finance"))
+        {
+            <li><a href="@Url.Action("RunReport", "Report")"><span class="white-icons create_write"></span>
+                        Report</a>                  
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Payment")"><span class="white-icons create_write"></span>
+                        Student Payments</a>                  
+            </li>
+        }
+        @if (HttpContext.Current.User.IsInRole("HR"))
+        {
+            <li><a href="@Url.Action("Index", "Home")"><span class="white-icons v_card"></span>
+                        Resume</a>                  
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "HR")"><span class="white-icons users_2"></span>
+                        Monitor Staff</a>                  
             </li>
         }
         @if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
@@ -90,12 +120,12 @@
                 </ul>
             </li>
 
-                        //------------end Documents ----------//
+                             //------------end Documents ----------//
 
-                        //------------start Payment ----------//
+                             //------------start Payment ----------//
             <li><a href="@Url.Action("Index", "Payment")"><span class="white-icons money"></span>Payments</a> </li>
 
-                        //------------end Payment ----------//
+                    //------------end Payment ----------//
           
             <li><a href="@Url.Action("Index", "Appointment")"><span class="white-icons day_calendar">
             </span>Appointment</a></li>
@@ -113,14 +143,14 @@
                 Clients</a></li>
             <li><a href="@Url.Action("Index", "Staff")"><span class="white-icons user_2"></span>
                 Staffs</a></li>
-            <li><a href="@Url.Action("Index", "Branch")"><span class="white-icons companies"></span>
+            <li><a href="@Url.Action("Index", "Branch")"><span class="white-icons globe_2"></span>
                 Branch</a></li>
            
                 }
-            @if (HttpContext.Current.User.IsInRole("Super") )
-              {
+            @if (HttpContext.Current.User.IsInRole("Super"))
+            {
                <li><a href="@Url.Action("Index", "Associate")"><span class="white-icons companies"></span>Associates</a></li>
-              }   
+            }   
             <li><a href="@Url.Action("Index", "Event")"><span class="color-icons weather_clouds_co"></span>
                 Events</a></li>
     </ul>    

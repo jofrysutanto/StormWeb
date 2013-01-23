@@ -62,7 +62,6 @@ namespace StormWeb.Controllers
 
         public ActionResult Edit(int id)
         {
-
             Associate associate = db.Associates.Single(a => a.AssociateId == id);
 
             List<Address> l = new List<Address>();
@@ -123,6 +122,36 @@ namespace StormWeb.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+    }
+
+    public class AssociateListHelper
+    {
+        public string AssociateName { get; set; }
+        public int AssociateID { get; set; }
+
+        public static IQueryable<AssociateListHelper> GetItems()
+        {
+            StormDBEntities db = new StormDBEntities();
+
+            List<Associate> assoc = db.Associates.ToList();
+            List<AssociateListHelper> assocHelper = new List<AssociateListHelper>();
+
+            assocHelper.Add(new AssociateListHelper
+            {
+                AssociateName = "--None--",
+                AssociateID = 0
+            });
+
+            foreach(Associate s in assoc)
+            {
+                assocHelper.Add( new AssociateListHelper {
+                    AssociateName = s.AssociateName,
+                    AssociateID = s.AssociateId
+                });
+            }
+
+            return assocHelper.AsQueryable();
         }
     }
 }

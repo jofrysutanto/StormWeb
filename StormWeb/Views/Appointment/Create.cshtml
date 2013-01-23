@@ -8,7 +8,7 @@
     $(document).ready(function () {
         // For DatePicker
         $(".chooseDate").datepicker({
-            dateFormat: 'mm/dd/yy',
+            dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
             minDate: '0',
@@ -54,7 +54,7 @@
                     </th>
                     <td>
                         @{  
-                                <text>@StormWeb.Helper.BranchHelper.getBranchListFromCookie().First().Branch_Name</text> 
+                              <text>@StormWeb.Helper.BranchHelper.getBranchListFromCookie().First().Branch_Name</text> 
                         }
                     </td>
                 </tr>

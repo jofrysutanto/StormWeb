@@ -1,4 +1,5 @@
-﻿@model StormWeb.Models.Advertisement
+﻿@model StormWeb.Models.AdvertisementViewModel
+      
 
 @{
     ViewBag.Title = "Details";
@@ -6,23 +7,24 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
-                <h2>
-                    Advertisement Details</h2>
+         <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Advertisement Details</h1>
+               
             </div>
             <div class="widget-content">
                 <div class="widget-box">
                     <br />
                     <table class="table">
                         <thead>
-                            @Html.HiddenFor(model => model.AdvertisementId)
+                            @Html.HiddenFor(model => model.adv.AdvertisementId)
                             <tr>
                                 <th>
                                     @Html.Label("Heading")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.Heading)
+                                    @Html.DisplayFor(model => model.adv.Heading)
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +32,7 @@
                                     @Html.Label("Author")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.UploadedBy)
+                                    @Html.DisplayFor(model => model.adv_file.UploadedBy)
                                 </td>
                             </tr>
                             <tr>
@@ -38,23 +40,15 @@
                                     @Html.Label("Date Uploaded")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.UploadedOn)
+                                    @Html.DisplayFor(model => model.adv_file.UploadedOn)
                                 </td>
                             </tr>
-                           @* <tr>
-                                <th>
-                                    @Html.Label("Advertisment")
-                                </th>
-                                <td>
-                                    @Html.DisplayFor(model => model.Advertisement_File.)
-                                </td>
-                            </tr>*@
                             <tr>
-                                <th>
-                                    @Html.Label("Comments")
+                                <th style="vertical-align:middle">
+                                    @Html.Label("Content")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.Comments)
+                                    @(Html.Raw(Model.adv.Comments))
                                 </td>
                             </tr>
                         </thead>

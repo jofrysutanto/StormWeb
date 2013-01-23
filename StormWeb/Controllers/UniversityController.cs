@@ -24,7 +24,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator")]
+        [Authorize(Roles = "Counsellor,Super,BranchManager,Administrator,Finance")]
         public ViewResult Index()
         {
             var universities = db.Universities.Include("Country");

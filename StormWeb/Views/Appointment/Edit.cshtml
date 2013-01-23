@@ -10,7 +10,7 @@
         // For DatePicker
 
         $(".dp1").datepicker({
-            dateFormat: 'mm/dd/yy',
+            dateFormat: 'dd/mm/yy',
             disabled:false,
             changeMonth: true,
             changeYear: true,
@@ -136,7 +136,7 @@
                         <td>
                         @{string id = "AppDateTime" + Model.Appointment_Id;}
 
-                         @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("MM/dd/yyyy"), style = "width: 180px;" }) 
+                         @Html.TextBox(@id, Model.AppDateTime, new { @class = "dp1", @Value = Model.AppDateTime.ToString("dd/MM/yyyy"), style = "width: 180px;" }) 
                             @Html.ValidationMessage("AppDateTime")
                             @Html.ValidationMessage("DateError")
                             @Html.ValidationMessage("AppBookedOut")

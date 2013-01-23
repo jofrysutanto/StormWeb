@@ -92,7 +92,7 @@ $(function () {
                                            {
                                                StormWeb.Helper.CookieHelper.LastLogin = mu.LastLoginDate.ToString();
                                                lastlogin1 = mu.LastLoginDate.ToString();
-                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@StormWeb.Helper.CookieHelper.LastLogin
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@lastlogin1
                                                 </a></li>
                                            }
                                            else
@@ -158,11 +158,8 @@ $(function () {
                                                 else
                                                 {
                                                 <ul class="dropdown-menu">
-                                                    @*     <li><a href="@Url.Action("Edit", new { id=item.Staff_Id })"><i class="color-icons application_edit_co"></i>Edit</a></li>  *@
                                                     <li><a class='iframe1' href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
                                                         class="color-icons application_edit_co"></i>Edit</a></li>
-                                                    @* <li><a href="#" onclick="jQuery('#divEdit').dialog('open');"><i class="color-icons application_edit_co">
-                                                </i>Edit</a></li>*@
                                                     <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
                                                     </i>Details</a></li>
                                                     <li><a href="@Url.Action("Delete", new { id = item.Staff_Id })"><i class="color-icons application_delete_co">
@@ -173,17 +170,6 @@ $(function () {
                                                    <li><a href="#" onclick="ActivateLink('@item.Staff_Id');"><i class="color-icons user_business_boss_co">
                                                 </i>Activate Staff</a> </li>
                                                 </ul>
-                                                  @*  <li><a id="dialog_link@(item.Staff_Id)"
-                                href="#"><i class="color-icons user_business_boss_co"></i>Activate Staff</a> </li>
-                                                </ul>
-                                                <div id="dialog" title="Activate Staff" style="display: none">
-                                                    <p>
-                                                        @{
-                                                                      string link = Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http");
-                                                        }
-                                                        Link to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a>
-                                                    </p>
-                                                </div>*@
                                                 }
                                             }
                                         </div>
@@ -199,13 +185,13 @@ $(function () {
                                             <li><a class='tip-top' title="View profile" href="@Url.Action("Details", "Staff", new { id = @item.Staff_Id })">@item.FirstName
                                                 @item.LastName</a></li>
                                             @{  
-                                           String @lastlogin1;
+                                           String lastlogin1;
                                            MembershipUser mu = Membership.GetUser(item.UserName);
                                            if (mu != null)
                                            {
                                                StormWeb.Helper.CookieHelper.LastLogin = mu.LastLoginDate.ToString();
                                                lastlogin1 = mu.LastLoginDate.ToString();
-                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@StormWeb.Helper.CookieHelper.LastLogin
+                                                <li class="post-date"><i class="color-icons alarm_co"></i>Last login : <a href="#">@lastlogin1
                                                 </a></li>
                                            }
                                            else
@@ -261,45 +247,17 @@ $(function () {
                                                 <i class="icon-cog"></i><span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @*     <li><a href="@Url.Action("Edit", new { id=item.Staff_Id })"><i class="color-icons application_edit_co"></i>Edit</a></li>  *@
                                                 <li><a class='iframe1' href="@Url.Action("Edit", new { id = item.Staff_Id })"><i
                                                     class="color-icons application_edit_co"></i>Edit</a></li>
-                                                @* <li><a href="#" onclick="jQuery('#divEdit').dialog('open');"><i class="color-icons application_edit_co">
-                                                </i>Edit</a></li>*@
                                                 <li><a href="@Url.Action("Details", new { id = item.Staff_Id })"><i class="color-icons application_detail_co">
                                                 </i>Details</a></li>
                                                 <li><a href="@Url.Action("Delete", new { id = item.Staff_Id })"><i class="color-icons application_delete_co">
                                                 </i>Remove</a></li>
                                                 <li><a href="@Url.Action("ManageRoles", new { id = item.Staff_Id })"><i class="color-icons user_business_boss_co">
                                                 </i>Manage Roles</a></li>
-                                              @*  <li><a id="dialog_link@(item.Staff_Id)"href="#"><i class="color-icons user_business_boss_co">
-                                                </i>Activate Staff</a> </li>
-*@
                                                    <li><a href="#" onclick="ActivateLink('@item.Staff_Id');"><i class="color-icons user_business_boss_co">
                                                 </i>Activate Staff</a> </li>
                                             </ul>
-                                            @*<div id="dialog" title="Activate Staff" style="display: none">
-                                                <p>
-                                                    @{
-                                                                  string link = Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http");
-                                                                  if (link.Contains("localhost"))
-                                                                  {
-                                                        <span>Link to Activate Staff :<a href="#" class="">@Url.Action("ActivateStaff", "Account", new { id = item.Staff_Id }, "http")</a></span> 
-                                                      
-                                                                  }
-                                                                  else
-                                                                  { 
-                                                                      string[] arr = link.Split(':');
-                                                                      string[] arr1 = arr[2].Split('/');
-                                                                      string originallink = arr[0] + ":" + arr[1] + "/" + arr1[1] + "/" + arr1[2] + "/" + arr1[3];
-                                                    
-                                                        <span>Link to Activate Staff :<a href="#" class="">@originallink</a></span> 
-                                                     
-                                                                  } 
-                                                    }
-                                                </p>
-                                            </div>
-                                           *@
                                         </div>
                                     </td>
                                 </tr>

@@ -5,10 +5,10 @@
 }
 <div class="row-fluid">
     <div class="span12">
-        <div class="widget-block">
-            <div class="widget-head">
-                <h5>
-                    Index</h5>
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Advertising / Promotions</h1>
                
             </div>
             <div class="widget-content">
@@ -23,14 +23,14 @@
                                     Author
                                 </th>
                                 <th>
-                                    Uploaded Date
+                                    Date
+                                </th>
+                                <th>
+                                    File
                                 </th>
                                @* <th>
-                                    Advertisement
-                                </th>*@
-                                <th>
                                     Comments
-                                </th>
+                                </th>*@
                                 <th>
                                    <i class="color-icons hammer_screwdriver_co"></i>Actions
                                 </th>
@@ -39,30 +39,41 @@
                         <tbody>
                             @foreach (var item in Model)
                             {                                                                
-                                <tr>
+                                <tr style="@{if(item.ExpiryDate < DateTime.Now){@("background-color: #FFE2D7")}}">
                                     <td>
                                          @Html.DisplayFor(modelItem => item.Heading)
+                                       
+                                         <br/><br /><span class="label @{ if (item.Audience == "staff") { @("label-success") } else { @("label-info") } }"> @Html.DisplayFor(modelItem => item.Audience)</span>
+                                                                                 
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UploadedBy)
+                                        @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().UploadedBy)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UploadedOn)
+                                      <ul>
+                                        <li class="post-by"><i class="icon-small-black user_sc"></i> Uploaded Date:  @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().UploadedOn)</li>
+                                        <li class="post-date"><i class="icon-small-black alarm_clock_sc"></i> Expiry Date:  @Html.DisplayFor(modelItem => item.ExpiryDate)  <span style = "@{ if(item.ExpiryDate < DateTime.Now) {@("color: red")} }">Expired</span></li>
+                                       
+                                      </ul>
+                                       
+                                   </td>
+                                    <td>
+                                        @if (item.Advertisement_File.SingleOrDefault().FileName != null)
+                                        {
+                                         @Html.Link_DownloadFile(@item.Advertisement_File.SingleOrDefault().FileName, @Url.Action("AdvertisementFile", new { id = item.Advertisement_File.SingleOrDefault().AdvertisementFileId }))}
+                                        else { @("No file attached")}
+                                       @* @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().FileName)*@
                                     </td>
-                                   @* <td>
-                                        @Html.DisplayFor(modelItem => item.Advertisement1)
+                                   @* <td> @Html.DisplayFor(modelItem => item.Comments)
                                     </td>*@
-                                    <td> @Html.DisplayFor(modelItem => item.Comments)
-                                    </td>
                                     <td>
-                                        @Html.ActionLink("Create", "Create")|
                                         @Html.ActionLink("Edit", "Edit", new { id=item.AdvertisementId }) |
                                         @Html.ActionLink("Details", "Details", new { id=item.AdvertisementId }) |
                                         @Html.ActionLink("Delete", "Delete", new { id=item.AdvertisementId })
                                     </td>
-                                </tr>
-                                  
-                            }
+                                    
+                                </tr>   
+                                    }
                         </tbody>
                     </table>
                 </div>
@@ -70,4 +81,7 @@
         </div>
     </div>
 </div>
+<p>
+        @Html.Button_Add("Create New", Url.Action("Create","Advertisement"))
+    </p>
 

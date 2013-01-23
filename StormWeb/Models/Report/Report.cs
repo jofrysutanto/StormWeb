@@ -108,7 +108,7 @@ namespace StormWeb.Models.Report
                     col++;
                 }
 
-                ws.Cells[1, 1, row, col].AutoFilter = true;
+                ws.Cells[1, 1, row, col-1].AutoFilter = true;
             }
         }
     }

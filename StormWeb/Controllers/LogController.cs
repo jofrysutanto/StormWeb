@@ -47,6 +47,12 @@ namespace StormWeb.Controllers
 
             //var cases = db.Cases.ToList().Where(x => x.Counsellor_Id == staffId);
 
+            // To be added logs for super and branch manager
+            if (CookieHelper.isInRole("Super") || CookieHelper.isInRole("BranchManager"))
+            {
+
+            }
+
             List<Client> clients = new List<Client>();
 
             foreach (Case c in cases)

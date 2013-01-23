@@ -124,6 +124,7 @@ namespace StormWeb.Controllers
                         CookieHelper.StaffId = Convert.ToString(staff.Staff_Id);
                         CookieHelper.Name = staff.FirstName + " " + staff.LastName;
 
+                        LogHelper.writeToStaffLog(model.UserName, "Logs in from: " + HttpContext.Request.ServerVariables["REMOTE_ADDR"], "OTHER", "Log");
                         // Also add branch where the staff belong                        
                         var branches = from b in db.Branches
                                        from bs in db.Branch_Staff
@@ -198,6 +199,8 @@ namespace StormWeb.Controllers
         {
             FormsAuthentication.SignOut();
             CookieHelper.destroyAllCookies();
+
+            LogHelper.writeToStaffLog(CookieHelper.Username, "Logs out from: " + HttpContext.Request.ServerVariables["REMOTE_ADDR"], "OTHER", "Log");
 
             TempData[LOG_OFF] = "true";
             return RedirectToAction("LogOn", "Account");
@@ -430,7 +433,7 @@ namespace StormWeb.Controllers
                     // Attempt to register the user
                     MembershipCreateStatus createStatus;
                     Membership.CreateUser(Request.Form["Username"], model.password, model.email, null, null, true, null, out createStatus);
-                    Roles.AddUserToRole(Request.Form["Username"], "Counsellor");
+                    //Roles.AddUserToRole(Request.Form["Username"], "Counsellor");
 
                     if (createStatus == MembershipCreateStatus.Success)
                     {
@@ -493,6 +496,21 @@ namespace StormWeb.Controllers
         public ActionResult ChangePasswordSuccess()
         {
             return View();
+        }
+
+        public static int getNumberOfStudentsOnline()
+        {
+            int count = 0;
+            foreach (MembershipUser user in Membership.GetAllUsers())
+            {
+                if (user.IsOnline)
+                {
+                    if (Roles.IsUserInRole(user.UserName, "Student"))
+                        count++;
+                }
+            }
+
+            return count;
         }
 
         #region Status Codes

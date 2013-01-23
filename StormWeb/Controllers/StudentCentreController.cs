@@ -121,6 +121,7 @@ namespace StormWeb.Controllers
 
                 #endregion
 
+                ViewBag.Ads = db.Advertisements.ToList();
 
                 return View(stmodel);
             }

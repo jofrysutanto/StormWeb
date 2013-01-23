@@ -385,6 +385,20 @@
                         </div>
                         <div class="widget-head">
                             <h5 style="vertical-align: bottom">
+                                <span class="dashboard-icons-colors business_contact_sl"></span>Associate (Optional)
+                            </h5>
+                        </div>    
+                        <div class="control-group">
+                            @Html.Label("Registered under associate", null, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.ClientModel.Associate_Id, (IEnumerable<SelectListItem>)ViewBag.AssociateList, new { @class = "chzn-select" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.ClientModel.Associate_Id)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="widget-head">
+                            <h5 style="vertical-align: bottom">
                                 <span class="dashboard-icons-colors milestone_sl"></span>Choose country
                             </h5>
                         </div>

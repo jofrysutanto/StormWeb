@@ -183,7 +183,7 @@ namespace StormWeb.Helper
         public static bool isStaff()
         {
             string[] rolesArray = Roles.Split('|');
-            return (rolesArray.Contains("Super") || rolesArray.Contains("Administrator") || rolesArray.Contains("Admission") || rolesArray.Contains("Counsellor") || rolesArray.Contains("Visa") || rolesArray.Contains("BranchManager"));
+            return !(rolesArray.Contains("Student"));            
         }
 
         public static void destroyAllCookies()

@@ -114,6 +114,7 @@ namespace StormWeb.Controllers
             ViewBag.Services = new SelectList(ServiceHelper.GetItems(), "ServiceType", "ServiceType");
             ViewBag.Status = new SelectList(StatusTypeHelper.GetStatus(), "StatusType", "StatusType");
             ViewBag.CourseLevel = new SelectList(CourseLevelHelper.GetItems(), "CourseLevel", "CourseLevel");
+            ViewBag.AssociateList = new SelectList(AssociateListHelper.GetItems(), "AssociateID", "AssociateName", new AssociateListHelper { AssociateID = 0, AssociateName = "--None--" });
 
             IEnumerable<Branch> branch = db.Branches.ToList();
             ViewBag.Branch = branch;
@@ -332,6 +333,12 @@ namespace StormWeb.Controllers
             model.ClientModel.Services = fc["ClientModel.Services"];
             model.ClientModel.Registered_On = DateTime.Now;
             model.ClientModel.Branch_Id = Convert.ToInt32(fc["selectedBranch"]);
+
+            // Associate ID (Optional)
+            if (Convert.ToInt32(fc["ClientModel.Associate_Id"]) <= 0)
+                model.ClientModel.Associate_Id = null;
+            else
+                model.ClientModel.Associate_Id = Convert.ToInt32(fc["ClientModel.Associate_Id"]);
 
 
             // Partial registration (user choose to book an appointment for enquiry

@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Address), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
-[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Advertisement), "Advertisement_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Advertisement_File), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Advertisement), "Advertisement_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Advertisement_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Cancel", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Application_Cancel), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Case), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Application), true)]
@@ -67,6 +67,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Course_Faculty1", "Faculty", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Faculty), "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Course), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Template_Document_Course", "Course", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Course), "Template_Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Template_Document), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Faculty_University", "University", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.University), "Faculty", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Faculty), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Material_File_Material", "Material", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Material), "Material_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Material_File), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Material_Order_Material", "Material", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Material), "Material_Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Material_Order), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Message_To_Message", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Message), "Message_To", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Message_To), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Receipt_File_Payment", "Payment", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Payment), "Receipt_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Receipt_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Side_Menu_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Side_Menu", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Side_Menu), true)]
@@ -74,6 +76,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Employee_Emp_Dept", "Staff_Dept", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff_Dept), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Role_Staff", "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff), "Staff_Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff_Role), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "aspnet_UsersInRoles", "aspnet_Roles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Roles), "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.aspnet_Users))]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Associate", "Associate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Associate), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 
 #endregion
 
@@ -816,6 +819,54 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Material> Materials
+        {
+            get
+            {
+                if ((_Materials == null))
+                {
+                    _Materials = base.CreateObjectSet<Material>("Materials");
+                }
+                return _Materials;
+            }
+        }
+        private ObjectSet<Material> _Materials;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Material_File> Material_File
+        {
+            get
+            {
+                if ((_Material_File == null))
+                {
+                    _Material_File = base.CreateObjectSet<Material_File>("Material_File");
+                }
+                return _Material_File;
+            }
+        }
+        private ObjectSet<Material_File> _Material_File;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Material_Order> Material_Order
+        {
+            get
+            {
+                if ((_Material_Order == null))
+                {
+                    _Material_Order = base.CreateObjectSet<Material_Order>("Material_Order");
+                }
+                return _Material_Order;
+            }
+        }
+        private ObjectSet<Material_Order> _Material_Order;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Message> Messages
         {
             get
@@ -988,6 +1039,22 @@ namespace StormWeb.Models
             }
         }
         private ObjectSet<Staff_Dept> _Staff_Dept;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Staff_Log> Staff_Log
+        {
+            get
+            {
+                if ((_Staff_Log == null))
+                {
+                    _Staff_Log = base.CreateObjectSet<Staff_Log>("Staff_Log");
+                }
+                return _Staff_Log;
+            }
+        }
+        private ObjectSet<Staff_Log> _Staff_Log;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1449,6 +1516,30 @@ namespace StormWeb.Models
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Materials EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMaterials(Material material)
+        {
+            base.AddObject("Materials", material);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Material_File EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMaterial_File(Material_File material_File)
+        {
+            base.AddObject("Material_File", material_File);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Material_Order EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMaterial_Order(Material_Order material_Order)
+        {
+            base.AddObject("Material_Order", material_Order);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Messages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToMessages(Message message)
@@ -1534,6 +1625,14 @@ namespace StormWeb.Models
         public void AddToStaff_Dept(Staff_Dept staff_Dept)
         {
             base.AddObject("Staff_Dept", staff_Dept);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Staff_Log EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToStaff_Log(Staff_Log staff_Log)
+        {
+            base.AddObject("Staff_Log", staff_Log);
         }
     
         /// <summary>
@@ -2018,48 +2117,48 @@ namespace StormWeb.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String UploadedBy
+        public Nullable<global::System.DateTime> ExpiryDate
         {
             get
             {
-                return _UploadedBy;
+                return _ExpiryDate;
             }
             set
             {
-                OnUploadedByChanging(value);
-                ReportPropertyChanging("UploadedBy");
-                _UploadedBy = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("UploadedBy");
-                OnUploadedByChanged();
+                OnExpiryDateChanging(value);
+                ReportPropertyChanging("ExpiryDate");
+                _ExpiryDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ExpiryDate");
+                OnExpiryDateChanged();
             }
         }
-        private global::System.String _UploadedBy;
-        partial void OnUploadedByChanging(global::System.String value);
-        partial void OnUploadedByChanged();
+        private Nullable<global::System.DateTime> _ExpiryDate;
+        partial void OnExpiryDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnExpiryDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> UploadedOn
+        public global::System.String Audience
         {
             get
             {
-                return _UploadedOn;
+                return _Audience;
             }
             set
             {
-                OnUploadedOnChanging(value);
-                ReportPropertyChanging("UploadedOn");
-                _UploadedOn = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("UploadedOn");
-                OnUploadedOnChanged();
+                OnAudienceChanging(value);
+                ReportPropertyChanging("Audience");
+                _Audience = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Audience");
+                OnAudienceChanged();
             }
         }
-        private Nullable<global::System.DateTime> _UploadedOn;
-        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
-        partial void OnUploadedOnChanged();
+        private global::System.String _Audience;
+        partial void OnAudienceChanging(global::System.String value);
+        partial void OnAudienceChanged();
 
         #endregion
     
@@ -2104,10 +2203,14 @@ namespace StormWeb.Models
         /// Create a new Advertisement_File object.
         /// </summary>
         /// <param name="advertisementFileId">Initial value of the AdvertisementFileId property.</param>
-        public static Advertisement_File CreateAdvertisement_File(global::System.Int32 advertisementFileId)
+        /// <param name="advertisementId">Initial value of the AdvertisementId property.</param>
+        /// <param name="uploadedOn">Initial value of the UploadedOn property.</param>
+        public static Advertisement_File CreateAdvertisement_File(global::System.Int32 advertisementFileId, global::System.Int32 advertisementId, global::System.DateTime uploadedOn)
         {
             Advertisement_File advertisement_File = new Advertisement_File();
             advertisement_File.AdvertisementFileId = advertisementFileId;
+            advertisement_File.AdvertisementId = advertisementId;
+            advertisement_File.UploadedOn = uploadedOn;
             return advertisement_File;
         }
 
@@ -2144,9 +2247,9 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> AdvertisementId
+        public global::System.Int32 AdvertisementId
         {
             get
             {
@@ -2161,8 +2264,8 @@ namespace StormWeb.Models
                 OnAdvertisementIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _AdvertisementId;
-        partial void OnAdvertisementIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _AdvertisementId;
+        partial void OnAdvertisementIdChanging(global::System.Int32 value);
         partial void OnAdvertisementIdChanged();
     
         /// <summary>
@@ -2240,9 +2343,9 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> UploadedOn
+        public global::System.DateTime UploadedOn
         {
             get
             {
@@ -2257,8 +2360,8 @@ namespace StormWeb.Models
                 OnUploadedOnChanged();
             }
         }
-        private Nullable<global::System.DateTime> _UploadedOn;
-        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
+        private global::System.DateTime _UploadedOn;
+        partial void OnUploadedOnChanging(global::System.DateTime value);
         partial void OnUploadedOnChanged();
 
         #endregion
@@ -6938,11 +7041,13 @@ namespace StormWeb.Models
         /// </summary>
         /// <param name="associateId">Initial value of the AssociateId property.</param>
         /// <param name="associateName">Initial value of the AssociateName property.</param>
-        public static Associate CreateAssociate(global::System.Int32 associateId, global::System.String associateName)
+        /// <param name="commision_Rate">Initial value of the Commision_Rate property.</param>
+        public static Associate CreateAssociate(global::System.Int32 associateId, global::System.String associateName, global::System.Decimal commision_Rate)
         {
             Associate associate = new Associate();
             associate.AssociateId = associateId;
             associate.AssociateName = associateName;
+            associate.Commision_Rate = commision_Rate;
             return associate;
         }
 
@@ -7119,6 +7224,30 @@ namespace StormWeb.Models
         private global::System.String _Email;
         partial void OnEmailChanging(global::System.String value);
         partial void OnEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Commision_Rate
+        {
+            get
+            {
+                return _Commision_Rate;
+            }
+            set
+            {
+                OnCommision_RateChanging(value);
+                ReportPropertyChanging("Commision_Rate");
+                _Commision_Rate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Commision_Rate");
+                OnCommision_RateChanged();
+            }
+        }
+        private global::System.Decimal _Commision_Rate;
+        partial void OnCommision_RateChanging(global::System.Decimal value);
+        partial void OnCommision_RateChanged();
 
         #endregion
     
@@ -7158,6 +7287,28 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Address>("StormDBModel.FK_Associate_Address", "Address", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Client_Associate", "Client")]
+        public EntityCollection<Client> Clients
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("StormDBModel.FK_Client_Associate", "Client");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("StormDBModel.FK_Client_Associate", "Client", value);
                 }
             }
         }
@@ -9277,6 +9428,30 @@ namespace StormWeb.Models
         private global::System.Int32 _Branch_Id;
         partial void OnBranch_IdChanging(global::System.Int32 value);
         partial void OnBranch_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Associate_Id
+        {
+            get
+            {
+                return _Associate_Id;
+            }
+            set
+            {
+                OnAssociate_IdChanging(value);
+                ReportPropertyChanging("Associate_Id");
+                _Associate_Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Associate_Id");
+                OnAssociate_IdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Associate_Id;
+        partial void OnAssociate_IdChanging(Nullable<global::System.Int32> value);
+        partial void OnAssociate_IdChanged();
 
         #endregion
     
@@ -9514,6 +9689,44 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Student>("StormDBModel.FK_Student_Client", "Student", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Client_Associate", "Associate")]
+        public Associate Associate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Associate>("StormDBModel.FK_Client_Associate", "Associate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Associate>("StormDBModel.FK_Client_Associate", "Associate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Associate> AssociateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Associate>("StormDBModel.FK_Client_Associate", "Associate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Associate>("StormDBModel.FK_Client_Associate", "Associate", value);
                 }
             }
         }
@@ -12945,6 +13158,714 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Material")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Material : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Material object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="instore">Initial value of the Instore property.</param>
+        /// <param name="recordedOn">Initial value of the RecordedOn property.</param>
+        /// <param name="recordedBy">Initial value of the RecordedBy property.</param>
+        /// <param name="hasFile">Initial value of the HasFile property.</param>
+        public static Material CreateMaterial(global::System.Int32 id, global::System.String name, global::System.Int32 instore, global::System.DateTime recordedOn, global::System.String recordedBy, global::System.Boolean hasFile)
+        {
+            Material material = new Material();
+            material.ID = id;
+            material.Name = name;
+            material.Instore = instore;
+            material.RecordedOn = recordedOn;
+            material.RecordedBy = recordedBy;
+            material.HasFile = hasFile;
+            return material;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Instore
+        {
+            get
+            {
+                return _Instore;
+            }
+            set
+            {
+                OnInstoreChanging(value);
+                ReportPropertyChanging("Instore");
+                _Instore = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Instore");
+                OnInstoreChanged();
+            }
+        }
+        private global::System.Int32 _Instore;
+        partial void OnInstoreChanging(global::System.Int32 value);
+        partial void OnInstoreChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime RecordedOn
+        {
+            get
+            {
+                return _RecordedOn;
+            }
+            set
+            {
+                OnRecordedOnChanging(value);
+                ReportPropertyChanging("RecordedOn");
+                _RecordedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecordedOn");
+                OnRecordedOnChanged();
+            }
+        }
+        private global::System.DateTime _RecordedOn;
+        partial void OnRecordedOnChanging(global::System.DateTime value);
+        partial void OnRecordedOnChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String RecordedBy
+        {
+            get
+            {
+                return _RecordedBy;
+            }
+            set
+            {
+                OnRecordedByChanging(value);
+                ReportPropertyChanging("RecordedBy");
+                _RecordedBy = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("RecordedBy");
+                OnRecordedByChanged();
+            }
+        }
+        private global::System.String _RecordedBy;
+        partial void OnRecordedByChanging(global::System.String value);
+        partial void OnRecordedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean HasFile
+        {
+            get
+            {
+                return _HasFile;
+            }
+            set
+            {
+                OnHasFileChanging(value);
+                ReportPropertyChanging("HasFile");
+                _HasFile = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("HasFile");
+                OnHasFileChanged();
+            }
+        }
+        private global::System.Boolean _HasFile;
+        partial void OnHasFileChanging(global::System.Boolean value);
+        partial void OnHasFileChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Material_File_Material", "Material_File")]
+        public EntityCollection<Material_File> Material_File
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Material_File>("StormDBModel.FK_Material_File_Material", "Material_File");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Material_File>("StormDBModel.FK_Material_File_Material", "Material_File", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Material_Order_Material", "Material_Order")]
+        public EntityCollection<Material_Order> Material_Order
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Material_Order>("StormDBModel.FK_Material_Order_Material", "Material_Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Material_Order>("StormDBModel.FK_Material_Order_Material", "Material_Order", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Material_File")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Material_File : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Material_File object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="material_ID">Initial value of the Material_ID property.</param>
+        /// <param name="filename">Initial value of the Filename property.</param>
+        /// <param name="path">Initial value of the Path property.</param>
+        /// <param name="uploadedBy">Initial value of the UploadedBy property.</param>
+        /// <param name="uploadedOn">Initial value of the UploadedOn property.</param>
+        public static Material_File CreateMaterial_File(global::System.Int32 id, global::System.Int32 material_ID, global::System.String filename, global::System.String path, global::System.String uploadedBy, global::System.DateTime uploadedOn)
+        {
+            Material_File material_File = new Material_File();
+            material_File.ID = id;
+            material_File.Material_ID = material_ID;
+            material_File.Filename = filename;
+            material_File.Path = path;
+            material_File.UploadedBy = uploadedBy;
+            material_File.UploadedOn = uploadedOn;
+            return material_File;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Material_ID
+        {
+            get
+            {
+                return _Material_ID;
+            }
+            set
+            {
+                OnMaterial_IDChanging(value);
+                ReportPropertyChanging("Material_ID");
+                _Material_ID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Material_ID");
+                OnMaterial_IDChanged();
+            }
+        }
+        private global::System.Int32 _Material_ID;
+        partial void OnMaterial_IDChanging(global::System.Int32 value);
+        partial void OnMaterial_IDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Filename
+        {
+            get
+            {
+                return _Filename;
+            }
+            set
+            {
+                OnFilenameChanging(value);
+                ReportPropertyChanging("Filename");
+                _Filename = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Filename");
+                OnFilenameChanged();
+            }
+        }
+        private global::System.String _Filename;
+        partial void OnFilenameChanging(global::System.String value);
+        partial void OnFilenameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Path
+        {
+            get
+            {
+                return _Path;
+            }
+            set
+            {
+                OnPathChanging(value);
+                ReportPropertyChanging("Path");
+                _Path = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Path");
+                OnPathChanged();
+            }
+        }
+        private global::System.String _Path;
+        partial void OnPathChanging(global::System.String value);
+        partial void OnPathChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UploadedBy
+        {
+            get
+            {
+                return _UploadedBy;
+            }
+            set
+            {
+                OnUploadedByChanging(value);
+                ReportPropertyChanging("UploadedBy");
+                _UploadedBy = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UploadedBy");
+                OnUploadedByChanged();
+            }
+        }
+        private global::System.String _UploadedBy;
+        partial void OnUploadedByChanging(global::System.String value);
+        partial void OnUploadedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime UploadedOn
+        {
+            get
+            {
+                return _UploadedOn;
+            }
+            set
+            {
+                OnUploadedOnChanging(value);
+                ReportPropertyChanging("UploadedOn");
+                _UploadedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UploadedOn");
+                OnUploadedOnChanged();
+            }
+        }
+        private global::System.DateTime _UploadedOn;
+        partial void OnUploadedOnChanging(global::System.DateTime value);
+        partial void OnUploadedOnChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Material_File_Material", "Material")]
+        public Material Material
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_File_Material", "Material").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_File_Material", "Material").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Material> MaterialReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_File_Material", "Material");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Material>("StormDBModel.FK_Material_File_Material", "Material", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Material_Order")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Material_Order : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Material_Order object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="quantity">Initial value of the Quantity property.</param>
+        /// <param name="requestedBy">Initial value of the RequestedBy property.</param>
+        /// <param name="type">Initial value of the Type property.</param>
+        /// <param name="requestedOn">Initial value of the RequestedOn property.</param>
+        /// <param name="material_ID">Initial value of the Material_ID property.</param>
+        public static Material_Order CreateMaterial_Order(global::System.Int32 id, global::System.Int32 quantity, global::System.String requestedBy, global::System.String type, global::System.DateTime requestedOn, global::System.Int32 material_ID)
+        {
+            Material_Order material_Order = new Material_Order();
+            material_Order.ID = id;
+            material_Order.Quantity = quantity;
+            material_Order.RequestedBy = requestedBy;
+            material_Order.Type = type;
+            material_Order.RequestedOn = requestedOn;
+            material_Order.Material_ID = material_ID;
+            return material_Order;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Quantity
+        {
+            get
+            {
+                return _Quantity;
+            }
+            set
+            {
+                OnQuantityChanging(value);
+                ReportPropertyChanging("Quantity");
+                _Quantity = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Quantity");
+                OnQuantityChanged();
+            }
+        }
+        private global::System.Int32 _Quantity;
+        partial void OnQuantityChanging(global::System.Int32 value);
+        partial void OnQuantityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String RequestedBy
+        {
+            get
+            {
+                return _RequestedBy;
+            }
+            set
+            {
+                OnRequestedByChanging(value);
+                ReportPropertyChanging("RequestedBy");
+                _RequestedBy = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("RequestedBy");
+                OnRequestedByChanged();
+            }
+        }
+        private global::System.String _RequestedBy;
+        partial void OnRequestedByChanging(global::System.String value);
+        partial void OnRequestedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime RequestedOn
+        {
+            get
+            {
+                return _RequestedOn;
+            }
+            set
+            {
+                OnRequestedOnChanging(value);
+                ReportPropertyChanging("RequestedOn");
+                _RequestedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RequestedOn");
+                OnRequestedOnChanged();
+            }
+        }
+        private global::System.DateTime _RequestedOn;
+        partial void OnRequestedOnChanging(global::System.DateTime value);
+        partial void OnRequestedOnChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Material_ID
+        {
+            get
+            {
+                return _Material_ID;
+            }
+            set
+            {
+                OnMaterial_IDChanging(value);
+                ReportPropertyChanging("Material_ID");
+                _Material_ID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Material_ID");
+                OnMaterial_IDChanged();
+            }
+        }
+        private global::System.Int32 _Material_ID;
+        partial void OnMaterial_IDChanging(global::System.Int32 value);
+        partial void OnMaterial_IDChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Material_Order_Material", "Material")]
+        public Material Material
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_Order_Material", "Material").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_Order_Material", "Material").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Material> MaterialReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Material>("StormDBModel.FK_Material_Order_Material", "Material");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Material>("StormDBModel.FK_Material_Order_Material", "Material", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Message")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -15344,6 +16265,217 @@ namespace StormWeb.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Staff_Log")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Staff_Log : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Staff_Log object.
+        /// </summary>
+        /// <param name="staffLog_Id">Initial value of the StaffLog_Id property.</param>
+        /// <param name="dateTime">Initial value of the DateTime property.</param>
+        /// <param name="userName">Initial value of the UserName property.</param>
+        /// <param name="type">Initial value of the Type property.</param>
+        /// <param name="section">Initial value of the Section property.</param>
+        /// <param name="deleted">Initial value of the Deleted property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        public static Staff_Log CreateStaff_Log(global::System.Int32 staffLog_Id, global::System.DateTime dateTime, global::System.String userName, global::System.String type, global::System.String section, global::System.Boolean deleted, global::System.String comment)
+        {
+            Staff_Log staff_Log = new Staff_Log();
+            staff_Log.StaffLog_Id = staffLog_Id;
+            staff_Log.DateTime = dateTime;
+            staff_Log.UserName = userName;
+            staff_Log.Type = type;
+            staff_Log.Section = section;
+            staff_Log.Deleted = deleted;
+            staff_Log.Comment = comment;
+            return staff_Log;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 StaffLog_Id
+        {
+            get
+            {
+                return _StaffLog_Id;
+            }
+            set
+            {
+                if (_StaffLog_Id != value)
+                {
+                    OnStaffLog_IdChanging(value);
+                    ReportPropertyChanging("StaffLog_Id");
+                    _StaffLog_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("StaffLog_Id");
+                    OnStaffLog_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _StaffLog_Id;
+        partial void OnStaffLog_IdChanging(global::System.Int32 value);
+        partial void OnStaffLog_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DateTime
+        {
+            get
+            {
+                return _DateTime;
+            }
+            set
+            {
+                OnDateTimeChanging(value);
+                ReportPropertyChanging("DateTime");
+                _DateTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateTime");
+                OnDateTimeChanged();
+            }
+        }
+        private global::System.DateTime _DateTime;
+        partial void OnDateTimeChanging(global::System.DateTime value);
+        partial void OnDateTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                OnUserNameChanging(value);
+                ReportPropertyChanging("UserName");
+                _UserName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UserName");
+                OnUserNameChanged();
+            }
+        }
+        private global::System.String _UserName;
+        partial void OnUserNameChanging(global::System.String value);
+        partial void OnUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Section
+        {
+            get
+            {
+                return _Section;
+            }
+            set
+            {
+                OnSectionChanging(value);
+                ReportPropertyChanging("Section");
+                _Section = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Section");
+                OnSectionChanged();
+            }
+        }
+        private global::System.String _Section;
+        partial void OnSectionChanging(global::System.String value);
+        partial void OnSectionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Deleted
+        {
+            get
+            {
+                return _Deleted;
+            }
+            set
+            {
+                OnDeletedChanging(value);
+                ReportPropertyChanging("Deleted");
+                _Deleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Deleted");
+                OnDeletedChanged();
+            }
+        }
+        private global::System.Boolean _Deleted;
+        partial void OnDeletedChanging(global::System.Boolean value);
+        partial void OnDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Staff_Role")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -16652,7 +17784,8 @@ namespace StormWeb.Models
         /// <param name="university_Name">Initial value of the University_Name property.</param>
         /// <param name="campus">Initial value of the Campus property.</param>
         /// <param name="email">Initial value of the Email property.</param>
-        public static University CreateUniversity(global::System.Int32 university_Id, global::System.Int32 country_Id, global::System.String university_Name, global::System.String campus, global::System.String email)
+        /// <param name="comission_Rate">Initial value of the Comission_Rate property.</param>
+        public static University CreateUniversity(global::System.Int32 university_Id, global::System.Int32 country_Id, global::System.String university_Name, global::System.String campus, global::System.String email, global::System.Decimal comission_Rate)
         {
             University university = new University();
             university.University_Id = university_Id;
@@ -16660,6 +17793,7 @@ namespace StormWeb.Models
             university.University_Name = university_Name;
             university.Campus = campus;
             university.Email = email;
+            university.Comission_Rate = comission_Rate;
             return university;
         }
 
@@ -16836,6 +17970,30 @@ namespace StormWeb.Models
         private global::System.String _Description;
         partial void OnDescriptionChanging(global::System.String value);
         partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Comission_Rate
+        {
+            get
+            {
+                return _Comission_Rate;
+            }
+            set
+            {
+                OnComission_RateChanging(value);
+                ReportPropertyChanging("Comission_Rate");
+                _Comission_Rate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Comission_Rate");
+                OnComission_RateChanged();
+            }
+        }
+        private global::System.Decimal _Comission_Rate;
+        partial void OnComission_RateChanging(global::System.Decimal value);
+        partial void OnComission_RateChanged();
 
         #endregion
     

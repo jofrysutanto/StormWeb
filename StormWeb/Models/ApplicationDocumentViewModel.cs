@@ -73,6 +73,6 @@ namespace StormWeb.Models
         }
 
         public List<Payment> paymentTable { get; set; }
-       
+        public List<PaymentDetail> paymentDetailsTable { get; set; }
     }
 }

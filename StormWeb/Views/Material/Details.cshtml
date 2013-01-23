@@ -1,0 +1,45 @@
+﻿@model StormWeb.Models.Material
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Material</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">Instore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Instore)
+    </div>
+
+    <div class="display-label">RecordedOn</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RecordedOn)
+    </div>
+
+    <div class="display-label">RecordedBy</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RecordedBy)
+    </div>
+
+    <div class="display-label">HasFile</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HasFile)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

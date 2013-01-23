@@ -8,4 +8,8 @@
     <name>Tax Invoice</name>
     <code>tax</code>
   </report>
+  <report>
+    <name>Student Info</name>
+    <code>sinfo</code>
+  </report>
 </reports>

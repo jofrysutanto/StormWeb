@@ -53,7 +53,6 @@
                                 </th>
                                 <th> 
                                      <i class="color-icons hammer_screwdriver_co"></i>Actions
-
                                 </th>
                             </tr>
                         </thead>
@@ -66,6 +65,11 @@
                                  <a class='iframe' href="@Url.Action("Description", new { id = item.University_Id })" >
                                             @(item.University_Name)</a>
                                <br /><b>Campus:</b> @Html.DisplayFor(modelItem => item.Campus) 
+                               <br />
+                                    @if(CookieHelper.isInRole("Super"))
+                                        {
+                                            @: C. Rate: <span class="badge badge-success">@item.Comission_Rate %</span>
+                                        }
                             </td>
                             <td>   
                                 <ul>                                

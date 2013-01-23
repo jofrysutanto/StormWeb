@@ -20,7 +20,7 @@ namespace StormWeb.Controllers
         StormWeb.Helper.Enumclass Enumclass = new Enumclass();
 
         #region Index
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,HR")]
         public ViewResult Index()
         {
             var staffs = db.Staffs.Include("Address").Include("Staff_Dept");
@@ -32,7 +32,7 @@ namespace StormWeb.Controllers
         #endregion
 
         #region MANAGE ROLE
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,HR")]
         public ActionResult ManageRoles(int id)
         {
             ManageRoleModel roleModel = new ManageRoleModel();
@@ -67,7 +67,7 @@ namespace StormWeb.Controllers
         #endregion
 
         #region Details
-        [Authorize(Roles = "Super,Counsellor,BranchManager")]
+        [Authorize(Roles = "Super,Counsellor,BranchManager,HR,Marketing,Finance")]
         public ViewResult Details(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
@@ -78,7 +78,7 @@ namespace StormWeb.Controllers
 
         #region Create
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,HR")]
         public ActionResult Create()
         {
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Street_Name");
@@ -401,7 +401,7 @@ namespace StormWeb.Controllers
 
         #region Delete
 
-        [Authorize(Roles = "Super,BranchManager")]
+        [Authorize(Roles = "Super,BranchManager,HR")]
         public ActionResult Delete(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);

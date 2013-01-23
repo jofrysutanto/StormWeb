@@ -20,7 +20,7 @@
                                     @Html.Label("Branch Name")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.Branch_Id)
+                                    @Html.DisplayFor(model => model.Branch.Branch_Name)
                                 </td>
                             </tr>
                             <tr>
@@ -28,7 +28,8 @@
                                     @Html.Label("Appointment Date and Time")
                                 </th>
                                 <td>
-                                    @Html.DisplayFor(model => model.AppDateTime)
+                                    @*@Html.DisplayFor(model => model.AppDateTime)*@
+                                    @Html.Encode(Model.AppDateTime.ToString("f"))
                                 </td>
                             </tr>
                             <tr>

@@ -140,7 +140,8 @@
                                                                                     @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                                                 </td>
                                                                                 <td>
-                                                                                    @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                              @*      @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                                                    @Html.Encode(item.AppDateTime.ToString("f"))
                                                                                 </td>
                                                                                 <td>
                                                                                     @Html.DisplayFor(modelItem => item.Confirmation)
@@ -213,7 +214,8 @@
                                                                         @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                                     </td>
                                                                     <td>
-                                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                    @*    @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                                      @Html.Encode(item.AppDateTime.ToString("f"))
                                                                     </td>
                                                                     <td>
                                                                         @Html.DisplayFor(modelItem => item.Confirmation)
@@ -292,7 +294,8 @@
                                                                     @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                                 </td>
                                                                 <td>
-                                                                    @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                                    @*@Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                                      @Html.Encode(item.AppDateTime.ToString("f"))
                                                                 </td>
                                                                 @if (item.AppDateTime < DateTime.Now)
                                                                 {
@@ -373,7 +376,8 @@
                                                                 @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                             </td>
                                                             <td>
-                                                                @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                               @* @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                                  @Html.Encode(item.AppDateTime.ToString("f"))
                                                             </td>
                                                             <td>
                                                                 @Html.DisplayFor(modelItem => item.Confirmation)
@@ -459,7 +463,8 @@
                                                                 @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                             </td>
                                                             <td>
-                                                                @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                               @* @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                                  @Html.Encode(item.AppDateTime.ToString("f"))
                                                             </td>
                                                             @if (item.Confirmation == "Confirmed")
                                                             {
@@ -551,7 +556,8 @@
                                                         @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                       @* @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                          @Html.Encode(item.AppDateTime.ToString("f"))
                                                     </td>
                                                     <td>
                                                         @if (item.Confirmation == "Request for Approval")
@@ -579,7 +585,8 @@
                                                         @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.AppDateTime)
+                                                    @*    @Html.DisplayFor(modelItem => item.AppDateTime)*@
+                                                          @Html.Encode(item.AppDateTime.ToString("f"))
                                                     </td>
                                                     <td>
                                                         @if (item.Confirmation == "Request for Approval")

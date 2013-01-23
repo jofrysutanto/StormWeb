@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <i class="color-icons arrow_branch_co"></i>AssociateName
+                                    <i class="color-icons arrow_branch_co"></i>Associate Name
                                 </th>
                                 <th>
                                     <i class="color-icons house_co"></i>Address
@@ -28,6 +28,9 @@
                                     <i class="color-icons book_addresses_co"></i>Contact
                                 </th>
                                 <th>
+                                    # of Students
+                                </th>
+                                <th>
                                     <i class="color-icons hammer_screwdriver_co"></i>Actions
                                 </th>
                             </tr>
@@ -37,9 +40,9 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.AssociateName)
-                                    </td>
-                                    
+                                        @Html.DisplayFor(modelItem => item.AssociateName) <br />
+                                        C. Rate: <span class="badge badge-success">@item.Commision_Rate%</span>
+                                    </td>                                    
                                     <td>
                                         <ul>
                                             @if (item.Address != null)
@@ -53,14 +56,13 @@
                                         @Html.DisplayFor(modelItem => item.ContactPerson)
                                     </td>
                                     <td>
-                                        <i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a>
-                                        <br />
-                                        <br />
-                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Primary_Contact)</a>
-                                        <br />
-                                        <br />
-                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a>
+                                        <i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a><br />
+                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Primary_Contact)</a><br />
+                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a><br />
                                     </td>
+                                    <td>
+                                        @item.Clients.Count()
+                                    </td>                           
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", new { id = item.AssociateId }) |
                                         @Html.ActionLink("Details", "Details", new { id = item.AssociateId }) |

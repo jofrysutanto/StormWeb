@@ -14,7 +14,7 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing,Finance,HR")]
         public ViewResult Index()
         {
             int staffId = Convert.ToInt32(CookieHelper.StaffId);
@@ -32,14 +32,14 @@ namespace StormWeb.Controllers
             return View(s);
         }
 
-        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing,Finance,HR")]
         public ViewResult Details(int id)
         {
             Staff staff = db.Staffs.Single(s => s.Staff_Id == id);
             return View(staff);
         }
 
-        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing")]
+        [Authorize(Roles = "Counsellor,Administrator,Admission,Visa,Super,BranchManager,Marketing,Finance,HR")]
         public ActionResult Profile()
         {
             if (CookieHelper.isStaff())

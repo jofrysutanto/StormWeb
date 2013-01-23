@@ -33,8 +33,17 @@ namespace StormWeb.Controllers
             
             PaymentViewModel model = new PaymentViewModel();
 
-            var unpaidApplications = db.Applications.Where(p => p.Status == "Offer_Letter").ToList();
-            var paidApplications = db.Applications.Where(p => p.Status == "Payment_Received").ToList();
+
+
+            var unpaidApplications = (from app in db.Applications
+                                     from p in app.Payments
+                                     where p.Approved_By == null
+                                     select app).ToList();
+
+            var paidApplications = (from app in db.Applications
+                                   from p in app.Payments
+                                   where p.Approved_By != null
+                                   select app).ToList();
 
             model.unpaidApplications = unpaidApplications;
             model.paidApplications = paidApplications;

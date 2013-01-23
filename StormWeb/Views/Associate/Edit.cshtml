@@ -107,9 +107,18 @@
                 </div>
             </div>
             <div class="control-group">
+                @Html.Label("Comission Rate", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Commision_Rate, new { @class = "input-xlarge text-tip", placeholder = "Rate (%)" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Commision_Rate)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <input type="submit" class="btn btn-primary" value="Save Changes" />
-                    @Html.Button_DeleteOrCancel("Cancel", "../../Associate")
+                    @Html.Button_DeleteOrCancel("Cancel", @Url.Action("Index", "Associate"))
                 </div>
             </div>
         </fieldset>

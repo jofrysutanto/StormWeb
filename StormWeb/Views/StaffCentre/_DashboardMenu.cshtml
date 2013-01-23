@@ -16,12 +16,16 @@
             <li><a href="@Url.Action("Index", "Appointment")" class="tip-top" title="Appointments"><span class="srabon-sprite date_sl"></span><div class="dashboard-text">Appointments</div></a></li>
             <li><a href="@Url.Action("ShowLogs", "Log")" class="tip-top" title="View Log"><span class="srabon-sprite future_projects_sl"></span><div class="dashboard-text">Logs</div></a></li>
         
-            <li><a href="@Url.Action("Index", "Report")" class="tip-top" title="View Reports"><span class="srabon-sprite billing_sl"></span><div class="dashboard-text">Report</div></a></li>
+            <li><a href="@Url.Action("RunReoirt", "Report")" class="tip-top" title="View Reports"><span class="srabon-sprite billing_sl"></span><div class="dashboard-text">Report</div></a></li>
             <li><a href="@Url.Action("Index", "Branch")" class="tip-top" title="Branches"><span class="srabon-sprite home_sl"></span><div class="dashboard-text">Branches</div></a></li>
             <li><a href="@Url.Action("Index", "Staff")" class="tip-top" title="Manage Staff"><span class="srabon-sprite hire_me_sl"></span><div class="dashboard-text">Staffs</div></a></li>
             <li><a href="@Url.Action("Index", "Site")" class="tip-top" title="Manage Site"><span class="srabon-sprite publish_sl"></span><div class="dashboard-text">Site</div></a></li>
          }
-          
+         else if (HttpContext.Current.User.IsInRole("Finance"))
+         {
+             <li><a href="@Url.Action("Index", "Message")" class="tip-top" title="Inbox"><span class="srabon-sprite consulting_sl"></span><div class="dashboard-text">Inbox</div></a></li>
+             <li><a href="@Url.Action("RunReport", "Report")" class="tip-top" title="View Reports"><span class="srabon-sprite billing_sl"></span><div class="dashboard-text">Report</div></a></li>
+         }
          else
          {
             <li><a href="@Url.Action("Index", "StudentStaff")" class="tip-top" title="View students"><span class="srabon-sprite my_account_sl"></span><div class="dashboard-text">View Students</div></a></li>
