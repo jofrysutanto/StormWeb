@@ -179,8 +179,6 @@
     <Compile Include="Models\CourseMD.cs">
       <SubType>Code</SubType>
     </Compile>
-      <SubType>Designer</SubType>
-    </Compile>
     <Compile Include="Models\DocumentIndexModel.cs">
       <SubType>Code</SubType>
     </Compile>
