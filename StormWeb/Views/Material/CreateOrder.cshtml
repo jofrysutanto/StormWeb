@@ -1,10 +1,8 @@
 ﻿@model StormWeb.Models.Material_Order
-
 @{
     ViewBag.Title = "CreateOrder";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <script type="text/javascript">
 
     $(function () {
@@ -20,73 +18,59 @@
         });
 
     }); </script>
-
-   
-
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 @using (Html.BeginForm("CreateOrder", "Material", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
-    @Html.ValidationMessage("NoFile", new { @class="FileError" })
-     <div class="row-fluid">
-    <div class="span12">
-        <div class="box-tab">
-            <div class="page-header">
-                <h1>
-                    &nbsp; &nbsp; Create new Advertising / Promotions</h1>
-               
-            </div>
-            <div class="widget-content">
-                <div class="widget-box" style="padding: 15px;">
-         @Html.HiddenFor(x => x.Status,StormWeb.Controllers.MaterialController.ORDER_STATUS_PENDING, null)
-         @Html.HiddenFor(x => x.Branch,BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0], null)
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Quantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Quantity)
-            @Html.ValidationMessageFor(model => model.Quantity)
-        </div>
-
-        <div class="editor-label">
-        @Html.LabelFor(model => model.Type)
-          
-        </div>
-     
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Type)
-            @Html.ValidationMessageFor(model => model.Type)
-        </div>
-
-       <div class="editor-label">
-            @Html.Label("RequestedOn")
-        </div>
-        <div class="editor-field">
-         <div class="input-append">
-            @Html.TextBox("RequestedOn", DateTime.Now, new { disabled = "disabled" })
-            @Html.HiddenFor(x => x.RequestedOn, DateTime.Now, null)
-          </div></div>
-
-        <div class="editor-label">
-            @Html.Label("RequestedBy")
-        </div>
-        <div class="editor-field">
-            @Html.TextBox("RequestedBy", @CookieHelper.Username, new { disabled = "disabled" })
-             @Html.HiddenFor(model => model.RequestedBy, CookieHelper.Name, null)
-          
-        </div>
-       
-         </div>                 
-         
-         <input type="submit" class="btn btn-primary" value="Submit" name="Submit"/><space> @Html.Button_BackToList("Back to List", "Index") </space> 
-
-
-
+    @Html.ValidationMessage("NoFile", new { @class = "FileError" })
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp; &nbsp; Create new Order</h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 15px;">
+                        @Html.HiddenFor(x => x.Status, StormWeb.Controllers.MaterialController.ORDER_STATUS_PENDING, null)
+                        @Html.HiddenFor(x => x.Branch, BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0], null)
+                        @Html.HiddenFor(x => x.Type, "Sub", null)
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Quantity)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Quantity)
+                            @Html.ValidationMessageFor(x => x.Quantity)
+                            Max: @ViewBag.MaterialQuantity
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Branch)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("Branch", @BranchHelper.getBranchName(BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0]), new { disabled = "disabled" })
+                        </div>
+                        <div class="editor-label">
+                            @Html.Label("RequestedOn")
+                        </div>
+                        <div class="editor-field">
+                            <div class="input-append">
+                                @Html.TextBox("RequestedOn", DateTime.Now, new { disabled = "disabled" })
+                                @Html.HiddenFor(x => x.RequestedOn, DateTime.Now, null)
+                            </div>
+                        </div>
+                        <div class="editor-label">
+                            @Html.Label("RequestedBy")
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("RequestedBy", @CookieHelper.Username, new { disabled = "disabled" })
+                            @Html.HiddenFor(model => model.RequestedBy, CookieHelper.Name, null)
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit" name="Submit" /><space> @Html.Button_BackToList("Back to List", "Index") </space>
+                    </div>                    
                 </div>
             </div>
         </div>
     </div>
 
-                          }
+}

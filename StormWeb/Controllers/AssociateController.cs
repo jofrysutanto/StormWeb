@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
+using System.Web.Security;
+using StormWeb.Helper;
 
 namespace StormWeb.Controllers
 {
@@ -18,7 +20,14 @@ namespace StormWeb.Controllers
 
         public ViewResult Index()
         {
-            var associates = db.Associates.Include("Address");
+            var associates = db.Associates;
+            return View(associates.ToList());
+        }
+
+        public ViewResult MAssociate()
+        {
+            int StaffId = Convert.ToInt32(CookieHelper.getStaffId());
+            var associates = db.Associates.Where(x => x.Referrer == StaffId).ToList();
             return View(associates.ToList());
         }
 
@@ -38,6 +47,16 @@ namespace StormWeb.Controllers
         {
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name");
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
+
+            string [] marketingUsernames = Roles.GetUsersInRole("Marketing");
+
+            var marketer = from s in db.Staffs
+                           from user in marketingUsernames
+                           where s.UserName == user
+                           select s;
+
+            ViewBag.Marketer_List = new SelectList(marketer, "Staff_Id", "FirstName");
+
             return View();
         }
 
@@ -45,13 +64,42 @@ namespace StormWeb.Controllers
         // POST: /Associate/Create
 
         [HttpPost]
-        public ActionResult Create(Associate associate)
+        public ActionResult Create(Associate associate, FormCollection fc)
         {
-            if (ModelState.IsValid)
+            string password = fc["Password"];
+
+            ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name");
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
+
+            if (password == null || password.Length < 6)
             {
+                ModelState.AddModelError("AssociatePassword", "Password must have 6 characters."); 
+            }
+
+            associate.Referrer = CookieHelper.getStaffId();
+            
+            if (ModelState.IsValid)
+            {                
                 db.Associates.AddObject(associate);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                // Attempt to register the user
+                MembershipCreateStatus createStatus;
+                Membership.CreateUser(associate.Username, password, associate.Email, null, null, true, null, out createStatus);
+                Roles.AddUserToRole(associate.Username, "Associate");
+               
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    db.SaveChanges();
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "New Associate Added");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error Creating In New Associate");
+                    return View(associate);
+                }
+                
+               
             }
 
             return View(associate);
@@ -153,5 +201,7 @@ namespace StormWeb.Controllers
 
             return assocHelper.AsQueryable();
         }
+
+
     }
 }

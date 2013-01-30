@@ -53,7 +53,7 @@ $(function () {
                                     <i class="color-icons house_co"></i>Address
                                 </th>
                                 <th>
-                                    Branch
+                                   <i class="color-icons arrow_branch_co"></i> Branch
                                 </th>
                                 <th>
                                     Service
@@ -90,15 +90,15 @@ $(function () {
                                         <ul>
                                             @if (item.Email != null)
                                             {
-                                                <li><i class="black-icons mail"></i><a href="#">@item.Email</a></li>
+                                                <li><i class="color-icons envelope_co"></i><a href="#">@item.Email</a></li>
                                             }
                                             @if (item.ContactNumber != null)
                                             {
-                                                <li><i class="black-icons phone_hook"></i><a href="#">@item.ContactNumber</a></li>
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.ContactNumber</a></li>
                                             }
                                             @if (item.SecondaryContactNumber != null)
                                             {
-                                                <li><i class="black-icons phone_hook"></i><a href="#">@item.SecondaryContactNumber</a></li>
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@item.SecondaryContactNumber</a></li>
                                             }
                                         </ul>
                                     </td>
@@ -111,7 +111,7 @@ $(function () {
                                             </ul>}
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Branch_Id)
+                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Services)
@@ -167,7 +167,7 @@ $(function () {
                                         </ul>}
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Branch_Id)
+                                        @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Services)
@@ -176,10 +176,10 @@ $(function () {
                                         @Html.DisplayFor(modelItem => item.Nationality)
                                     </td>
                                     <td>
-                                        <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit">
-                                            <span class="color-icons page_white_paintbrush_co"></span></a>| <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details">
-                                                <span class="color-icons magnifier_co"></span></a>| <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete">
-                                                    <span class="color-icons delete_co"></span></a>
+                                        <a href="@Url.Action("Edit", new { id = item.Client_Id })" class="tip-top" data-original-title="Edit">Edit
+                                             </a>| <a href="@Url.Action("Details", new { id = item.Client_Id })" class="tip-top" data-original-title="Details">
+                                               Details</a>| <a href="@Url.Action("Delete", new { id = item.Client_Id })" class="tip-top" data-original-title="Delete">
+                                                    Delete</a>
                                     </td>
                                 </tr>
                                 }

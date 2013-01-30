@@ -19,6 +19,7 @@ namespace StormWeb.Helper
         static string usernameCookieVar = "username";
         static string studentIdVar = "student_id";
         static string staffIdVar = "staff_id";
+        static string assocIdVar = "assoc_id";
         static string rolesVar = "roles";
         static string nameVar = "name";
         static string assignedBranchVar = "branch";
@@ -100,6 +101,25 @@ namespace StormWeb.Helper
             }
         }
 
+        public static string AssocId
+        {
+            get
+            {
+                if (HttpContext.Current.Request.Cookies.AllKeys.Contains(assocIdVar))
+                {
+                    return HttpContext.Current.Request.Cookies[assocIdVar].Value;
+                }
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                HttpCookie cookie = new HttpCookie(assocIdVar);
+                cookie.Value = value;
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+        } 
+
         public static string StudentId
         {
             get
@@ -180,10 +200,16 @@ namespace StormWeb.Helper
             return rolesArray.Contains("Student");
         }
 
+        public static bool isAssociate()
+        {
+            string[] rolesArray = Roles.Split('|');
+            return rolesArray.Contains("Associate");
+        }
+
         public static bool isStaff()
         {
             string[] rolesArray = Roles.Split('|');
-            return !(rolesArray.Contains("Student"));            
+            return !(rolesArray.Contains("Student") || rolesArray.Contains("Associate"));            
         }
 
         public static void destroyAllCookies()
@@ -209,6 +235,12 @@ namespace StormWeb.Helper
             if (HttpContext.Current.Request.Cookies.AllKeys.Contains(staffIdVar))
             {
                 HttpCookie cookie = HttpContext.Current.Request.Cookies[staffIdVar];
+                cookie.Expires = DateTime.Now.AddDays(-1);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+            if (HttpContext.Current.Request.Cookies.AllKeys.Contains(assocIdVar))
+            {
+                HttpCookie cookie = HttpContext.Current.Request.Cookies[assocIdVar];
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }

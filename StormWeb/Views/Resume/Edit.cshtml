@@ -1,0 +1,201 @@
+﻿@model StormWeb.Models.Resume
+@{
+    ViewBag.Title = "Edit";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Resume_Id)
+    @Html.HiddenFor(model => model.Address_Id)
+    @Html.HiddenFor(model => model.Address.Country_Id)
+  
+    <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Edit Resume Details
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
+                        <div class="control-group">
+                            @Html.Label("Given Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.GivenName, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.GivenName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("LastName", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "input-large text-tip", placeholder = " Last Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.LastName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label(" Street Name and Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -60px;" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-large text-tip", placeholder = " Street Name and Number" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Address_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("City", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.City, new { @class = "input-large text-tip", placeholder = "City" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.City)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("State", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.State, new { @class = "input-large text-tip", placeholder = "State" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.State)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-large text-tip", placeholder = "Zipcode" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Zipcode)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Country", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                              @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
+                      
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                                </p>
+                            </div>
+                        </div>
+                       <div class="control-group">
+                            @Html.Label("Contact Number", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.ContactNumber, new { @class = "input-large text-tip", placeholder = "ContactNumber" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.ContactNumber)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group"> 
+                            @Html.Label("Secondary Contact Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -60px;"  })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.SecondaryContactNumber, new { @class = "input-large text-tip", placeholder = "SecondaryContactNumber" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.SecondaryContactNumber)
+                                </p>
+                            </div>
+                        </div>
+                         <div class="control-group">
+                            @Html.Label("Email", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "input-large text-tip", placeholder = "Email" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Description", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Description, new { @class = "input-large text-tip", placeholder = "Description" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Description)
+                                </p>
+                            </div>
+                        </div>
+                            <div class="control-group">
+                <div class="controls">
+                   <input type="submit" class="btn btn-primary" value="Save Changes" />
+             @Html.Button_DeleteOrCancel("Cancel", "../../Resume")
+                </div>
+            </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    
+}
+@*@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Resume</legend>
+        @Html.HiddenFor(model => model.Resume_Id)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GivenName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.GivenName)
+            @Html.ValidationMessageFor(model => model.GivenName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Address_Id)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Address_Id)
+            @Html.ValidationMessageFor(model => model.Address_Id)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactNumber)
+            @Html.ValidationMessageFor(model => model.ContactNumber)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SecondaryContactNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SecondaryContactNumber)
+            @Html.ValidationMessageFor(model => model.SecondaryContactNumber)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+*@

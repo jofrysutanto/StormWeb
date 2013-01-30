@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Associate_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Address), "Associate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Associate), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Address), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Resume_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Resume", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Resume), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Address", "Address", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Address), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Advertisement_File_Advertisement", "Advertisement", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Advertisement), "Advertisement_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Advertisement_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Application_Cancel_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Application), "Application_Cancel", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Application_Cancel), true)]
@@ -48,6 +49,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Associate", "Associate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Associate), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Staff_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Branch_Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch_Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Cases_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Case), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Client_Branch", "Branch", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Branch), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Client), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Branch_Staff_Staff", "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff), "Branch_Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Branch_Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Case_Staff_Case", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Case), "Case_Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Case_Staff), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_CaseDocument_Cases", "Case", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Case), "CaseDocument", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.CaseDocument), true)]
@@ -72,6 +74,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Material_Order_Material", "Material", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Material), "Material_Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Material_Order), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Message_To_Message", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Message), "Message_To", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Message_To), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Receipt_File_Payment", "Payment", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Payment), "Receipt_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Receipt_File), true)]
+[assembly: EdmRelationshipAttribute("StormDBModel", "FK_Resume_File_Resume2", "Resume", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(StormWeb.Models.Resume), "Resume_File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Resume_File), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Side_Menu_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Side_Menu", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Side_Menu), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Staff_Role_Role", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Role), "Staff_Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff_Role), true)]
 [assembly: EdmRelationshipAttribute("StormDBModel", "FK_Employee_Emp_Dept", "Staff_Dept", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(StormWeb.Models.Staff_Dept), "Staff", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(StormWeb.Models.Staff), true)]
@@ -995,6 +998,38 @@ namespace StormWeb.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Resume> Resumes
+        {
+            get
+            {
+                if ((_Resumes == null))
+                {
+                    _Resumes = base.CreateObjectSet<Resume>("Resumes");
+                }
+                return _Resumes;
+            }
+        }
+        private ObjectSet<Resume> _Resumes;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Resume_File> Resume_File
+        {
+            get
+            {
+                if ((_Resume_File == null))
+                {
+                    _Resume_File = base.CreateObjectSet<Resume_File>("Resume_File");
+                }
+                return _Resume_File;
+            }
+        }
+        private ObjectSet<Resume_File> _Resume_File;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Role> Roles
         {
             get
@@ -1620,6 +1655,22 @@ namespace StormWeb.Models
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Resumes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToResumes(Resume resume)
+        {
+            base.AddObject("Resumes", resume);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Resume_File EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToResume_File(Resume_File resume_File)
+        {
+            base.AddObject("Resume_File", resume_File);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Roles EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToRoles(Role role)
@@ -2008,6 +2059,28 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("StormDBModel.FK_Client_Address", "Client", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Resume_Address", "Resume")]
+        public EntityCollection<Resume> Resumes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Resume>("StormDBModel.FK_Resume_Address", "Resume");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Resume>("StormDBModel.FK_Resume_Address", "Resume", value);
                 }
             }
         }
@@ -7272,6 +7345,54 @@ namespace StormWeb.Models
         private global::System.Decimal _Commision_Rate;
         partial void OnCommision_RateChanging(global::System.Decimal value);
         partial void OnCommision_RateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Username
+        {
+            get
+            {
+                return _Username;
+            }
+            set
+            {
+                OnUsernameChanging(value);
+                ReportPropertyChanging("Username");
+                _Username = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Username");
+                OnUsernameChanged();
+            }
+        }
+        private global::System.String _Username;
+        partial void OnUsernameChanging(global::System.String value);
+        partial void OnUsernameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Referrer
+        {
+            get
+            {
+                return _Referrer;
+            }
+            set
+            {
+                OnReferrerChanging(value);
+                ReportPropertyChanging("Referrer");
+                _Referrer = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Referrer");
+                OnReferrerChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Referrer;
+        partial void OnReferrerChanging(Nullable<global::System.Int32> value);
+        partial void OnReferrerChanged();
 
         #endregion
     
@@ -7619,6 +7740,28 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Case>("StormDBModel.FK_Cases_Branch", "Case", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Client_Branch", "Client")]
+        public EntityCollection<Client> Clients
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("StormDBModel.FK_Client_Branch", "Client");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("StormDBModel.FK_Client_Branch", "Client", value);
                 }
             }
         }
@@ -9553,6 +9696,44 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Associate>("StormDBModel.FK_Client_Associate", "Associate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Client_Branch", "Branch")]
+        public Branch Branch
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Branch>("StormDBModel.FK_Client_Branch", "Branch").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Branch>("StormDBModel.FK_Client_Branch", "Branch").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Branch> BranchReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Branch>("StormDBModel.FK_Client_Branch", "Branch");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Branch>("StormDBModel.FK_Client_Branch", "Branch", value);
                 }
             }
         }
@@ -13893,6 +14074,30 @@ namespace StormWeb.Models
         private global::System.Int32 _Branch;
         partial void OnBranchChanging(global::System.Int32 value);
         partial void OnBranchChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> CompletedOn
+        {
+            get
+            {
+                return _CompletedOn;
+            }
+            set
+            {
+                OnCompletedOnChanging(value);
+                ReportPropertyChanging("CompletedOn");
+                _CompletedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompletedOn");
+                OnCompletedOnChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _CompletedOn;
+        partial void OnCompletedOnChanging(Nullable<global::System.DateTime> value);
+        partial void OnCompletedOnChanged();
 
         #endregion
     
@@ -15312,30 +15517,6 @@ namespace StormWeb.Models
         private global::System.String _AccountNumber;
         partial void OnAccountNumberChanging(global::System.String value);
         partial void OnAccountNumberChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> Application_Id
-        {
-            get
-            {
-                return _Application_Id;
-            }
-            set
-            {
-                OnApplication_IdChanging(value);
-                ReportPropertyChanging("Application_Id");
-                _Application_Id = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Application_Id");
-                OnApplication_IdChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _Application_Id;
-        partial void OnApplication_IdChanging(Nullable<global::System.Int32> value);
-        partial void OnApplication_IdChanged();
 
         #endregion
     
@@ -15550,6 +15731,522 @@ namespace StormWeb.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Payment>("StormDBModel.FK_Receipt_File_Payment", "Payment", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Resume")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Resume : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Resume object.
+        /// </summary>
+        /// <param name="resume_Id">Initial value of the Resume_Id property.</param>
+        /// <param name="givenName">Initial value of the GivenName property.</param>
+        /// <param name="lastName">Initial value of the LastName property.</param>
+        /// <param name="address_Id">Initial value of the Address_Id property.</param>
+        /// <param name="contactNumber">Initial value of the ContactNumber property.</param>
+        /// <param name="secondaryContactNumber">Initial value of the SecondaryContactNumber property.</param>
+        /// <param name="email">Initial value of the Email property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        public static Resume CreateResume(global::System.Int32 resume_Id, global::System.String givenName, global::System.String lastName, global::System.Int32 address_Id, global::System.String contactNumber, global::System.String secondaryContactNumber, global::System.String email, global::System.String description)
+        {
+            Resume resume = new Resume();
+            resume.Resume_Id = resume_Id;
+            resume.GivenName = givenName;
+            resume.LastName = lastName;
+            resume.Address_Id = address_Id;
+            resume.ContactNumber = contactNumber;
+            resume.SecondaryContactNumber = secondaryContactNumber;
+            resume.Email = email;
+            resume.Description = description;
+            return resume;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Resume_Id
+        {
+            get
+            {
+                return _Resume_Id;
+            }
+            set
+            {
+                if (_Resume_Id != value)
+                {
+                    OnResume_IdChanging(value);
+                    ReportPropertyChanging("Resume_Id");
+                    _Resume_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Resume_Id");
+                    OnResume_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Resume_Id;
+        partial void OnResume_IdChanging(global::System.Int32 value);
+        partial void OnResume_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String GivenName
+        {
+            get
+            {
+                return _GivenName;
+            }
+            set
+            {
+                OnGivenNameChanging(value);
+                ReportPropertyChanging("GivenName");
+                _GivenName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("GivenName");
+                OnGivenNameChanged();
+            }
+        }
+        private global::System.String _GivenName;
+        partial void OnGivenNameChanging(global::System.String value);
+        partial void OnGivenNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Address_Id
+        {
+            get
+            {
+                return _Address_Id;
+            }
+            set
+            {
+                OnAddress_IdChanging(value);
+                ReportPropertyChanging("Address_Id");
+                _Address_Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Address_Id");
+                OnAddress_IdChanged();
+            }
+        }
+        private global::System.Int32 _Address_Id;
+        partial void OnAddress_IdChanging(global::System.Int32 value);
+        partial void OnAddress_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ContactNumber
+        {
+            get
+            {
+                return _ContactNumber;
+            }
+            set
+            {
+                OnContactNumberChanging(value);
+                ReportPropertyChanging("ContactNumber");
+                _ContactNumber = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ContactNumber");
+                OnContactNumberChanged();
+            }
+        }
+        private global::System.String _ContactNumber;
+        partial void OnContactNumberChanging(global::System.String value);
+        partial void OnContactNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String SecondaryContactNumber
+        {
+            get
+            {
+                return _SecondaryContactNumber;
+            }
+            set
+            {
+                OnSecondaryContactNumberChanging(value);
+                ReportPropertyChanging("SecondaryContactNumber");
+                _SecondaryContactNumber = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("SecondaryContactNumber");
+                OnSecondaryContactNumberChanged();
+            }
+        }
+        private global::System.String _SecondaryContactNumber;
+        partial void OnSecondaryContactNumberChanging(global::System.String value);
+        partial void OnSecondaryContactNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Email
+        {
+            get
+            {
+                return _Email;
+            }
+            set
+            {
+                OnEmailChanging(value);
+                ReportPropertyChanging("Email");
+                _Email = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Email");
+                OnEmailChanged();
+            }
+        }
+        private global::System.String _Email;
+        partial void OnEmailChanging(global::System.String value);
+        partial void OnEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Resume_Address", "Address")]
+        public Address Address
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Address>("StormDBModel.FK_Resume_Address", "Address").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Address>("StormDBModel.FK_Resume_Address", "Address").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Address> AddressReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Address>("StormDBModel.FK_Resume_Address", "Address");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Address>("StormDBModel.FK_Resume_Address", "Address", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Resume_File_Resume2", "Resume_File")]
+        public EntityCollection<Resume_File> Resume_File
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Resume_File>("StormDBModel.FK_Resume_File_Resume2", "Resume_File");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Resume_File>("StormDBModel.FK_Resume_File_Resume2", "Resume_File", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="StormDBModel", Name="Resume_File")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Resume_File : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Resume_File object.
+        /// </summary>
+        /// <param name="resumeFile_Id">Initial value of the ResumeFile_Id property.</param>
+        public static Resume_File CreateResume_File(global::System.Int32 resumeFile_Id)
+        {
+            Resume_File resume_File = new Resume_File();
+            resume_File.ResumeFile_Id = resumeFile_Id;
+            return resume_File;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ResumeFile_Id
+        {
+            get
+            {
+                return _ResumeFile_Id;
+            }
+            set
+            {
+                if (_ResumeFile_Id != value)
+                {
+                    OnResumeFile_IdChanging(value);
+                    ReportPropertyChanging("ResumeFile_Id");
+                    _ResumeFile_Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ResumeFile_Id");
+                    OnResumeFile_IdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ResumeFile_Id;
+        partial void OnResumeFile_IdChanging(global::System.Int32 value);
+        partial void OnResumeFile_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Resume_Id
+        {
+            get
+            {
+                return _Resume_Id;
+            }
+            set
+            {
+                OnResume_IdChanging(value);
+                ReportPropertyChanging("Resume_Id");
+                _Resume_Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Resume_Id");
+                OnResume_IdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Resume_Id;
+        partial void OnResume_IdChanging(Nullable<global::System.Int32> value);
+        partial void OnResume_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Path
+        {
+            get
+            {
+                return _Path;
+            }
+            set
+            {
+                OnPathChanging(value);
+                ReportPropertyChanging("Path");
+                _Path = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Path");
+                OnPathChanged();
+            }
+        }
+        private global::System.String _Path;
+        partial void OnPathChanging(global::System.String value);
+        partial void OnPathChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UploadedBy
+        {
+            get
+            {
+                return _UploadedBy;
+            }
+            set
+            {
+                OnUploadedByChanging(value);
+                ReportPropertyChanging("UploadedBy");
+                _UploadedBy = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UploadedBy");
+                OnUploadedByChanged();
+            }
+        }
+        private global::System.String _UploadedBy;
+        partial void OnUploadedByChanging(global::System.String value);
+        partial void OnUploadedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> UploadedOn
+        {
+            get
+            {
+                return _UploadedOn;
+            }
+            set
+            {
+                OnUploadedOnChanging(value);
+                ReportPropertyChanging("UploadedOn");
+                _UploadedOn = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UploadedOn");
+                OnUploadedOnChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _UploadedOn;
+        partial void OnUploadedOnChanging(Nullable<global::System.DateTime> value);
+        partial void OnUploadedOnChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("StormDBModel", "FK_Resume_File_Resume2", "Resume")]
+        public Resume Resume
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Resume>("StormDBModel.FK_Resume_File_Resume2", "Resume").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Resume>("StormDBModel.FK_Resume_File_Resume2", "Resume").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Resume> ResumeReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Resume>("StormDBModel.FK_Resume_File_Resume2", "Resume");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Resume>("StormDBModel.FK_Resume_File_Resume2", "Resume", value);
                 }
             }
         }

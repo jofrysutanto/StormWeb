@@ -74,7 +74,7 @@
     </div>
 </div> 
 <p>
- @if (HttpContext.Current.User.IsInRole("BranchManager"))
+ @if (HttpContext.Current.User.IsInRole("BranchManager") || HttpContext.Current.User.IsInRole("Super"))
  {
      if (StormWeb.Controllers.BranchController.getBranchId() == Model.Branch_Id)
      {

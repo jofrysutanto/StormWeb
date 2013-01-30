@@ -1,128 +1,86 @@
 ﻿@model StormWeb.Models.Faculty
 @{
     ViewBag.Title = "EditFaculty";
-} 
+}
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new {id = "aapointmentForm" }))
+@using (Html.BeginForm("EditFaculty", "University", FormMethod.Post, new { id = "aapointmentForm" }))
 {
     @Html.ValidationSummary(false) 
     @Html.HiddenFor(model => model.University_Id)
     @Html.HiddenFor(model => model.Faculty_Id)
 
-     <div class="form-horizontal well">
-        <fieldset>
-            <legend>
-                <h2> Edit Faculty</h2>
-            </legend>
-             <div class="control-group">
-                @Html.Label("Faculty Name", null, new { @class = "control-label form-required" })
-                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
-                <div class="controls"> 
-                      @Html.EditorFor(model => model.Faculty_Name, new { @class = "input-large text-tip", placeholder = "Title" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Faculty_Name) 
-                    </p>
+      
+    <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Edit Faculty Details
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
+                        <div class="control-group">
+                            @Html.Label("Faculty Name", null, new { @class = "control-label form-required" })
+                            @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Faculty_Name, new { @class = "input-large text-tip", placeholder = "Title" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Faculty_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Faculty Description", null, new { @class = "control-label form-required" })
+                            @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Faculty_Description, new { @class = "input-large text-tip", placeholder = "Title" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Faculty_Description)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("University Name", null, new { @class = "control-label form-required" })
+                            @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.University.University_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.University.University_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Campus Name", null, new { @class = "control-label form-required" })
+                            @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.University.Campus, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.University.Campus)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Country Name", null, new { @class = "control-label form-required" })
+                            @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.University.Country.Country_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.University.Country.Country_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" value="Save Changes" class="btn btn-primary" />
+                                @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-              <div class="control-group">
-                @Html.Label("Faculty Description", null, new { @class = "control-label form-required" })
-                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
-                <div class="controls"> 
-                      @Html.TextBoxFor(model => model.Faculty_Description, new { @class = "input-large text-tip", placeholder = "Title" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Faculty_Description) 
-                    </p>
-                </div>
-            </div>
-              <div class="control-group">
-                @Html.Label("University Name", null, new { @class = "control-label form-required" })
-                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
-                <div class="controls"> 
-                      @Html.TextBoxFor(model => model.University.University_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.University.University_Name) 
-                    </p>
-                </div>
-            </div>
-              <div class="control-group">
-                @Html.Label("Campus Name", null, new { @class = "control-label form-required" })
-                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
-                <div class="controls"> 
-                      @Html.TextBoxFor(model => model.University.Campus, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.University.Campus) 
-                    </p>
-                </div>
-            </div>
-             <div class="control-group">
-                @Html.Label("Country Name", null, new { @class = "control-label form-required" })
-                @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
-                <div class="controls"> 
-                      @Html.TextBoxFor(model => model.University.Country.Country_Name, new { @class = "input-large text-tip", @readonly = "readonly", placeholder = "Title" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.University.Country.Country_Name) 
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-              <div class="controls"> 
-                <input type="submit" value="Save Changes" class="btn btn-primary" />        
-        @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
-              </div>
-            </div>
-            </fieldset>
-            </div>
-    
-   @* <table style="text-align: left;">
-        <tr>
-            <th>
-                @Html.Label("Faculty Name")
-            </th>
-            <td>
-                @Html.TextBoxFor(model => model.Faculty_Name)
-                @Html.ValidationMessageFor(model => model.Faculty_Name)
-            </td>
-        </tr>
-        <tr>
-            <th>@Html.Label("Faculty Description")
-            </th>
-            <td>
-                @Html.TextBoxFor(model => model.Faculty_Description)
-                @Html.ValidationMessageFor(model => model.Faculty_Description)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.Label("University Name")
-            </th>
-            <td>
-                @Html.TextBox("University_Name", Model.University.University_Name, new { @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.University.University_Name)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.Label("Campus Name")
-            </th>
-            <td>
-                @Html.TextBox("Campus", Model.University.Campus, new { @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.University.Campus)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.Label("Country Name")
-            </th>
-            <td>
-                @Html.TextBox("Country", Model.University.Country.Country_Name, new { @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.University.Country.Country_Name)
-            </td>
-        </tr>
-    </table>
-    <br />
-    <p>
-        <input type="submit" value="Save Changes" class="btn btn-primary" />        
-        @Html.Button_DeleteOrCancel("Cancel", "../Faculties/" + Model.University_Id)
-    </p> *@
+        </div>
+    </div>
+
 }

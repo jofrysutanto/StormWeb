@@ -1,0 +1,139 @@
+﻿@model StormWeb.Models.Resume
+@{
+    ViewBag.Title = "Create";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("Create","Resume",FormMethod.Post,  new {enctype = "multipart/form-data" }))
+{ 
+     
+    @Html.ValidationSummary(false)
+
+    <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Add New Resume
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
+                        <div class="control-group">
+                            @Html.Label("Given Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.GivenName, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.GivenName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("LastName", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "input-large text-tip", placeholder = " Last Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.LastName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label(" Street Name and Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -60px;" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-large text-tip", placeholder = " Street Name and Number" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Address_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("City", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.City, new { @class = "input-large text-tip", placeholder = "City" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.City)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("State", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.State, new { @class = "input-large text-tip", placeholder = "State" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.State)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-large text-tip", placeholder = "Zipcode" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Zipcode)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Country", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                            @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
+                   
+                              
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Contact Number", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.ContactNumber, new { @class = "input-large text-tip", placeholder = "ContactNumber" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.ContactNumber)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Secondary Contact Number", null, new { @class = "control-label ", style = "width:200px;margin-left: -60px;" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.SecondaryContactNumber, new { @class = "input-large text-tip", placeholder = "SecondaryContactNumber" })
+                               
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Email", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "input-large text-tip", placeholder = "Email" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Resume", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                <div class="input-append" id="divdate" style="display: inline;">
+                                    <input type="file" name="Resume_File" /></div>
+                                <p class="help-block">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Description", null, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Description, new { @class = "input-large text-tip", placeholder = "Description" })
+                              
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" class="btn btn-primary" value="Create" />
+                                @Html.Button_DeleteOrCancel("Cancel", "../../Resume")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+}

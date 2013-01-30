@@ -1,7 +1,9 @@
 #sidebar {
 	background:#fff;
 	border-right:#E0E0E0 1px solid;
-	background-image: url(../img/textured_stripes.png)
+	background-image: url(../img/logo_side.png), url(../img/textured_stripes.png);
+	background-repeat: no-repeat,  repeat;
+	background-position: bottom left, top left;
 }
 .navbar-inner {
 	min-height: 40px;

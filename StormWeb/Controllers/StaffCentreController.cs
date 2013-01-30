@@ -27,6 +27,8 @@ namespace StormWeb.Controllers
 
             ViewBag.StudentStaff = StudentStaffController.getStudentStaffModel();
 
+            ViewBag.Ads = db.Advertisements.Where(x => x.ExpiryDate > DateTime.Now).ToList();
+
             Staff s = db.Staffs.Single(x => x.Staff_Id == staffId);
 
             return View(s);

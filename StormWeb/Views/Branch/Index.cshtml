@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<StormWeb.Models.Branch>
 @{
-    ViewBag.Title = "Index";
-} 
+    ViewBag.Title = "Branch List";
+}
 <div class="row-fluid">
-    <div class="span12"> 
-               <div class="box-tab">
-                <div class="page-header">
-                 <h1> &nbsp;&nbsp;Branch List </h1>
-                   </div>
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Branch List
+                </h1>
+            </div>
             <div class="widget-content">
                 <div class="widget-box" style="padding: 15px;">
                     <table class="data-tbl-simple table table-bordered dataTable">
@@ -41,13 +43,20 @@
                                         </ul>
                                     </td>
                                     <td>
-                                        <i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a>
-                                        <br />
-                                        <br />
-                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Primary_Contact)</a>
-                                        <br />
-                                        <br />
-                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a>
+                                        <ul>
+                                            @if (item.Email != null)
+                                            {
+                                                <li><i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a></li>
+                                            }
+                                            @if (item.Primary_Contact != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Primary_Contact)</a></li>
+                                            }
+                                            @if (item.Secondary_Contact != null)
+                                            {
+                                                <li><i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a></li>
+                                            }
+                                        </ul>
                                     </td>
                                     <td>
                                         @if (HttpContext.Current.User.IsInRole("BranchManager") && StormWeb.Controllers.BranchController.getBranchId() != item.Branch_Id)

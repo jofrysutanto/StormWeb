@@ -60,7 +60,7 @@ namespace StormWeb.Controllers
                     appointment = a.First();
 
             }
-            else
+            else if (StormWeb.Helper.CookieHelper.isStaff())
             {
 
                 int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);

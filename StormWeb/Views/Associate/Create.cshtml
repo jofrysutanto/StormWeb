@@ -7,6 +7,7 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+    
    
     <div class="form-horizontal well">
         <fieldset>
@@ -94,7 +95,7 @@
                 <div class="controls"> 
                     @Html.EditorFor(model => model.Secondary_Contact, new { @class = "input-xlarge text-tip", placeholder = "Secondary Contact" })
                     <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Primary_Contact)
+                        @Html.ValidationMessageFor(model => model.Secondary_Contact)
                     </p>
                 </div>
             </div>
@@ -113,6 +114,33 @@
                     @Html.EditorFor(model => model.Commision_Rate, new { @class = "input-xlarge text-tip", placeholder = "Rate (%)" })
                     <p class="help-block">
                         @Html.ValidationMessageFor(model => model.Commision_Rate)
+                    </p>
+                </div>
+            </div>
+             <div class="control-group">
+                @Html.Label("Username", null, new { @class = "control-label form-required" })
+                <div class="controls"> 
+                    @Html.EditorFor(model => model.Username, new { @class = "input-xlarge text-tip", placeholder = "Rate (%)" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Username)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Password", null, new { @class = "control-label form-required" })
+                <div class="controls"> 
+                    @Html.Password("Password", "", new { @class = "text-tip" })
+                     @Html.ValidationMessage("AssociatePassword")
+                    <p class="help-block">
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Referrer", null, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Referrer, (IEnumerable<SelectListItem>)ViewBag.Marketer_List, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Referrer)
                     </p>
                 </div>
             </div>

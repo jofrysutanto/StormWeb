@@ -11,16 +11,21 @@
 @using (Html.BeginForm("Edit", "Staff", FormMethod.Post))
 {
     @Html.ValidationSummary(false, null, new { @class = "error" })
- @*   <div id="divEditProfile">*@
+ 
         @Html.HiddenFor(model => model.Staff_Id)
         @Html.HiddenFor(model => model.Address.Address_Id)
         @Html.HiddenFor(model => model.Address.Country.Country_Id)
-       <div class="form-horizontal well">
-        <fieldset style="margin-left: 50px;">
-            <legend>
-                <h2>
-                    Edit Staff Details</h2>
-            </legend>
+    
+             <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp; Edit Staff Details
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
 
             <div class="control-group">
                 @Html.Label("Given Name", null, new { @class = "control-label form-required" })
@@ -181,9 +186,13 @@
                    <input type="submit" class="btn btn-primary" value="Save Changes" />
              @Html.Button_DeleteOrCancel("Cancel", "../../Staff")
                 </div>
+            </div> 
+      </div>
+                </div>
             </div>
-        </fieldset>
-     </div>  
+        </div>
+    </div>
+
     <br />
 }
  

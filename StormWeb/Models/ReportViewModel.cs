@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Foolproof;
 
 namespace StormWeb.Models
 {
@@ -22,5 +23,14 @@ namespace StormWeb.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yy H:mm:ss}")]
         public DateTime dateTimeEnd { get; set; }
+
+        public int Branch { get; set; }
+
+        public int Location { get; set; }
+
+        public int Associate { get; set; }
+
+        public int University { get; set; }
+
     }
 }

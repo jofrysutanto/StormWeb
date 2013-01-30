@@ -347,27 +347,26 @@
                                         <h1>
                                             &nbsp; &nbsp;Payment Details</h1>
                                     </div>
-                            @{StormWeb.Models.PaymentDetail paymentDetail= StormWeb.Controllers.DocumentController.PopulatePaymentDetails(Model.app.Application_Id);}
-
+                          
                                     <div class="widget-content">
                                         <div class="widget-box">
                                             <br /> 
                                             <table class="table"> 
                                                 <tr>
                                                     <th>Bank Name :</th> 
-                                                    <td>@paymentDetail.BankName </td> 
+                                                    <td>@ViewBag.BankName </td> 
                                                 </tr> 
                                                 <tr>
                                                     <th>Account Name :</th>
-                                                    <td>@paymentDetail.AccountName</td>
+                                                    <td>@ViewBag.AccountName</td>
                                                 </tr>
                                                  <tr>
                                                     <th>BSB :</th>
-                                                    <td>@paymentDetail.BSB</td>
+                                                    <td>@ViewBag.BSB</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Account Number :</th>
-                                                    <td>@paymentDetail.AccountNumber</td>
+                                                    <td>@ViewBag.AccountNumber</td>
                                                 </tr>
                                             </table></div></div></div>
                                  

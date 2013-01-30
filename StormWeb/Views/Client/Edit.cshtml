@@ -23,13 +23,18 @@
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Client_Id)
-    @Html.HiddenFor(model=>model.Branch_Id)
-    <div class="form-horizontal well">
-        <fieldset style="margin-left:50px;">
-            <legend>
-                <h2>
-                    Edit Client Details</h2>
-            </legend> 
+    @Html.HiddenFor(model => model.Branch_Id)
+  
+     <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp; Edit Client Details
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
                 <div class="control-group">
                     @Html.Label("Title", null, new { @class = "control-label form-required" })
                     <div class="controls">
@@ -98,7 +103,7 @@
                   <div class="control-group">
                     @Html.Label("Address", null, new { @class = "control-label form-required" })
                     <div class="controls">
-                      @Html.DropDownListFor(model => model.Address_Id, (IEnumerable<SelectListItem>)ViewBag.Address_Id,"--Select--", new { @class = "chzn-select" })
+                      @Html.DropDownListFor(model => model.Address_Id, (IEnumerable<SelectListItem>)ViewBag.Address_Id, "--Select--", new { @class = "chzn-select" })
                         <p class="help-block">
                             @Html.ValidationMessageFor(model => model.Address_Id)
                         </p>
@@ -132,7 +137,7 @@
                     </div>
                 </div>
                  <div class="control-group">
-                    @Html.Label("Preferred Country Visa Status", null, new { @class = "control-label form-required" , style = "width:200px;margin-left: -50px;" })
+                    @Html.Label("Preferred Country Visa Status", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -50px;" })
                     <div class="controls"> 
                       @Html.EditorFor(model => model.PreferredCountryVisaStatus, new { @class = "input-xlarge text-tip", placeholder = "Preferred Country Visa Status" })
                          <p class="help-block">
@@ -183,162 +188,12 @@
                  <input type="submit" value="Save Changes" class="btn btn-primary" />
                         @Html.Button_DeleteOrCancel("Cancel", "../../Client")
            </div></div>
-            @*<table style="text-align: left;">
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Title)
-                    </th>
-                    <td>@Html.EditorFor(model => model.Title)
-                        @Html.ValidationMessageFor(model => model.Title)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Dob)
-                    </th>
-                    <td>
-                        <div class="input-append">
-                            @Html.TextBoxFor(model => model.Dob, new { @readonly = "readonly", @class = "dp1" })
-                            @Html.ValidationMessageFor(model => model.Dob)
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.GivenName)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.GivenName)
-                        @Html.ValidationMessageFor(model => model.GivenName)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.LastName)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.LastName)
-                        @Html.ValidationMessageFor(model => model.LastName)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Email)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.Email)
-                        @Html.ValidationMessageFor(model => model.Email)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.ContactNumber)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.ContactNumber)
-                        @Html.ValidationMessageFor(model => model.ContactNumber)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.SecondaryContactNumber)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.SecondaryContactNumber)
-                        @Html.ValidationMessageFor(model => model.SecondaryContactNumber)
-                    </td>
-                </tr>
-                <tr>
-                    <th>@Html.LabelFor(model => model.Address_Id, "Address")
-                    </th>
-                    <td>
-                        @Html.DropDownList("Address_Id", String.Empty)
-                        @Html.ValidationMessageFor(model => model.Address_Id)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Services)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.Services)
-                        @Html.ValidationMessageFor(model => model.Services)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.PreferredCountry)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.PreferredCountry)
-                        @Html.ValidationMessageFor(model => model.PreferredCountry)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.InPreferredCountry)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.InPreferredCountry)
-                        @Html.ValidationMessageFor(model => model.InPreferredCountry)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.PreferredCountryVisaStatus)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.PreferredCountryVisaStatus)
-                        @Html.ValidationMessageFor(model => model.PreferredCountryVisaStatus)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.MaritalStatus)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.MaritalStatus)
-                        @Html.ValidationMessageFor(model => model.MaritalStatus)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.RelatedKinDetail)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.RelatedKinDetail)
-                        @Html.ValidationMessageFor(model => model.RelatedKinDetail)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Nationality)
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.Nationality)
-                        @Html.ValidationMessageFor(model => model.Nationality)
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Registered_On)
-                    </th>
-                    <td>
-                        <div class="input-append">
-                            @Html.TextBoxFor(model => model.Registered_On, new { @readonly = "readonly", @class = "dp1" })
-                            @Html.ValidationMessageFor(model => model.Registered_On)
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                    </th>
-                    <td>
-                        <input type="submit" value="Save Changes" class="btn btn-primary" />
-                        @Html.Button_DeleteOrCancel("Cancel", "../Index")
-                    </td>
-                </tr>
-            </table>*@
-        </fieldset>
+        
+    
+ </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 }

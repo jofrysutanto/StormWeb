@@ -1,0 +1,81 @@
+﻿@model IEnumerable<StormWeb.Models.Associate>
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Associate List
+                </h1>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                    <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="color-icons arrow_branch_co"></i>Associate Name
+                                </th>
+                                <th>
+                                    <i class="color-icons house_co"></i>Address
+                                </th>
+                                <th>
+                                    <i class="color-icons user_co"></i>Contact Person
+                                </th>
+                                <th>
+                                    <i class="color-icons book_addresses_co"></i>Contact
+                                </th>
+                                <th>
+                                    # of Students
+                                </th>
+                                <th>
+                                    <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssociateName) <br />
+                                        C. Rate: <span class="badge badge-success">@item.Commision_Rate%</span>
+                                    </td>                                    
+                                    <td>
+                                        <ul>
+                                            @if (item.Address != null)
+                                            {
+                                                <li>@item.Address.Address_Name , @item.Address.City</li>
+                                                <li class="post-date">@item.Address.State , @item.Address.Country.Country_Name , @item.Address.Zipcode</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ContactPerson)
+                                    </td>
+                                    <td>
+                                        <i class="color-icons envelope_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Email)</a><br />
+                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Primary_Contact)</a><br />
+                                        <i class="color-icons mobile_phone_co"></i><a href="#">@Html.DisplayFor(modelItem => item.Secondary_Contact)</a><br />
+                                    </td>
+                                    <td>
+                                        @item.Clients.Count()
+                                    </td>                           
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.AssociateId }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.AssociateId }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.AssociateId })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        @Html.Button_Add("Create New", "Associate/Create")
+    </p>

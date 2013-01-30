@@ -40,6 +40,9 @@ namespace StormWeb.Controllers
             //ViewBag.staffWithCases = staff.ToList();
 
             ViewBag.Branch_Id = new SelectList(db.Branches, "Branch_Id", "Branch_Name");
+            ViewBag.AssociateId = new SelectList(db.Associates, "AssociateId", "AssociateName");
+            ViewBag.Location = new SelectList(db.Countries, "Country_Id", "Country_Name");
+            ViewBag.University = new SelectList(db.Universities, "University_Id", "University_Name");
 
             ReportViewModel viewModel = new ReportViewModel();
 
@@ -74,11 +77,12 @@ namespace StormWeb.Controllers
                 }
                 else if (reportType == "Tax Invoice")
                 {
-                    ErrorReport();
+                   // ErrorReport();
+                    TaxInvoice(viewModel.allTime, viewModel.dateTimeStart, viewModel.dateTimeEnd, viewModel);
                 }
                 else if (reportType == "Student Info")
                 {
-                    StudentInfoReport(viewModel.allTime, viewModel.dateTimeStart, viewModel.dateTimeEnd);
+                    StudentInfoReport(viewModel.allTime, viewModel.dateTimeStart, viewModel.dateTimeEnd, viewModel);
                 }
                 else
                 {
@@ -115,27 +119,72 @@ namespace StormWeb.Controllers
             MakeReport(rm);
         }
 
-        private void MakeReport(ReportModel rm)
+        public void TaxInvoice(bool allTime, DateTime start, DateTime end, ReportViewModel viewModel)
         {
-            Response.BinaryWrite(rm.makeReport());
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment;  filename=Report.xlsx");
+            DateTime lastYear = DateTime.Now.AddYears(-1);
+            List<Application> apps = db.Applications.Where(x => x.Date_Of_ApplicationStatus >= lastYear).ToList();
+
+            // Header for the report
+            string[] reportHeader = { "Id", "Surname", "First Name", "Course", "Start Date", "Student Payment" ,"University Commission rate","Commission payable","Comments"};
+
+            ReportModel rm = new ReportModel(reportHeader);
+
+            foreach (Application app in apps)
+            {
+                // Insert data as string array with content matching the header above
+               
+                string[] data = {
+                    Convert.ToString(app.Student.Client_Id),
+                    app.Case.Student.Client.LastName,
+                    app.Case.Student.Client.GivenName,
+                    app.Course.Course_Name,
+                    Convert.ToString(app.Course.Commence_Date_Sem),
+                    app.Payments.Count > 0 ? Convert.ToString(app.Payments.LastOrDefault().Amount) : "",
+                    Convert.ToString(app.Course.Faculty.University.Comission_Rate),
+                    Convert.ToString((app.Payments.Count > 0? app.Payments.LastOrDefault().Amount:0)*(app.Course.Faculty.University.Comission_Rate/100)),
+                    ""
+                };
+
+                rm.addData(data);
+            }
+
+            MakeReport(rm);
         }
 
-        public void StudentInfoReport(bool allTime, DateTime start, DateTime end)
+        public void StudentInfoReport(bool allTime, DateTime start, DateTime end, ReportViewModel viewModel)
         {
-            List<Client> clients;
+            var clients = db.Clients.AsQueryable();
 
-            if (allTime)
+            if (!allTime)
             {
-                clients = db.Clients.ToList();
-            }
-            else
-            {
-                clients = db.Clients.Where(x => x.Registered_On >= start && x.Registered_On <= end).ToList();
+                clients = clients.Where(x => x.Registered_On >= start && x.Registered_On <= end);
             }
 
-            string[] reportHeader = { "ID", "First Name", "Last Name", "Enrolled Institution", "Current Course", "Intake Enrolled", "DoB", "Contact Number", "Email", "Registered On" };
+            if (viewModel.Branch > 0)
+            {
+                clients = clients.Where(x => x.Branch_Id == (int)viewModel.Branch);
+            }
+
+            if (viewModel.Associate > 0)
+            {
+                clients = clients.Where(x => x.Associate_Id == (int)viewModel.Associate);
+            }
+
+            if (viewModel.Location > 0)
+            {
+                clients = clients.Where(x => x.Address.Country_Id == (int)viewModel.Location);
+            }
+
+            if (viewModel.University > 0)
+            {
+                clients = from c in clients
+                          from s in db.Students
+                          from app in db.Applications
+                          where c.Client_Id == s.Client_Id && app.Student_Id == s.Student_Id
+                          select c;
+            }
+
+            string[] reportHeader = { "ID", "First Name", "Last Name", "Enrolled Institution", "Current Course", "Intake Enrolled", "DoB", "Contact Number", "Email", "Registered On", "Branch", "Associate", "Location" };
 
             ReportModel rm = new ReportModel(reportHeader);
 
@@ -143,6 +192,11 @@ namespace StormWeb.Controllers
             {
                 // Insert data as string array with content matching the header above
                 int countCompleted = c.Students.FirstOrDefault().Applications.Where(x => x.Status == ApplicationController.ApplicationStatusType.CoE.ToString()).Count();
+
+                string associateName = "---";
+
+                if (c.Associate != null)
+                    associateName = c.Associate.AssociateName;
 
                 if (countCompleted > 0)
                 {
@@ -158,14 +212,17 @@ namespace StormWeb.Controllers
                         c.Dob.ToString("dd-MM-yyyy"),
                         c.ContactNumber,
                         c.Email,
-                        ((DateTime) c.Registered_On).ToString("dd-MM-yyyy")
+                        ((DateTime) c.Registered_On).ToString("dd-MM-yyyy"),
+                        c.Branch.Branch_Name,
+                        associateName,
+                        c.Address.Country.Country_Name
                     };
 
                     rm.addData(data);
                 }
 
                 if (countCompleted <= 0)
-                {  
+                {
                     string[] data = {
                         Convert.ToString(c.Client_Id),
                         c.GivenName,
@@ -176,32 +233,31 @@ namespace StormWeb.Controllers
                         c.Dob.ToString("dd-MM-yyyy"),
                         c.ContactNumber,
                         c.Email,
-                        ((DateTime) c.Registered_On).ToString("dd-MM-yyyy")
+                        ((DateTime) c.Registered_On).ToString("dd-MM-yyyy"),
+                        c.Branch.Branch_Name,
+                        associateName,
+                        c.Address.Country.Country_Name
                     };
 
                     rm.addData(data);
                 }
 
-                
+
             }
 
             MakeReport(rm);
         }
 
-        public void InvoiceReport(bool allTime, DateTime start, DateTime end)
+        private void MakeReport(ReportModel rm)
         {
-            List<Payment> pay;
-            if (allTime)
-            {
-                pay = db.Payments.ToList();
-            }
-            else
-            {
-                pay = db.Payments.Where(x => x.Date_Of_Payment >= start && x.Date_Of_Payment <= end).ToList();
-            }
-            string[] reportHeader = { "Id", "Surname", "First Name", "Course", "Course Intake", "Student Payment" };
-
+            Response.BinaryWrite(rm.makeReport());
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=Report.xlsx");
         }
+
+        
+
+        
 
         public void ErrorReport()
         {

@@ -23,81 +23,89 @@
 {
     @Html.ValidationSummary(false, "Edit was unsuccessful. Please correct errors and try again")
     @Html.HiddenFor(model => model.Course_Id) 
-    <div class="form-horizontal well">
-        <fieldset style="margin-left:50px;">
-            <legend>
-                <h2>
-                    Edit Course</h2>
-            </legend>
-            <div class="control-group">
-                @Html.Label("University", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Faculty.University.University_Id, (IEnumerable<SelectListItem>)ViewBag.Universityddl, "--Select--", new { @class = "chzn-select" })
-                    @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
-                    @Html.ValidationMessageFor(model => model.Faculty.University.University_Id)
+    <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp; Edit Course Details
+                    </h1>
                 </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Faculty", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Faculty.Faculty_Id, (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "--Select--", new { @class = "chzn-select" })
-                    @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
-                    @Html.ValidationMessageFor(model => model.Faculty.Faculty_Id)
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Course Level", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Course_Level.Course_Level_Id, (IEnumerable<SelectListItem>)ViewBag.Course_Level_Id, "--Select--", new { @class = "chzn-select" })
-                    @*  @Html.DropDownList("Course_Level_Id", "--Select--") *@
-                    @Html.ValidationMessageFor(model => model.Course_Level.Course_Level_Id)
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Semester Commencement Date", null, new { @class = "control-label form-required", style = "width:250px;margin-left: -100px;" })
-                <div class="controls">
-                    <div class="input-append">
-                        @Html.TextBoxFor(model => model.Commence_Date_Sem, new { @readonly = "readonly", @class = "dp" })
-                        @Html.ValidationMessageFor(model => model.Commence_Date_Sem) 
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
+                        <div class="control-group">
+                            @Html.Label("University", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.Faculty.University.University_Id, (IEnumerable<SelectListItem>)ViewBag.Universityddl, "--Select--", new { @class = "chzn-select" })
+                                @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
+                                @Html.ValidationMessageFor(model => model.Faculty.University.University_Id)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Faculty", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.Faculty.Faculty_Id, (IEnumerable<SelectListItem>)ViewBag.Faculty_Id, "--Select--", new { @class = "chzn-select" })
+                                @*  @Html.DropDownList("Faculty_Id", "--Select--") *@
+                                @Html.ValidationMessageFor(model => model.Faculty.Faculty_Id)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Course Level", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.Course_Level.Course_Level_Id, (IEnumerable<SelectListItem>)ViewBag.Course_Level_Id, "--Select--", new { @class = "chzn-select" })
+                                @*  @Html.DropDownList("Course_Level_Id", "--Select--") *@
+                                @Html.ValidationMessageFor(model => model.Course_Level.Course_Level_Id)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Semester Commencement Date", null, new { @class = "control-label form-required", style = "width:250px;margin-left: -100px;" })
+                            <div class="controls">
+                                <div class="input-append">
+                                    @Html.TextBoxFor(model => model.Commence_Date_Sem, new { @readonly = "readonly", @class = "dp" })
+                                    @Html.ValidationMessageFor(model => model.Commence_Date_Sem)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Course Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Course_Name)
+                                @Html.ValidationMessageFor(model => model.Course_Name)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Duration (in months)", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Duration)
+                                @Html.ValidationMessageFor(model => model.Duration)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Total Course Fees ($AUD)", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Fee)
+                                @Html.ValidationMessageFor(model => model.Fee)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Description", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Description)
+                                @Html.ValidationMessageFor(model => model.Description)
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" value="Save Changes" class="btn btn-primary" />
+                                <a href="@Url.Action("ViewCourses", "Course", new { id = ViewBag.UniversityId })" class="btn btn-danger">
+                                    Cancel</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="control-group">
-                @Html.Label("Course Name", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Course_Name)
-                    @Html.ValidationMessageFor(model => model.Course_Name)
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Duration (in months)", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Duration)
-                    @Html.ValidationMessageFor(model => model.Duration) 
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Total Course Fees ($AUD)", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Fee)
-                    @Html.ValidationMessageFor(model => model.Fee) 
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Description", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Description)
-                    @Html.ValidationMessageFor(model => model.Description)
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                 <input type="submit" value="Save Changes" class="btn btn-primary" />
-        <a href="@Url.Action("ViewCourses", "Course", new { id = ViewBag.UniversityId })" class="btn btn-danger">
-            Cancel</a>
-                </div>
-            </div>
-        </fieldset>
+        </div>
     </div>
+
   
 }

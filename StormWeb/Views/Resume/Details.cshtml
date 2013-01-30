@@ -1,0 +1,87 @@
+﻿@model StormWeb.Models.Resume
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Resume Details
+                </h1>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <br />
+                    <table class="table">
+                        <tr>
+                            <th>
+                                GivenName
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.GivenName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                LastName
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.LastName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address
+                            </th>
+                            <td>
+                                <ul>
+                                    <li>@Html.DisplayFor(model => model.Address.Address_Name) </li>
+                                    <li>@Html.DisplayFor(model => model.Address.City)</li>
+                                    <li>@Html.DisplayFor(model => model.Address.State) @Html.Encode("-") @Html.DisplayFor(model => model.Address.Zipcode)</li>
+                                    <li>@Html.DisplayFor(model => model.Address.Country.Country_Name)</li></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                ContactNumber
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.ContactNumber)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                SecondaryContactNumber
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.SecondaryContactNumber)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Email
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Email)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Description
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Description)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <a href="@Url.Action("Edit", "Resume", new { id = Model.Resume_Id })" class="btn btn-info">
+        Edit</a>
+    @Html.Button_BackToList("Bact To List", "../../Resume")
+</p>

@@ -10,120 +10,127 @@
     @Html.HiddenFor(model => model.AssociateId)
     @Html.HiddenFor(model => model.Address_Id)
     @Html.HiddenFor(model => model.Address.Country.Country_Name)
-    <div class="form-horizontal well">
-        <fieldset style="margin-left: 50px;">
-            <legend>
-                <h2>
-                    Edit Associate Details</h2>
-            </legend>
-            <div class="control-group">
-                @Html.Label("Associate Name", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.AssociateName, new { @class = "input-xlarge text-tip", placeholder = "Associate Name" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.AssociateName)
-                    </p>
+   
+    <div class="form-horizontal row-fluid">
+        <div class="span12">
+            <div class="box-tab">
+                <div class="page-header">
+                    <h1>
+                        &nbsp;&nbsp;Edit Associate Details
+                    </h1>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box" style="padding: 50px;">
+                        <div class="control-group">
+                            @Html.Label("Associate Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.AssociateName, new { @class = "input-xlarge text-tip", placeholder = "Associate Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.AssociateName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Address Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Address.Address_Name, new { @class = "input-xlarge text-tip", placeholder = "Address Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Address_Name)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("City", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Address.City, new { @class = "input-xlarge text-tip", placeholder = "City" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.City)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("State", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Address.State, new { @class = "input-xlarge text-tip", placeholder = "State" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.State)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Address.Zipcode, new { @class = "input-xlarge text-tip", placeholder = "Zipcode" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Zipcode)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Country", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id, "--Select--", new { @class = "chzn-select" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Contact Person", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.ContactPerson, new { @class = "input-xlarge text-tip", placeholder = "Contact Person" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.ContactPerson)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Primary Contact", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Primary_Contact, new { @class = "input-xlarge text-tip", placeholder = "Primary Contact" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Primary_Contact)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Secondary Contact", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Secondary_Contact, new { @class = "input-xlarge text-tip", placeholder = "Secondary Contact" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Primary_Contact)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Email", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Email, new { @class = "input-xlarge text-tip", placeholder = "Email" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Comission Rate", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.EditorFor(model => model.Commision_Rate, new { @class = "input-xlarge text-tip", placeholder = "Rate (%)" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Commision_Rate)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" class="btn btn-primary" value="Save Changes" />
+                                @Html.Button_DeleteOrCancel("Cancel", @Url.Action("Index", "Associate"))
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="control-group">
-                @Html.Label("Address Name", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Address.Address_Name, new { @class = "input-xlarge text-tip", placeholder = "Address Name" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Address.Address_Name)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("City", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Address.City, new { @class = "input-xlarge text-tip", placeholder = "City" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Address.City)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("State", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Address.State, new { @class = "input-xlarge text-tip", placeholder = "State" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Address.State)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Address.Zipcode, new { @class = "input-xlarge text-tip", placeholder = "Zipcode" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Address.Zipcode)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Country", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id, "--Select--", new { @class = "chzn-select" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Address.Country_Id)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Contact Person", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.ContactPerson, new { @class = "input-xlarge text-tip", placeholder = "Contact Person" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.ContactPerson)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Primary Contact", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Primary_Contact, new { @class = "input-xlarge text-tip", placeholder = "Primary Contact" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Primary_Contact)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Secondary Contact", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Secondary_Contact, new { @class = "input-xlarge text-tip", placeholder = "Secondary Contact" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Primary_Contact)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Email", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Email, new { @class = "input-xlarge text-tip", placeholder = "Email" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Email)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                @Html.Label("Comission Rate", null, new { @class = "control-label form-required" })
-                <div class="controls">
-                    @Html.EditorFor(model => model.Commision_Rate, new { @class = "input-xlarge text-tip", placeholder = "Rate (%)" })
-                    <p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Commision_Rate)
-                    </p>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <input type="submit" class="btn btn-primary" value="Save Changes" />
-                    @Html.Button_DeleteOrCancel("Cancel", @Url.Action("Index", "Associate"))
-                </div>
-            </div>
-        </fieldset>
+        </div>
     </div>
-    
     
     
 }

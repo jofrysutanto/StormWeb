@@ -14,6 +14,7 @@ namespace StormWeb.Helper
             this.AWSAccessKey = System.Configuration.ConfigurationManager.AppSettings["AWSAccessKey"];
             this.AWSSecretKey = System.Configuration.ConfigurationManager.AppSettings["AWSSecretKey"];
             this.BucketName = System.Configuration.ConfigurationManager.AppSettings["BucketName"];
+            this.Clockwork = System.Configuration.ConfigurationManager.AppSettings["Clockwork"];
         }
 
         public string ServerEmail { get; private set; }
@@ -21,5 +22,6 @@ namespace StormWeb.Helper
         public string AWSAccessKey { get; private set; }
         public string AWSSecretKey { get; private set; }
         public string BucketName { get; private set; }
+        public string Clockwork { get; private set; }
     }
 }

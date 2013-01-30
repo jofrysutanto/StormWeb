@@ -17,6 +17,8 @@ namespace StormWeb.Controllers
                 return RedirectToAction("Student", "StudentCentre");
             else if (StormWeb.Helper.CookieHelper.isStaff())
                 return RedirectToAction("Index", "StaffCentre");
+            else if (StormWeb.Helper.CookieHelper.isAssociate())
+                return RedirectToAction("Index", "AssociateCentre");
             else
                 return RedirectToAction("LogOn", "Account");
         }

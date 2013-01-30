@@ -9,7 +9,7 @@ namespace StormWeb.Helper
     {
         public string MethodType { get; set; }
 
-        public static IQueryable<PaymentHelper> GetType()
+        public static IQueryable<PaymentHelper> GetPaymentType()
         {
             return new List<PaymentHelper>  
             {  

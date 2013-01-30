@@ -121,7 +121,7 @@ namespace StormWeb.Controllers
 
                 #endregion
 
-                ViewBag.Ads = db.Advertisements.ToList();
+                ViewBag.Ads = db.Advertisements.Where(x => x.ExpiryDate > DateTime.Now && x.Audience.Contains("student")).ToList();
 
                 return View(stmodel);
             }

@@ -4,6 +4,11 @@
     <meta charset="utf-8"/>
     <title>@ViewBag.Title</title>
     @Html.Partial("_LoadHeaderWithScript")
+    
+<script>
+
+
+</script>
 
     @{ Html.EnableClientValidation(); }
 
@@ -13,19 +18,25 @@
     string[] noty = NotificationHandler.getNotification();
         <script>
          $(function () {
-                $.pnotify({
-                     title: '@(noty[2])',
-                     text: '@(noty[1])',
-                     type: '@(noty[0])',
-                     history: false
-                 });
-                 });
+             $.pnotify({
+                title: '@(noty[2])',
+                text: '@(noty[1])',
+                type: '@(noty[0])',
+                history: false
+            });
+        });
         </script>    
        
     }
 
 </head>
 <body>
+    
+    <!-- Loading spinner -->
+    <img class="body-load" src="@Url.Content("~/Content/img/main_loader.gif")" />
+
+    <div id="body-curtain"></div>
+
     <div id="notificationCenterBox" style="display:none">        
         <div style='text-align:center'><div class='btn btn-error' id='notificationClose'>x Close</div></div>
         
@@ -33,14 +44,6 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner top-nav">
             <div class="container-fluid">
-                <div class="branding">
-                    <div class="logo">
-                        <a href="@Url.Action("Index","Home")">
-                            <h5>
-                                <img src="@Url.Content("~/Content/img/logo.png")" /></h5>
-                        </a>
-                    </div>
-                </div>
                 <ul class="nav pull-right">
                     
                     @Html.Partial("_LogOnPartial")                    
@@ -85,16 +88,18 @@
             </div>
         </div>
     </div>
+
     <!-- End of Header -->
     <!-- Sidebar start -->
     @Html.Partial("_LeftColumn")
     <!-- Sidebar ends -->
     <!-- Main container -->
-    <div id="main-content">
+    <div id="main-content" style="display:none">
         <div class="container-fluid">
         @RenderBody()
         </div>
     </div>
     <!-- End of Main container -->
 </body>
+
 </html>

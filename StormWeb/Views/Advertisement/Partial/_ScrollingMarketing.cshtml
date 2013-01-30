@@ -12,6 +12,21 @@
             smoothHeight: true,
 
     });
+
+    $(function() {
+        $("#hidePromo").click(function () {
+            if ($("#hidePromo").html().indexOf("Hide") >= 0)
+            {
+                $("#promoBox").hide();
+                $("#hidePromo").html("Show");
+            }
+            else
+            {
+                $("#promoBox").show();
+                $("#hidePromo").html("Hide");
+            }
+        });
+    });
 });
 </script>
 
@@ -21,9 +36,9 @@
         <div class="box-tab">
             <div class="page-header">
                 <h1>
-                    &nbsp; &nbsp; Promo</h1>
+                    &nbsp; &nbsp; Promo <span class="btn btn-warning" id="hidePromo">Hide</span></h1>
             </div>
-            <div class="widget-content">
+            <div class="widget-content" id="promoBox">
                 <div class="widget-box" style="padding: 15px;">
                     <div class="flexslider">
                         <ul class="slides">

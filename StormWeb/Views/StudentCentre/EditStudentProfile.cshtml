@@ -13,7 +13,7 @@
     foreach (var item in Model.caseTable)
     {  
  
-        <div id="divEditProfile">
+      <div id="divEditProfile">
         <table style="text-align: left;">
             @Html.HiddenFor(modelItem => item.Case_Id)
             @Html.HiddenFor(modelItem => item.Student.Student_Id, "studentId")

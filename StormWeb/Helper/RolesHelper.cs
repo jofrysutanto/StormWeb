@@ -8,6 +8,7 @@ namespace StormWeb.Helper
     public static class RoleType
     {
         public const string Student = "Student";
+        public const string Associate = "Associate";
         public const string Counsellor = "Counsellor";
         public const string Admission = "Admission";
     }
@@ -23,6 +24,11 @@ namespace StormWeb.Helper
         public bool isStudent()
         {
             return roles.Contains(RoleType.Student);
+        }
+
+        public bool isAssociate()
+        {
+            return roles.Contains(RoleType.Associate);
         }
     }
 }

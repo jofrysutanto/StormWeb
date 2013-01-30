@@ -54,11 +54,18 @@
                 <a href="@Url.Action("Index", "Material")"><span class="white-icons create_write"></span>
                         Materials</a>                  
             </li>
+            <li>
+                <a href="@Url.Action("Index", "File")"><span class="white-icons zip_files"></span>
+                        Files</a>   
+            </li>
         }
         @if (HttpContext.Current.User.IsInRole("Marketing"))
         {
             <li><a href="@Url.Action("Index", "Advertisement")"><span class="white-icons create_write"></span>
                         Advertisement</a>                  
+            </li>
+            <li><a href="@Url.Action("MAssociate", "Associate")"><span class="white-icons create_write"></span>
+                        Associates</a>                  
             </li>
         }
         @if (HttpContext.Current.User.IsInRole("Finance"))
@@ -73,7 +80,7 @@
         }
         @if (HttpContext.Current.User.IsInRole("HR"))
         {
-            <li><a href="@Url.Action("Index", "Home")"><span class="white-icons v_card"></span>
+            <li><a href="@Url.Action("Index", "Resume")"><span class="white-icons v_card"></span>
                         Resume</a>                  
             </li>
             <li>

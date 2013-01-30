@@ -191,6 +191,28 @@ namespace StormWeb.Controllers
             return PartialView("~/Views/Message/Sent.cshtml", getOutBoxMessages(CookieHelper.Username));
         }
 
+        [Authorize]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult DeleteMultipleSent(int id, string chkDelete)
+        {
+            string[] ids = chkDelete.Split('_');
+            
+            foreach(string s in ids)
+            {
+                if (s != "")
+                {
+                    int idd = Convert.ToInt32(s);
+                    Message m = db.Messages.Single(x => x.Id == idd);
+                    m.Deleted = true;
+                    db.SaveChanges();
+                }
+            }
+
+            ViewBag.ContactList = getContactList(); 
+            return PartialView("~/Views/Message/Sent.cshtml", getOutBoxMessages(CookieHelper.Username));
+        }
+        
+
         [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public ActionResult DeleteInbox(int id)
         {

@@ -9,6 +9,14 @@ $("#sidebar").niceScroll({
 });
 
 
+$(window).load(function(){
+    $("#main-content").show();
+    $(".body-load").fadeOut(300, function () {
+           $("#body-curtain").fadeOut(300);
+    });
+});
+
+
 
 /**
  * DHTML phone number validation script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
@@ -191,7 +199,7 @@ $(function () {
 
         });
 
-$(function () {
+$(window).load(function () {
 
     /*=============================
     jQueryConfirm

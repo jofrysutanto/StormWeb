@@ -116,6 +116,16 @@ namespace StormWeb.Controllers
                         if (branch != null)
                             CookieHelper.AssignedBranch = Convert.ToString(branch.Branch_Id);
                     }
+                    else if (rolesHelper.isAssociate())
+                    {
+                        // Add Associate information
+                        StormDBEntities db = new StormDBEntities();
+
+                        Associate assoc = db.Associates.SingleOrDefault(x => x.Username == model.UserName);
+
+                        CookieHelper.AssocId = Convert.ToString(assoc.AssociateId);
+                        CookieHelper.Name = assoc.AssociateName;
+                    }
                     else // If staff
                     {
                         // Add Staff ID and Name
@@ -370,8 +380,8 @@ namespace StormWeb.Controllers
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 Membership.CreateUser(Request.Form["Username"], model.Password, model.Email, null, null, true, null, out createStatus);
-                Roles.AddUserToRole(Request.Form["Username"], "Counsellor");
-                Roles.AddUserToRole(Request.Form["Username"], "Student");
+                //Roles.AddUserToRole(Request.Form["Username"], "Counsellor");
+                //Roles.AddUserToRole(Request.Form["Username"], "Student");
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {

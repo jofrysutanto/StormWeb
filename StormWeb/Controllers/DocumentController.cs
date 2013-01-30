@@ -539,7 +539,8 @@ namespace StormWeb.Controllers
         {
 
             BindCurrency("--Currency--");
-            PopulatePayment(-1); 
+            PopulatePayment(-1);
+            PopulatePaymentDetails();
             // Determine which application to show on page load
             if (go >= 0)
                 ViewBag.Go = go;
@@ -917,6 +918,7 @@ namespace StormWeb.Controllers
             try
             {
                 S3Response uploadResponse = client.PutObject(request);
+
             }
             catch (Exception e)
             {
@@ -974,7 +976,7 @@ namespace StormWeb.Controllers
         }
 
 
-        public void downloadAWS(int id, string path, string filename)
+        public void downloadAWS(int id, string path, string filename, HttpContextBase context = null)
         {
             string keyName = path + "/" + filename;
 
@@ -992,17 +994,20 @@ namespace StormWeb.Controllers
 
                     //string dest = ("C:\\user\\Downloads\\" + path + "\\" + filename);
 
-                    string dest = HttpContext.Server.MapPath("~/App_Data/Downloads/" + id + '-' + filename);
+                    if (context == null)
+                        context = this.HttpContext;
+
+                    string dest = context.Server.MapPath("~/App_Data/Downloads/" + id + '-' + filename);
                     using (GetObjectResponse response = client.GetObject(request))
                     {
                         response.WriteResponseStreamToFile(dest, false);
 
-                        HttpContext.Response.Clear();
-                        HttpContext.Response.AppendHeader("content-disposition", "attachment; filename=" + filename);
-                        HttpContext.Response.ContentType = response.ContentType;
-                        HttpContext.Response.TransmitFile(dest);
-                        HttpContext.Response.Flush();
-                        HttpContext.Response.End();
+                        context.Response.Clear();
+                        context.Response.AppendHeader("content-disposition", "attachment; filename=" + filename);
+                        context.Response.ContentType = response.ContentType;
+                        context.Response.TransmitFile(dest);
+                        context.Response.Flush();
+                        context.Response.End();
                     }
 
 
@@ -1868,12 +1873,15 @@ namespace StormWeb.Controllers
                 }
             }
         }
-
-        public static PaymentDetail PopulatePaymentDetails(int applicationId)
-        {
-            StormDBEntities db = new StormDBEntities();  
-                 PaymentDetail paymentsDetails = db.PaymentDetails.Single(x => x.Application_Id == applicationId);
-                return paymentsDetails; 
+         
+        public void PopulatePaymentDetails()
+        { 
+            var paymentsDetails=db.PaymentDetails.ToList();
+            ViewBag.BankName = paymentsDetails.FirstOrDefault().BankName;
+            ViewBag.AccountName = paymentsDetails.FirstOrDefault().AccountName;
+            ViewBag.BSB = paymentsDetails.FirstOrDefault().BSB;
+            ViewBag.AccountNumber = paymentsDetails.FirstOrDefault().AccountNumber; 
+             
         }
 
         [HttpPost]

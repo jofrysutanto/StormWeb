@@ -102,14 +102,52 @@ namespace StormWeb.Controllers
             {
                 db.Materials.AddObject(material);
                 db.SaveChanges();
+
+               
                 return RedirectToAction("Index");  
             }
 
             return View(material);
         }
 
-        public ActionResult CreateOrder()
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult AddInstore(int id, int q)
         {
+            Material m = db.Materials.SingleOrDefault(x => x.ID == id);
+
+            if (id != null)
+            {
+                if (q != null && q > 0)
+                {
+                    m.Instore = m.Instore + q;
+                    db.SaveChanges();
+
+                    Material_Order ord = new Material_Order();
+                    ord.Branch = BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0];
+                    ord.Material_ID = m.ID;
+                    ord.Quantity = q;
+                    ord.RequestedBy = "Marketing";
+                    ord.RequestedOn = DateTime.Now;
+                    ord.Type = "Add";
+                    ord.Status = "Completed";
+
+                    db.AddToMaterial_Order(ord);
+                    db.SaveChanges();
+
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Material stock updated");
+                }
+                else
+                {
+                    NotificationHandler.setNotification(NotificationHandler.NOTY_ERROR, "Error processing your request, make sure you netered valid amount");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+        
+        public ActionResult CreateOrder(int id)
+        {
+            ViewBag.MaterialQuantity = db.Materials.Single(x => x.ID == id).Instore;
             return View();
         }
 
@@ -120,12 +158,20 @@ namespace StormWeb.Controllers
         public ActionResult CreateOrder(Material_Order order,int id)
         {
             order.Material_ID = id;
+
+            int instore = db.Materials.Single(x => x.ID == id).Instore;
+
+            if (order.Quantity > instore)
+                ModelState.AddModelError("Quantity", "Can't order more than instore");
+
            if (ModelState.IsValid)
             {
                 db.Material_Order.AddObject(order);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+           ViewBag.MaterialQuantity = db.Materials.Single(x => x.ID == id).Instore;
 
             return View(order);
         }
@@ -346,21 +392,20 @@ namespace StormWeb.Controllers
 
         public ActionResult DeleteOrder(int id)
         {
-            // Checking and delete Material_order
-            if (db.Material_Order.SingleOrDefault(x => x.Material_ID == id) != null)
+           // Checking and delete Material_order
+            if (db.Material_Order.SingleOrDefault(x => x.ID == id) != null)
             {
-                Material_Order order = db.Material_Order.Single(x => x.Material_ID == id);
-                db.Material_Order.DeleteObject(order);
-                return View();
+                Material_Order ordered = db.Material_Order.Single(x => x.ID == id);
+                return View(ordered);
             }
             // End of Material_order
-           return View();
+           return View("Index");
         }
 
         //
         // POST: /Material/Delete/5
 
-        [HttpPost]
+        [HttpPost, ActionName("DeleteOrder")]
         public ActionResult OrderDelete(int id)
         {
             Material material = db.Materials.Single(m => m.ID == id);
@@ -376,18 +421,20 @@ namespace StormWeb.Controllers
         public ActionResult ApproveOrder(int id)
         {
             Material_Order order = db.Material_Order.Single(m => m.ID == id);
-            if (db.Material_Order.SingleOrDefault().Status ==  "Pending")
+            if (order.Status.Contains("Pending"))
             {
                 order.Status = "Approved";
             }
-            if (db.Material_Order.SingleOrDefault().Status == "Approved")
+            if (order.Status.Contains("Approved"))
             {
                 order.Status = "Completed";
+                order.CompletedOn = DateTime.Now;
             }
-
-            return View("Index");
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
+       
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

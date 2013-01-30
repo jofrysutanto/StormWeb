@@ -67,7 +67,7 @@ namespace StormWeb.Controllers
 
             ViewBag.curr = new SelectList(StormWeb.Models.ModelHelper.Currency.getCurrencyFromXml(), "curr", "curr");
 
-            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetType(), "MethodType", "MethodType");
+            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetPaymentType(), "MethodType", "MethodType");
             return View();
         } 
 
@@ -105,7 +105,7 @@ namespace StormWeb.Controllers
         {
             Payment payment = db.Payments.Single(p => p.Id == id);
             payment.Approved_By = StormWeb.Helper.CookieHelper.Username;
-            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetType(), "MethodType", "MethodType");
+            ViewBag.PaymentMethod = new SelectList(PaymentHelper.GetPaymentType(), "MethodType", "MethodType");
             return View(payment);
         }
 
