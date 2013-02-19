@@ -255,6 +255,8 @@ namespace StormWeb.Helper
         public static string SECTION_FACULTY = "Faculty";
         public static string SECTION_COURSE = "Course";
         public static string SECTION_CLIENT = "Client";
+        public static string SECTION_RESUME = "Resume";
+        public static string SECTION_LEAVE = "Leave";
 
         #endregion
     }   

@@ -28,17 +28,22 @@
             <li><a href="@Url.Action("Index", "Log")"><span class="white-icons clock"></span>Log</a></li>
             <li><a href="@Url.Action("Index", "Help")"><span class="white-icons help"></span>Help / FAQ</a></li>
         }
+        @if (HttpContext.Current.User.IsInRole("Associate"))
+        {
+             <li><a href="@Url.Action("Index", "AssociateCentre")"><span class="white-icons computer_imac">
+            </span>Home</a></li>
+        }
         else if (HttpContext.Current.User.Identity.IsAuthenticated)
         {
             <li><a href="@Url.Action("Index", "StaffCentre")"><span class="white-icons computer_imac">
             </span>Home</a></li>
             <li><a href="@Url.Action("Index", "Message")"><span class="white-icons mail"> </span>Messages
             @{ 
-            int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
-            if (inboxCount > 0)
-            {
+                    int inboxCount = StormWeb.Helper.Utilities.countNewInbox();
+                    if (inboxCount > 0)
+                    {
                                     <text><span class='alert-noty'> &nbsp;@inboxCount&nbsp; </span> </text>
-            }
+                    }
                                     }</a> </li> 
             <li><a href="@Url.Action("ShowLogs", "Log")"><span class="white-icons clock"></span>
                 Log</a></li>
@@ -59,7 +64,7 @@
                         Files</a>   
             </li>
         }
-        @if (HttpContext.Current.User.IsInRole("Marketing"))
+       @if (HttpContext.Current.User.IsInRole("Marketing"))
         {
             <li><a href="@Url.Action("Index", "Advertisement")"><span class="white-icons create_write"></span>
                         Advertisement</a>                  
@@ -78,7 +83,7 @@
                         Student Payments</a>                  
             </li>
         }
-        @if (HttpContext.Current.User.IsInRole("HR"))
+        @if (!HttpContext.Current.User.IsInRole("Student"))
         {
             <li><a href="@Url.Action("Index", "Resume")"><span class="white-icons v_card"></span>
                         Resume</a>                  
@@ -86,6 +91,10 @@
             <li>
                 <a href="@Url.Action("Index", "HR")"><span class="white-icons users_2"></span>
                         Monitor Staff</a>                  
+            </li>
+              <li>
+                <a href="@Url.Action("Index", "Leave")"><span class="white-icons users_2"></span>
+                        Leave Application</a>                  
             </li>
         }
         @if (HttpContext.Current.User.IsInRole("Counsellor") || HttpContext.Current.User.IsInRole("Visa") || HttpContext.Current.User.IsInRole("Admission"))
@@ -215,6 +224,9 @@
             boxzoom: false,
             touchbehavior: true
         });
+
+
+        $('.accordion_mnu').initMenu();
 
 
 </script>

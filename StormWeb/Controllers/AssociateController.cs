@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using StormWeb.Models;
 using System.Web.Security;
 using StormWeb.Helper;
+using StormWeb.Models.ModelHelper;
 
 namespace StormWeb.Controllers
 {
@@ -70,13 +71,20 @@ namespace StormWeb.Controllers
 
             ViewBag.Address_Id = new SelectList(db.Addresses, "Address_Id", "Address_Name");
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
-
+            
+            string[] marketingUsernames = Roles.GetUsersInRole("Marketing");
+            var marketer = from s in db.Staffs
+                           from user in marketingUsernames
+                           where s.UserName == user
+                           select s;
+            ViewBag.Marketer_List = new SelectList(marketer, "Staff_Id", "FirstName");
+            
             if (password == null || password.Length < 6)
             {
                 ModelState.AddModelError("AssociatePassword", "Password must have 6 characters."); 
             }
 
-            associate.Referrer = CookieHelper.getStaffId();
+            //associate.Referrer = CookieHelper.getStaffId();
             
             if (ModelState.IsValid)
             {                
@@ -116,9 +124,11 @@ namespace StormWeb.Controllers
 
             l.Add(associate.Address);
 
+            //ViewBag.Country_Id = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName",associate.Address.Country.Country_Name);
+
             List<Country> c = new List<Country>();
             c.Add(associate.Address.Country);
-            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", associate.Address.Country.Country_Id);
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name",associate.Address.Country_Id);
 
             return View(associate);
         }
@@ -129,15 +139,26 @@ namespace StormWeb.Controllers
         [HttpPost]
         public ActionResult Edit(Associate associate,FormCollection fc)
         {
+            
+            //ViewBag.Country_Id = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName");
+            var country = fc["listCountry"];
+            associate.Address.Country_Id = Convert.ToInt32(fc["listCountry"]);
+            associate.Username = fc["Username"];
+            associate.Referrer = Convert.ToInt32(fc["Referrer"]);
             if (ModelState.IsValid)
             {
                 associate.Address.Address_Id =Convert.ToInt32(fc["Address_Id"]);
-                Address address = associate.Address; 
+                Address address = associate.Address;
+                //address.Country.Country_Id = Convert.ToInt32(fc["listCountry"]);
+                
+                //List<Country> c = new List<Country>();
+                //c.Add(associate.Address.Country);
+                //ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
+                 //Country country = associate.Address.Country;
+                associate.Address.Country = db.Countries.Single(x => x.Country_Id == associate.Address.Country_Id); 
 
-                 Country country = associate.Address.Country;
-                 associate.Address.Country = db.Countries.Single(x => x.Country_Id == associate.Address.Country_Id); 
-
-                db.ObjectStateManager.ChangeObjectState(address, EntityState.Modified); 
+                //db.Associates.Attach(associate);
+                //db.ObjectStateManager.ChangeObjectState(address, EntityState.Modified); 
                 db.ObjectStateManager.ChangeObjectState(associate, EntityState.Modified); 
                 db.SaveChanges();
                 return RedirectToAction("Index");

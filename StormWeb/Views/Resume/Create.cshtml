@@ -4,10 +4,10 @@
 }
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-@using (Html.BeginForm("Create","Resume",FormMethod.Post,  new {enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "Resume", FormMethod.Post, new { enctype = "multipart/form-data", id = "ResumeForm" }))
 { 
      
-    @Html.ValidationSummary(false)
+    @Html.ValidationSummary(true)
 
     <div class="form-horizontal row-fluid">
         <div class="span12">
@@ -23,111 +23,97 @@
                             @Html.Label("Given Name", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.GivenName, new { @class = "input-large text-tip", placeholder = " Given Name" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.GivenName)
-                                </p>
+                                <span id="spErrorMessageGivenName" class="error" style="display: none;">* Please Enter
+                                    Your Given Name</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("LastName", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.LastName, new { @class = "input-large text-tip", placeholder = " Last Name" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.LastName)
-                                </p>
+                                <span id="spErrorMessageLastName" class="error" style="display: none;">* Please Enter
+                                    Your Last Name</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label(" Street Name and Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -60px;" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-large text-tip", placeholder = " Street Name and Number" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Address_Name)
-                                </p>
+                                <span id="spErrorMessageAddressName" class="error" style="display: none;">* Please Enter
+                                    Your Street Name and Number</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("City", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Address.City, new { @class = "input-large text-tip", placeholder = "City" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.City)
-                                </p>
+                                <span id="spErrorMessageCity" class="error" style="display: none;">* Please Enter Your
+                                    City</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("State", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Address.State, new { @class = "input-large text-tip", placeholder = "State" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.State)
-                                </p>
+                                <span id="spErrorMessageState" class="error" style="display: none;">* Please Enter Your
+                                    State</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-large text-tip", placeholder = "Zipcode" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Zipcode)
-                                </p>
+                                <span id="spErrorMessageZipcode" class="error" style="display: none;">* Please Enter
+                                    Your Zipcode</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Country", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                            @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
-                   
-                              
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
-                                </p>
+                                @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
+                                <span id="spErrorMessageCountry" class="error" style="display: none;">* Please Select
+                                    Your Country</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Contact Number", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.ContactNumber, new { @class = "input-large text-tip", placeholder = "ContactNumber" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.ContactNumber)
-                                </p>
+                                <span id="spErrorMessageContactNumber" class="error" style="display: none;">* Please
+                                    Enter Your Contact Number</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Secondary Contact Number", null, new { @class = "control-label ", style = "width:200px;margin-left: -60px;" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.SecondaryContactNumber, new { @class = "input-large text-tip", placeholder = "SecondaryContactNumber" })
-                               
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Email", null, new { @class = "control-label form-required" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Email, new { @class = "input-large text-tip", placeholder = "Email" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Email)
-                                </p>
+                                <span id="spErrorMessageEmail" class="error" style="display: none;">* Please Enter
+                                    Your Email</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Resume", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                <div class="input-append" id="divdate" style="display: inline;">
-                                    <input type="file" name="Resume_File" /></div>
-                                <p class="help-block">
-                                </p>
+                                <input type="file" name="Resume_File" class="required" />
+                                <span id="spErrorMessageresume" class="error" style="display: none;">* Please Select
+                                    Your Resume</span>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("Description", null, new { @class = "control-label" })
                             <div class="controls">
                                 @Html.TextBoxFor(model => model.Description, new { @class = "input-large text-tip", placeholder = "Description" })
-                              
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <input type="submit" class="btn btn-primary" value="Create" />
+                                <a type="submit" class="btn btn-primary" id="submit">Create</a>
                                 @Html.Button_DeleteOrCancel("Cancel", "../../Resume")
                             </div>
                         </div>
@@ -137,3 +123,104 @@
         </div>
     </div> 
 }
+<script type="text/javascript">
+
+    $(function () {
+        $("a[id*='submit']").click(function (e) {
+            var GivenName = $("input[name='GivenName']").val();
+            var LastName = $("input[name='LastName']").val();
+            var AddressName = $("input[name='Address.Address_Name']").val();
+            var City = $("input[name='Address.City']").val();
+            var State = $("input[name='Address.State']").val();
+            var Zipcode = $("input[name='Address.Zipcode']").val();
+            var Country = $("select[name='Address.Country_Id']").val();
+            var ContactNumber = $("input[name='ContactNumber']").val();
+            var Email = $("input[name='Email']").val();
+            var Resume = $("input[name='Resume_File']").val();
+          
+            var isValid = true;
+            if (GivenName == "") {
+                document.getElementById("spErrorMessageGivenName").style.display = 'inline';
+                isValid = false; 
+            }
+            else {
+                document.getElementById("spErrorMessageGivenName").style.display = 'none';
+            }
+            if (LastName == "") {
+                document.getElementById("spErrorMessageLastName").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageLastName").style.display = 'none';
+            }
+            if (AddressName == "") {
+                document.getElementById("spErrorMessageAddressName").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageAddressName").style.display = 'none';
+            }
+            if (City == "") {
+                document.getElementById("spErrorMessageCity").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageCity").style.display = 'none';
+            }
+            if (State == "") {
+                document.getElementById("spErrorMessageState").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageState").style.display = 'none';
+            }
+            if (Zipcode == "") {
+                document.getElementById("spErrorMessageZipcode").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageZipcode").style.display = 'none';
+            }
+            if (Country == "") {
+                document.getElementById("spErrorMessageCountry").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageCountry").style.display = 'none';
+            }
+            if (ContactNumber == "") {
+                document.getElementById("spErrorMessageContactNumber").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageContactNumber").style.display = 'none';
+            }
+            if (Email == "") {
+                document.getElementById("spErrorMessageEmail").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageEmail").style.display = 'none';
+            }
+            if (Resume == "") {
+                document.getElementById("spErrorMessageresume").style.display = 'inline';
+                isValid = false;
+            }
+            else {
+                document.getElementById("spErrorMessageresume").style.display = 'none';
+            } 
+            if (isValid == true) {
+                $("#ResumeForm").submit();
+            }
+            else {
+                $.pnotify({
+                    title: 'Error',
+                    text: 'Please fix all the errors',
+                    styling: 'bootstrap',
+                    type: 'error'
+                });
+                return false;
+            }
+        });
+    });   
+</script>

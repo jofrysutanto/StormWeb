@@ -10,6 +10,7 @@ $("#sidebar").niceScroll({
 
 
 $(window).load(function(){
+    
     $("#main-content").show();
     $(".body-load").fadeOut(300, function () {
            $("#body-curtain").fadeOut(300);
@@ -204,7 +205,7 @@ $(window).load(function () {
     /*=============================
     jQueryConfirm
 ===============================*/
-$(".confirmMe").jConfirmAction();
+    $(".confirmMe").jConfirmAction();
 
 	/*=========
 	Mini Chart
@@ -349,7 +350,6 @@ $(".confirmMe").jConfirmAction();
         }, 3000)
       })
 	  
-	  $('.accordion_mnu').initMenu();
 	  	/*==JQUERY SELECTBOX==*/
 	$(".chzn-select").chosen(); 
 	$(".chzn-select-deselect").chosen({allow_single_deselect: true});

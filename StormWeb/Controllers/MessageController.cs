@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using StormWeb.Models; 
+using StormWeb.Models;
 using StormWeb.Helper;
 using StormWeb.Models.ModelHelper;
 
@@ -44,7 +44,7 @@ namespace StormWeb.Controllers
 
                 // Retrieve Contacts List
                 ViewBag.ContactList = new SelectList(ContactHelper.GetContacts(false, StaffId), "Username", "Name");
-                
+
                 // ---- End of retrieve message list
             }
 
@@ -59,7 +59,7 @@ namespace StormWeb.Controllers
             return View();
         }
 
-         [Authorize]
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Compose()
         {
@@ -105,7 +105,7 @@ namespace StormWeb.Controllers
             m.TimeStamp = DateTime.Now;
             m.Deleted = false;
 
- 
+
 
             if (ModelState.IsValid)
             {
@@ -116,14 +116,20 @@ namespace StormWeb.Controllers
 
                     int msgId = m.Id;
 
-                    Message_To mt = new Message_To();
-                    mt.Message_Id = msgId;
-                    mt.UserTo = fc["UserTo"];
-                    mt.HasRead = false;
-                    mt.Deleted = false;
+                    // Split the recipients (in case of multiple recipient)
+                    string[] recipients = fc["UserTo"].Split(',');
 
-                    db.Message_To.AddObject(mt);
-                    db.SaveChanges();
+                    foreach (string s in recipients)
+                    {
+                        Message_To mt = new Message_To();
+                        mt.Message_Id = msgId;
+                        mt.UserTo = s;
+                        mt.HasRead = false;
+                        mt.Deleted = false;
+
+                        db.Message_To.AddObject(mt);
+                        db.SaveChanges();
+                    }
 
                     //TempData["MessageCompose"] = Compose_MessageSuccess;
                     NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Your message has been sent!");
@@ -151,17 +157,22 @@ namespace StormWeb.Controllers
             return View("Index", m);
         }
 
-       [Authorize]
+        [Authorize]
         public ActionResult Inbox()
         {
             return View();
         }
 
         [HttpGet]
-        public ActionResult Read(int id, string type)
+        public ActionResult Read(int id, string type, string userTo = "")
         {
             Message m = db.Messages.Single(x => x.Id == id);
-            Message_To msgTo = db.Message_To.Single(x => x.Message_Id == id);
+
+            Message_To msgTo;
+            if (userTo == "")
+                msgTo = db.Message_To.Single(x => x.Message_Id == id && x.UserTo == CookieHelper.Username);
+            else
+                msgTo = db.Message_To.Single(x => x.Message_Id == id && x.UserTo == userTo);
 
             if (type == "inbox")
             {
@@ -183,8 +194,8 @@ namespace StormWeb.Controllers
         public ActionResult DeleteSent(int id)
         {
             ViewBag.ContactList = getContactList();
-          
-            Message m = db.Messages.Single( x => x.Id == id);
+
+            Message m = db.Messages.Single(x => x.Id == id);
             m.Deleted = true;
             db.SaveChanges();
 
@@ -193,11 +204,11 @@ namespace StormWeb.Controllers
 
         [Authorize]
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult DeleteMultipleSent(int id, string chkDelete)
+        public ActionResult DeleteMultipleSent(string chkDelete)
         {
-            string[] ids = chkDelete.Split('_');
-            
-            foreach(string s in ids)
+            string[] id = chkDelete.Split('_');
+
+            foreach (string s in id)
             {
                 if (s != "")
                 {
@@ -208,10 +219,34 @@ namespace StormWeb.Controllers
                 }
             }
 
-            ViewBag.ContactList = getContactList(); 
+            ViewBag.ContactList = getContactList();
             return PartialView("~/Views/Message/Sent.cshtml", getOutBoxMessages(CookieHelper.Username));
         }
-        
+        public ActionResult DeleteMultipleInbox(string chkDeleteInbox)
+        {
+            ViewBag.ContactList = getContactList();
+
+            string[] id = chkDeleteInbox.Split('_');
+
+            foreach (string s in id)
+            {
+                if (s != "")
+                {
+                    int idd = Convert.ToInt32(s);
+                    Message_To mt = (from m in db.Messages
+                                     from message_to in db.Message_To
+                                     where m.Id == message_to.Message_Id && message_to.UserTo == CookieHelper.Username && m.Id == idd
+                                     select message_to).DefaultIfEmpty(null).Single();
+                    if (mt != null)
+                    {
+                        mt.Deleted = true;
+                        db.SaveChanges();
+                    }
+                }
+            } 
+            return PartialView("~/Views/Message/Inbox.cshtml", getInboxMessages(CookieHelper.Username));
+        }
+
 
         [Authorize(Roles = "Student,Counsellor,Super,BranchManager")]
         public ActionResult DeleteInbox(int id)
@@ -219,7 +254,7 @@ namespace StormWeb.Controllers
             ViewBag.ContactList = getContactList();
 
             Message_To mt = (from m in db.Messages
-                            from message_to in db.Message_To
+                             from message_to in db.Message_To
                              where m.Id == message_to.Message_Id && message_to.UserTo == CookieHelper.Username && m.Id == id
                              select message_to).DefaultIfEmpty(null).Single();
 
@@ -228,7 +263,7 @@ namespace StormWeb.Controllers
                 //Message_To mt = db.Message_To.Single(x => x.Id == id && x.UserTo == CookieHelper.Username);
                 mt.Deleted = true;
                 db.SaveChanges();
-            }           
+            }
 
             return PartialView("~/Views/Message/Inbox.cshtml", getInboxMessages(CookieHelper.Username));
         }
@@ -241,7 +276,7 @@ namespace StormWeb.Controllers
             m.TimeStamp = DateTime.Now;
             m.Deleted = false;
             m.UserFrom = "SYSTEM";
-            
+
             m.Subject = subject;
             m.MessageContent = content;
 
@@ -287,7 +322,7 @@ namespace StormWeb.Controllers
             {
                 InboxViewModel inboxVM = new InboxViewModel();
                 inboxVM.message = m;
-                inboxVM.hasRead = (bool)db.Message_To.Single(x => x.Message_Id == m.Id).HasRead;
+                inboxVM.hasRead = (bool)db.Message_To.Single(x => x.Message_Id == m.Id && x.UserTo == CookieHelper.Username).HasRead;
                 inboxVM.nameFrom = Utilities.getName(m.UserFrom);
 
                 inboxVMList.Add(inboxVM);
@@ -308,9 +343,13 @@ namespace StormWeb.Controllers
             {
                 OutboxViewModel outboxMsgModel = new OutboxViewModel();
                 outboxMsgModel.message = m;
-                Message_To mt = db.Message_To.Single(x => x.Message_Id == m.Id);
-                outboxMsgModel.nameFrom = Utilities.getName(mt.UserTo);
-                outboxVM.Add(outboxMsgModel);
+                var mts = db.Message_To.Where(x => x.Message_Id == m.Id);
+
+                foreach (Message_To mt in mts)
+                {
+                    outboxMsgModel.nameFrom = Utilities.getName(mt.UserTo);
+                    outboxVM.Add(outboxMsgModel);
+                }
             }
 
             return outboxVM;

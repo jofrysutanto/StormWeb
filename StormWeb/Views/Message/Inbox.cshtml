@@ -6,7 +6,7 @@
                        var selected = $(this);
                        $.ajax({
                            type: 'GET',
-                           url: '@Url.Action("DeleteInbox","Message")',
+                           url: '@Url.Action("DeleteInbox", "Message")',
                            data: {
                                id: $(this).attr("href")
                            },
@@ -55,9 +55,52 @@
                });
 
 </script>
+
+<script type="text/javascript">
+    $(function () {
+        var finalIn = '';
+        $("#ckbdeleteInbox").hide();
+
+        $(".Inbox_Checkbox").click(function () {
+            finalIn = '';
+            $('.Inbox_Checkbox:checked').each(function () {
+                var valuesIn = $(this).val();
+                if (finalIn == '')
+                    finalIn = valuesIn + "_";
+                else
+                    finalIn += valuesIn + "_";
+            });
+
+            if (finalIn == '') {
+                $("#ckbdeleteInbox").hide();
+            }
+            else {
+                $("#ckbdeleteInbox").show();
+            }
+        });
+
+        $('a[name*="deleteCkbInbox"]').click(function () { 
+            $.ajax({
+                type: 'GET',
+                url: 'Message/DeleteMultipleInbox/',
+                data: {
+                    chkDeleteInbox: finalIn
+                },
+                success: function (data) {
+                    $("#inboxMessage").html(data);
+                }
+            });
+        });
+    });
+     
+</script>
 <table class="mydata-tbl-inbox table table-bordered">
     <thead>
         <tr>
+            <th>
+                <a class="btn btn-danger" id="ckbdeleteInbox" data-toggle="modal" href="#myModalInbox">Delete
+                </a>
+            </th>
             <th class="col-half">
                 Date
             </th>
@@ -76,6 +119,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td style="width: 80px;">
+                    <input id="Inbox_Checkbox" class="Inbox_Checkbox" type="checkbox" value="@item.message.Id" />
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.message.TimeStamp)
                 </td>
@@ -115,6 +161,25 @@
         <div class="modal-footer">
             <a href="@item.message.Id" name="@Html.Raw("deleteBtnInbox" + item.message.Id)" class="btn btn-mini btn-warning" data-dismiss="modal">
                 Delete</a> &nbsp; <a href="#" id="dimissModal" class="btn btn-mini btn-info" data-dismiss="modal">
+                    Cancel</a>
+        </div>
+    </div>
+        
+    <div class="modal hide" id="myModalInbox">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                ×</button>
+            <h4>
+                Confirm</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                Confirm delete?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="@item.message.Id" name="@Html.Raw("deleteCkbInbox")" class="btn btn-mini btn-warning" data-dismiss="modal">
+                Delete</a> &nbsp; <a href="#" id="dismissModal" class="btn btn-mini btn-info" data-dismiss="modal">
                     Cancel</a>
         </div>
     </div>

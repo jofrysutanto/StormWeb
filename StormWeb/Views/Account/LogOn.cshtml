@@ -60,8 +60,9 @@
                         </a>
                     </div>
                 </div>
-                <ul class="nav pull-right">
-                    <li><a href="@Url.Action("Page","Site")"><i class="icon-share-alt icon-white"></i>Go to Main Site</a></li>
+                <ul class="nav pull-right"> 
+                    @*<li><a href="@Url.Action("Page","Site")"><i class="icon-share-alt icon-white"></i>Go to Main Site</a></li>*@
+                    <li><a href="http://www.stormedu.com.au" target="_blank"><i class="icon-share-alt icon-white"></i>Go to Main Site</a></li>
                 </ul>
             </div>
         </div>
@@ -104,7 +105,7 @@
             <div class="span4">
                 <div class="rightSide">
                     <div class="login-container">
-                        @using (Html.BeginForm())
+                        @using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { id="FormLogin" }))
                         {	
                             <div class="well-login">
                                 <div>
@@ -140,7 +141,7 @@
                                 </div>
                                 </div>
                                 <div class="clearfix">
-                                    <button class="btn btn-primary login-btn" type="submit">
+                                    <button class="btn btn-primary login-btn" type="submit" id="loginBtn">
                                         Login</button>
                                     <div> <a class="pull-right" href="@Url.Action("ForgotPassword")">Forgot your password? &raquo;</a> </div>
                                 </div>
@@ -223,6 +224,15 @@ if (ViewBag.NotifyBadLink != null)
 
 @:});
 }
+
+
+$(function() {
+    $("#loginBtn").click(function () {
+        $(this).attr("disabled", "disabled");
+        $(this).html("Please wait..");
+        $("#FormLogin").submit();
+    });
+});
 </script>
 </body>
 </html>

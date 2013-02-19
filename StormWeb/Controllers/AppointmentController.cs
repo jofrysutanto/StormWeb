@@ -85,14 +85,17 @@ namespace StormWeb.Controllers
             var appointments = db.Appointments.Include("Case");
             if (StormWeb.Helper.CookieHelper.isStudent())
             {
-                int studentId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StudentId);
-                /* *
-                 * Getting branch address
-                 * */
+               int studentId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StudentId);
+
+               #region Getting Branch address
+
                 List<Branch> branch = StormWeb.Helper.BranchHelper.getBranchListFromCookie();
                 String branchName = "";
                 if (branch.Count() > 0)
+                {
                     branchName = StormWeb.Helper.BranchHelper.getBranchListFromCookie().FirstOrDefault().Branch_Name;
+                }
+                
                 Address add = (from addr in db.Addresses
                                from br in db.Branches
                                where br.Address_Id == addr.Address_Id && br.Branch_Name == branchName
@@ -105,15 +108,52 @@ namespace StormWeb.Controllers
                     address = "No address recorded";
 
                 ViewBag.BranchAddress = address;
+                #endregion
+
                 /* *
-                 * Gets the list of appointment made by the student who have a Case ID
+                 * Converting a general enquiry appointment to a normal appointment - when a client does a full registration without completing the general enquiry appointment
                  * */
                 Case cases = db.Cases.SingleOrDefault(y => y.Student_Id == studentId);
+                Student stud = (from cs in db.Cases
+                                from stu in db.Students
+                                where cs.Student_Id == studentId && stu.Student_Id == cs.Student_Id
+                                select stu).SingleOrDefault();
+                if (stud != null)
+                {
+                    Appointment a = (from gen in db.General_Enquiry
+                                     from cli in db.Clients
+                                     from app in db.Appointments
+                                     where cli.Client_Id == stud.Client_Id && gen.Client_Id == cli.Client_Id && gen.Appointment_Id == app.Appointment_Id
+                                     select app).SingleOrDefault();
+                    if (a != null)
+                    {
+                        Appointment appointment = db.Appointments.Single(b => b.Appointment_Id == a.Appointment_Id);
+
+                        if (appointment.Case_Id == null)
+                        {
+                            General_Enquiry genEnquiry = db.General_Enquiry.Single(g => g.Appointment_Id == a.Appointment_Id);
+                            try
+                            {
+                                appointment.Case_Id = cases.Case_Id;
+                                db.General_Enquiry.DeleteObject(genEnquiry);
+                                db.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e.Message);
+                            }
+
+                        }
+                    }
+                }
+
+               #region  Gets the list of appointment made by the student who have a Case ID
+
+                
                 DateTime current = DateTime.Now;
 
                 if (cases != null)
                 {
-
                     var app = db.Appointments.ToList().Where(x => (x.Case_Id == cases.Case_Id) && (x.Confirmation == APP_CONFIRMED || x.Confirmation == APP_REQUEST_APPROVAL) && x.AppDateTime > DateTime.Now);
                     model.studentAppointments = app.ToList();
                 }
@@ -121,16 +161,16 @@ namespace StormWeb.Controllers
                 {
                     model.studentAppointments = new List<Appointment>();
                 }
-
-                /* *
-                 * Get the previous appointments made by the student
-                 * */
+                #endregion
+                                                 
+               #region Get the previous appointments made by the student
+                
                 var previousAppointments = db.Appointments.ToList().Where(x => ((x.Confirmation == APP_ATTENDED) || (x.Confirmation == APP_NOT_ATTENDED)) && (x.Case_Id == cases.Case_Id) && (x.AppDateTime < current));
                 model.studentPreviousApp = previousAppointments.ToList();
+                #endregion
 
-                /* *
-                 * Gets the details of the counsellor staff asssigned to the particular counsellor
-                 * */
+               #region Gets the details of the counsellor staff asssigned to the particular student
+                
                 Staff staff = (from cs in db.Case_Staff
                                from s in db.Staffs
                                where cs.Case_Id == cases.Case_Id && cs.Staff_Id == s.Staff_Id && cs.Role.Equals("Counsellor")
@@ -147,17 +187,12 @@ namespace StormWeb.Controllers
                     ViewBag.StaffContactNumber = staff.Mobile_Number;
                     ViewBag.StaffEmail = staff.Email;
                 }
-
+               #endregion
 
 
             }
             else
-            {
-                /* *
-                 * Get the message for successful booking or editing of appointment
-                 * */
-
-
+            {   
                 int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
                 Branch_Staff br_st = db.Branch_Staff.SingleOrDefault(x => x.Staff_Id == staffId);
 
@@ -211,6 +246,13 @@ namespace StormWeb.Controllers
             return View(model);
         }
         #endregion
+
+        #region Change general enquiry appointment to normal appointment
+
+
+
+        #endregion
+
 
         #region ChangeStatus to Attended or Not Attended
         [Authorize(Roles = "Counsellor")]
@@ -284,14 +326,14 @@ namespace StormWeb.Controllers
                     Client client = (from st in db.Students
                                      from cl in db.Clients
                                      where st.Student_Id == studentId && st.Client_Id == cl.Client_Id
-                                     select cl).Single();
+                                     select cl).SingleOrDefault();
 
-                    ViewBag.specificStudent = client.GivenName;
+                    ViewBag.specificStudent = client.GivenName + " " + client.LastName;
                 }
                 else
                 {
                     /* *
-                     * Retriving all students specific to a particular counselor
+                     * Retrieving all students specific to a particular counselor
                      * */
 
                     int staffId = Convert.ToInt32(StormWeb.Helper.CookieHelper.StaffId);
@@ -299,7 +341,7 @@ namespace StormWeb.Controllers
                                   from cases in db.Cases
                                   from stud in db.Students
                                   where caseStaff.Case_Id == cases.Case_Id && cases.Student_Id == stud.Student_Id && caseStaff.Staff_Id == staffId
-                                  select stud.Client.GivenName;
+                                  select stud.Client.GivenName+" "+stud.Client.LastName;
                     SelectList studs = new SelectList(student);
                     ViewBag.staffSpecificStudent = studs.ToList();
 
@@ -454,17 +496,16 @@ namespace StormWeb.Controllers
                     studentName = (string)ViewBag.specificStudent;
                 }
 
-
                 /* *
                  * Getting the student selected by the counselor and retrieving the caseId specific to the 
                  * student
                  * */
-
+                Client clie = db.Clients.Single(x => x.GivenName + " " + x.LastName == studentName);
                 Case c = (from s in db.Students
                           from cl in db.Clients
                           from cas in db.Cases
-                          where cl.GivenName == studentName && cl.Client_Id == s.Client_Id && cas.Student_Id == s.Student_Id
-                          select cas).Single();
+                          where cl.GivenName +" "+ cl.LastName == studentName && cl.Client_Id == s.Client_Id && cas.Student_Id == s.Student_Id && cl.Client_Id == clie.Client_Id
+                          select cas).SingleOrDefault();
 
                 var appWithStudent = from app in db.Appointments
                                      where app.Staff_Id == staffId && app.Case_Id == c.Case_Id && ((app.Confirmation == APP_CONFIRMED) || (app.Confirmation == APP_REQUEST_APPROVAL && app.AppDateTime > DateTime.Now))

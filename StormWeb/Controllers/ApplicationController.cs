@@ -104,7 +104,13 @@ namespace StormWeb.Controllers
 
             TempData["message"] = "success";
             NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "You have successfully started an application");
-            return RedirectToAction("Index", "Document", new { go = app.Application_Id, faq = true });
+
+            if(CookieHelper.isStudent())
+                return RedirectToAction("Index", "Document", new { go = app.Application_Id, faq = true });
+            else if(CookieHelper.isStaff())
+                return RedirectToAction("StudentDetails", "Document", new { go = app.Case.Student.Client_Id, faq = true });
+
+            return RedirectToAction("Index", "Home"); 
         }
 
         //
@@ -276,32 +282,7 @@ namespace StormWeb.Controllers
             string staffName = staff.FirstName + " " + staff.LastName;
             return staffName;
         }
-
-        public static string getProgressDescription(string status)
-        {
-            ApplicationStatusType type = (ApplicationStatusType)Enum.Parse(typeof(ApplicationStatusType), status);
-
-            switch (type)
-            {
-                case ApplicationStatusType.Initiated:
-                    return "Initiated";
-                case ApplicationStatusType.Staff_Assigned:
-                    return "Staff has been assigned";
-                case ApplicationStatusType.Documents_Completed:
-                    return "Documents are uploaded";
-                case ApplicationStatusType.Application_Submitted:
-                    return "Application is submitted to university";
-                case ApplicationStatusType.Offer_Letter:
-                    return "Offer letter is issued";
-                case ApplicationStatusType.Payment_Received:
-                    return "Payment is received";
-                case ApplicationStatusType.CoE:
-                    return "Confirmation of Enrollment is issued";
-                default:
-                    return "Not recognized!";
-            }
-        }
-
+        
         public ActionResult changeStatus(int id)
         {
             Application application = db.Applications.Single(x => x.Application_Id == id);
@@ -525,6 +506,37 @@ namespace StormWeb.Controllers
             }
 
             db.SaveChanges();
+        }
+
+
+        public static string getProgressDescription(string status)
+        {
+            ApplicationStatusType type = (ApplicationStatusType)Enum.Parse(typeof(ApplicationStatusType), status);
+
+            switch (type)
+            {
+                case ApplicationStatusType.Initiated:
+                    return "Application started";
+                case ApplicationStatusType.Staff_Assigned:
+                    return "Staff has been assigned";
+                case ApplicationStatusType.Documents_Completed:
+                    return "Documents are uploaded";
+                case ApplicationStatusType.Application_Submitted:
+                    return "Application is submitted to university";
+                case ApplicationStatusType.Interview_Completed:
+                    return "Mandatory Interview is passed";
+                case ApplicationStatusType.Offer_Letter:
+                    return "Offer letter is issued";
+                case ApplicationStatusType.Payment_Received:
+                    return "Payment is received";
+                case ApplicationStatusType.Acceptance:
+                    return "Acceptance form is received";
+                case ApplicationStatusType.CoE:
+                    return "Confirmation of Enrollment is issued";
+                default:
+                    return "Not recognized!";
+
+            }
         }
 
         public enum ApplicationStatusType

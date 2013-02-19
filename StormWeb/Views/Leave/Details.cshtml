@@ -1,0 +1,75 @@
+﻿@model StormWeb.Models.LeaveApplication
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp;&nbsp;Leave Details
+                </h1>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <br />
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Staff Name
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Staff.FirstName) @Html.DisplayFor(model => model.Staff.LastName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                StartDate
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.StartDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                EndDate
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.EndDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Status
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Reason)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Comment
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Comment)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Status
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.Status)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <a href="@Url.Action("Edit", "Leave", new { id = Model.Leave_Id })" class="btn btn-info">
+        Edit</a>
+    @Html.Button_BackToList("Bact To List", "../../Leave")
+</p>

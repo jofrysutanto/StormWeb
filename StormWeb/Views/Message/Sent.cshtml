@@ -36,14 +36,11 @@
         });
     });
 </script>
-<script type="text/javascript">
-
-     $(function () {
-
-            $('a[name*="deleteCkbSent"]').click(function () {
-           
+<script type="text/javascript"> 
+     $(function () { 
+            $('a[name*="deleteCkbSent"]').click(function () { 
                     var final = '';
-                    $('.ads_Checkbox:checked').each(function(){        
+                    $('.Send_Checkbox:checked').each(function(){        
                     var values = $(this).val();
                     if(final=="")
                         final = values + "_";
@@ -55,8 +52,7 @@
                     $.ajax({
                         type:'GET',
                         url: 'Message/DeleteMultipleSent/',
-                        data: {
-                            id: $(this).attr("href"),
+                        data: { 
                             chkDelete :final
                         },
                         success: function (data) {
@@ -69,18 +65,12 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        $("#dialog-confirm").dialog({
-            resizable: false,
-            height: 140,
-            modal: true,
-            autoOpen: false
-        });
-
+        var finalIn = '';
         $("#ckbdeleteall").hide();
 
-        $(".ads_Checkbox").click(function () {
-            var final = '';
-            $('.ads_Checkbox:checked').each(function () {
+        $(".Send_Checkbox").click(function () {
+            final = '';
+            $('.Send_Checkbox:checked').each(function () {
                 var values = $(this).val();
                 if (final == "")
                     final = values + "_";
@@ -95,6 +85,18 @@
                 $("#ckbdeleteall").show();
             }
         });
+        $('a[name*="deleteCkbSent"]').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'Message/DeleteMultipleSent/',
+                data: {
+                    chkDelete: final
+                },
+                success: function (data) {
+                    $("#outboxMessage").html(data);
+                }
+            });
+        });
     });
 
  
@@ -103,7 +105,7 @@
     <thead>
         <tr>
             <th> 
-                 <a class="btn btn-danger" id="ckbdeleteall" data-toggle="modal" href="#myModal1">Delete  
+                 <a class="btn btn-danger" id="ckbdeleteall" data-toggle="modal" href="#myModalSend">Delete  
                     </a>  
             </th>
             <th class="col-half">
@@ -124,8 +126,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td style="width: 80px;">
-                    <input name="selector[]" id="ad_Checkbox1" class="ads_Checkbox" type="checkbox" value="@item.message.Id" />
+                <td style="width: 80px;">@*ad_Checkbox1*@
+                    <input name="selector[]" id="Send_Checkbox" class="Send_Checkbox" type="checkbox" value="@item.message.Id" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.message.TimeStamp)
@@ -134,7 +136,7 @@
                     @Html.DisplayFor(modelItem => item.nameFrom)
                 </td>
                 <td>
-                    <a class='iframe' href="@Url.Action("Read", new { id = item.message.Id, type = "sent" })" title="To close, click anywhere outside this window">@Html.DisplayFor(modelItem => item.message.Subject)</a>
+                    <a class='iframe' href="@Url.Action("Read", new { id = item.message.Id, type = "sent", userTo=item.nameFrom })" title="To close, click anywhere outside this window">@Html.DisplayFor(modelItem => item.message.Subject)</a>
                 </td>
                 <td>
                     <a class="color-icons cross_co" id="modalButton" data-toggle="modal" href="@Html.Raw("#myModal" + item.message.Id)">
@@ -160,7 +162,7 @@
                 </div>
             </div>
             
-            <div class="modal hide" id="myModal1">
+            <div class="modal hide" id="myModalSend">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">
                         ×</button>

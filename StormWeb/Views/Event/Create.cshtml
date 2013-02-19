@@ -1,0 +1,104 @@
+﻿@model StormWeb.Models.EventAppointment
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+
+        $(".dp1").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-100:c',
+            changeMonth: true,
+            changeYear: true,
+            showOn: "button",
+            buttonImage: "../../Content/img/calendar_btn.png",
+            buttonImageOnly: true,
+            minDate: new Date()
+
+        });
+
+    }); </script>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+ @using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+ {
+    
+    @Html.ValidationSummary(true)
+    <div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Create new Event</h1>
+               
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                       
+                       
+    
+         <div class="editor-label">
+            @Html.Label("Heading")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Heading)
+            @Html.ValidationMessageFor(model => model.Heading)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Author")
+        </div>
+        <div class="editor-field">
+             @Html.TextBox("Author", @CookieHelper.Name, new { disabled = "disabled" })
+             @Html.HiddenFor(x => x.EventAddedBy, CookieHelper.getStaffId(), null) 
+        </div>
+        <br />
+        <div class="editor-label">
+            @Html.Label("Audience")
+        </div>
+        <div class="editor-field"> 
+             
+             @Html.RadioButtonFor(x => x.AudienceType, "student", new { @checked = "checked" })
+             Student &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             @Html.RadioButtonFor(x => x.AudienceType, "staff")
+             Staff
+        </div>
+        <br />
+              
+        <div class="editor-label">
+            @Html.Label("Venue")
+        </div>
+        <div class="editor-field">
+             @Html.EditorFor(model => model.Venue)
+            @Html.ValidationMessageFor(model => model.Venue)
+        </div>
+       
+        <div class="control-group">
+			<label class="control-label">Description</label>
+			<div class="controls">
+                @Html.TextAreaFor((model => model.Description), new { @class = "span11", rows = "8", cols = "8", id = "inbox-editor" })
+			</div>   
+                 <p class="help-block">
+                    @Html.ValidationMessageFor(model => model.Description)
+                </p>                                         
+		</div>
+                         
+         <input type="submit" class="btn btn-primary" value="Submit" name="Submit"/><space> @Html.Button_BackToList("Back to List", "Index") </space> 
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                          }
+
+
+
+  

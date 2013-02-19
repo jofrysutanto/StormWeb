@@ -66,77 +66,9 @@ $(function () {
                 </div>
             </div>
         </div>
-    </div>
-    <div class="span3">
-     <div class="box-tab">
-        <div class="page-header">
-            <h1>
-                &nbsp; &nbsp;Quick status</h1>
-        </div> 
-            <div class="widget-content">
-                <div class="widget-box">
-                    <div class="well white-box">
-                        <div class="summary">
-                            <ul>
-                                @if(HttpContext.Current.User.IsInRole("Counsellor"))
-                                {
-                                if (ViewBag.CountAppointment != null)
-                                {
-                                    <li><span class="summary-icon"><a class="dashboard-icons-colors calendar_sl" href="@Url.Action("Index", "Appointment")"></a>
-                                    </span><span class="count">@ViewBag.CountAppointment</span><span class="summary-title">
-                                        Upcoming Appointments</span></li>
-                                }
-                                if (ViewBag.CountNewEnquiries != null)
-                                {
-                                    <li>
-                                                                        
-                                    <span class="summary-icon"><a class="dashboard-icons-colors my_account_sl" href="@Url.Action("Index", "Appointment")"></a>
-                                    </span><span class="count">@ViewBag.CountNewEnquiries</span><span class="summary-title">
-                                        New Enquiries </span></li>
-                                }
-                                if (ViewBag.CountNewStudents != null)
-                                {
-                                    <li><span class="summary-icon"><a class="dashboard-icons-colors special_offer_sl" href="@Url.Action("NewStudent", "StudentStaff")"></a>
-                                    </span><span class="count">@ViewBag.CountNewStudents</span><span class="summary-title">
-                                        New Students </span></li>
-                                }
-                                    }
-                                @{
-                                    int newInbox = StormWeb.Helper.Utilities.countNewInbox();
-
-                                    if (newInbox > 0)
-                                    {
-                                       @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
-                                        @:</span><span class="count">@newInbox</span><span class="summary-title">
-                                        @:New Message</span></li>
-                                  }
-                                    else
-                                    {
-                                      @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
-                                        @:</span><span class="count">@newInbox</span><span class="summary-title">
-                                        @:No New Message</span></li>
-                                  }
-                                    
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            &nbsp;
-             <div class="span12" style="margin-left: 0;margin-top: 10px;">    
-                             @Html.Partial("~/Views/Advertisement/Partial/_ScrollingMarketing.cshtml", (IEnumerable<StormWeb.Models.Advertisement>) ViewBag.Ads)
-             </div> 
-        </div>
-    </div>
-</div>
-@if(CookieHelper.isInRole("Counsellor"))
-    {
-<div class="row-fluid">
-    <div class="span12">        
-        <div class="nonboxy-widget">
-          <div class="widget-head">
-            <h5><i class="black-icons  documents"></i> Students Overview</h5> 
+        <div class="box-tab">
+          <div class="page-header">
+            <h1>Students Overview</h1>
           </div>
           <div class="widget-content">
             <div class="widget-box" style="padding: 15px;">
@@ -218,6 +150,78 @@ $(function () {
             </div>
           </div>
         </div>
+    </div>
+    <div class="span3">
+     <div class="box-tab">
+        <div class="page-header">
+            <h1>
+                &nbsp; &nbsp;Quick status</h1>
+        </div> 
+            <div class="widget-content">
+                <div class="widget-box">
+                    <div class="well white-box">
+                        <div class="summary">
+                            <ul>
+                                @if(HttpContext.Current.User.IsInRole("Counsellor"))
+                                {
+                                if (ViewBag.CountAppointment != null)
+                                {
+                                    <li><span class="summary-icon"><a class="dashboard-icons-colors calendar_sl" href="@Url.Action("Index", "Appointment")"></a>
+                                    </span><span class="count">@ViewBag.CountAppointment</span><span class="summary-title">
+                                        Upcoming Appointments</span></li>
+                                }
+                                if (ViewBag.CountNewEnquiries != null)
+                                {
+                                    <li>
+                                                                        
+                                    <span class="summary-icon"><a class="dashboard-icons-colors my_account_sl" href="@Url.Action("Index", "Appointment")"></a>
+                                    </span><span class="count">@ViewBag.CountNewEnquiries</span><span class="summary-title">
+                                        New Enquiries </span></li>
+                                }
+                                if (ViewBag.CountNewStudents != null)
+                                {
+                                    <li><span class="summary-icon"><a class="dashboard-icons-colors special_offer_sl" href="@Url.Action("NewStudent", "StudentStaff")"></a>
+                                    </span><span class="count">@ViewBag.CountNewStudents</span><span class="summary-title">
+                                        New Students </span></li>
+                                }
+                                    }
+                                @{
+                                    int newInbox = StormWeb.Helper.Utilities.countNewInbox();
+
+                                    if (newInbox > 0)
+                                    {
+                                       @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
+                                        @:</span><span class="count">@newInbox</span><span class="summary-title">
+                                        @:New Message</span></li>
+                                  }
+                                    else
+                                    {
+                                      @:<li><span class="summary-icon"><a class="dashboard-icons-colors email_sl" href="@Url.Action("Index", "Message")"></a>
+                                        @:</span><span class="count">@newInbox</span><span class="summary-title">
+                                        @:No New Message</span></li>
+                                  }
+                                    
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            &nbsp;
+             <div class="span12" style="margin-left: 0;margin-top: 10px;">    
+                             @Html.Partial("~/Views/Advertisement/Partial/_ScrollingMarketing.cshtml", (IEnumerable<StormWeb.Models.Advertisement>) ViewBag.Ads)
+             </div> 
+             <div class="span12" style="margin-left: 0;">    
+                       @Html.Partial("~/Views/Event/Partial/_ScrollingEvent.cshtml", (IEnumerable<StormWeb.Models.Event>)ViewBag.eve)
+                   </div>
+        </div>
+    </div>
+</div>
+@if(CookieHelper.isInRole("Counsellor"))
+    {
+<div class="row-fluid">
+    <div class="span12">        
+        
     </div>                
 </div>
 }

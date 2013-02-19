@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<StormWeb.Models.Staff_Log>
 @{
     ViewBag.Title = "ActivityLog";
-}  
+}
 <blockquote class="quote_blue">
-	<h2>Staff Name: @ViewBag.StaffName</h2>
-        <b>Department</b>: @ViewBag.StaffDepartment | <b>Branch</b>: @ViewBag.StaffBranch | <b>Role</b>: @ViewBag.StaffRole
-          
-</blockquote>  
+    <h2>
+        Staff Name: @ViewBag.StaffName</h2>
+    <b>Department</b>: @ViewBag.StaffDepartment | <b>Branch</b>: @ViewBag.StaffBranch
+    | <b>Role</b>: @ViewBag.StaffRole
+</blockquote>
 <div class="row-fluid">
     <div class="span12">
         <div class="box-tab">
@@ -14,78 +15,87 @@
                 <h1>
                     &nbsp;&nbsp; ActivityLog
                 </h1>
-            </div> 
-            
+            </div>
             <div class="widget-content">
                 <div class="widget-box" style="padding: 15px;">
                     <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
-                        
                             <tr>
-                                <td>
-                                    LogIn and LogOut Date and Time
-                                </td>
+                                <th>
+                                    <i class="color-icons alarm_co"></i>LogIn and LogOut Date and Time
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    @{string a = "", b = ""; int Li=-1,Lo=-1;}
-                                    @foreach (var item in Model)
-                                    {
-                                        if (a == "")
+                                @if (Model.Count() == 0)
+                                {
+                                    <td>
+                                        No data available in table
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @{string a = "", b = ""; int Li = -1, Lo = -1;}
+                                        @foreach (var item in Model)
                                         {
-                                            a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
-                                             <b>@item.DateTime.Day @Html.Encode("th ") @item.DateTime.ToString("MMMM")  @Html.Encode(" ") @item.DateTime.Year</b>
-                                             <br />
-                                        }
-                                        b = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
-                                        if (a != b)
-                                        {
-                                            Li = -1; Lo = -1;
+                                            if (a == "")
+                                            {
+                                                a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
+                                            <b>@item.DateTime.Day @Html.Encode("th ") @item.DateTime.ToString("MMMM") @Html.Encode(" ")
+                                                @item.DateTime.Year</b>
+                                            <br />
+                                            }
+                                            b = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
+                                            if (a != b)
+                                            {
+                                                Li = -1; Lo = -1;
                                             <hr />
-                                            a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString(); 
-                                           <b> @item.DateTime.Day @Html.Encode("th ") @item.DateTime.ToString("MMMM")  @Html.Encode(" ") @item.DateTime.Year</b>
+                                                a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString(); 
+                                            <b>@item.DateTime.Day @Html.Encode("th ") @item.DateTime.ToString("MMMM") @Html.Encode(" ")
+                                                @item.DateTime.Year</b>
                                             <br />
-                                        } 
-                                        
-                                        if (a == b)
-                                        {
-
-                                            if (item.Comment.Contains("Logs in"))
-                                            {
-                                                if (Li == 1 && Lo==0)
-                                                {
-                                                    <br />
-                                                    Li = -1; Lo = -1;
-                                                }
-                                                if (Lo == 1 && Li==0)
-                                                {
-                                                    <br /> 
-                                                    Li = -1; Lo = -1;
-                                                }
-                                                Li = Li + 2; Lo = Lo + 1;
-                                                <span class="color-icons door_in_co"></span>@Html.Encode("Login Time : ")
-                                               @* @item.DateTime.ToShortDateString() @Html.Encode(" ")*@  @item.DateTime.ToShortTimeString() 
                                             }
-                                            else if (item.Comment.Contains("Logs out"))
+
+                                            if (a == b)
                                             {
-                                                
-                                                Lo = Lo + 2; Li = Li + 1;
+
+                                                if (item.Comment.Contains("Logs in"))
+                                                {
+                                                    if (Li == 1 && Lo == 0)
+                                                    {
+                                            <br />
+                                                        Li = -1; Lo = -1;
+                                                    }
+                                                    if (Lo == 1 && Li == 0)
+                                                    {
+                                            <br /> 
+                                                        Li = -1; Lo = -1;
+                                                    }
+                                                    Li = Li + 2; Lo = Lo + 1;
+                                            <span class="color-icons door_in_co"></span>@Html.Encode("Login Time : ")
+                                            @item.DateTime.ToShortTimeString() 
+                                                }
+                                                else if (item.Comment.Contains("Logs out"))
+                                                {
+
+                                                    Lo = Lo + 2; Li = Li + 1;
                                                
-                                                <span class="color-icons door_co"></span>@Html.Encode("Logout Time : ")
-                                               @* @item.DateTime.ToShortDateString() @Html.Encode(" ")*@ @item.DateTime.ToShortTimeString() 
-                                            }
+                                            <span class="color-icons door_co"></span>@Html.Encode("Logout Time : ")
+                                            @item.DateTime.ToShortTimeString() 
+                                                }
 
-                                        } 
-                                        if (Li == 2 && Lo == 2)
-                                        {
-                                            Li = -1; Lo = -1;
+                                            }
+                                            if (Li == 2 && Lo == 2)
+                                            {
+                                                Li = -1; Lo = -1;
                                             <br />
-                                        } 
-                                        a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
-                                    }
-                                </td>
+                                            }
+                                            a = item.DateTime.Day.ToString() + item.DateTime.Month.ToString() + item.DateTime.Year.ToString();
+                                        }
+                                    </td>
+                                }
                             </tr>
                         </tbody>
                     </table>

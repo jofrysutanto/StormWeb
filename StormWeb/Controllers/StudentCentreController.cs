@@ -20,6 +20,7 @@ namespace StormWeb.Controllers
         [Authorize(Roles = "Super,student,Counsellor")]
         public ActionResult Student()
         {
+            ViewBag.eve = db.Events.Where(x => x.Date > DateTime.Now).ToList();
             StudentCentreModel stmodel = new StudentCentreModel();
             int studentId = 0;
             if (CookieHelper.isStudent())

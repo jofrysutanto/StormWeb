@@ -56,10 +56,10 @@ $(function () {
                                    <i class="color-icons arrow_branch_co"></i> Branch
                                 </th>
                                 <th>
-                                    Service
+                                    Course, University
                                 </th>
                                 <th>
-                                    Nationality
+                                    Status
                                 </th>
                             </tr>
                         </thead>
@@ -110,14 +110,62 @@ $(function () {
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Services)
+                                   <td>
+                                        @{
+                                            List<StormWeb.Models.Application> applicationCount = item.Students.SingleOrDefault().Applications.ToList();
+                                            
+                                            foreach(StormWeb.Models.Application app in applicationCount)
+                                            {
+                                                <div>@app.Course.Course_Name</div>
+                                                <div>@app.Course.Faculty.University.University_Name</div>
+                                            }
+                                        }
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Nationality)
-                                    </td>
-                                   
-                                </tr>
+                                                @{
+                                                 string status = ""; 
+                                                if (item.Students.SingleOrDefault().Applications.Single().Status == "Initiated")
+                                                {
+                                                    status = "Your application proccess has been started";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Staff_Assigned")
+                                                {
+                                                    status = "You have been assigned a counsellor "; 
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Documents_Completed")
+                                                {
+                                                    status = "All the Documents have been uploaded";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Application_Submitted")
+                                                {
+                                                    status = "All the Applications have been Submitted";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Interview_Completed")
+                                                {
+                                                    status = "You have attended the interview";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Offer_Letter")
+                                                {
+                                                    status = "Offer Letter is issued";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Acceptance")
+                                                {
+                                                    status = "Your offer letter has been accepted";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "Payment_Received")
+                                                {
+                                                    status = "Payment is made";
+                                                }
+                                                else if (item.Students.SingleOrDefault().Applications.Single().Status == "CoE")
+                                                {
+                                                    status = "CoE is issued";
+                                                }   
+                                                }
+                                                <div class="alert alert-success">
+                                                  @status
+                                                </div>
+                                            </td>
+                                            </tr>
                                     }
                                 }
                                 else
@@ -161,12 +209,30 @@ $(function () {
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Branch.Branch_Name)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Services)
+                                     <td>
+                                        @{
+                                            List<StormWeb.Models.Application> applicationCount = item.Students.SingleOrDefault().Applications.ToList();
+                                            
+                                            foreach(StormWeb.Models.Application app in applicationCount)
+                                            {
+                                                <div>@app.Course.Course_Name</div>
+                                                <div>@app.Course.Faculty.University.University_Name</div><br />
+                                            }
+                                        }
+                                      
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Nationality)
-                                    </td>
+                                                @{                                                    
+                                                    
+                                                    foreach(StormWeb.Models.Application app in applicationCount)
+                                                    {
+                                                        <div class="alert alert-success">
+                                                          @StormWeb.Controllers.ApplicationController.getProgressDescription(@app.Status)
+                                                        </div>
+                                                    }
+                                    }
+                                                
+                                            </td>
                                    
                                 </tr>
                                 }
@@ -182,5 +248,14 @@ $(function () {
     <div class="span4">    
                 @Html.Partial("~/Views/Advertisement/Partial/_ScrollingMarketing.cshtml", (IEnumerable<StormWeb.Models.Advertisement>) ViewBag.Ads)
     </div>
+   
+     @if (CookieHelper.isAssociate())
+     {
+     <div class="span4" style="margin-left: 10;">    
+       @Html.Partial("~/Views/Event/Partial/_ScrollingEvent.cshtml", (IEnumerable<StormWeb.Models.Event>)ViewBag.eve)
+    </div>
+     }
+    
 </div>
+
 

@@ -198,6 +198,9 @@
                                  <th>
                                     <i class="color-icons hammer_screwdriver_co "></i>Action
                                 </th>
+                                <th>
+                                    Cancel / Reject
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -211,7 +214,7 @@
                                 var accept_complete = item.Application_Result.SingleOrDefault(x => x.Type == StormWeb.Controllers.DocumentController.COMPLETED_ACCEPTANCE_TYPE);
                                 
                                 <tr class="document-table-notice">
-                                    <td colspan="7"><div class="alert alert-info">@StormWeb.Controllers.ApplicationController.getNextStepDescription(item.Status)</div></td>                                    
+                                    <td colspan="8"><div class="alert alert-info">@StormWeb.Controllers.ApplicationController.getNextStepDescription(item.Status)</div></td>                                    
                                 </tr>
                                 if (item.Application_Cancel != null)
                                 {
@@ -556,6 +559,16 @@
                                        }
                                    }
                                        </ul>
+                                    </td>
+                                    <td>
+                                        @if (StormWeb.Controllers.ApplicationController.getProgressValue(item.Status) < 60)
+                                        {
+                                            @Html.Button_Delete("Cancel this application", @Url.Action("DeleteConfirmed", "Application", new { id = item.Application_Id }))
+                                        }
+                                        else
+                                        {
+                                            @Html.Button_Delete("Application is rejected", @Url.Action("DeleteConfirmed", "Application", new { id = item.Application_Id }))
+                                        }
                                     </td>
 
                                </tr>

@@ -1,206 +1,87 @@
-﻿@model StormWeb.Models.EventAppointment
-
+﻿@model IEnumerable<StormWeb.Models.Event>
 @{
     ViewBag.Title = "Index";
 }
 
-
-<script type="text/javascript" src="../../Scripts/gcal.js"></script>
-
-<script type="text/javascript">
-    $("#dialogform").dialog({
-        modal: true,
-        autoOpen: false,
-        draggable: true,
-        resizable: false,
-        width: 500
-    });
-</script>
-<div class="span2">&nbsp;</div>
-<div class="span12">
-        <div class="nonboxy-widget">
-        
-          <div class="widget-content">
-            <div class="widget-box">
-              <div id="calendar"> </div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="box-tab">
+            <div class="page-header">
+                <h1>
+                    &nbsp; &nbsp; Events</h1>
+               
             </div>
-          </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
+                      <table class="data-tbl-simple table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Heading
+                                </th>
+                                <th>
+                                    Venue
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Author
+                                </th>
+                                <th>
+                                   Audience
+                                </th>
+                                <th>
+                                   Description
+                                </th>
+                                <th>
+                                   <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {                                                                
+                                <tr>
+                                    <td>
+                                         @Html.DisplayFor(modelItem => item.Heading)                                                                           
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Venue)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                   </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EventAddedBy)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AudienceType)
+                                    </td>
+                                     <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>   
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id=item.EventId}) |
+                                        @Html.ActionLink("Delete", "Delete", new { id=item.EventId })
+                                    </td>
+                                    
+                                </tr>   
+                                    }
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
         </div>
-      </div>
-<div class="span2">&nbsp;</div>
-<div id="calEventDialog">
-    <form name="addEventForm">
-        <fieldset>
-        <label for="eventTitle">Title</label>
-        <input type="text" name="eventTitle" id="eventTitle" /><br>
-        <label for="eventStart">Start Date</label>
-        @Html.TextBox("eventStart")<br>
-        <label for="eventEnd">End Date</label>
-        @Html.TextBox("eventEnd")<br>
-        <label for="startTime" id="startTime">Start Time</label>
-        @Html.TextBox("eventStartTime")<br>
-        <label for="endTime" id="endTime">End Time</label>
-        @Html.TextBox("eventEndTime")<br>
-        <label for="Venue id="Venue"">Venue</label>
-        @Html.TextArea("eventVenue")<br>
-        <label for="eventComment">Comments</label>
-        @Html.TextArea("eventComment")<br>
-        </fieldset>
-    </form>
+    </div>
 </div>
-
-      <script>
-          $(document).ready(function () {
-              $calendar = $('#calendar').fullCalendar({
-                  header: {
-                      left: 'prev,next today',
-                      center: 'title',
-                      right: 'month,agendaWeek,agendaDay'
-                  },
-                  selectable: true,
-                  selectHelper: true,
-                  select: function (start, end, allDay) {
-
-                      /*Using jquery date picker*/
-                      //$('#eventStart').datepicker({ dateFormat: 'yy-mm-dd' }); // format to show
-                      //$('#eventStart').datepicker({ gotoCurrent: true });
-                      //$('#datePicker').datepicker('defaultDate', start);
-
-
-                      $('#eventStart').val(new Date(start).toLocaleDateString('dd/mm/yy'));
-                      $('#eventEnd').val(new Date(end).toLocaleDateString('dd/mm/yy'));
-                      $('#eventStartTime').val(new Date(start).toLocaleTimeString('hh:mm:ss'));
-                      $('#eventEndTime').val(new Date(end).toLocaleTimeString('hh:mm:ss'));
-
-                      if ($('#eventStart').val() != $('#eventEnd').val()) {
-                          $('#startTime').hide();
-                          $('#eventStartTime').hide();
-                          $('#endTime').hide();
-                          $('#eventEndTime').hide();
-                      }
-                      else {
-                          $('#startTime').show();
-                          $('#eventStartTime').show();
-                          $('#endTime').show();
-                          $('#eventEndTime').show();
-                      }
-                      $('#calEventDialog').dialog('open');
-
-                  },
-                  editable: true,
-                  theme: true,
-                  buttonText: {
-                      prev: 'Prev',
-                      next: 'Next',
-                      today: 'Today',
-                      month: 'Month',
-                      week: 'Week',
-                      day: 'Day'
-                  },
-                  events: {
-                      url: "/Event/GetEvents",
-                      textColor: 'black',
-                  },
-                  eventClick: function (calEvent, jsEvent, view) {
-
-                      alert('Event: ' + calEvent.title);
-                      alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                      alert('View: ' + view.name);
-
-                      // change the border color just for fun
-                      $(this).css('border-color', 'red');
-
-                  },
-                  eventDrop: function (event, delta) {
-                      alert(event.title + ' was moved ' + delta + ' days\n');
-                  }
-              });
-              var title = $('#eventTitle');
-              var start = $('#eventStart');
-              var end = $('#eventEnd');
-              var startTime = $('#eventStartTime');
-              var endTime = $('#eventEndTime');
-              var venue = $('#eventVenue');
-              var comment = $('#eventComment');
-              var eventClass, color;
-              $('#calEventDialog').dialog({
-                  resizable: false,
-                  autoOpen: false,
-                  title: 'Add Event',
-                  width: 400,
-                  buttons: {
-                      Save: function () {
-                          if (title !== '') {
-                              var date = new Date(start);
-
-                              var NextMonth = date.getMonth() + 1; // Reason: it is bacause of month array it starts from 0
-
-                              var dateString = (date.getDate()) + '/' + NextMonth + '/' + date.getFullYear();
-
-                              var queryString = null;
-
-                              if (startTime != '' && endTime != '') {
-                                  queryString = "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val() + "&eventStartTime=" + startTime.val() + "&eventEndTime=" + endTime.val() + "&eventVenue=" + venue.val() + "&eventComment=" + comment.val();
-                              }
-                              else {
-                                  queryString = "eventTitle=" + title.val() + "&eventStart=" + start.val() + "&eventEnd=" + end.val() + "&eventVenue=" + venue.val() + "&eventComment=" + comment.val();
-                              }
-
-                              $.ajax({
-                                  type: "POST",
-                                  url: "/Event/Create",
-                                  data: queryString,
-                                  success: function (result) {
-                                      if (result.success)
-                                          $("#addEventForm input").attr("value", ""); // clear all the input fields on success
-                                      $calendar.fullCalendar('renderEvent', {
-                                          title: title.val(),
-                                          start: start.val(),
-                                          end: end.val(),
-                                          allDay: true,
-                                          className: eventClass,
-                                          color: color
-                                      }, true // make the event "stick"
-                                        );
-                                  },
-                                  error: function (req, status, error) {
-                                  }
-                              });
-                          }
-                          $calendar.fullCalendar('unselect');
-                          $(this).dialog('close');
-                      },
-                      Cancel: function () {
-                          $(this).dialog('close');
-
-                      }
-                  }
-              });
-          }); 
-      </script>
-      <style type="text/css">
-        
-        .genStud .fc-event-skin 
-        {
-            background-color:Maroon;
-        }
-        
-        .staff .fc-event-skin 
-        {
-            background-color:Yellow;
-        }
-        
-        .stud .fc-event-skin 
-        {
-            background-color: #7BA861;
-        }
-        
-        #calendar
-        {
-		    width: 900px;
-		    margin: 0 auto;
-		}
-
-        
-      </style>
-
+<p>
+    @Html.Button_Add("Create New", Url.Action("Create","Event"))
+</p>
+@if (CookieHelper.isStaff())
+{
+  <div class="span12" style="margin-left: 0;margin-top: 10px;">    
+     @Html.Partial("~/Views/Event/Partial/_ScrollingEvent.cshtml")
+  </div> 
+}

@@ -1,4 +1,4 @@
-﻿@model StormWeb.Models.Associate
+﻿ @model StormWeb.Models.Associate
 @{
     ViewBag.Title = "Create";
 } 
@@ -138,6 +138,7 @@
             <div class="control-group">
                 @Html.Label("Referrer", null, new { @class = "control-label" })
                 <div class="controls">
+                    
                     @Html.DropDownListFor(model => model.Referrer, (IEnumerable<SelectListItem>)ViewBag.Marketer_List, "--Select--", new { @class = "chzn-select" })
                     <p class="help-block">
                         @Html.ValidationMessageFor(model => model.Referrer)

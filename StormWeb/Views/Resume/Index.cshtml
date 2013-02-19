@@ -81,11 +81,14 @@
                                                <a id="addResume@(item.Resume_Id)" class="btn btn-info tip-top" data-original-title="Add Resume" href="@item.Resume_Id"> Add Resume &nbsp;<i class="color-icons add_co"> </i></a>
                                              <div class="controls" style="display:inline">
                                             <div class="input-append" style="display:inline">
-                                            <span style="display:none" id="addResumeBox@(item.Resume_Id)">
-                                                 <input type="file"  class="input-mini" placeholder="0" name="Resume_File" /><a id="confirmAdd" class="btn btn-success" href="@item.Resume_Id" >Upload</a>
+                                            <span style="display:none" id="addResumeBox@(item.Resume_Id)"> 
+                                                 <input type="file"  class="input-medium" name="Resume_File" id="Resume_File"/>
+                                                 <a id="confirmAdd" class="btn btn-success" href="@item.Resume_Id" >Upload</a>
+                                                 <a id="confirmCancel" class="btn btn-danger">Cancel</a>
                                             </span>
                                             </div>
                                             </div>
+                                            <p><span id="spErrorMessage@(item.Resume_Id)" class="error" style="display: none;">* Please Select a File</span></p>
                                                      }
                                                  }
                                         }
@@ -99,8 +102,8 @@
                                         @Html.ActionLink("Delete", "Delete", new { id = item.Resume_Id }) 
                                     </td>
                                 </tr>
-                                   using (Html.BeginForm())
-                                   {   
+                                                 using (Html.BeginForm())
+                                                 {   
                                     <div class="modal hide fade" id="myModal@(item.Resume_Id)">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">
@@ -119,7 +122,7 @@
                                           @Html.ActionLink("Yes", "DeleteResumeFile", new { id = item.Resume_Id, page = "resume" }, new { @class = "btn" }) 
                                         </div>
                                     </div>
-                                   }
+                                                 }
                             }
                         </tbody>
                     </table>
@@ -139,10 +142,10 @@
         var id = null;
         $("a[id*='addResume']").click(function (e) {
             e.preventDefault();
-
             // Close all existing
             $("span[id*='addResumeBox']").fadeOut(500);
             $("a[id*='addResume']").show();
+            $("span[id*='spErrorMessage']").hide();
 
             id = $(this).attr("href");
 
@@ -156,9 +159,24 @@
             e.preventDefault();
 
             var id = $(this).attr("href");
+            var Resume = $("input[id='Resume_File']").val();
+            if (Resume == "") {
+                document.getElementById("spErrorMessage" + id).style.display = 'inline';
+            }
+            else {
+                document.getElementById("spErrorMessage" + id).style.display = 'none';
+                $("#uploadFile" + id).submit();
+            }
 
-            $("#uploadFile" + id).submit(); 
+        })
+
+        $("a[id*='confirmCancel']").click(function (e) {
+            document.getElementById("spErrorMessage" + id).style.display = 'none';
+            //  $("input[id='Resume_File']").replaceWith("<input type='file' class='input-medium' name='Resume_File' id='Resume_File'/>"); 
+            $("span[id*='addResumeBox']").hide();
+            $("a[id*='addResume']").show();
         })
 
     });
 </script>
+    

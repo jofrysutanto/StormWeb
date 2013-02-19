@@ -1,14 +1,10 @@
 ﻿@model StormWeb.Models.MaterialViewModel
-          
-
 @{
     ViewBag.Title = "Index";
 }
-
 @{
     ViewBag.Title = "Index";
 }
-
 <script>
 
     $(function () {
@@ -42,19 +38,19 @@
 
     });
 </script>
-
 <div class="row-fluid">
     <div class="span12">
         <div class="box-tab">
             <div class="page-header">
                 <h1>
-                    &nbsp; &nbsp; Materials </h1>
-               
+                    &nbsp; &nbsp; Materials
+                </h1>
             </div>
             <div class="widget-content">
                 <div class="widget-box" style="padding: 15px;">
-                <h2>Materials</h2>
-                      <table class="data-tbl-simple table table-bordered dataTable">
+                    <h2>
+                        Materials</h2>
+                    <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
                             <tr>
                                 <th>
@@ -70,77 +66,77 @@
                                     File
                                 </th>
                                 <th>
-                                   <i class="color-icons hammer_screwdriver_co"></i>Actions
+                                    <i class="color-icons hammer_screwdriver_co"></i>Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-
-@foreach (var item in Model.material)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            <label class="control-label" style="display:inline">@Html.DisplayFor(modelItem => item.Instore)  <a id="addMaterial@(item.ID)" class="color-icons add_co tip-top" data-original-title="Add" href="@item.ID"></a></label>
-            <div class="controls" style="display:inline">
-            <div class="input-append" style="display:inline">
-            <span style="display:none" id="addMaterialBox@(item.ID)">
-                 + <input type="text" class="input-mini" placeholder="0" name="addMaterial@(item.ID)" /><a id="confirmAdd" class="btn btn-success" href="@item.ID" >Go</a>
-            </span>
-            </div>
-            </div>
-        </td>
-         <td>
-            @if (item.Material_File.SingleOrDefault() != null)
-            {
-               @Html.Link_DownloadFile(@item.Material_File.SingleOrDefault().Filename, @Url.Action("MaterialFile", new { id = item.Material_File.SingleOrDefault().ID }))}
-            else
-            { @("No file attached")}
-               @* @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().FileName)*@
-        </td>
-        <td>
-            @if (HttpContext.Current.User.IsInRole("Marketing"))
-            {
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) @:|
+                            @foreach (var item in Model.material)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        <label class="control-label" style="display: inline">@Html.DisplayFor(modelItem => item.Instore)
+                                            <a id="addMaterial@(item.ID)" class="color-icons add_co tip-top" data-original-title="Add" href="@item.ID">
+                                            </a>
+                                        </label>
+                                        <div class="controls" style="display: inline">
+                                            <div class="input-append" style="display: inline">
+                                                <span style="display:none" id="addMaterialBox@(item.ID)">+
+                                                    <input type="text" class="input-mini" placeholder="0" name="addMaterial@(item.ID)" /><a id="confirmAdd" class="btn btn-success" href="@item.ID" >Go</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (item.Material_File.SingleOrDefault() != null)
+                                        {
+                                            @Html.Link_DownloadFile(@item.Material_File.SingleOrDefault().Filename, @Url.Action("MaterialFile", new { id = item.Material_File.SingleOrDefault().ID }))}
+                                        else
+                                        { @("No file attached")}
+                                        @* @Html.DisplayFor(modelItem => item.Advertisement_File.SingleOrDefault().FileName)*@
+                                    </td>
+                                    <td>
+                                        @if (HttpContext.Current.User.IsInRole("Marketing"))
+                                        {
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) @:|
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                                                                    
-            }
-            else
-            {
-                if (item.Material_Order.Where(x => x.Branch == BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0]).Count() > 0)
-                {
-                    @Html.Button_Add("Place Order", "#", new { disabled = "disabled" })
-                }
-                else
-                {
-                   @Html.Button_Add("Place Order", Url.Action("CreateOrder", "Material", new { id = item.ID }))
-                }
+                                        }
+                                        else
+                                        {
+                                            if (item.Material_Order.Where(x => x.Branch == BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0]).Count() > 0)
+                                            {
+                                            @Html.Button_Add("Place Order", "#", new { disabled = "disabled" })
+                                            }
+                                            else
+                                            {
+                                            @Html.Button_Add("Place Order", Url.Action("CreateOrder", "Material", new { id = item.ID }))
+                                            }
 
 
-            }
+                                        }
                                     </td>
-                                    
                                 </tr>   
-}
+                            }
                         </tbody>
                     </table>
-                    <p> @if (HttpContext.Current.User.IsInRole("Marketing"))
+                    <p>
+                        @if (HttpContext.Current.User.IsInRole("Marketing"))
                         {
-        @Html.Button_Add("Create New", Url.Action("Create", "Material"))
+                            @Html.Button_Add("Create New", Url.Action("Create", "Material"))
                         }
-    </p>
-
-<hr />
-                 <h2>Orders</h2>
-                   @* new table for order*@
-
-
-                     <table class="data-tbl-simple table table-bordered dataTable">
+                    </p>
+                    <hr />
+                    <h2>
+                        Orders</h2>
+                    @* new table for order*@
+                    <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
                             <tr>
                                 <th>
@@ -149,98 +145,94 @@
                                 <th>
                                     Quantity
                                 </th>
-                                 <th>
+                                <th>
                                     Requested By
                                 </th>
                                 <th>
                                     Branch Name
                                 </th>
-                                 <th>
+                                <th>
                                     Requested On
                                 </th>
                                 <th>
                                     Status
                                 </th>
-                                
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model.placeOrder)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Material.Name)
+                                    </td>
+                                    <td style="font-weight: bold">
+                                        @Html.DisplayFor(modelItem => item.Quantity)
+                                        @if (item.Type.Contains("Add"))
+                                        {
+                                            <img src="../../Content/img/up.png" />
+                                        }
+                                        else
+                                        {
+                                            <img src="../../Content/img/down.png" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RequestedBy)
+                                    </td>
+                                    <td>
+                                        @BranchHelper.getBranchName(BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0])
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RequestedOn)
+                                        <span style="font-size: 0.9em; color: grey">
+                                            @{
+                                   DateTime date1 = DateTime.Now;
+                                   DateTime date2 = item.RequestedOn;
+                                   TimeSpan sub = date1.Subtract(date2);
 
-@foreach (var item in Model.placeOrder)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Material.Name)
-        </td>
-        <td style="font-weight: bold">
-            @Html.DisplayFor(modelItem => item.Quantity) 
-            @if (item.Type.Contains("Add"))
-            {
-                <img src="../../Content/img/up.png" />
-            }
-            else
-            {
-                <img src="../../Content/img/down.png" />
-            }
-        </td>
-         <td>
-            @Html.DisplayFor(modelItem => item.RequestedBy)
-        </td>
-        <td>
-             @BranchHelper.getBranchName(BranchHelper.getBranchIDArray(CookieHelper.AssignedBranch)[0])
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequestedOn)
-            <span style="font-size:0.9em; color:grey">
-            @{
-                 DateTime date1 = DateTime.Now;
-                 DateTime date2 = item.RequestedOn;
-                 TimeSpan sub = date1.Subtract(date2);
-
-                 if (!item.Status.Contains("Completed"))
-                 {
-                     if (sub.Days > 0)
-                     {
-                        @: @sub.Days day(s) ago
+                                   if (!item.Status.Contains("Completed"))
+                                   {
+                                       if (sub.Days > 0)
+                                       {
+                                                @: @sub.Days day(s) ago
                      }
-                     else
-                     {
-                         if (sub.Hours > 0)
-                         {
-                            @: @sub.Hours hour(s) ago
+                                       else
+                                       {
+                                           if (sub.Hours > 0)
+                                           {
+                                                @: @sub.Hours hour(s) ago
                         }
-                         else
-                         {
-                            @: @sub.Minutes minute(s) ago
+                                           else
+                                           {
+                                                @: @sub.Minutes minute(s) ago
                             }
-                     }                    
-                 }
-            }
-            </span>
-           
-        </td>
-         <td>
-           @Html.DisplayFor(modelItem => item.Status)
-            @if (HttpContext.Current.User.IsInRole("Marketing"))
-            {
-                if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_PENDING))
-                {
-                     @Html.ActionLink("Approve", "ApproveOrder", new { id = item.ID }, new { @class = "btn btn-mini" })
-                }
-                else if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_APPROVED))
-                {
-                      @Html.Button_Add("Complete", "ApproveOrder", new { id = item.ID })
-                }
-            } 
-           @if (item.Status.Contains("Completed"))
-           {
-              @:on @Html.DisplayFor(modelItem => item.CompletedOn)
-            }
-           @Html.ActionLink("Cancel", "DeleteOrder", new { id = item.ID }, new { @class = "btn btn-mini btn-danger" })
-        </td>
-       
+                                       }
+                                   }
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @if (HttpContext.Current.User.IsInRole("Marketing"))
+                                        {
+                                            if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_PENDING))
+                                            {
+                                            @Html.ActionLink("Approve", "ApproveOrder", new { id = item.ID }, new { @class = "btn btn-mini" })
+                                            }
+                                            else if (item.Status.Contains(StormWeb.Controllers.MaterialController.ORDER_STATUS_APPROVED))
+                                            {
+                                            @Html.Button_Add("Complete", "ApproveOrder", new { id = item.ID })
+                                            }
+                                        }
+                                        @if (item.Status.Contains("Completed"))
+                                        {
+                                            @:on @Html.DisplayFor(modelItem => item.CompletedOn)
+                                                    }
+                                        @Html.ActionLink("Cancel", "DeleteOrder", new { id = item.ID }, new { @class = "btn btn-mini btn-danger" })
+                                    </td>
                                 </tr>   
-}
+                            }
                         </tbody>
                     </table>
                 </div>

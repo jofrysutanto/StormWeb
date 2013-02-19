@@ -36,6 +36,7 @@ namespace StormWeb.Controllers
 
             return fileName;
         }
+
         public static int GetFileId(int resumeId)
         {
             StormDBEntities db = new StormDBEntities();
@@ -57,11 +58,15 @@ namespace StormWeb.Controllers
         }
         #endregion
 
+        #region Details
+
         public ViewResult Details(int id)
         {
             Resume resume = db.Resumes.Single(r => r.Resume_Id == id);
             return View(resume);
         }
+
+        #endregion
 
         #region Create
 
@@ -96,6 +101,8 @@ namespace StormWeb.Controllers
                 db.Resume_File.AddObject(resumeFile);
                 db.SaveChanges();
             }
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added a new Resume for " + resume.GivenName + " " + resume.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_RESUME);
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Created a new Resume " + resume.GivenName + " " + resume.LastName);
 
             return RedirectToAction("Index");
 
@@ -126,7 +133,48 @@ namespace StormWeb.Controllers
 
         #endregion
 
+        #region Edit
+        
+        [Authorize(Roles = "Super,BranchManager,HR")]
+        public ActionResult Edit(int id)
+        {
+            Resume resume = db.Resumes.Single(l => l.Resume_Id == id);
+            ViewBag.CountryList = new SelectList(CountryHelper.GetCountries(), "CountryCode", "CountryName");
+            return View(resume);
+        }
+        [HttpPost]
+        
+        public ActionResult Edit(Resume resume, FormCollection collection)
+        {
+            string str = collection["Address.Country_Id"].Split(',')[1];
+            int addressId = Convert.ToInt32(collection["Address_Id"]);
+            int countryId = Convert.ToInt32(str);
 
+            Address address = resume.Address;
+            resume.Address = db.Addresses.Single(x => x.Address_Id == addressId);
+            resume.Address.Address_Name = collection["Address.Address_Name"];
+            resume.Address.City = collection["Address.City"];
+            resume.Address.State = collection["Address.State"];
+            resume.Address.Zipcode = Convert.ToInt32(collection["Address.Zipcode"]);
+
+            address = resume.Address;
+
+            Country country = resume.Address.Country;
+            resume.Address.Country = db.Countries.Single(x => x.Country_Id == countryId);
+            country = resume.Address.Country;
+
+            //db.Resumes.Attach(resume);
+            db.ObjectStateManager.ChangeObjectState(address, EntityState.Modified);
+            db.ObjectStateManager.ChangeObjectState(country, EntityState.Modified);
+            db.ObjectStateManager.ChangeObjectState(resume, EntityState.Modified);
+            db.SaveChanges();
+            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited " + resume.GivenName + " " + resume.LastName + "'s Resume "), LogHelper.LOG_UPDATE, LogHelper.SECTION_RESUME);
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited " + resume.GivenName + " " + resume.LastName + "'s Resume");
+
+            return RedirectToAction("Index");
+        }
+        
+        #endregion
 
         #region Delete
 
@@ -139,11 +187,14 @@ namespace StormWeb.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Resume_File resume_file = db.Resume_File.Single(r => r.Resume_Id == id);
-            db.Resume_File.DeleteObject(resume_file);
-            db.SaveChanges();
-            doc.DeletingAWS(resume_file.Path + '/' + resume_file.FileName);
-
+            var fileexists = db.Resume_File.Where(x => x.Resume_Id == id);
+            if (fileexists.Count() > 0)
+            {
+                Resume_File resume_file = db.Resume_File.Single(r => r.Resume_Id == id);
+                db.Resume_File.DeleteObject(resume_file);
+                db.SaveChanges();
+                doc.DeletingAWS(resume_file.Path + '/' + resume_file.FileName);
+            }
             Resume resume = db.Resumes.Single(r => r.Resume_Id == id);
             db.Resumes.DeleteObject(resume);
             db.SaveChanges();
@@ -151,6 +202,7 @@ namespace StormWeb.Controllers
 
             return RedirectToAction("Index");
         }
+        
         public ActionResult DeleteResumeFile(int id)
         {
             Resume_File resume_file = db.Resume_File.Single(r => r.Resume_Id == id);
@@ -159,6 +211,7 @@ namespace StormWeb.Controllers
             doc.DeletingAWS(resume_file.Path + '/' + resume_file.FileName);
             return RedirectToAction("Index");
         }
+        
         #endregion
 
         protected override void Dispose(bool disposing)
