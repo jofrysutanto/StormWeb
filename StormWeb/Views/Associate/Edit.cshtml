@@ -10,8 +10,7 @@
     @Html.HiddenFor(model => model.AssociateId)
     @Html.HiddenFor(model => model.Address_Id)
     @Html.HiddenFor(model => model.Address.Country.Country_Name)
-    @Html.HiddenFor(model => model.Username);
-   @Html.HiddenFor(model => model.Referrer);
+   
     <div class="form-horizontal row-fluid">
         <div class="span12">
             <div class="box-tab">
@@ -67,12 +66,10 @@
                                 </p>
                             </div>
                         </div>
-
                         <div class="control-group">
                             @Html.Label("Country", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                <!--@Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id)-->
-                                @Html.DropDownList("listCountry", (IEnumerable<SelectListItem>)ViewBag.Country_Id as SelectList, "--Select--", new { @class = "chzn-select" })
+                                @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id, "--Select--", new { @class = "chzn-select" })
                                 <p class="help-block">
                                     @Html.ValidationMessageFor(model => model.Address.Country_Id)
                                 </p>

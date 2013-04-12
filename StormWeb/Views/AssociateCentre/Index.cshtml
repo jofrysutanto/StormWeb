@@ -248,14 +248,5 @@ $(function () {
     <div class="span4">    
                 @Html.Partial("~/Views/Advertisement/Partial/_ScrollingMarketing.cshtml", (IEnumerable<StormWeb.Models.Advertisement>) ViewBag.Ads)
     </div>
-   
-     @if (CookieHelper.isAssociate())
-     {
-     <div class="span4" style="margin-left: 10;">    
-       @Html.Partial("~/Views/Event/Partial/_ScrollingEvent.cshtml", (IEnumerable<StormWeb.Models.Event>)ViewBag.eve)
-    </div>
-     }
-    
 </div>
-
 

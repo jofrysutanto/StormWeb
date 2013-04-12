@@ -18,7 +18,7 @@
                 @Html.Label("Country", null, new { @class = "control-label form-required" })
                 @*  @Html.LabelFor(model => model.Country_Id, "Country")*@
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryName, "--Select--", new { @class = "chzn-select" })
+                    @Html.DropDownListFor(model => model.Country.Country_Id, (IEnumerable<SelectListItem>)ViewBag.Country_Id, "--Select--", new { @class = "chzn-select" })
                     <p class="help-block">
                         @Html.ValidationMessageFor(model => model.Country_Id)
                         @Html.ValidationMessage("CountryError")
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("Description", null, new { @class = "control-label" })
+                @Html.Label("Description", null, new { @class = "control-label form-required" })
                 @* <label class="control-label">
                     Description</label>*@
                 <div class="controls">

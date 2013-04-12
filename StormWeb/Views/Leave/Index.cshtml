@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <i class="color-icons user_co"></i>Staff Name
+                                    <i class="color-icons user_co"></i>Staff_Id
                                 </th>
                                 <th>
                                     <i class="color-icons house_co"></i>StartDate
@@ -25,13 +25,10 @@
                                     <i class="color-icons book_addresses_co"></i>EndDate
                                 </th>
                                 <th>
-                                    <i class="color-icons attach_co"></i>Reason
+                                    <i class="color-icons attach_co"></i>Status
                                 </th>
                                 <th>
                                     <i class="color-icons doc_text_image_co"></i>Comment
-                                </th>
-                                <th>
-                                    <i class="color-icons doc_text_image_co"></i>Status
                                 </th>
                                 <th>
                                     <i class="color-icons hammer_screwdriver_co"></i>Actions
@@ -41,96 +38,29 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-
-
-
-                                if (HttpContext.Current.User.IsInRole("Hr") || HttpContext.Current.User.IsInRole("Super"))
-                                {
+   
                                 <tr>
                                     <td>
-                                        @Html.Encode(item.Staff.FirstName + " " + item.Staff.LastName)
+                                        @Html.DisplayFor(modelItem => item.Staff_Id)
                                     </td>
                                     <td>
-                                        @Html.Encode(item.StartDate.ToString("d"))
+                                        @Html.DisplayFor(modelItem => item.StartDate)
                                     </td>
                                     <td>
-                                        @Html.Encode(item.EndDate.ToString("d"))
+                                        @Html.DisplayFor(modelItem => item.EndDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Reason)
+                                        @Html.DisplayFor(modelItem => item.Status)
                                     </td>
                                     <td>
-                                        @if (item.Comment != null && item.Comment != "")
-                                        {
-                                            <span class="label label-warning">@Html.DisplayFor(modelItem => item.Comment)</span> 
-                                        }
+                                        @Html.DisplayFor(modelItem => item.Comment)
                                     </td>
                                     <td>
-                                        @if (item.Status == null)
-                                        {
-                                            <a id="AcceptBtn@(item.Leave_Id)" class="btn btn-mini btn-success tip-top" data-original-title="Accept Leave Application" href="@Url.Action("ChangeStatus", new { id = item.Leave_Id, status = "Accepted" })">
-                                                Accept</a> 
-                                            <a id="addComment@(item.Leave_Id)" class="btn btn-mini btn-danger add_co tip-top" data-original-title="Reject Leave Application" href="@item.Leave_Id">
-                                                Reject </a>
-                                        }
-                                        else
-                                        {
-                                            @item.Status
-                                        }
-                                        <div class="controls" style="display: inline">
-                                            <div class="input-append" style="display: inline">
-                                                <span style="display:none" id="addCommentBox@(item.Leave_Id)">
-                                                    <input type="text" class="input-medium" placeholder="Enter Your Comment" name="addComment@(item.Leave_Id)" />
-                                                    <a id="confirmAdd" class="btn btn-success" href="@item.Leave_Id" >Update</a> 
-                                                    <a id="confirmCancel" class="btn btn-danger">Cancel</a> </span>
-                                            </div>
-                                        </div>
-                                        <p><span id="spErrorMessage@(item.Leave_Id)" class="error" style="display: none;">* Please Enter Your Comment</span></p>
-                                    </td>
-                                    <td>
-                                        @if (item.Status == null)
-                                        {
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Leave_Id }) <span>|</span>  
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Leave_Id }) <span>|</span> 
-                                        }
-                                        @Html.ActionLink("Details", "Details", new { id = item.Leave_Id })
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Leave_Id }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.Leave_Id }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.Leave_Id })
                                     </td>
                                 </tr>
-                                }
-                                else if ((item.Staff.FirstName + " " + item.Staff.LastName) == CookieHelper.Name)
-                                {
-                                <tr>
-                                    <td>
-                                        @Html.Encode(item.Staff.FirstName + " " + item.Staff.LastName)
-                                    </td>
-                                    <td>
-                                        @Html.Encode(item.StartDate.ToString("d"))
-                                    </td>
-                                    <td>
-                                        @Html.Encode(item.EndDate.ToString("d"))
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Reason)
-                                    </td>
-                                    <td>
-                                        @if (item.Comment != null && item.Comment != "")
-                                        {
-                                            <span class="label label-warning">@Html.DisplayFor(modelItem => item.Comment)</span> 
-                                        }
-                                    </td>
-                                    <td>
-                                        @item.Status
-                                    </td>
-                                    <td>
-                                        @if (item.Status == null)
-                                        {
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Leave_Id }) <span>|</span> 
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Leave_Id }) <span>|</span> 
-                                        }
-                                        @Html.ActionLink("Details", "Details", new { id = item.Leave_Id })
-                                    </td>
-                                </tr>
-                                }
                             }
                         </tbody>
                     </table>
@@ -142,47 +72,4 @@
 <p>
     @Html.Button_Add("Create New", "Leave/Create")
 </p>
-<script>
-
-    $(function () {
-        var id = null;
-        $("a[id*='addComment']").click(function (e) {
-            e.preventDefault();
-
-            // Close all existing
-            $("span[id*='addCommentBox']").fadeOut(500);
-            $("a[id*='addComment']").show();
-            $("a[id*='AcceptBtn']").hide();
-
-            id = $(this).attr("href");
-
-            // Fade out the button
-            $(this).fadeOut(500, function () {
-                $("#addCommentBox" + id).fadeIn(500);
-            });
-        });
-
-        $("a[id*='confirmAdd']").click(function (e) {
-            e.preventDefault();
-
-            var id = $(this).attr("href");
-            var value = $("input[name='addComment" + id + "']").val();
-
-            if (value == "") {
-                document.getElementById("spErrorMessage" + id).style.display = 'inline';
-            }
-            else {
-                var url = "Leave/ChangeStatus/" + id + "?comment=" + value + "&status=Rejected";
-                window.location = url;
-            }
-        })
-
-        $("a[id*='confirmCancel']").click(function (e) {
-            document.getElementById("spErrorMessage" + id).style.display = 'none';
-            $("span[id*='addCommentBox']").hide();
-            $("a[id*='addComment']").show();
-            $("a[id*='AcceptBtn']").show();
-        })
-
-    });
-</script>
+ 

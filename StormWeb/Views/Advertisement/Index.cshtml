@@ -4,15 +4,15 @@
     ViewBag.Title = "Index";
 }
 <div class="row-fluid">
-    <div class="span8">
+    <div class="span12">
         <div class="box-tab">
             <div class="page-header">
                 <h1>
                     &nbsp; &nbsp; Advertising / Promotions</h1>
                
             </div>
-            <div class="widget-content" >
-                <div class="widget-box" style="padding: 15px;" >
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px;">
                       <table class="data-tbl-simple table table-bordered dataTable">
                         <thead>
                             <tr>
@@ -76,22 +76,13 @@
                                     }
                         </tbody>
                     </table>
-                   
-                   
                 </div>
                 
             </div>
         </div>
     </div>
-    <div class="span4" style="margin-left: 10;">    
-       @Html.Partial("~/Views/Event/Partial/_ScrollingEvent.cshtml", (IEnumerable<StormWeb.Models.Event>)ViewBag.eve)
-    </div>
 </div>
 <p>
         @Html.Button_Add("Create New", Url.Action("Create","Advertisement"))
     </p>
-    
-   
-  
-
 

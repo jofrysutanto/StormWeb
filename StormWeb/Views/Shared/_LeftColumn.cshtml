@@ -83,7 +83,7 @@
                         Student Payments</a>                  
             </li>
         }
-        @if (!HttpContext.Current.User.IsInRole("Student"))
+        @if (HttpContext.Current.User.IsInRole("HR"))
         {
             <li><a href="@Url.Action("Index", "Resume")"><span class="white-icons v_card"></span>
                         Resume</a>                  

@@ -41,180 +41,175 @@
     @Html.ValidationSummary(false, null, new { @class = "error" })
  
     @Html.HiddenFor(x => x.Staff_Id)
-    <div class="form-horizontal row-fluid">
-        <div class="span12">
-            <div class="box-tab">
-                <div class="page-header">
-                    <h1>
-                        Create New Staff</h1>
-                </div>
-                <div class="widget-content">
-                    <div class="widget-box" style="padding: 50px;">
-                        <div class="control-group">
-                            @Html.Label("Department", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.DropDownListFor(model => model.Dept_Id, (IEnumerable<SelectListItem>)ViewBag.Dept_Id, "--Select--", new { @class = "chzn-select" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Dept_Id)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label(" Street Name and Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -60px;" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-large text-tip", placeholder = " Street Name and Number" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Address_Name)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("City", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Address.City, new { @class = "input-large text-tip", placeholder = "City" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.City)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("State", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Address.State, new { @class = "input-large text-tip", placeholder = "State" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.State)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-large text-tip", placeholder = "Zipcode" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Zipcode)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Country", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Address.Country_Id)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Title", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["TitleValue"], new { @class = "chzn-select" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Title)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Given Name", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.FirstName, new { @class = "input-large text-tip", placeholder = "FirstName" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.FirstName)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Surname", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "input-large text-tip", placeholder = "Zipcode" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.LastName)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("DOB", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                <div class="input-append">
-                                    @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly", @Value = Model.DOB.ToString("dd/MM/yyyy") })
-                                </div>
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.DOB)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Date Of Joining", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                <div class="input-append">
-                                    @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly", @Value = Model.Date_Of_Joining.ToString("dd/MM/yyyy") })
-                                </div>
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Date_Of_Joining)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Mobile Number", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Mobile_Number, new { @class = "input-large text-tip", placeholder = "Mobile Number" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Mobile_Number)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Email", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Email, new { @class = "input-large text-tip", placeholder = "Email" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Email)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Tax Type", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Tax_Type, new { @class = "input-large text-tip", placeholder = "Tax Type" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Tax_Type)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("Tax Number", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.Tax_Number, new { @class = "input-large text-tip", placeholder = "Tax Number" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.Tax_Number)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            @Html.Label("UserName", null, new { @class = "control-label form-required" })
-                            <div class="controls">
-                                @Html.TextBoxFor(model => model.UserName, new { @class = "input-large text-tip", placeholder = "UserName" })
-                                <p class="help-block">
-                                    @Html.ValidationMessageFor(model => model.UserName)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="controls span7">
-                                @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="controls">
-                                <input type="submit" class="btn btn-primary" value="Create" />
-                                @Html.Button_DeleteOrCancel("Cancel", "../../Staff")
-                            </div>
-                        </div>
-                    </div>
+
+    <div class="form-horizontal well">
+        <fieldset style="margin-left: 50px;">
+            <legend>
+                <h2>
+                    Create New Staff</h2>
+            </legend>
+            <div class="control-group">
+                @Html.Label("Department", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Dept_Id, (IEnumerable<SelectListItem>)ViewBag.Dept_Id, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Dept_Id)
+                    </p>
                 </div>
             </div>
-        </div>
+            <div class="control-group">
+                @Html.Label(" Street Name and Number", null, new { @class = "control-label form-required", style = "width:200px;margin-left: -50px;" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Address.Address_Name, new { @class = "input-large text-tip", placeholder = " Street Name and Number" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Address.Address_Name)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("City", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Address.City, new { @class = "input-large text-tip", placeholder = "City" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Address.City)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("State", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Address.State, new { @class = "input-large text-tip", placeholder = "State" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Address.State)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Zipcode", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Address.Zipcode, new { @class = "input-large text-tip", placeholder = "Zipcode" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Address.Zipcode)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Country", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Address.Country_Id, (IEnumerable<SelectListItem>)ViewBag.CountryList, "--Select--", new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Address.Country_Id)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Title", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["TitleValue"], new { @class = "chzn-select" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Given Name", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "input-large text-tip", placeholder = "FirstName" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.FirstName)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Surname", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "input-large text-tip", placeholder = "Zipcode" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.LastName)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("DOB", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.DOB, new { @class = "chooseDate", @readonly = "readonly", @Value = Model.DOB.ToString("dd/MM/yyyy") })
+                    </div>
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.DOB)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Date Of Joining", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.Date_Of_Joining, new { @class = "chooseDate1", @readonly = "readonly", @Value = Model.Date_Of_Joining.ToString("dd/MM/yyyy") })
+                    </div>
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Date_Of_Joining)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Mobile Number", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Mobile_Number, new { @class = "input-large text-tip", placeholder = "Mobile Number" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Mobile_Number)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Email", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "input-large text-tip", placeholder = "Email" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Tax Type", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Tax_Type, new { @class = "input-large text-tip", placeholder = "Tax Type" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Tax_Type)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("Tax Number", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Tax_Number, new { @class = "input-large text-tip", placeholder = "Tax Number" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Tax_Number)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("UserName", null, new { @class = "control-label form-required" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "input-large text-tip", placeholder = "UserName" })
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls span7">
+                    @Html.Partial("~/Views/Shared/Partial/_BranchListPartial.cshtml", (List<StormWeb.Models.Branch>)ViewBag.Branch)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input type="submit" class="btn btn-primary" value="Create" />
+                    @Html.Button_DeleteOrCancel("Cancel", "../../Staff")
+                </div>
+            </div>
+        </fieldset>
     </div>
-@* <table style="text-align: left;">
+   @* <table style="text-align: left;">
         <tr>
             <th>
                 Department

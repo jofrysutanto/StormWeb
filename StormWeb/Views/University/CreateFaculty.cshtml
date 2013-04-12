@@ -22,11 +22,8 @@
                 @Html.Label("Faculty Name", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @Html.TextBoxFor(model => model.Faculty_Name, new { @class = "input-large text-tip", placeholder = "Faculty Name" })
-                    @*<p class="help-block">
-                        @Html.ValidationMessageFor(model => model.Faculty_Name)</p>*@
-                    <div id="facultyNameError" class="error" style="display:none;">
-                        This field is required
-                    </div>
+                    <p class="help-block">
+                        @Html.ValidationMessageFor(model => model.Faculty_Name)</p>
                 </div>
             </div>
             <div class="control-group">
@@ -38,7 +35,7 @@
                 </div>
             </div>
             <div class="control-group">
-                @Html.Label("Campus", null, new { @class = "control-label" })
+                @Html.Label("Campus", null, new { @class = "control-label form-required" })
                 <div class="controls">
                     @{  string u = "";
                         string c = "";
@@ -54,7 +51,7 @@
                     </p>
                 </div>
                 <div class="control-group">
-                    @Html.Label("University", null, new { @class = "control-label" })
+                    @Html.Label("University", null, new { @class = "control-label form-required" })
                     <div class="controls">
                         @Html.TextBox("University_Name", @u, new { @readonly = "readonly", @class = "input-large text-tip", placeholder = "University" })
                         <p class="help-block">
@@ -71,7 +68,57 @@
             </div>
         </fieldset>
     </div>
+@*   
+    <div class="editor-label">
+        @Html.Label("Faculty Name")
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Faculty_Name)
+        @Html.ValidationMessageFor(model => model.Faculty_Name)
+    </div>
 
+    <div class="editor-label">
+        @Html.Label("Faculty Description")
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Faculty_Description)
+        @Html.ValidationMessageFor(model => model.Faculty_Description)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Campus")
+    </div>
+         
+   string u = "";
+   string c = "";
+   int i = 0;
+   var item = (StormWeb.Models.University)ViewBag.UniId;
+   u = item.University_Name;
+   c = item.Campus;
+   i = item.University_Id;
+    <div class="editor-field">
+        @Html.TextBox("Campus", @c, new { @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.University.Campus)
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("University")
+    </div>
+    <div class="editor-field">
+        @Html.TextBox("University_Name", @u, new { @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.University.University_Name)
+    </div> 
+
+    @Html.HiddenFor(model => model.University_Id);
+      
+    <br />
+    <p>
+        <input type="submit" value="Create" class="btn btn-primary" />
+        @* @Html.ActionLink("Back to List", "Index")
+        @Html.Button_DeleteOrCancel("Cancel", "Index")
+    </p>
+            *@
+ 
              
 }
 <script>
@@ -80,19 +127,6 @@
         $('#University_Id').val(@{
             StormWeb.Models.University Uni = (StormWeb.Models.University)ViewBag.UniId;
             @:@Uni.University_Id
-        });
-
-        $("input[type*='submit']").click(function(e){
-            var facultyName = $("input[name='Faculty_Name']").val();
-            var isValid = true;
-            if(facultyName == "")
-            {
-                $('#facultyNameError').css('display','inline');
-                isValid = false;
-            }
-            if(isValid == true){
-                $("#appointmentForm").submit();
-            }
         });
     });
 

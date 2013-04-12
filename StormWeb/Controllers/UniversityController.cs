@@ -45,24 +45,23 @@ namespace StormWeb.Controllers
         [Authorize(Roles = "Super,BranchManager,Administrator")]
         public ActionResult Create()
         {
-            ViewBag.CountryName = new SelectList(db.Countries, "Country_Id", "Country_Name");
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name");
 
             return View();
         }
 
         [Authorize(Roles = "Super,BranchManager,Administrator")]
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Create(University university, FormCollection fc)
         {
-           if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Universities.AddObject(university);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CountryName = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
+            ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username+" Added a New University" + university.University_Name), LogHelper.LOG_CREATE, LogHelper.SECTION_UNIVERSITY);
             return View(university);
         }
@@ -78,27 +77,23 @@ namespace StormWeb.Controllers
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             return View(university);
         }
-        
+
         [Authorize(Roles = "Super,BranchManager,Administrator")]
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Edit(University university)
         {
             //var uni = db.Universities.SingleOrDefault(x=>x.University_Id==university.University_Id);
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             if (ModelState.IsValid)
             {
-                university.Country_Id = university.Country.Country_Id;
                 db.Universities.Attach(university);
                 db.ObjectStateManager.ChangeObjectState(university, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the details of the University" + university.University_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_UNIVERSITY);
-                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited the University details" + university.University_Name);
                 return RedirectToAction("Index");
             } 
             ViewBag.Country_Id = new SelectList(db.Countries, "Country_Id", "Country_Name", university.Country_Id);
             LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the details of the University" + university.University_Name), LogHelper.LOG_UPDATE, LogHelper.SECTION_UNIVERSITY);
-            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited the University details" + university.University_Name);
+            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited the University" + university.University_Name);
             return View(university);
         }
 
@@ -193,7 +188,6 @@ namespace StormWeb.Controllers
             int universityid = fac.University_Id;
             if (ModelState.IsValid)
             {
-                fac.University.University_Id = universityid;
                 db.Faculties.Attach(fac);
                 db.ObjectStateManager.ChangeObjectState(fac, EntityState.Modified);
                 db.SaveChanges();

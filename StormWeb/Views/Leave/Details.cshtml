@@ -16,10 +16,10 @@
                     <table class="table">
                         <tr>
                             <th>
-                                Staff Name
+                                Staff_Id
                             </th>
                             <td>
-                                @Html.DisplayFor(model => model.Staff.FirstName) @Html.DisplayFor(model => model.Staff.LastName)
+                                @Html.DisplayFor(model => model.Staff_Id)
                             </td>
                         </tr>
                         <tr>
@@ -43,7 +43,7 @@
                                 Status
                             </th>
                             <td>
-                                @Html.DisplayFor(model => model.Reason)
+                                @Html.DisplayFor(model => model.Status)
                             </td>
                         </tr>
                         <tr>
@@ -52,14 +52,6 @@
                             </th>
                             <td>
                                 @Html.DisplayFor(model => model.Comment)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Status
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Status)
                             </td>
                         </tr>
                     </table>

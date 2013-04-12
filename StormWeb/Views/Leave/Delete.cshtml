@@ -19,49 +19,33 @@
                     <br />
                     <table class="table">
                         <tr>
-                            <th>
-                                Staff Name
+                            <th>Staff_Id
                             </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Staff.FirstName) @Html.DisplayFor(model => model.Staff.LastName)
+                            <td>  @Html.DisplayFor(model => model.Staff_Id)
                             </td>
                         </tr>
-                        <tr>
-                            <th>
-                                StartDate
+                         <tr>
+                            <th>StartDate
                             </th>
                             <td>@Html.DisplayFor(model => model.StartDate)
                             </td>
                         </tr>
-                        <tr>
-                            <th>
-                                EndDate
+                         <tr>
+                            <th>EndDate
                             </th>
-                            <td>
-                                @Html.DisplayFor(model => model.EndDate)
+                            <td> @Html.DisplayFor(model => model.EndDate)
                             </td>
                         </tr>
-                        <tr>
-                            <th>
-                                Reason
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Reason)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Comment
-                            </th>
-                            <td>
-                                @Html.DisplayFor(model => model.Comment)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Status
+                         <tr>
+                            <th>Status
                             </th>
                             <td>@Html.DisplayFor(model => model.Status)
+                            </td>
+                        </tr>
+                         <tr>
+                            <th>Comment
+                            </th>
+                            <td>        @Html.DisplayFor(model => model.Comment)
                             </td>
                         </tr>
                     </table>
@@ -70,11 +54,13 @@
         </div>
     </div>
 </div>
-<p>
+ <p>
     <input type="submit" value="Delete" class="btn btn-danger  tip-top" data-toggle="modal"
         href="#myModal1" data-original-title="Delete Leave Details" />
+
     @Html.Button_BackToList("Bact To List", "../../Leave")
 </p>
+ 
 @using (Html.BeginForm("Delete", "Leave", FormMethod.Post))
 {   
     <div class="modal hide fade" id="myModal1" style="width: 250px">

@@ -16,8 +16,6 @@ namespace StormWeb.Controllers
     {
         private StormDBEntities db = new StormDBEntities();
 
-        #region INDEX
-
         [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Index()
         {
@@ -35,7 +33,6 @@ namespace StormWeb.Controllers
             var branchId = db.Branch_Staff.SingleOrDefault(x => x.Staff_Id == staffId).Branch_Id;
             return branchId;
         }
-        
         public static string getBranchName()
         {
             StormDBEntities db = new StormDBEntities();
@@ -45,9 +42,6 @@ namespace StormWeb.Controllers
             return branchName;
         }
 
-        #endregion
-
-        #region DETAILS
 
         [Authorize(Roles = "Super,BranchManager")]
         public ViewResult Details(int id)
@@ -55,8 +49,6 @@ namespace StormWeb.Controllers
             Branch branch = db.Branches.Single(b => b.Branch_Id == id);
             return View(branch);
         }
-
-        #endregion
 
         #region CREATE
 

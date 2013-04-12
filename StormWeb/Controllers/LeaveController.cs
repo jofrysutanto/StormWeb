@@ -6,35 +6,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StormWeb.Models;
-using StormWeb.Helper;
 
 namespace StormWeb.Controllers
-{
+{ 
     public class LeaveController : Controller
     {
         private StormDBEntities db = new StormDBEntities();
 
-        #region Index
+        //
+        // GET: /Leave/
 
         public ViewResult Index()
         {
             return View(db.LeaveApplications.ToList());
         }
-        public ActionResult ChangeStatus(int id, string comment, string status)
-        {
-            LeaveApplication leaveapplication = db.LeaveApplications.Single(x => x.Leave_Id == id);
-            leaveapplication.Status = status;
-            if (status == "Rejected")
-            {
-                leaveapplication.Comment = comment;
-            }
-            db.ObjectStateManager.ChangeObjectState(leaveapplication, EntityState.Modified);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        #endregion
 
-        #region Details
+        //
+        // GET: /Leave/Details/5
 
         public ViewResult Details(int id)
         {
@@ -42,82 +30,75 @@ namespace StormWeb.Controllers
             return View(leaveapplication);
         }
 
-        #endregion
-
-        #region Create
+        //
+        // GET: /Leave/Create
 
         public ActionResult Create()
         {
-            ViewBag.StaffName = new SelectList(db.Staffs, "Staff_Id", "FirstName");
             return View();
-        }
+        } 
+
+        //
+        // POST: /Leave/Create
 
         [HttpPost]
-        public ActionResult Create(LeaveApplication leaveapplication, FormCollection fc)
+        public ActionResult Create(LeaveApplication leaveapplication)
         {
             if (ModelState.IsValid)
             {
-                ViewBag.StaffName = db.Staffs.ToList();
-                leaveapplication.Staff_Id = Convert.ToInt32(fc["FirstName"]);
                 db.LeaveApplications.AddObject(leaveapplication);
                 db.SaveChanges();
-                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Added a new Leave Application " + leaveapplication.Reason + " for " + leaveapplication.Staff.FirstName + " " + leaveapplication.Staff.LastName), LogHelper.LOG_CREATE, LogHelper.SECTION_RESUME);
-                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Created a new Leave Application" + leaveapplication.Reason);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index");  
             }
 
             return View(leaveapplication);
         }
-        #endregion
-
-        #region Edit
-
+        
+        //
+        // GET: /Leave/Edit/5
+ 
         public ActionResult Edit(int id)
         {
             LeaveApplication leaveapplication = db.LeaveApplications.Single(l => l.Leave_Id == id);
-            if (leaveapplication != null)
-                ViewBag.StaffName = new SelectList(db.Staffs, "Staff_Id", "FirstName", leaveapplication.Staff_Id);
             return View(leaveapplication);
         }
 
+        //
+        // POST: /Leave/Edit/5
+
         [HttpPost]
-        public ActionResult Edit(LeaveApplication leaveapplication, FormCollection fc)
+        public ActionResult Edit(LeaveApplication leaveapplication)
         {
             if (ModelState.IsValid)
             {
-                leaveapplication.Staff_Id = Convert.ToInt32(fc["FirstName"]);
                 db.LeaveApplications.Attach(leaveapplication);
                 db.ObjectStateManager.ChangeObjectState(leaveapplication, EntityState.Modified);
                 db.SaveChanges();
-                LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Edited the leave application of" + leaveapplication.Staff.FirstName + " " + leaveapplication.Staff.LastName), LogHelper.LOG_UPDATE, LogHelper.SECTION_RESUME);
-                NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully Edited the leave application of " + leaveapplication.Staff.FirstName + " " + leaveapplication.Staff.LastName);
-
                 return RedirectToAction("Index");
             }
             return View(leaveapplication);
         }
 
-        #endregion
-
-        #region Delete
-
+        //
+        // GET: /Leave/Delete/5
+ 
         public ActionResult Delete(int id)
         {
             LeaveApplication leaveapplication = db.LeaveApplications.Single(l => l.Leave_Id == id);
             return View(leaveapplication);
         }
 
+        //
+        // POST: /Leave/Delete/5
+
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {
+        {            
             LeaveApplication leaveapplication = db.LeaveApplications.Single(l => l.Leave_Id == id);
             db.LeaveApplications.DeleteObject(leaveapplication);
             db.SaveChanges();
-            NotificationHandler.setNotification(NotificationHandler.NOTY_SUCCESS, "Successfully deleted the Leave Application of  " + leaveapplication.Staff.FirstName + " " + leaveapplication.Staff.LastName);
-            LogHelper.writeToSystemLog(new string[] { CookieHelper.Username }, (CookieHelper.Username + " Deleted the Leave Application of " + leaveapplication.Staff.FirstName + " " + leaveapplication.Staff.LastName), LogHelper.LOG_DELETE, LogHelper.SECTION_LEAVE);
             return RedirectToAction("Index");
         }
-        #endregion
 
         protected override void Dispose(bool disposing)
         {

@@ -2,12 +2,14 @@
 @{
     ViewBag.Title = "Create";
 }
+<h2>
+    Create</h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-@using (Html.BeginForm("Create", "Leave", FormMethod.Post, new { id = "submitForm" }))
+@using (Html.BeginForm("Create", "Leave", FormMethod.Post, new { enctype = "multipart/form-data" }))
 { 
-      
-    @Html.ValidationSummary(false) 
+     
+    @Html.ValidationSummary(false)
 
     <div class="form-horizontal row-fluid">
         <div class="span12">
@@ -20,47 +22,62 @@
                 <div class="widget-content">
                     <div class="widget-box" style="padding: 50px;">
                         <div class="control-group">
-                            @Html.Label("Staff Name", null, new { @class = "control-label form-required" })
+                            @Html.Label("Given Name", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                @if (HttpContext.Current.User.IsInRole("Hr") || HttpContext.Current.User.IsInRole("Super"))
-                                {
-                                    @Html.DropDownList("FirstName", (IEnumerable<SelectListItem>)ViewBag.StaffName, "--Select--", new { @class = "chzn-select" })
-                                }
-                                else
-                                {
-                                    @Html.TextBox("FirstName", @CookieHelper.Name, new { @class = "input-large text-tip", placeholder = " Staff Name ", @readonly = "readonly" })
-                                }
-                                <div id="spErrorMessageFirstName" class="error" style="display: none;">
-                                    * Please Select Your Name</div>
+                                @Html.TextBoxFor(model => model.Staff_Id, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Staff_Id)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            @Html.Label("Last Name", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Staff_Id, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Staff_Id)
+                                </p>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("StartDate", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                @Html.TextBoxFor(model => model.StartDate, new { @class = "chooseDate", @readonly = "readonly" })
-                                <div id="spErrorMessageStartDate" class="error" style="display: none;">
-                                    * Please Enter Your Start Date</div>
+                                @Html.TextBoxFor(model => model.StartDate, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.StartDate)
+                                </p>
                             </div>
                         </div>
                         <div class="control-group">
                             @Html.Label("EndDate", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                @Html.TextBoxFor(model => model.EndDate, new { @class = "chooseDate1", @readonly = "readonly" })
-                                <div id="spErrorMessageEndDate" class="error" style="display: none;">
-                                    * Please Enter Your End Date</div>
+                                @Html.TextBoxFor(model => model.EndDate, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.EndDate)
+                                </p>
                             </div>
                         </div>
                         <div class="control-group">
-                            @Html.Label("Reason", null, new { @class = "control-label form-required" })
+                            @Html.Label("Status", null, new { @class = "control-label form-required" })
                             <div class="controls">
-                                @Html.TextBoxFor(model => model.Reason, new { @class = "input-large text-tip", placeholder = " Reason " })
-                                <div id="spErrorMessageReason" class="error" style="display: none;">
-                                    * Please Enter Your Comment</div>
+                                @Html.TextBoxFor(model => model.Status, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Status)
+                                </p>
+                            </div>
+                        </div>
+                         <div class="control-group">
+                            @Html.Label("Comment", null, new { @class = "control-label form-required" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "input-large text-tip", placeholder = " Given Name" })
+                                <p class="help-block">
+                                    @Html.ValidationMessageFor(model => model.Comment)
+                                </p>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <a class="btn btn-primary" id="submit">Create</a>
+                                <input type="submit" class="btn btn-primary" value="Create" />
                                 @Html.Button_DeleteOrCancel("Cancel", "../../Leave")
                             </div>
                         </div>
@@ -70,88 +87,4 @@
         </div>
     </div> 
 }
-<script type="text/javascript">
-    $(function () {
-        $("a[id*='submit']").click(function (e) {
-            var StaffName = $("select[name='FirstName']").val();
-            var StartDate = $("input[name='StartDate']").val();
-            var EndDate = $("input[name='EndDate']").val();
-            var Reason = $("input[name='Reason']").val();
-            var isValid = true;
-            if (StaffName == "") {
-                document.getElementById("spErrorMessageFirstName").style.display = 'inline';
-                isValid = false;
-            }
-            else {
-                document.getElementById("spErrorMessageFirstName").style.display = 'none';
-            }
-            if (StartDate == "") {
-                document.getElementById("spErrorMessageStartDate").style.display = 'inline';
-                isValid = false;
-            }
-            else {
-                document.getElementById("spErrorMessageStartDate").style.display = 'none';
-            }
-            if (EndDate == "") {
-                document.getElementById("spErrorMessageEndDate").style.display = 'inline';
-                isValid = false;
-            }
-            else {
-                document.getElementById("spErrorMessageEndDate").style.display = 'none';
-            }
-            if (Reason == "") {
-                document.getElementById("spErrorMessageReason").style.display = 'inline';
-                isValid = false;
-            }
-            else {
-                document.getElementById("spErrorMessageReason").style.display = 'none';
-            }
-            if (isValid == true) {
-                $("#submitForm").submit();
-            }
-            else {
-                $.pnotify({
-                    title: 'Error',
-                    text: 'Please fix all the errors',
-                    styling: 'bootstrap',
-                    type: 'error'
-                });
-                return false;
-            }
-        })
-
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".chooseDate").datepicker({
-            dateFormat: 'dd/mm/yy',
-            changeMonth: true,
-            changeYear: true,
-            minDate: '-0Y',
-            maxDate: '100Y',
-            showOn: "button",
-            buttonImage: "../../Content/img/calendar_btn.png",
-            buttonImageOnly: true,
-            onClose: function (selectedDate) {
-                $("#EndDate").datepicker("option", "minDate", selectedDate);
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $(".chooseDate1").datepicker({
-            dateFormat: 'dd/mm/yy',
-            changeMonth: true,
-            changeYear: true,
-            minDate: '0Y',
-            maxDate: '100Y',
-            showOn: "button",
-            buttonImage: "../../Content/img/calendar_btn.png",
-            buttonImageOnly: true,
-            onClose: function (selectedDate) {
-                $(".StartDate").datepicker("option", "maxDate", selectedDate);
-            }
-        });
-    });
-</script>
+ 

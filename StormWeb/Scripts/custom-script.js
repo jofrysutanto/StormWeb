@@ -205,7 +205,7 @@ $(window).load(function () {
     /*=============================
     jQueryConfirm
 ===============================*/
-    $(".confirmMe").jConfirmAction();
+$(".confirmMe").jConfirmAction();
 
 	/*=========
 	Mini Chart

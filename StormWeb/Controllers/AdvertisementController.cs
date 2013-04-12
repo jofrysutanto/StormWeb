@@ -29,7 +29,6 @@ namespace StormWeb.Controllers
 
         public ViewResult Index()
         {
-            ViewBag.eve = db.Events.Where(x => x.Date > DateTime.Now).ToList();
             return View(db.Advertisements.ToList());
         }
 

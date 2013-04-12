@@ -18,7 +18,7 @@ namespace StormWeb.Controllers
         public ViewResult Index()
         {
             int staffId = Convert.ToInt32(CookieHelper.StaffId);
-            ViewBag.eve = db.Events.Where(x => x.Date > DateTime.Now).ToList();
+
             ViewBag.CountAppointment = Utilities.getNumberOfAppointment(Convert.ToInt32(CookieHelper.StaffId));
             ViewBag.CountNewEnquiries = Utilities.getNumberOfNewEnquiries(Convert.ToInt32(CookieHelper.StaffId));
             ViewBag.CountNewStudents = Utilities.getNumberOfNewStudents(Convert.ToInt32(CookieHelper.StaffId));
